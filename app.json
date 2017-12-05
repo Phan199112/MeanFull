@@ -1,0 +1,16 @@
+{
+  "name": "crowdworks",
+  "scripts": {
+  },
+  "env": {
+    "S3_BUCKET": "cwlivebucket"
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+
+  ]
+}
