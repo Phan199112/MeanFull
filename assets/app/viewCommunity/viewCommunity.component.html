@@ -1,0 +1,72 @@
+<!--<div class="container" id="viewCommunityPage">-->
+    <div class="row">
+        <div class="col-md-3" id="leftSideOfContainer">
+            <network-list [data]="data.members" *ngIf="!loading && loadsuccessful && status != '2'"></network-list>
+            <tag-list [user]="null" [comm]="id" *ngIf="!loading && loadsuccessful && status != '2'"></tag-list>
+        </div>
+        <div class="col-md-7" *ngIf="loadsuccessful">
+            <div id="viewCommunityContainer" class="container">
+                <div id="topJumbo" class="jumbotron jumbotron-fluid p-0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-4 padded-simple">
+                                <h2 style="overflow: auto" class="display-4">{{data.title}}</h2>
+                                <p class="lead">{{data.description}}!</p>
+                                <p class="lead">{{data.timestamp | date}}</p>
+                                <div *ngIf="addfailed">failed..</div>
+                            </div>
+                            <!-- <div class="col">
+                                <button (click)="joinCommunity(id)" *ngIf="!data.ismember && loggedin && !loadingjoin" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                                    Join Community!
+                                </button>
+                                <button (click)="leaveCommunity(id)" *ngIf="data.ismember && loggedin && !data.isadmin && !loadingjoin" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                                    Leave Community!
+                                </button>
+                            </div> -->
+                            <div id="community-image-column" class="col p-0">
+                                <img id="community-image" [src]="data.pic" *ngIf="data.pic"/>                                
+                            </div>
+                            <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="community-menu-wrapper" *ngIf="loggedin && !loadingjoin">
+                                <a 
+                                    class="navlinks nav-link custom-dropdown-toggle"
+                                    id="community-menu" 
+                                    ngbDropdownToggle 
+                                    aria-haspopup="true" 
+                                    aria-expanded="false">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </a>
+                                <div ngbDropdownMenu aria-labelledby="community-menu">
+                                    <a class="dropdown-item" *ngIf="!data.ismember && status != '2'" (click)="joinCommunity(id)">Join Community</a>
+                                    <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Community</a>
+                                    <a class="dropdown-item" *ngIf="data.isadmin" (click)="inviteToCommunity(id)">Invite others to join</a>
+                                    <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Community</a>
+                                    <a class="dropdown-item" *ngIf="!data.isadmin"(click)="reportCommunity(id)" >Report Community</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="status == '2'"><h6>{{data.title}} is a private community. Only individuals invited by the admin can see further details. </h6></div>
+                <feed-list class="row" [comm]="id"></feed-list>
+            </div>
+        </div>
+        <div class="col-md-7" *ngIf="loading">
+            <div id="viewCommunityContainer" class="container">
+                <div id="topJumbo" class="jumbotron">
+                    <h2 style="overflow: auto" class="display-4">Loading...</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7" *ngIf="!loadsuccessful">
+            <div id="viewCommunityContainer" class="container">
+                <div id="topJumbo" class="jumbotron">
+                    <h2 style="overflow: auto" class="display-4">This community could not be found!</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+            <feedback-form *ngIf="loggedin"></feedback-form>
+        </div>
+    </div>
+
+<!--</div>-->

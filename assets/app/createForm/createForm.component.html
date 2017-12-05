@@ -1,0 +1,326 @@
+<div class="container main-container" *ngIf="reject">
+    <h2>You are not authorised to create a new form. Please login first!</h2>
+</div>
+<div id="createFormPage" *ngIf="!reject">
+    <div class="row">
+        <div class="col-md-2" id="leftSideOfContainer">
+        </div>
+        <div class="col-md-8">
+            <div id="createFormContainer" class="container">
+                <!--<div id="topJumbo" class="jumbotron">-->
+                    <!--<h2 style="overflow: auto" class="display-4" *ngIf="!typeevent">Create A Survey</h2>-->
+                    <!--<h2 style="overflow: auto" class="display-4" *ngIf="typeevent">Create An Event</h2>-->
+                    <!--<p class="lead">Connect with a community of people to get all your questions answered!</p>-->
+                <!--</div>-->
+                <form [formGroup]="questionnaire">
+                    <div id="survey-data">
+                        <div id="survey-title" class="form-group">
+                            <input type="text" formControlName="title" class="form-control" placeholder="Title" />
+                        </div>
+                        <div id="survey-description" class="form-group">
+                            <input type="text" formControlName="description" class="form-control" placeholder="Description" />
+                        </div>
+                        <div class="form-group">
+                            <div class="tag-input-wrapper form-control">
+                                <div 
+                                    [ngClass]="{'d-none': showHashtags || questionnaire.get('hashtags').value}"
+                                    class="tag-placeholder text-muted" 
+                                    (click)="showHashtags = true; focusTagInput(hashtags)">
+                                    hashtag #coffee #ucla #stanford
+                                </div>
+                                <tag-input
+                                    #hashtags
+                                    [ngClass]="{'d-none': !showHashtags && questionnaire.get('hashtags').value === null}"
+                                    [onAdding]="transformHashtag"
+                                    placeholder="#hashtag"
+                                    secondaryPlaceholder="#hashtag"
+                                    (onBlur)="showHashtags = false"
+                                    [separatorKeyCodes]="[32, 13]"
+                                    formControlName="hashtags"
+                                    id="tags">
+                                    <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceTag.bind(this)">
+                                    </tag-input-dropdown>
+                                 </tag-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="middle-section">
+                        <div class="row form-group form-control" *ngIf="!typeevent">
+                            <div class="col">
+                                <label class="lead" id="create-survey-as">Create the survey as?
+                                    <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
+                                </label>
+                                <div class="row top-options">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input 
+                                                    type="radio" 
+                                                    class="form-check-input"
+                                                    aria-describedby="yourselfDesc" 
+                                                    formControlName="anonymous" 
+                                                    [value]="false">
+                                                Yourself
+                                            </label>
+                                            <small id="yourselfDesc" class="form-text">
+                                                People tend to answer questions more when they know who’s posting it! Get a lot more responses
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input 
+                                                    type="radio" 
+                                                    class="form-check-input" 
+                                                    aria-describedby="anonymousDesc" 
+                                                    formControlName="anonymous" 
+                                                    [value]="true">
+                                                Anonymous
+                                            </label>
+                                            <small id="anonymousDesc" class="form-text d-inline-block">
+                                                Your survey will be show up on CrowdWorks anonymously. So, ask anything!!
+                                            </small>
+                                            <!--<i class="emoji emoji-wink small-size" aria-hidden="true"></i>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group form-control">
+                            <div class="col">
+                                <label class="lead" *ngIf="!typeevent">Privacy settings of the survey</label>
+                                <label class="lead" *ngIf="typeevent">Privacy settings of the event</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input 
+                                                    type="radio" 
+                                                    class="form-check-input"
+                                                    aria-describedby="publicDesc" 
+                                                    formControlName="public" 
+                                                    [value]="true">
+                                                Public
+                                            </label>
+                                            <small id="publicDesc" class="form-text">
+                                                Get responses to entire CrowdWorks community. A lot more responses!
+                                            </small>
+
+                                            <div class="form-group" *ngIf="questionnaire.get('public').value == true">
+                                                <div class="tag-input-wrapper form-control">
+                                                    <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}"
+                                                         class="tag-placeholder text-muted"
+                                                         (click)="showPublicShares = true; focusTagInput(sharedWith)" style="width: 700px">
+                                                        Share with communities
+                                                    </div>
+                                                    <tag-input #sharedWith
+                                                               [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
+                                                               id="public-shares"
+                                                               placeholder="Name"
+                                                               secondaryPlaceholder="Name"
+                                                               [onAdding]="transformName"
+                                                               (onBlur)="showPublicShares = false"
+                                                               [separatorKeyCodes]="[32, 13]"
+                                                               formControlName="sharedWithCommunities"
+                                                               [onlyFromAutocomplete]="true" style="width: 700px">
+                                                        <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceCom.bind(this)">
+                                                        </tag-input-dropdown>
+                                                    </tag-input>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <div class="form-check" >
+                                                <label class="form-check-label">
+                                                    <input 
+                                                        type="radio" 
+                                                        class="form-check-input" 
+                                                        aria-describedby="privateDesc" 
+                                                        formControlName="public" 
+                                                        [attr.disabled]="isAnonymous"
+                                                        [value]="false">
+                                                    Private
+                                                </label>
+                                                <small id="privateDesc" class="form-text">
+                                                    Your survey will be seen by only people with link to the survey and your friends/communities you share it with in CrowdWorks.
+                                                </small>
+
+                                                <div class="form-group"  *ngIf="questionnaire.get('public').value == false">
+                                                    <div class="tag-input-wrapper form-control">
+                                                        <div [ngClass]="{'d-none': showPrivateShares || questionnaire.get('sharedWithUsers').value}"
+                                                             class="tag-placeholder text-muted"
+                                                             (click)="showPrivateShares = true; focusTagInput(sharedWith)" style="width: 700px">
+                                                            Share with friends
+                                                        </div>
+                                                        <tag-input #sharedWith
+                                                                   [ngClass]="{'d-none': !showPrivateShares && questionnaire.get('sharedWithUsers').value === null}"
+                                                                   id="private-shares"
+                                                                   [identifyBy]="'value'"
+                                                                   [displayBy]="'display'"
+                                                                   placeholder="Name"
+                                                                   secondaryPlaceholder="Name"
+                                                                   [onAdding]="transformName"
+                                                                   (onBlur)="showPrivateShares = false"
+                                                                   [separatorKeyCodes]="[32, 13]"
+                                                                   formControlName="sharedWithUsers"
+                                                                   [onlyFromAutocomplete]="true" style="width: 700px">
+                                                            <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceUser.bind(this)">
+                                                            </tag-input-dropdown>
+                                                        </tag-input>
+
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group form-control" *ngIf="!typeevent">
+                            <div class="col">
+                                <label class="lead">Should the results be public to survey takers?</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        aria-describedby="publicDesc"
+                                                        formControlName="resultsPublic"
+                                                        [value]="true">
+                                                Public
+                                            </label>
+                                            <small id="publicDesc" class="form-text">
+                                                Results will be public after a response has been received. Public results enables discussion about the topic and the results!
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input
+                                                            type="radio"
+                                                            class="form-check-input"
+                                                            aria-describedby="privateDesc"
+                                                            formControlName="resultsPublic"
+                                                            [value]="false">
+                                                    Private
+                                                </label>
+                                                <small id="privateDesc" class="form-text">
+                                                    Only you will be able to see the results of this survey.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div formArrayName="questions" id="questions">
+                        <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls">
+                            <div [ngClass]="{'question': true, 'row': true, 'active': activeQuestion == question.get('id').value}" [attr.data-i]="i" [attr.data-id]="question.get('id').value" *ngFor="let question of questionnaire.get('questions').controls; let i = index" [formGroupName]="i" (click)="activeQuestion = question.get('id').value">
+                               <div class="col">
+                                   <div class="form-group" style="display: inline-block; float:left">
+                                       <select style="width: 400px"
+                                               formControlName="kind"
+                                               [ngClass]="{'form-control': true, 'question-type': true, 'is-invalid': isInvalid(question.get('kind'))}">
+                                           <option selected disabled value="">Select A Question Type</option>
+                                           <option *ngFor="let kind of kinds" [value]="kind" >{{kind}}</option>
+                                       </select>
+                                       <div *ngIf="isInvalid(question.get('kind'))" class="invalid-feedback" >
+                                           Question kind is required
+                                       </div>
+                                   </div>
+                                   <div class="form-group" style="display: inline-block; float:left">
+                                       <!-- <label class="lead">Select A Question Type</label> -->
+                                       <input style="width: 400px; margin-right: 10px;"
+                                           type="text"
+                                           [ngClass]="{'form-control': true, 'question-body': true, 'is-invalid': isInvalid(question.get('body'))}"
+                                           formControlName="body"
+                                           placeholder="Enter Your Question"/>
+                                       <div *ngIf="isInvalid(question.get('body'))" class="invalid-feedback">
+                                            Question body is required
+                                       </div>
+                                   </div>
+                                   <div class="form-group" style="display: inline-block; margin-left: 10px">
+                                       <div class="form-check form-control pl-0 border-0" style="display: inline-block;">
+                                            <label class="form-check-label">
+                                                <input
+                                                type="checkbox"
+                                                formControlName="required"
+                                                class="form-check-input">
+                                                Required
+                                            </label>
+                                       </div>
+                                   </div>
+                                   <div class="form-group" style="display: inline-block; margin-left: 10px">
+                                       <i *ngIf="questionnaire.get('questions').controls.length > 1" class="fa fa-trash-o mouseChangeToHand delete-question" (click)="deleteQuestion(i)" aria-hidden="true"></i>
+                                   </div>
+                                   <div class="form-group file-input">
+                                       <label [for]="'picFile-' + i" class="btn btn-outline-secondary mouseChangeToHand">{{pics[question.get('id').value] ? 'Change Picture' : 'Add a Picture'}}</label>
+                                        <input [id]="'picFile-' + i" type="file" (change)="onPicChange(question, $event)" />
+                                        <i class="fa fa-trash-o mouseChangeToHand" *ngIf="pics[question.get('id').value]" (click)="pics[question.get('id').value] = null" aria-hidden="true"></i>
+                                        <div class="col-md-3" *ngIf="pics[question.get('id').value]">
+                                            <img style="border:1px solid gray;width:100px;"  id="preview" [src]="pics[question.get('id').value]">
+                                        </div>
+                                        <!-- <input type="hidden" formControlName="pic"/> -->
+                                   </div>
+                                   <div *ngIf="question.get('kind').value">
+                                       <div *ngIf="question.get('kind').value == 'Radio' || question.get('kind').value == 'Checkboxes' || question.get('kind').value == 'Drop-down'">
+                                           <div class="form-group" formArrayName="options">
+                                               <div *ngFor="let option of question.get('options').controls; let j = index" [formGroupName]="j">
+                                                   <input name="option" *ngIf="question.get('kind').value == 'Radio' || question.get('kind').value == 'Checkboxes'" [type]="getInputType(question)"/>
+                                                   <span *ngIf="question.get('kind').value == 'Drop-down'">{{j+1}}. </span>
+                                                   <input 
+                                                       type="text" 
+                                                       [focus]="j == question.get('options').controls.length - 1" 
+                                                       [ngClass]="{'is-invalid': isInvalid(option.get('body')), 'option-input': true}"
+                                                       formControlName="body" />
+
+                                                   <i class="fa fa-trash-o mouseChangeToHand" (click)="deleteOption(question, j)" aria-hidden="true"></i>
+                                                   <div *ngIf="isInvalid(option.get('body')) && question.hasError('required')" class="invalid-feedback">
+                                                       Option body is required
+                                                   </div>
+                                                   <div *ngIf="isInvalid(option.get('body')) && question.hasError('duplicateOption')" class="invalid-feedback">
+                                                       You can't have multiple options with the same value
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           <input *ngIf="question.get('kind').value == 'Radio' || question.get('kind').value == 'Checkboxes'" [type]="getInputType(question)" disabled/>
+                                           <i class="fa fa-plus btn btn-outline-secondary mouseChangeToHand" style="border:none" (click)="addOption(question)" aria-hidden="true"></i>
+                                           <div *ngIf="activeQuestion !== question.get('id').value && question.hasError('noOptions')" class="invalid-feedback">
+                                               Questions with options must have at least one option
+                                           </div>
+                                       </div>
+                                       <input type="text" *ngIf="question.get('kind').value == 'Short answer'">
+                                       <textarea *ngIf="question.get('kind').value == 'Paragraph'"></textarea>
+                                   </div>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="questionnaire.get('questions').controls[0].get('kind').value">
+                        <button class="btn btn-outline-secondary mouseChangeToHand" (click)="addQuestion()">Add Question</button>
+                        <button 
+                            class="btn btn-outline-success mouseChangeToHand" 
+                            (click)="checkSubmit()" 
+                            [disabled]="questionnaire.invalid && questionnaire.wasChecked">Preview Form</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2" id="rightSideOfContainer">
+        </div>
+    </div>
+
+</div>

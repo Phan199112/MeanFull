@@ -1,0 +1,51 @@
+$formContainerColor: #fff;
+$whiteColor: #fff;
+$insideColor: #e6f7ff;
+$navBarColor:  #0088cc;
+
+#createFormContainer {
+    background-color: $whiteColor;
+    min-height: 100%;
+    padding-top: 20px;
+    overflow:auto;
+    border-radius: 1%;
+    margin-top: 30px;
+}
+
+#topJumbo {
+    border: 10px;
+    background: $insideColor;
+}
+
+.fa-heart {
+    color: $navBarColor;
+;
+}
+
+.mouseChangeToHand{
+    cursor: pointer;
+    cursor: hand;
+}
+
+#buttonATag {
+    color: $navBarColor;
+    background-color: $whiteColor;
+    border:none;
+}
+
+#buttonText {
+
+}
+
+#addOptionBtn{
+    margin-bottom: 10px;
+}
+
+#optionsdivider {
+    margin-top: 20px;
+    margin-bottom:20px;
+}
+
+#link { 
+    color: black;
+}

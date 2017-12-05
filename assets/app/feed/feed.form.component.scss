@@ -1,0 +1,90 @@
+//$insideColor: #e6f7ff;
+$insideColor: #F6F6F6;
+$navBarColor:  #0088cc;
+
+#formContainer {
+  border: 1px solid $navBarColor;
+  border-radius: 5px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  box-shadow: 1px 1px 1px #0077b3;
+}
+
+#analysisContainer {
+  border: 1px dashed black;
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+#chatContainer {
+  border: 1px dashed black;
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.maxWidthOfParent {
+  width: 100%;
+}
+
+.title {
+  display: inline-block;
+  font-style: normal;
+  font-size: 22px;
+  width: 80%;
+}
+.author {
+  display: inline-block;
+  font-style: italic;
+  font-size: 12px;
+  width: 80%;
+}
+.link {
+  display: inline-block;
+  text-align: right;
+  font-size: 12px;
+  width: 19%;
+}
+
+#authorPicture {
+  margin-bottom: 20px;
+}
+
+#authorDetails {
+  a {
+    color: black;
+  }
+
+  h3 {
+    @media (max-width: 768px) {
+      margin-top: -10px;
+    }  
+  }
+}
+
+#formsDescription{
+
+}
+
+hr {
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
+#form-menu-wrapper {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  margin-right: -5px;
+
+  #form-menu {
+    font-size: 25px;
+  }
+}

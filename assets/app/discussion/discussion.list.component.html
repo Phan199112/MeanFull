@@ -1,0 +1,45 @@
+<div id="tagsListComponent">
+    <div class="row" *ngIf="!hide">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-10">
+            <discussion-item [data]="message" *ngFor="let message of chatlist"> </discussion-item>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+    </div>
+    <hr>
+    <form [formGroup]="newmessage">
+        <div class="row">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-9">
+                <textarea rows="2" class="form-control text-comment" placeholder="Comments?" id="entrybox"
+                          formControlName="message" [ngClass]="{'form-control': true, 'is-invalid': newmessage.get('message').invalid && newmessage.get('message').touched}">
+                </textarea>
+                <div *ngIf="newmessage.get('message').invalid && newmessage.get('message').touched" class="invalid-message">
+                    Please provide a longer message!
+                </div>
+
+            </div>
+            <div class="col-md-1">
+                <button id="formSubmitButton"
+                        class="d-flex justify-content-left btn btn-outline-primary mouseChangeToHand"
+                        [disabled]="newmessage.get('message').invalid && newmessage.get('message').touched || !newmessage.get('message').touched"
+                        (click)="checkSubmit()">
+                    Send
+                </button>
+
+            </div>
+            <div class="col-md-1">
+
+            </div>
+
+        </div>
+
+        <div *ngIf="submissionfailed">Submission failed.</div>
+    </form>
+</div>

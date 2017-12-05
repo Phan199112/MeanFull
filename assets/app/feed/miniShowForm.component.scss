@@ -1,0 +1,92 @@
+$formContainerColor: #fff;
+$whiteColor: #fff;
+$insideColor: #F6F6F6;
+$navBarColor:  #0088cc;
+
+#miniFormQuestionBox {
+  margin-bottom: 30px;
+}
+
+
+
+#formSubmitButton {
+  //text-align:center;
+ }
+
+#createFormContainer {
+  background-color: $whiteColor;
+  min-height: 100%;
+  padding-top: 20px;
+  overflow:auto;
+  border-radius: 1%;
+  margin-top: 30px;
+}
+
+#topJumbo {
+  border: 10px;
+  background: $insideColor;
+}
+
+.fa-heart {
+  color: $navBarColor;
+;
+}
+
+.mouseChangeToHand{
+  cursor: pointer;
+  cursor: hand;
+}
+
+#buttonATag {
+  color: $navBarColor;
+  background-color: $whiteColor;
+  border:none;
+}
+
+#buttonText {
+
+}
+
+#addOptionBtn{
+  margin-bottom: 10px;
+}
+
+#optionsdivider {
+  margin-top: 20px;
+  margin-bottom:20px;
+}
+
+.form-control input {
+  vertical-align: middle;
+}
+
+#survey-title {
+  text-align: center;
+}
+#survey-description {
+  text-align: center;
+  font-size: 20px;
+}
+
+.question-pic {
+  img {
+    height: 180px;
+  }
+}
+
+.expand-button {
+  float: right;
+}
+
+.submitted-message {
+  font-size: 1.25rem;
+}
+
+$warningColor: rgb(234, 122, 133);
+.ng-invalid.ng-touched {
+    border-color: $warningColor;
+}
+.invalid-feedback {
+    color: $warningColor;
+    display: block;
+}

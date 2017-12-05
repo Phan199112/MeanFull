@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-md fixed-top navbar-custom">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>CrowdWorks</a>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+
+                <div *ngIf="loggedin;then picture else login"></div>
+                <ng-template #picture>
+                    <li class="nav-item">
+                        <a class="navlinks nav-link" routerLink="/createForm" title="Create Form">
+                            Create Form
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">
+                            Create Event
+                        </a>
+                    </li>
+                    <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
+                        <div *ngIf="pictype" class="d-inline-block">
+                            <div *ngIf="pictype == 'fb'">
+                                <img src="https://graph.facebook.com/{{pic}}/picture?width=30&height=30" height="30" width="30">
+                            </div>
+                            <div *ngIf="pictype == 'local'">
+                                <img [src]="pic" height="30" width="30"/>
+                            </div>
+                            <div *ngIf="pictype == 'default'" height="30" width="30">
+                            </div>
+                        </div>
+                        <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>
+                    </li>
+                    <li class="nav-item" ngbDropdown>
+                            <a class="navlinks nav-link custom-dropdown-toggle"
+                                id="notifications" 
+                                ngbDropdownToggle
+                                aria-haspopup="true" 
+                                aria-expanded="false">
+                                <div class="position-relative">
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
+                                    <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+                                </div>
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="notifications">
+                                <div *ngFor="let notification of notifications.reverse(); let i = index">
+                                    <div class="dropdown-item" *ngIf="notification.type == 'form'" [routerLink]="['/feed', {'survey': notification.data}]" >
+                                        <div *ngIf="notification.seen">{{notification.message}}</div>
+                                        <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                    </div>
+                                    <div class="dropdown-item" *ngIf="notification.type == 'network'" [routerLink]="['/settings', {'page': 'notifications'}]">
+                                        <div *ngIf="notification.seen">Network request</div>
+                                        <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">Network request</div>
+                                    </div>
+                                    <div class="dropdown-item" *ngIf="notification.type == 'comm'" [routerLink]="['/settings', {'page': 'notifications'}]">
+                                        <div *ngIf="notification.seen">{{notification.message}}</div>
+                                        <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                    </div>
+                                    <div *ngIf="i < notifications.length - 1" class="dropdown-divider"></div>
+                                </div>
+                            </div>
+                    </li>
+
+                    <li class="nav-item" ngbDropdown>
+                            <a 
+                                class="navlinks nav-link custom-dropdown-toggle"
+                                id="nav-bar-actions" 
+                                ngbDropdownToggle 
+                                aria-haspopup="true" 
+                                aria-expanded="false">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                <a class="dropdown-item" routerLink="/settings" >Settings</a>
+                                <a class="dropdown-item" href="/users/logout">Logout</a>
+                            </div>
+                        <!-- <a class="navlinks nav-link" href="/logout">Logout</a> -->
+                    </li>
+                </ng-template>
+                <ng-template #login>
+                    <li class="nav-item">
+                        <a class="navlinks nav-link" routerLink="/users/login">Login</a>
+                    </li>
+                </ng-template>
+
+            </ul>
+        </div>
+    </div>
+</nav>

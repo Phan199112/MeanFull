@@ -1,0 +1,274 @@
+<div class="container main-container" *ngIf="reject">
+    <h2>You are not authorised to view settings. Please login first!</h2>
+</div>
+<div class="container main-container" *ngIf="!reject">
+    <div class="row">
+        <div class="col-sm-2 tab-list">
+            <div class="container secondary-container">
+                <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'general'}">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    <a (click)="tabs.select('general-tab'); activeTab = 'general'">General</a>
+                </div>
+                <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'notifications'}">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                    <a (click)="tabs.select('notifications-tab'); activeTab = 'notifications'">Notifications</a>
+                </div>
+                <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'security'}">
+                    <i class="fa fa-shield" aria-hidden="true"></i>
+                    <a (click)="tabs.select('security-tab'); activeTab = 'security'">Security</a>
+                </div>
+                <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'privacy'}">
+                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                    <a (click)="tabs.select('privacy-tab'); activeTab = 'privacy'">Privacy</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="container secondary-container">
+                <ngb-tabset #tabs>
+                    <ngb-tab id="general-tab" title="General">
+                        <ng-template ngbTabContent>
+                            <h5 class="tab-title">General configuration of the account</h5>
+                            <div id="general-box" class="settings-box">
+                                <div *ngFor="let field of profileFields">
+                                    <div class="row field">
+                                        <div class="col-sm-2">
+                                            <div class="field-name">{{field.label}}</div>
+                                        </div>
+                                        <div class="col">
+                                            <div *ngIf="!field.edit" class="visualization">
+                                                <span class="field-value text-muted">{{field.value}}</span>
+                                                <a (click)="field.edit = true; field.formValue = field.formGroup.value" class="edit-btn">Edit</a>
+                                            </div>
+                                            <form *ngIf="field.edit" class="edit" [formGroup]="field.formGroup">
+                                                <div *ngFor="let input of field.inputs; let i = index" class="form-group">
+                                                    <div *ngIf="input.type == 'text'">
+                                                        <label *ngIf="input.label">{{input.label}}</label>
+                                                        <input class="form-control" [formControlName]="input.name">
+                                                        <div *ngIf="isInvalid(field.formGroup.get(input.name))" class="invalid-feedback">
+                                                            {{input.label || field.label}} is required
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="input.type == 'radio'">
+                                                        <div *ngFor="let option of input.options" class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="radio" [formControlName]="input.name" [value]="option.value"/>
+                                                                {{option.label}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="input.type == 'date'">
+                                                        <label *ngIf="input.label">{{input.label}}</label>
+                                                        <ng2-flatpickr
+                                                                class="d-inline-block"
+                                                                [config]="input.config"
+                                                                [formControlName]="input.name">
+                                                        </ng2-flatpickr>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary" [disabled]="field.formGroup.invalid && field.formGroup.wasChecked" (click)="submitField(field)">Save</button>
+                                                <button class="btn btn-secondary" (click)="field.edit = false; field.formGroup.setValue(field.formValue)">Cancel</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row field">
+                                        <div class="col-sm-2">
+                                            <div class="field-name">Education</div>
+                                        </div>
+                                        <div class="col">
+                                            <div *ngIf="!educationfield.edit" class="visualization">
+                                                <span class="field-value text-muted">{{educationfield.summary}}</span>
+                                                <a (click)="educationfield.edit = true" class="edit-btn">Edit</a>
+                                            </div>
+                                            <form *ngIf="educationfield.edit" class="edit" [formGroup]="generalQuestionsForm">
+                                                <ul id="questions">
+                                                    <question
+                                                            *ngFor="let question of generalQuestions"
+                                                            [data]="question"
+                                                            [form]="generalQuestionsForm">
+                                                    </question>
+                                                </ul>
+                                                <div class="row" *ngIf="generalQuestionsForm.submitted && generalQuestionsForm.pristine">
+                                                    <div class="col text-center submitted-message">
+                                                        <p class="alert alert-success">Your profile is updated</p>
+                                                    </div>
+                                                </div>
+                                                <button [disabled]="generalQuestionsForm.invalid || generalQuestionsForm.pristine" class="btn btn-primary" (click)="postGeneralQuestions()">Save</button>
+                                                <button class="btn btn-secondary" (click)="educationfield.edit = false">Cancel</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab id="notifications-tab" title="Notifications">
+                        <ng-template ngbTabContent>
+                            <h5 class="tab-title">Notifications</h5>
+                            <div class="settings-box" *ngIf="notifications.length > 0">
+                                <div *ngFor="let notification of notifications">
+                                    <div class="row" *ngIf="notification.type == 'network'">
+                                        <div class="col-md-1">
+                                            <div *ngIf="!notification.seen">NEW</div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            {{notification.timestamp | date}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            Network request from <a [routerLink]="['/profile', notification.details.link]">{{notification.details.name}}</a>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptConnectionRequest(notification.data,notification.id)" *ngIf="!notification.acted">Accept request</button>
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteConnectionRequest(notification.data,notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="notification.type == 'comm'">
+                                        <div class="col-md-1">
+                                            <div *ngIf="!notification.seen">NEW</div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            {{notification.timestamp | date}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            Community invitation: <a [routerLink]="['/community', notification.details.link]">{{notification.details.name}}</a>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptCommunityRequest(notification.data,notification.id)" *ngIf="!notification.acted">Accept request</button>
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteCommunityRequest(notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
+                                        </div>
+                                    </div>
+                                    <div class="row"  *ngIf="notification.type == 'form'">
+                                        <div class="col-md-1">
+                                            <div *ngIf="!notification.seen">NEW</div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            {{notification.timestamp | date}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            New survey:
+                                            <a [routerLink]="['/feed', {'survey': notification.data}]" *ngIf="notification.seen">{{notification.details.title}}</a>
+                                            <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(data.edgeid)">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab id="security-tab" title="Security">
+                        <ng-template ngbTabContent>
+                            <h5 class="tab-title">Security</h5>
+                            <div id="security-box" class="settings-box">
+                                <div *ngIf="!passwordNotFB" class="row security-row">
+                                    You are signed in using your facebook credentials.
+                                    Security settings, such are changing your password are managed by Facebook.
+                                </div>
+                                <div *ngIf="passwordNotFB" class="row security-row" id="password-change">
+                                    <div class="col-sm-5">
+                                        <div class="icon d-inline-block" style="width:30px">
+                                            <i class="fa fa-key" aria-hidden="true" style="position: absolute; top:3px; left:15px; font-size: 18px;"></i>
+                                        </div>
+                                        <div class="content d-inline-block" style="line-height:10px;">
+                                            <div class="visualization">
+                                                <label style="font-weight: bold">Change password</label>
+                                                <div class="text-muted">It is recommended to use a secure password</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="passwordEdit" class="col">
+                                        <form [formGroup]="passwordForm" class="edit">
+                                            <div class="form-group">
+                                                <label>Current</label>
+                                                <input class="form-control" formControlName="current" type="password"/>
+                                                <div *ngIf="isInvalid(passwordForm.get('current'))" class="invalid-feedback">
+                                                    Current password is required
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>New</label>
+                                                <input class="form-control" formControlName="new" type="password"/>
+                                                <div *ngIf="isInvalid(passwordForm.get('new'))" class="invalid-feedback">
+                                                    New password is required
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Repeat new password</label>
+                                                <input class="form-control"  formControlName="confirmation" type="password"/>
+                                                <div *ngIf="isInvalid(passwordForm.get('confirmation'))" class="invalid-feedback">
+                                                    Password confirmation is required
+                                                </div>
+                                                <div *ngIf="passwordForm.get('confirmation').touched && passwordForm.get('confirmation').value != '' && passwordForm.errors && passwordForm.errors.passwordMismatch" class="invalid-feedback">
+                                                    Passwords don't match
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" (click)="submitPasswordChange()" [disabled]="passwordForm.invalid && passwordForm.wasChecked">Save changes</button>
+                                            <button class="btn btn-secondary" (click)="passwordEdit = false; passwordForm.reset()">Cancel</button>
+                                        </form>
+                                    </div>
+                                    <div *ngIf="!passwordEdit" class="col">
+                                        <button class="btn edit-btn" style="float:right; padding: 5px 12px; font-size: 12px; font-weight: bold;" (click)="passwordEdit = true; passwordChangeSuccess = false">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="passwordChangeSuccess">
+                                    <div class="col text-center submitted-message">
+                                        <p class="alert alert-success">Password has been changed successfully</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab id="privacy-tab" title="Privacy">
+                        <ng-template ngbTabContent>
+                            <h5 class="tab-title">Privacy</h5>
+                            <div class="settings-box">
+                                <div class="row field">
+                                    <div class="col-sm-2">
+                                        <div class="field-name">Profile visibility</div>
+                                    </div>
+                                    <div class="col">
+                                        <form class="edit" [formGroup]="profilepublic.form">
+                                                <div>
+                                                    {{profilepublic.question.body}}
+                                                    <div *ngFor="let option of profilepublic.question.options" class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="radio" [formControlName]="profilepublic.question.name" [value]="option.value"/>
+                                                            {{option.label}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <button class="btn btn-primary" [disabled]="profilepublic.form.invalid && profilepublic.form.wasChecked" (click)="submitPublicField()">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h6>Your connections</h6>
+                                <div *ngIf="network.length > 0">
+                                    <div class="col" *ngFor="let data of network">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img *ngIf="data.pic[0] == 'fb'" src="https://graph.facebook.com/{{data.pic[1]}}/picture?width=30&height=30" height="30" width="30">
+                                                <img *ngIf="data.pic[0] == 'local'" [src]="data.pic[1]" height="30" width="30" />
+                                                <img *ngIf="data.pic[0] == 'default' && data.pic[1] == 'male'" src="/images/male.png" height="30" width="30" />
+                                                <img *ngIf="data.pic[0] == 'default' && data.pic[1] == 'female'" src="/images/female.png" height="30" width="30" />
+                                            </div>
+                                            <div class="col-md-5">
+                                                <a [routerLink]="['/profile', data.link]">{{data.name.first}} {{data.name.last}}</a>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteConnection(data.edgeid)">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+        </div>
+    </div>
+</div>

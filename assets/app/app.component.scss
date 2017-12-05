@@ -1,0 +1,122 @@
+// bootstrap variables override //
+// $font-size-base: 0.875rem !default; // 1rem = 16px
+// -- //
+
+// Importing the last version of bootstrap from npm module like this breaks the app's scrollbars
+// @import "~bootstrap/scss/bootstrap.scss";
+
+// this is to avoid the base font size change done in public/stylesheets/style.css to affect lead classes
+/deep/.lead {
+  div, p, span, li, label, input, textarea, select, option, button, a {
+    font-size: 1.25rem;
+  }
+}
+
+/deep/ .emoji {
+  height: 1rem;
+  width: 1rem;
+  background-size: contain;
+  display: inline-block;
+
+  &.lead-size {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+  &.small-size {
+    height: 0.8rem;
+    width: 0.8rem;
+  }
+
+  &.emoji-wink {
+    background-image: url('/images/emoji-wink.png');
+  }
+  &.emoji-thinking {
+    background-image: url('/images/emoji-thinking.png');
+  }
+}
+
+/deep/ .position-relative {
+  position: relative;
+}
+
+/deep/ .main-container {
+  background-color: #fff;
+  overflow:auto;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+
+/deep/ .secondary-container {
+  padding: 20px 0;
+}
+
+/deep/ button {
+  cursor: hand;
+}
+
+/deep/ .custom-dropdown-toggle {
+  &::after {
+    content: none;
+  }
+}
+
+/deep/ .notification-bubble {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  background-color: red;
+  border-radius: 2px;
+  padding: 1px 2.5px;
+  font-size: 12px;
+}
+
+/deep/ tag-input {
+  font-size: 0.8em;
+
+  tag {
+      padding: 0px 6px !important;
+
+      delete-icon {
+          margin-top: -1px;
+      }
+  }
+
+  .ng2-tag-input {
+      border-bottom: none !important;
+  }
+}
+
+/deep/ a.regular {
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: hand;
+}
+
+/deep/ .adaptable-matrix {
+  //text-align: center;
+  display: flex;
+  flex-flow: row-reverse wrap-reverse;
+  justify-content: center;
+  align-content: flex-start;
+
+  /deep/ .adaptable-matrix-unit {
+    width: 78px;
+    display: inline-block;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    position: relative;
+    
+    img {
+      width: 100%;
+    }
+
+    a {
+      position: absolute;
+      left: 3px;
+      bottom: 2px;
+      width: 100%;
+      color: white;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    }
+  }
+}

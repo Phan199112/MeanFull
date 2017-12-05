@@ -1,0 +1,16 @@
+<div>
+    <h3>Share this survey</h3>
+
+    <div *ngIf="showComm == true">
+        <h6>Community</h6>
+
+        <yourcomm-list [link]="link"></yourcomm-list>
+    </div>
+    <div>
+        <h6>Link</h6>
+        You can use this link to send the surveys to anybody you'd like.
+        Whilst anybody can see surveys, signup is required to submit answers.
+        <a href="http://localhost:3000/takeForm/{{link}}">http://localhost:3000/takeForm/{{link}}</a>
+    </div>
+
+</div>

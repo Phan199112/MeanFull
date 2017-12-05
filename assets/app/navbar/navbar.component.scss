@@ -1,0 +1,65 @@
+$whiteColor: #fff;
+//$navBarColor:  #0077b3;
+
+//color Salem
+$navBarColor:  #1E824C;
+
+
+/* change the background color */
+.navbar-custom {
+  background-color: $navBarColor;
+}
+
+.navlinks {
+  color: $whiteColor !important;
+}
+
+.nav-item {
+  cursor: hand;
+  margin-right: 5px;
+
+  i.fa {
+    width: 14px;
+  }
+}
+
+.dropdown-toggle {
+  display: inherit;
+}
+
+.dropdown-item {
+  cursor: hand;
+  &:hover {
+    background-color: $navBarColor;
+  }
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: $whiteColor;
+}
+
+.navli:hover {
+  background: $whiteColor;
+  color: $navBarColor;
+}
+
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+  color: #ffffff;
+}
+
+.mouseChangeToHand{
+  cursor: pointer;
+  cursor: hand;
+}
+
+.newnotification {
+  color: darkred;
+}
+
+img {
+  width: 30px;
+}

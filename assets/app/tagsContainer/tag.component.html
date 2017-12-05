@@ -1,0 +1,2 @@
+<a [routerLink]="['/feed', {'tag': tag.tag}]" *ngIf="tag.count == null">#{{tag.tag}} </a>
+<a [routerLink]="['/feed', {'tag': tag.tag}]" *ngIf="tag.count != null">#{{tag.tag}} ({{tag.count}}) </a>

@@ -1,0 +1,105 @@
+<div class="container-fluid" id="formContainer" *ngIf="!hide">
+    <div class="row">
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-2" id="authorPicture">
+            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
+                <div *ngIf="form.pictype == 'fb'">
+                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=80&height=80" height="80" width="80">
+                </div>
+                <div *ngIf="form.pictype == 'local'">
+                    <img [src]="form.pic" width="80" height="80"/>
+                </div>
+                <div *ngIf="form.pictype == 'default'">
+                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="80" width="80"/>
+                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="80" width="80"/>
+                </div>
+                <div *ngIf="form.pictype == 'anonymous'">
+                    <img src="/images/question.jpg" height="80" width="80"/>
+                </div>
+            </a>
+        </div>
+        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-10 p-0" id="authorDetails">
+            <div class="row">
+                <div class="col-9 col-sm-9 col-md-10 col-lg-11" style="margin-bottom: -8px">
+                    <p><a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">{{form.author}}</a> </p>
+                    <p>{{form.timestamp | date}}</p>
+                </div>
+            </div>
+            <h3 *ngIf="form.typeevent">{{form.title}} (EVENT)</h3>
+            <h3 *ngIf="!form.typeevent">{{form.title}}</h3>
+        </div>
+
+        <div class="col p-0" *ngIf="loggedin">
+            <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
+                <a
+                        class="navlinks nav-link custom-dropdown-toggle"
+                        id="form-menu"
+                        ngbDropdownToggle
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="form-menu">
+                    <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share survey</a>
+                    <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release survey</a>
+                    <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire survey</a>
+                    <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete survey</a>
+                    <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report survey</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p #formsDescription>{{form.description}}</p>
+        </div>
+    </div>
+    <div class="row mx-auto">
+        <tag-banner-list [data]="form.hashtags"></tag-banner-list>
+    </div>
+    <hr>
+    <div class="row">
+        <mini-show-form class= "maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired" [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
+    </div>
+    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
+        <div class="container" id="analysisContainer" *ngIf="form.showdata">
+            <h4>Delve into the data</h4>
+            <form [formGroup]="dataselectionform">
+                Gender:
+                <label><input type="checkbox" value="male" name="gender" formControlName="male" (ngModelChange)="doDataSelectionUpdate({input: 'gender', value: 'male', status: $event})"> Male &nbsp;</label>
+                <label><input type="checkbox" value="female" name="gender" formControlName="female" (ngModelChange)="doDataSelectionUpdate({input: 'gender', value: 'female', status: $event})"> Female &nbsp;</label><br>
+                Age group:
+                <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
+                <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
+                <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
+                <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
+                <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
+                <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
+                <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
+                Location:
+                <div formArrayName="alllocations">
+                    <div *ngFor="let loc of locations; let i = index">
+                        <label>
+                                  <span formGroupName="{{i}}">
+                                    <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
+                                  </span>
+                        </label>
+                    </div>
+                </div>
+                <div *ngIf="otherloc">
+                    <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
+                </div>
+            </form>
+        </div>
+        <div class="container" id="chatContainer">
+            <h4>Join the conversation</h4>
+            <discussion-list [id]="form.id"></discussion-list>
+        </div>
+    </div>
+    <div class="row" *ngIf="form.contracted">
+        <div class="col text-center">
+            <button (click)="expand()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                Expand to see more!
+            </button>
+        </div>
+    </div>
+</div>

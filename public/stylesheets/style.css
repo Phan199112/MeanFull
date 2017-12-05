@@ -1,0 +1,17 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /*background-color: #e6f7ff;*/
+  background-color: #F6F6F6;
+  padding-top: 50px;
+}
+
+div, p, span, li, label, input, textarea, select, option, button, a {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}

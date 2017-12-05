@@ -1,0 +1,49 @@
+{
+  "_args": [
+    [
+      "mongoose-in-memory-autocomplete@1.2.3",
+      "/home/jpka/room/dev/work/cw10062017"
+    ]
+  ],
+  "_from": "mongoose-in-memory-autocomplete@1.2.3",
+  "_id": "mongoose-in-memory-autocomplete@1.2.3",
+  "_inBundle": false,
+  "_integrity": "sha1-5R1BKmEAktDxJbPGQ1qqoYbmvD8=",
+  "_location": "/mongoose-in-memory-autocomplete",
+  "_phantomChildren": {
+    "core-util-is": "1.0.2",
+    "hooks": "0.2.1",
+    "inherits": "2.0.3",
+    "kerberos": "0.0.3",
+    "process-nextick-args": "1.0.7",
+    "regexp-clone": "0.0.1",
+    "safe-buffer": "5.1.1",
+    "util-deprecate": "1.0.2"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "mongoose-in-memory-autocomplete@1.2.3",
+    "name": "mongoose-in-memory-autocomplete",
+    "escapedName": "mongoose-in-memory-autocomplete",
+    "rawSpec": "1.2.3",
+    "saveSpec": null,
+    "fetchSpec": "1.2.3"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/mongoose-in-memory-autocomplete/-/mongoose-in-memory-autocomplete-1.2.3.tgz",
+  "_spec": "1.2.3",
+  "_where": "/home/jpka/room/dev/work/cw10062017",
+  "dependencies": {
+    "mongoose": "3.8.11"
+  },
+  "description": "This module will: * Fetch from mongodb the data you wish to autocomplete and insert this data in a prefix tree in memory. * Return all words starting with the requested string (autocomplete) * You can also bind data to a word inserted in the datastructure. (ex: an indexed id)",
+  "devDependencies": {
+    "rewire": "2.5.1"
+  },
+  "main": "./main.js",
+  "name": "mongoose-in-memory-autocomplete",
+  "version": "1.2.3"
+}

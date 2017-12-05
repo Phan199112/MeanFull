@@ -1,0 +1,3 @@
+<div id="chatbox" *ngIf="!hide">
+    {{data.timestamp | date}} - {{data.author}}: {{data.message}} <a (click)="deleteMessage()" *ngIf="data.admin">(delete)</a>
+</div>

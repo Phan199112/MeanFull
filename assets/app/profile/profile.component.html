@@ -1,0 +1,86 @@
+<!--<div class="container" id="profilePage">-->
+    <div class="row">
+        <div class="col-md-3" id="leftSideOfContainer">
+            <community-list [user]="id" *ngIf="!hidetags"></community-list>
+            <network-list [data]="network" *ngIf="!hidetags && network.length != 0"></network-list>
+            <tag-list [user]="id" [comm]="null" *ngIf="!hidetags"></tag-list>
+        </div>
+
+        <div class="col-md-7">
+            <div class="container" id="profileContainer" *ngIf="loadsuccessful">
+                <div class="row">
+                    <div class="col-5 col-sm-5 col-md-5 col-lg-4 col-xl-2" id="ProfilePicture">
+                        <div id="Profile">
+                            <div *ngIf="pictype == 'fb'">
+                                <img src="https://graph.facebook.com/{{pic}}/picture?width=120&height=120">
+                            </div>
+                            <div *ngIf="pictype == 'local'">
+                                <img [src]="pic" height="120" width="120"/>
+                            </div>
+                            <div *ngIf="pictype == 'default'">
+                                <img *ngIf="gender == 'male'" src="/images/male.png" height="120" width="120"/>
+                                <img *ngIf="gender == 'female'" src="/images/female.png" height="120" width="120"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7 col-sm-7 col-md-7 col-lg-8 col-xl-10 p-0" id="ProfileName">
+                        <div class="row">
+                            <div class="col-9 col-sm-9 col-md-9 col-lg-10 col-xl-11">
+                                <h3>{{name}}</h3>
+                            </div>
+                        </div>
+                        <h5>{{location}}</h5>
+                        <h6><i class="fa fa-pencil-square-o" aria-hidden="true">&nbsp;{{nocreated}}</i>  <i class="fa fa-pencil" aria-hidden="true">&nbsp;{{notaken}}</i>  <i class="fa fa-comments" aria-hidden="true">&nbsp;{{nodiscussion}}</i></h6>
+                    </div>
+                    <div id="ProfileName">
+                        <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="profile-menu-wrapper">
+                            <a
+                                    class="navlinks nav-link custom-dropdown-toggle"
+                                    id="profile-menu"
+                                    ngbDropdownToggle
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="profile-menu">
+                                <a class="dropdown-item" (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending" >Add to my network</a>
+                                <div *ngIf="pending"> Network request is pending</div>
+                                <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork" >Remove from my network</a>
+                                <a class="dropdown-item" (click)="reportUser(id)" >Report user</a>
+                            </div>
+                        </div>
+                        <div *ngIf="addfailed">failed..</div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
+                    <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
+                </div>
+            </div>
+
+            <div class="container" id="profileContainer" *ngIf="loading">
+                <div id="profileContainer" class="container">
+                    <div id="topJumbo" class="jumbotron">
+                        <h2 style="overflow: auto" class="display-4">Loading...</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container" id="profileContainer" *ngIf="!loadsuccessful">
+                <div id="profileContainer" class="container">
+                    <div id="topJumbo" class="jumbotron">
+                        <h2 style="overflow: auto" class="display-4">This profile could not be found!</h2>
+                        <p class="lead">Connect with a community of people to get all your questions answered!</p>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+            <feedback-form *ngIf="loggedin"></feedback-form>
+        </div>
+    </div>
+<!--</div>-->

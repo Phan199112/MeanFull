@@ -1,0 +1,25 @@
+<div class="container main-container" *ngIf="reject">
+    <h2>You are not authorised to create a new form. Please login first!</h2>
+</div>
+<div id="shareFormPage" *ngIf="!reject">
+    <div class="row">
+        <div class="col-md-2" id="leftSideOfContainer">
+        </div>
+        <div class="col-md-8">
+            <div id="createFormContainer" class="container">
+                <div id="topJumbo" class="jumbotron">
+                    <h2 style="overflow: auto" class="display-4">Share Your Survey</h2>
+                    <p class="lead">Connect with a community of people to get all your questions answered!</p>
+                </div>
+                <div class="form-control">
+                    If you chose to make your survey public, it will now be visible on the feed.
+                    You can also inviting friends to fill out your survey by sending them following link:
+                    <a id="link" [href]="link">{{link}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2" id="rightSideOfContainer">
+        </div>
+    </div>
+
+</div>

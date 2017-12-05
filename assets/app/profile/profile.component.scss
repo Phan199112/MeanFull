@@ -1,0 +1,108 @@
+$formContainerColor: #fff;
+$whiteColor: #fff;
+$insideColor: #e6f7ff;
+$navBarColor:  #0088cc;
+
+#profileContainer {
+  background-color: $whiteColor;
+  min-height: 100%;
+  padding-top: 20px;
+  overflow:auto;
+  border-radius: 1%;
+  margin-top: 30px;
+}
+
+#topJumbo {
+  border: 10px;
+  background: $insideColor;
+}
+
+.fa-heart {
+  color: $navBarColor;
+;
+}
+
+.mouseChangeToHand{
+  cursor: pointer;
+  cursor: hand;
+}
+
+#buttonATag {
+  color: $navBarColor;
+  background-color: $whiteColor;
+  border:none;
+}
+
+#buttonText {
+
+}
+
+#ProfilePicture {
+  margin-bottom: 20px;
+}
+
+#addOptionBtn{
+  margin-bottom: 10px;
+}
+
+#optionsdivider {
+  margin-top: 20px;
+  margin-bottom:20px;
+}
+
+
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/crossword.png');
+}
+
+canvas {
+  -webkit-filter: blur(0.6px);
+  -moz-filter: blur(0.6px);
+  -o-filter: blur(0.6px);
+  -ms-filter: blur(0.6px);
+  filter: blur(0.6px);
+}
+
+#Profile {
+  //position: absolute;
+  margin: auto;
+  top: 0; right: 0; left: 0; bottom: 0;
+  width: 120px; height: 120px;
+  border-radius: 120px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#Profile img {
+  border-radius: 120px;
+}
+
+#interests-input {
+  background-color: lightblue;
+}
+
+/deep/ tag-input {
+  tag:not(:active) {
+    background-color: #fff !important;
+  }
+  tag-input-form {
+    input {
+      background-color: lightblue;
+    }
+  }
+}
+
+#profile-menu-wrapper {
+  position: absolute;
+  top: 2rem;
+  right: 0.8rem;
+
+  #profile-menu {
+    font-size: 25px;
+  }
+}
+
+

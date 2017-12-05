@@ -1,0 +1,32 @@
+<div class="container main-container" id="tagsListComponent">
+    <div class="secondary-container">
+        <h5 class="title">Communities</h5>
+        <div *ngIf="communitylist.length != 0">
+            <div class="adaptable-matrix">
+                <community-component
+                        *ngFor="let comm of communitylist; let i = index"
+                        class="adaptable-matrix-unit"
+                        [commdata]="comm">
+                </community-component>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 10px">
+            <a routerLink="/createCommunity" *ngIf="loggedin">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                Create A Community!</a>
+        </div>
+        <div *ngIf="communitylist.length == 0">
+            Connect with people, join a community :)
+            <p></p>
+            <h6 class="title">Discover Communities</h6>
+            <div class="adaptable-matrix">
+                <community-component
+                        *ngFor="let comm of randomlist"
+                        class="adaptable-matrix-unit"
+                        [commdata]="comm">
+                </community-component>
+            </div>
+        </div>
+
+    </div>
+</div>

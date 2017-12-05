@@ -1,0 +1,152 @@
+<div class="container main-container" *ngIf="reject">
+    <h2>You are not authorised to create a new community. Please login first!</h2>
+</div>
+<div id="createCommunityPage" *ngIf="!reject">
+    <div class="row">
+        <div class="col-md-2" id="leftSideOfContainer">
+        </div>
+        <div class="col-md-8">
+            <div id="createCommunityContainer" class="container">
+                <div id="topJumbo" class="jumbotron">
+                    <h2 style="overflow: auto" class="display-4">Create A Community</h2>
+                    <p class="lead">Connect with a community of people to get all your questions answered!</p>
+                </div>
+                <form [formGroup]="fgCreateCommunity">
+                    <!--<div id="comm-data" class="row form-group form-control">-->
+                        <div id="comm-title" class="form-group">
+                            <input type="text" style="width: 400px" formControlName="title" class="form-control" placeholder="Enter Your Community Title" />
+                        </div>
+                        <div id="comm-description" class="form-group">
+                            <input type="text" style="width: 800px" formControlName="description" class="form-control" placeholder="Enter Your Community Description" />
+                        </div>
+                    <!--</div>-->
+
+                    <!--<div class="row form-group form-control">-->
+                        <div class="tag-input-wrapper form-control" style="margin-bottom: 16px">
+                            <div
+                                    [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
+                                    class="tag-placeholder text-muted"
+                                    (click)="showHashtags = true; focusTagInput(hashtags)">
+                                Hashtag the community so people can discover them. You can hashtag anything. <i class="emoji emoji-wink" aria-hidden="true"></i> eg: #coffee #coffeelovers #startups #ucla #stanford
+                            </div>
+                            <tag-input
+                                    #hashtags
+                                    [ngClass]="{'d-none': !showHashtags && fgCreateCommunity.get('hashtags').value === null}"
+                                    [onAdding]="transformHashtag"
+                                    placeholder="#hashtag"
+                                    secondaryPlaceholder="#hashtag"
+                                    (onBlur)="showHashtags = false"
+                                    [separatorKeyCodes]="[32, 13]"
+                                    formControlName="hashtags">
+                                <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceTag.bind(this)">
+                                </tag-input-dropdown>
+                            </tag-input>
+                        </div>
+                    <!--</div>-->
+
+                    <div class="row form-group form-control" style="margin-left: 2px">
+                        <p>Bring life to the community! Upload a picture!</p>
+                        <div id="survey-picture" class="form-group">
+                            <div class="col-md-3" *ngIf="commPicURL">
+                                <img style="border:1px solid gray;width:100px;"  id="preview" [src]="commPicURL">
+                            </div>
+                            <div class="input-group image-preview">
+                                        <span class="input-group-btn">
+                                        <div class="btn btn-default image-preview-input">
+                                            <span><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+                                            <span class="image-preview-input-title">Browse</span>
+                                            <input (change)="onPicChange($event)" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                        </div>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group form-control" style="margin-left: 2px; margin-right: -10px">
+                        <div class="col">
+                            <label class="lead">Privacy settings for the community?</label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    aria-describedby="publicDesc"
+                                                    formControlName="public"
+                                                    [value]="true">
+                                            Public
+                                        </label>
+                                        <small id="publicDesc" class="form-text">
+                                            Get responses from entire CrowdWorks community. A lot more responses!
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        aria-describedby="privateDesc"
+                                                        formControlName="public"
+                                                        [attr.disabled]="isAnonymous"
+                                                        [value]="false">
+                                                Private
+                                            </label>
+                                            <small id="privateDesc" class="form-text">
+                                                Your content will be seen by only people you share it with in CrowdWorks.
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="fgCreateCommunity.get('public').value == false">
+                                        <div class="form-group">
+                                            <div class="tag-input-wrapper form-control">
+                                                <div
+                                                        [ngClass]="{'d-none': showPrivateShares || fgCreateCommunity.get('sharedWith').value}"
+                                                        class="tag-placeholder text-muted"
+                                                        (click)="showPrivateShares = true; focusTagInput(sharedWith)">
+                                                    Name of your friends or communities on CrowdWorks you want engage in your community! @janedoe @adamsmith @stanford @ucla
+                                                </div>
+                                                <tag-input
+                                                        #sharedWith
+                                                        [ngClass]="{'d-none': !showPrivateShares && fgCreateCommunity.get('sharedWith').value === null}"
+                                                        id="private-shares"
+                                                        placeholder="user name"
+                                                        secondaryPlaceholder="user name"
+                                                        [onAdding]="transformName"
+                                                        (onBlur)="showPrivateShares = false"
+                                                        [separatorKeyCodes]="[32, 13]"
+                                                        formControlName="sharedWith">
+                                                    <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceUser.bind(this)">
+                                                    </tag-input-dropdown>
+                                                </tag-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="buttons" *ngIf="!visitbutton">
+                        <button
+                                class="btn btn-outline-success mouseChangeToHand"
+                                (click)="checkSubmit()"
+                                [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Create community</button>
+                    </div>
+                    <div *ngIf="submissionfailed">
+                        Submission failed!
+                    </div>
+                    <div *ngIf="visitbutton">
+                        <button class="btn btn-outline-success mouseChangeToHand" [routerLink]="['/community', commurl]">Visit community</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2" id="rightSideOfContainer">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<!--<div class="container" id="FeedPage">-->
+    <div class="row">
+        <div class="col-md-3" id="leftSideOfContainer">
+            <community-list [user]="null"></community-list>
+            <yourform-list *ngIf="loggedin"></yourform-list>
+            <tag-list [user]="null" [comm]="null"></tag-list>
+        </div>
+        <div id="" class="col-md-7">
+            <feed-list [user]="null"></feed-list>
+        </div>
+        <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+            <feedback-form *ngIf="loggedin"></feedback-form>
+        </div>
+    </div>
+<!--</div>-->
