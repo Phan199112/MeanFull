@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {Http} from "@angular/http";
 import {UserService} from "../user.service";
 
@@ -6,7 +6,10 @@ import {UserService} from "../user.service";
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
-    providers: [UserService]
+    providers: [UserService],
+    host: {
+        '(document:click)': 'onDocClick($event)',
+    }
 })
 export class NavbarComponent implements OnInit {
     loggedin = false;
@@ -19,6 +22,8 @@ export class NavbarComponent implements OnInit {
     notifications: string[] = [];
     unreadNotifications: number = 0;
     events: any;
+    navExpanded: boolean = false;
+    @ViewChild('toggler') toggler; 
 
     constructor(private http: Http, private userService: UserService) { }
 
@@ -96,5 +101,11 @@ export class NavbarComponent implements OnInit {
 
     goTo(url) {
         window.location.href = url;
+    }
+
+    onDocClick(event) {
+        if (!this.toggler.nativeElement.contains(event.target))  {
+            this.navExpanded = false;
+        }
     }
 }

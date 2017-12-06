@@ -1,118 +1,139 @@
-<nav class="navbar navbar-expand-md fixed-top navbar-custom">
-    <div class="container">                
-        <button class="navbar-toggler" type="button" (click)="navExpanded = !navExpanded" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">
-                <i class="fa fa-bars" aria-hidden="true"></i>
-            </span>
-        </button>
-        <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>CrowdWorks</a>
-        <div [ngClass]="{'navbar-collapse': true, 'collapse': !navExpanded}" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto" (click)="navExpanded = false">
-                <div *ngIf="loggedin;then picture else login"></div>
-                <ng-template #picture>
-                    <li class="nav-item">
-                        <a class="navlinks nav-link" routerLink="/createForm" title="Create Form">
-                            Create Form
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">
-                            Create Event
-                        </a>
-                    </li>
-                    <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
-                        <div *ngIf="pictype" class="d-inline-block">
-                            <div *ngIf="pictype == 'fb'">
-                                <img src="https://graph.facebook.com/{{pic}}/picture?width=30&height=30" height="30" width="30">
-                            </div>
-                            <div *ngIf="pictype == 'local'">
-                                <img [src]="pic" height="30" width="30"/>
-                            </div>
-                            <div *ngIf="pictype == 'default'">
-                                <img src="/images/male.png" height="30" width="30"/>
-                            </div>
-                        </div>
-                        <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>
-                    </li>
-                    <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
-                        <li [ngClass]="{
-                            'nav-item': true, 
-                            'd-none': placement == 'bottom-left', 
-                            'd-xl-block': placement == 'bottom-left',
-                            'd-xl-none': placement == 'bottom-right'
-                        }" ngbDropdown [placement]="placement">                        
-                            <a class="navlinks nav-link custom-dropdown-toggle"
-                                id="notifications" 
-                                ngbDropdownToggle
-                                aria-haspopup="true" 
-                                aria-expanded="false">
-                                <div class="position-relative">
-                                    <i class="fa fa-bell" aria-hidden="true"></i>
-                                    <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
-                                </div>
+<div class="fixed-top">
+    <nav class="navbar navbar-expand-md navbar-custom">
+        <div class="container">
+            <button #toggler class="navbar-toggler" type="button" (click)="navExpanded = !navExpanded" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </span>
+            </button>
+            <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>CrowdWorks</a>
+            <div class="navbar-collapse collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ml-auto">
+                    <div *ngIf="loggedin;then picture else login"></div>
+                    <ng-template #picture>
+                        <li class="nav-item">
+                            <a class="navlinks nav-link" routerLink="/createForm" title="Create Form">
+                                Create Form
                             </a>
-                            <div ngbDropdownMenu aria-labelledby="notifications">
-                                <div *ngFor="let notification of notifications.reverse(); let i = index">
-                                    <div class="dropdown-item" *ngIf="notification.type == 'form'" [routerLink]="['/feed', {'survey': notification.data}]" >
-                                        <div *ngIf="notification.seen">{{notification.message}}</div>
-                                        <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
-                                    </div>
-                                    <div class="dropdown-item" *ngIf="notification.type == 'network'" [routerLink]="['/settings', {'page': 'notifications'}]">
-                                        <div *ngIf="notification.seen">Network request</div>
-                                        <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">Network request</div>
-                                    </div>
-                                    <div class="dropdown-item" *ngIf="notification.type == 'comm'" [routerLink]="['/settings', {'page': 'notifications'}]">
-                                        <div *ngIf="notification.seen">{{notification.message}}</div>
-                                        <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
-                                    </div>
-                                    <div *ngIf="i < notifications.length - 1" class="dropdown-divider"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">
+                                Create Event
+                            </a>
+                        </li>
+                        <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
+                            <div *ngIf="pictype" class="d-inline-block">
+                                <div *ngIf="pictype == 'fb'">
+                                    <img src="https://graph.facebook.com/{{pic}}/picture?width=30&height=30" height="30" width="30">
+                                </div>
+                                <div *ngIf="pictype == 'local'">
+                                    <img [src]="pic" height="30" width="30"/>
+                                </div>
+                                <div *ngIf="pictype == 'default'">
+                                    <img src="/images/male.png" height="30" width="30"/>
                                 </div>
                             </div>
+                            <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>
                         </li>
-                    </div>
-                    <div class="d-none d-sm-block">
                         <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
                             <li [ngClass]="{
-                                'nav-item': true, 
-                                'd-none': placement == 'bottom-left', 
-                                'd-xl-block': placement == 'bottom-left',
-                                'd-xl-none': placement == 'bottom-right'
-                            }" ngbDropdown [placement]="placement">
-                                <a 
-                                    class="navlinks nav-link custom-dropdown-toggle"
-                                    id="nav-bar-actions" 
-                                    ngbDropdownToggle 
+                                'nav-item': true,
+                                'd-none': true,
+                                'd-sm-block': placement == 'bottom-right', 
+                                'd-xl-none': placement == 'bottom-right',
+                                'd-xl-block': placement == 'bottom-left'
+                            }" ngbDropdown [placement]="placement">                        
+                                <a class="navlinks nav-link custom-dropdown-toggle"
+                                    id="notifications" 
+                                    ngbDropdownToggle
                                     aria-haspopup="true" 
                                     aria-expanded="false">
-                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                    <div class="position-relative">
+                                        <i class="fa fa-bell" aria-hidden="true"></i>
+                                        <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+                                    </div>
                                 </a>
-                                <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
-                                    <a class="dropdown-item" routerLink="/settings" >Settings</a>
-                                    <a class="dropdown-item" (click)="goTo('/users/logout')">Logout</a>
+                                <div ngbDropdownMenu aria-labelledby="notifications">
+                                    <div *ngFor="let notification of notifications.reverse(); let i = index">
+                                        <div class="dropdown-item" *ngIf="notification.type == 'form'" [routerLink]="['/feed', {'survey': notification.data}]" >
+                                            <div *ngIf="notification.seen">{{notification.message}}</div>
+                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                        </div>
+                                        <div class="dropdown-item" *ngIf="notification.type == 'network'" [routerLink]="['/settings', {'page': 'notifications'}]">
+                                            <div *ngIf="notification.seen">Network request</div>
+                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">Network request</div>
+                                        </div>
+                                        <div class="dropdown-item" *ngIf="notification.type == 'comm'" [routerLink]="['/settings', {'page': 'notifications'}]">
+                                            <div *ngIf="notification.seen">{{notification.message}}</div>
+                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                        </div>
+                                        <div *ngIf="i < notifications.length - 1" class="dropdown-divider"></div>
+                                    </div>
                                 </div>
                             </li>
                         </div>
-                    </div>
-                    <div class="d-sm-none">
-                        <li class="nav-item">
-                            <a class="navlinks nav-link" routerLink="/settings">
-                                Settings
+                        <li class="nav-item d-sm-none">
+                            <a class="navlinks nav-link" [routerLink]="['/settings', {'page': 'notifications'}]">
+                                <i class="fa fa-bell" aria-hidden="true"></i>                            
                             </a>
                         </li>
+                        <div class="d-none d-sm-block">
+                            <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
+                                <li [ngClass]="{
+                                    'nav-item': true, 
+                                    'd-none': placement == 'bottom-left', 
+                                    'd-xl-block': placement == 'bottom-left',
+                                    'd-xl-none': placement == 'bottom-right'
+                                }" ngbDropdown [placement]="placement">
+                                    <a 
+                                        class="navlinks nav-link custom-dropdown-toggle"
+                                        id="nav-bar-actions" 
+                                        ngbDropdownToggle 
+                                        aria-haspopup="true" 
+                                        aria-expanded="false">
+                                        <i class="fa fa-cog" aria-hidden="true"></i>
+                                    </a>
+                                    <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                        <a class="dropdown-item" routerLink="/settings;page=notifications" >Settings</a>
+                                        <a class="dropdown-item" (click)="goTo('/users/logout')">Logout</a>
+                                    </div>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="d-sm-none">
+                            <li class="nav-item">
+                                <a class="navlinks nav-link" routerLink="/settings">
+                                    Settings
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="navlinks nav-link" (click)="goTo('/users/logout')">
+                                    Logout
+                                </a>
+                            </li>
+                        </div>
+                    </ng-template>
+                    <ng-template #login>
                         <li class="nav-item">
-                            <a class="navlinks nav-link" (click)="goTo('/users/logout')">
-                                Logout
-                            </a>
+                            <a class="navlinks nav-link" routerLink="/users/login">Login</a>
                         </li>
-                    </div>
-                </ng-template>
-                <ng-template #login>
-                    <li class="nav-item">
-                        <a class="navlinks nav-link" routerLink="/users/login">Login</a>
-                    </li>
-                </ng-template>
-
-            </ul>
+                    </ng-template>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+    <nav style="width:50%" id="mobile-navbar" [ngClass]="{
+        'navbar': true, 
+        'navbar-custom': true,
+        'd-sm-none': true,
+        'd-none': !navExpanded
+    }">
+        <div class="container">
+            <div [ngClass]="{'navbar-collapse': true, 'collapse': !navExpanded}">
+                <ul class="navbar-nav ml-auto" (click)="navExpanded = false">
+                    <div *ngIf="loggedin;then picture else login"></div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
