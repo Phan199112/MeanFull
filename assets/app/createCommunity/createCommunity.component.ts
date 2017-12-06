@@ -173,7 +173,6 @@ export class CreateCommunityComponent  {
         if (data.json().status == 1) {
             let searchoutput = [];
             let results = data.json().results;
-            console.log(results);
             for (let l=0; l < results.length; l++) {
                 searchoutput.push(results[l]);
             }
@@ -206,7 +205,6 @@ export class CreateCommunityComponent  {
       Function to carry out the actual PUT request to S3 using the signed request from the app.
     */
     uploadFile(file, signedRequest, url){
-        console.log("upload");
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', signedRequest);
         xhr.onreadystatechange = () => {
@@ -227,7 +225,6 @@ export class CreateCommunityComponent  {
       request.
     */
     getSignedRequest(file){
-        console.log("sign");
         const xhr = new XMLHttpRequest();
         xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
         xhr.onreadystatechange = () => {
@@ -246,7 +243,6 @@ export class CreateCommunityComponent  {
 
     onPicChange($event) {
         const file = $event.target.files[0];
-        console.log(file);
         if(file == null){
             return alert('No file selected.');
         }

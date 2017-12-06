@@ -39,8 +39,6 @@ export class ViewCommunityComponent implements OnInit {
             this.id = params.id;
             this.http.get(`/community/retrieve/${params.id}`).toPromise()
                 .then(res => {
-                    console.log(res.json());
-
                     this.loading = false;
                     this.status = res.json().status;
 

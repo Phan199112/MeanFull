@@ -89,7 +89,7 @@ export class NavbarComponent implements OnInit {
     setAsSeen(x) {
         this.http.post('/events/seen', {id: x}).toPromise()
             .then(eventsdata => {
-                console.log("updated as seen");
+                //console.log("updated as seen");
             })
             .catch(error => alert("Error retrieving events list: " + error));
     }

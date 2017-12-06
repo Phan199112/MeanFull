@@ -152,7 +152,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     onPicChange(question, $event) {
         const file = $event.target.files[0];
-        console.log(file);
         if(file == null){
             return alert('No file selected.');
         }
@@ -302,7 +301,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         if (data.json().status == 1) {
             let searchoutput = [];
             let results = data.json().results;
-            console.log(results);
             for (let l=0; l < results.length; l++) {
                 searchoutput.push(results[l]);
             }
@@ -403,8 +401,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         };
         let data = Object.assign(this.questionnaireData(), meta);
 
-        console.log(data);
-
         this.http.put(`/forms/${data.id}`, data).toPromise()
             .then(response => {
                 this.formService.setData(Object.assign(this.questionnaireData(), meta));
@@ -417,7 +413,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
       Function to carry out the actual PUT request to S3 using the signed request from the app.
     */
     uploadFile(file, signedRequest, url, question){
-        console.log("upload");
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', signedRequest);
         xhr.onreadystatechange = () => {
@@ -438,7 +433,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
       request.
     */
     getSignedRequest(file, question){
-        console.log("sign");
         const xhr = new XMLHttpRequest();
         xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
         xhr.onreadystatechange = () => {

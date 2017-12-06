@@ -93,12 +93,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         this.nodiscussion = res.json().nodiscussion;
 
                         //
+                        this.me = this.userprofile.me;
                         this.innetwork = this.userprofile.innetwork;
                         this.pending = this.userprofile.pending;
-                        console.log("in network "+this.innetwork);
                         this.name = this.userprofile.name.first+" "+this.userprofile.name.last;
                         this.firstname = this.userprofile.name.first;
                         this.gender = this.userprofile.gender;
+
                         if (this.gender == "male") {
                             this.pronoun = "his";
                         } else if (this.gender == "female") {
@@ -106,7 +107,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         } else {
                             this.pronoun = "their";
                         }
-                        this.me = this.userprofile.me;
 
                         if (this.userprofile.location == null) {
                             this.location = "";

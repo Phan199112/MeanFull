@@ -56,7 +56,6 @@ export class SettingsComponent implements OnInit {
         this.http
             .get(`/users/settings/info`).toPromise()
             .then(res => {
-                console.log("response: "+JSON.stringify(res.json()));
                 if (res.json().status == 1) {
                     this.profile = res.json().data;
                     this.network = res.json().network;
@@ -441,8 +440,6 @@ export class SettingsComponent implements OnInit {
                 data = Object.assign({}, formValue);
             }
 
-            console.log("sent data:", data);
-
             this.http.put(`/users/settings/changesettings`, data).toPromise()
                 .then(res => {
                     Object.assign(this.profile, data);
@@ -470,7 +467,6 @@ export class SettingsComponent implements OnInit {
     }
 
     postGeneralQuestions() {
-        console.log('General questions: ', this.generalQuestionsForm.value);
         this.http.put('/users/settings/generalQuestions', {data: this.generalQuestionsForm.value}).toPromise()
             .then(res => {
                 this.generalQuestionsForm.submitted = true;
@@ -484,7 +480,6 @@ export class SettingsComponent implements OnInit {
         this.http.post(`/users/settings/acceptnetworkrequest`, {edgeid: x, eventid: y}).toPromise()
             .then(() => {
                 //
-                console.log("accepted network request");
                 this.retrieveData();
             })
             .catch(error => alert("Error: " + error));
@@ -494,8 +489,6 @@ export class SettingsComponent implements OnInit {
     deleteConnectionRequest(x, y) {
         this.http.post(`/users/settings/deletenetworkrequest`, {edgeid: x, eventid: y}).toPromise()
             .then(() => {
-                //
-                console.log("delete network request");
                 this.retrieveData();
             })
             .catch(error => alert("Error: " + error));
@@ -505,8 +498,6 @@ export class SettingsComponent implements OnInit {
     deleteConnection(x) {
         this.http.post(`/users/settings/deletenetwork`, {edgeid: x}).toPromise()
             .then(() => {
-                //
-                console.log("delete connection");
                 this.retrieveData();
             })
             .catch(error => alert("Error: " + error));
@@ -515,7 +506,6 @@ export class SettingsComponent implements OnInit {
     setAsSeen(x) {
         this.http.post('/events/seen', {id: x}).toPromise()
             .then(eventsdata => {
-                console.log("updated as seen");
                 this.retrieveData();
             })
             .catch(error => alert("Error " + error));
@@ -524,7 +514,6 @@ export class SettingsComponent implements OnInit {
     deleteNotification(x) {
         this.http.post('/events/delete', {id: x}).toPromise()
             .then(eventsdata => {
-                console.log("deleted event");
                 this.retrieveData();
             })
             .catch(error => alert("Error " + error));
@@ -533,8 +522,6 @@ export class SettingsComponent implements OnInit {
     acceptCommunityRequest(x, y) {
         this.http.post(`/users/settings/acceptcommrequest`, {commid: x, eventid: y}).toPromise()
             .then(() => {
-                //
-                console.log("accepted comm request");
                 this.retrieveData();
             })
             .catch(error => alert("Error: " + error));
@@ -544,8 +531,6 @@ export class SettingsComponent implements OnInit {
     deleteCommunityRequest(x) {
         this.http.post(`/users/settings/deletecommrequest`, {commid: x, eventid: y}).toPromise()
             .then(() => {
-                //
-                console.log("delete comm request");
                 this.retrieveData();
             })
             .catch(error => alert("Error: " + error));

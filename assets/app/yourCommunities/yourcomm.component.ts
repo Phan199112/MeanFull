@@ -18,15 +18,15 @@ export class YourCommunityComponent {
         this.http.post(`/community/shareform`, {commid: this.comm.id, formid: this.comm.link}).toPromise()
             .then((result) => {
                 if (result.json().status == 1) {
-                    console.log("accepted comm share request");
+                    //console.log("accepted comm share request");
                 } else {
-                    console.log("failed comm share request");
+                    //console.log("failed comm share request");
                 }
                 //
 
             })
             .catch(function() {
-                console.log("failed comm share request");
+                //console.log("failed comm share request");
             });
 
     }

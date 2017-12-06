@@ -18,13 +18,13 @@ export class YourFriendsComponent {
         this.http.post(`/community/invite`, {commid: this.yourfriend.link, userid: this.yourfriend.id}).toPromise()
             .then((result) => {
                 if (result.json().status == 1) {
-                    console.log("accepted comm invite request");
+                    //console.log("accepted comm invite request");
                 } else {
-                    console.log("failed comm invite request");
+                    //console.log("failed comm invite request");
                 }
             })
             .catch(function() {
-                console.log("failed comm share request (catch)");
+                //console.log("failed comm share request (catch)");
             });
 
     }

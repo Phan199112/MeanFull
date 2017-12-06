@@ -166,7 +166,6 @@ export class FeedFormComponent implements OnInit {
             })
             .catch(error => {
                 this.form.setAnswered(false);
-                console.log(error);
             });
     }
 
@@ -191,11 +190,9 @@ export class FeedFormComponent implements OnInit {
     }
 
     queryTopLocation() {
-        console.log("query location");
         this.http.post('/forms/requestTopLocations', {id: this.form.id}).toPromise()
             .then(response => {
                 var all = response.json().data;
-                console.log(all);
                 for (let a of all) {
                     this.locations.push({name: a[0], count: a[1]});
                     this.plotselection.location.push(a[0]);
@@ -206,7 +203,6 @@ export class FeedFormComponent implements OnInit {
 
                 // deal with the possibility of more than 5 locations
                 var other = response.json().otherlocations;
-                console.log(other);
                 if (other != null) {
                     this.otherloc = true;
                     for (let o of other) {
@@ -216,14 +212,12 @@ export class FeedFormComponent implements OnInit {
                 }
             })
             .catch(error => {
-                console.log(error);
             });
     }
 
 
     doDataSelectionUpdate(x) {
         this.form.viewGraphs(false);
-        console.log(x);
         if (x.input == 'gender') {
 
             if (x.status == false) {
@@ -310,7 +304,6 @@ export class FeedFormComponent implements OnInit {
 
         }
 
-        console.log(this.plotselection);
         this.executePlotDataRetrieval();
     }
 
@@ -319,7 +312,6 @@ export class FeedFormComponent implements OnInit {
         this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection})
             .toPromise()
             .then(response => {
-                console.log(response.json());
                 var responsedata = response.json().data;
                 var responsestatus = response.json().status;
 
@@ -347,7 +339,6 @@ export class FeedFormComponent implements OnInit {
             })
             .catch(error => {
                 this.form.setAnswered(false);
-                console.log(error);
             });
     }
 
@@ -357,7 +348,6 @@ export class FeedFormComponent implements OnInit {
             .toPromise()
             .then(response => {
                 if (response.json().status == 1) {
-                    console.log("ok deleted");
                     this.hide = true;
                 }
             });
@@ -369,7 +359,6 @@ export class FeedFormComponent implements OnInit {
             .toPromise()
             .then(response => {
                 if (response.json().status == 1) {
-                    console.log("ok expired");
                     this.form.expired = true;
                 }
             });
@@ -380,7 +369,6 @@ export class FeedFormComponent implements OnInit {
         this.http.post('/forms/shared', {formid: this.form.id}).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
-                    console.log("ok shared");
                 }
             });
     }

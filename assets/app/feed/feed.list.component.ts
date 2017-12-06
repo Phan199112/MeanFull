@@ -30,8 +30,6 @@ export class FeedListComponent implements OnInit {
 
             this.http.post(`/forms/feed`, {tag: tag, user: this.userinfo, topsurvey: formselected, comm: this.comminfo}).toPromise()
                 .then(res => {
-                    console.log(res.json());
-
                     if (res.json().status == 1) {
                         // clean current data list
                         var l = this.feedlist.length;

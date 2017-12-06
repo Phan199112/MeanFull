@@ -116,7 +116,6 @@ export class LoginComponent implements OnInit {
 
     onProfilePicChange($event) {
         const file = $event.target.files[0];
-        console.log(file);
         if(file == null){
             return alert('No file selected.');
         }
@@ -125,8 +124,6 @@ export class LoginComponent implements OnInit {
 
     submitPwdReset() {
         let data = this.pwdReset.value;
-
-        console.log("pwdReset data is:", data);
 
         this.http.post('/users/pwdReset', data).toPromise()
              .then(k => {
@@ -142,8 +139,6 @@ export class LoginComponent implements OnInit {
 
     submitLogin() {
         let data = this.login.value;
-
-        console.log("loginData is: ", data);
 
         this.http.post('/users/login/local', data)
             .map((res:any) => res.json())
@@ -161,7 +156,6 @@ export class LoginComponent implements OnInit {
                     location.reload();
                 },
                 err => {
-                    console.log(err);
                     this.status = false;
                 }
             );
@@ -180,8 +174,6 @@ export class LoginComponent implements OnInit {
             createdAt: date.toString(),
             profilePic: this.profilePicURL
         }, this.signup.value);
-
-        console.log(signupData);
 
         this.http.post('/users/signup', signupData).toPromise()
             .then(response => {
@@ -204,7 +196,6 @@ export class LoginComponent implements OnInit {
       Function to carry out the actual PUT request to S3 using the signed request from the app.
     */
     uploadFile(file, signedRequest, url){
-        console.log("upload");
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', signedRequest);
         xhr.onreadystatechange = () => {
@@ -225,7 +216,6 @@ export class LoginComponent implements OnInit {
       request.
     */
     getSignedRequest(file){
-        console.log("sign");
         const xhr = new XMLHttpRequest();
         xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
         xhr.onreadystatechange = () => {

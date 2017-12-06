@@ -18,8 +18,6 @@ export class YourFormListComponent implements OnInit {
     ngOnInit() {
         this.http.get(`/forms/mylist`).toPromise()
             .then(res => {
-                console.log("form/mylist: "+JSON.stringify(res.json()));
-
                 if (res.json().status == '1') {
                     this.data = res.json().data;
 

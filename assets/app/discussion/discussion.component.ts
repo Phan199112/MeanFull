@@ -20,7 +20,6 @@ export class DiscussionComponent {
             .toPromise()
             .then(response => {
                 if (response.json().status == 1) {
-                    console.log("ok deleted");
                     this.hide = true;
                 }
             });

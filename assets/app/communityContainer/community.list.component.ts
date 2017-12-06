@@ -24,7 +24,6 @@ export class CommunityListComponent implements OnInit {
         this.http.post(`/community/list`, {user: this.user}).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
-                    console.log(res.json());
                     this.data = res.json().data;
                     this.randomlistdata = res.json().random;
                     this.loggedin = res.json().loggedin;

@@ -29,7 +29,6 @@ export class TakeFormComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.subscribe(params => {
-            console.log(params.id);
             this.id = params.id;
             this.http.get(`/forms/${params.id}`).toPromise()
                 .then(res => {
@@ -79,7 +78,6 @@ export class TakeFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.id;
-        console.log(data);
         this.http.post('/forms/answers', data).toPromise()
           .then(response => { 
               this.submitted = true;
