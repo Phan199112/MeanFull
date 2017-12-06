@@ -27,9 +27,10 @@
                                     Leave Community!
                                 </button>
                             </div> -->
-                            <div id="community-image-column" class="col p-0">
-                                <img id="community-image" [src]="data.pic" *ngIf="data.pic"/>                                
+                            <div id="community-image-column" class="col p-0"  *ngIf="data.pic">
+                                <img id="community-image" [src]="data.pic"/>
                             </div>
+
                             <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="community-menu-wrapper" *ngIf="loggedin && !loadingjoin">
                                 <a 
                                     class="navlinks nav-link custom-dropdown-toggle"
