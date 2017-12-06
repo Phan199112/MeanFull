@@ -51,7 +51,7 @@
                                 <i class="fa fa-bars" aria-hidden="true"></i>
                             </a>
                             <div ngbDropdownMenu aria-labelledby="profile-menu">
-                                <a class="dropdown-item" (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending" >Add to my network</a>
+                                <a class="dropdown-item" (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending && !me" >Add to my network</a>
                                 <div *ngIf="pending"> Network request is pending</div>
                                 <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork" >Remove from my network</a>
                                 <a class="dropdown-item" (click)="reportUser(id)" >Report user</a>
