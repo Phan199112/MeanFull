@@ -101,19 +101,26 @@
 
   /deep/ .adaptable-matrix-unit {
     width: 78px;
+    height: 78px;
     display: inline-block;
     margin-right: 3px;
     margin-bottom: 3px;
     position: relative;
+    background-color: #818182;
     
     img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     a {
       position: absolute;
-      left: 3px;
-      bottom: 2px;
+      padding-left: 3px;
+      padding-bottom: 2px;
+      font-size: 12px;
+      left: 0;
+      bottom: 0;
       width: 100%;
       color: white;
       background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
