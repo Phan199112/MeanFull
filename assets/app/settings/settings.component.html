@@ -120,7 +120,7 @@
                                             Network request from <a [routerLink]="['/profile', notification.details.link]">{{notification.details.name}}</a>
                                         </div>
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptConnectionRequest(notification.data,notification.id)" *ngIf="!notification.acted">Accept request</button>
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptConnectionRequest(notification.id)" *ngIf="!notification.acted">Accept request</button>
                                             <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteConnectionRequest(notification.data,notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
                                         </div>
                                     </div>
@@ -135,7 +135,7 @@
                                             Community invitation: <a [routerLink]="['/community', notification.details.link]">{{notification.details.name}}</a>
                                         </div>
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptCommunityRequest(notification.data,notification.id)" *ngIf="!notification.acted">Accept request</button>
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptCommunityRequest(notification.id)" *ngIf="!notification.acted">Accept request</button>
                                             <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteCommunityRequest(notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
                                         </div>
                                     </div>

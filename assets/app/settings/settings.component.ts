@@ -476,8 +476,8 @@ export class SettingsComponent implements OnInit {
             .catch((error) => alert("Error posting general questions data:" + error));
     }
 
-    acceptConnectionRequest(x, y) {
-        this.http.post(`/users/settings/acceptnetworkrequest`, {edgeid: x, eventid: y}).toPromise()
+    acceptConnectionRequest(x) {
+        this.http.post(`/users/settings/acceptnetworkrequest`, {eventid: x}).toPromise()
             .then(() => {
                 //
                 this.retrieveData();
@@ -519,8 +519,8 @@ export class SettingsComponent implements OnInit {
             .catch(error => alert("Error " + error));
     }
 
-    acceptCommunityRequest(x, y) {
-        this.http.post(`/users/settings/acceptcommrequest`, {commid: x, eventid: y}).toPromise()
+    acceptCommunityRequest(x) {
+        this.http.post(`/users/settings/acceptcommrequest`, {eventid: x}).toPromise()
             .then(() => {
                 this.retrieveData();
             })
@@ -529,7 +529,7 @@ export class SettingsComponent implements OnInit {
     }
 
     deleteCommunityRequest(x) {
-        this.http.post(`/users/settings/deletecommrequest`, {commid: x, eventid: y}).toPromise()
+        this.http.post(`/users/settings/deletecommrequest`, {eventid: x}).toPromise()
             .then(() => {
                 this.retrieveData();
             })

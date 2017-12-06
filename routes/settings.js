@@ -538,27 +538,35 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     app.post('/users/settings/acceptnetworkrequest', manager.ensureLoggedIn('/users/login'), function(req,res) {
-        var targetid = hashids.decodeHex(req.body.edgeid);
         var eventid = hashids.decodeHex(req.body.eventid);
+        var targetid;
 
         return new Promise (function(resolve, reject) {
-            NetworkEdgesModel.findOneAndUpdate({_id: targetid, userid: req.session.userid}, {$set: {status: true}}, function(err, k) {
+            // update logs
+            EventModel.findOneAndUpdate({_id: eventid, userid: req.session.userid}, {$set: {seen: true, acted: true}}, function(err, k) {
                 if (err) {
                     reject();
+
                 } else {
-                    resolve();
+                    if (k) {
+                        targetid = hashids.decodeHex(k.data);
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
                 }
             });
         })
             .then(function () {
-                // update logs
-                EventModel.findOneAndUpdate({_id: eventid, userid: req.session.userid}, {$set: {seen: true, acted: true}}, function(err, k) {
+                NetworkEdgesModel.findOneAndUpdate({_id: targetid, userid: req.session.userid}, {$set: {status: true}}, function(err, k) {
                     if (err) {
                         res.json({status: 0});
                     } else {
                         res.json({status: 1});
                     }
                 });
+
             });
 
     });
@@ -722,27 +730,35 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     app.post('/users/settings/acceptcommrequest', manager.ensureLoggedIn('/users/login'), function(req,res) {
-        var commid = hashids.decodeHex(req.body.commid);
+        var commid;
         var eventid = hashids.decodeHex(req.body.eventid);
 
         return new Promise (function(resolve, reject) {
-            CommunityModel.findOneAndUpdate({_id: commid}, {$push: {members: req.session.userid}}, function(err, k) {
+            // update logs
+            EventModel.findOneAndUpdate({_id: eventid, userid: req.session.userid}, {$set: {seen: true, acted: true}}, function(err, k) {
                 if (err) {
                     reject();
                 } else {
-                    resolve();
+                    if (k) {
+                        commid = hashids.decodeHex(k.data);
+                        resolve();
+
+                    } else {
+                        reject();
+                    }
+
                 }
             });
         })
             .then(function () {
-                // update logs
-                EventModel.findOneAndUpdate({_id: eventid, userid: req.session.userid}, {$set: {seen: true, acted: true}}, function(err, k) {
+                CommunityModel.findOneAndUpdate({_id: commid}, {$push: {members: req.session.userid}}, function(err, k) {
                     if (err) {
                         res.json({status: 0});
                     } else {
                         res.json({status: 1});
                     }
                 });
+
             });
 
     });
