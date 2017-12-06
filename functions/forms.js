@@ -1,3 +1,4 @@
+var mathfunctions = require('../functions/math');
 var FormModel = require('../db.models/form.model');
 
 exports.formPublic  = function formPublic(x) {
@@ -130,12 +131,25 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types) {
             var temp = [];
             // loop through all forms and look at data for this question
             for (var j = 0; j < x.length; j++) {
-                current = x[j];
-                currentq = current.answers[i];
+                var current = x[j];
+                var currentq = current.answers[i];
+                var templocation;
+                var age;
 
                 if (users[current.userid] != null) {
-                    var templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
-                    if ((param.gender.indexOf(users[current.userid].gender) != "-1") && (param.age.indexOf(mathfunctions.calculateAge(users[current.userid])) != "-1") && (param.location.indexOf(templocation) != "-1")) {
+                    if (users[current.userid].location != null) {
+                        templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
+                    } else {
+                        templocation = 'Earth';
+                    }
+
+                    if (users[current.userid].dob != null) {
+                        age = mathfunctions.calculateAge(users[current.userid]);
+                    } else {
+                        age = 0;
+                    }
+
+                    if ((param.gender.indexOf(users[current.userid].gender) != "-1") && (param.age.indexOf(age) != "-1") && (param.location.indexOf(templocation) != "-1")) {
                         temp.push(currentq.answer);
                     }
                 }
