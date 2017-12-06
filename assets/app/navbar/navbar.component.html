@@ -1,12 +1,13 @@
 <nav class="navbar navbar-expand-md fixed-top navbar-custom">
-    <div class="container">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <div class="container">                
+        <button class="navbar-toggler" type="button" (click)="navExpanded = !navExpanded" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </span>
         </button>
         <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>CrowdWorks</a>
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-
+        <div [ngClass]="{'navbar-collapse': true, 'collapse': !navExpanded}" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto" (click)="navExpanded = false">
                 <div *ngIf="loggedin;then picture else login"></div>
                 <ng-template #picture>
                     <li class="nav-item">
@@ -27,12 +28,19 @@
                             <div *ngIf="pictype == 'local'">
                                 <img [src]="pic" height="30" width="30"/>
                             </div>
-                            <div *ngIf="pictype == 'default'" height="30" width="30">
+                            <div *ngIf="pictype == 'default'">
+                                <img src="/images/male.png" height="30" width="30"/>
                             </div>
                         </div>
                         <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>
                     </li>
-                    <li class="nav-item" ngbDropdown>
+                    <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
+                        <li [ngClass]="{
+                            'nav-item': true, 
+                            'd-none': placement == 'bottom-left', 
+                            'd-xl-block': placement == 'bottom-left',
+                            'd-xl-none': placement == 'bottom-right'
+                        }" ngbDropdown [placement]="placement">                        
                             <a class="navlinks nav-link custom-dropdown-toggle"
                                 id="notifications" 
                                 ngbDropdownToggle
@@ -60,23 +68,43 @@
                                     <div *ngIf="i < notifications.length - 1" class="dropdown-divider"></div>
                                 </div>
                             </div>
-                    </li>
-
-                    <li class="nav-item" ngbDropdown>
-                            <a 
-                                class="navlinks nav-link custom-dropdown-toggle"
-                                id="nav-bar-actions" 
-                                ngbDropdownToggle 
-                                aria-haspopup="true" 
-                                aria-expanded="false">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
+                        </li>
+                    </div>
+                    <div class="d-none d-sm-block">
+                        <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
+                            <li [ngClass]="{
+                                'nav-item': true, 
+                                'd-none': placement == 'bottom-left', 
+                                'd-xl-block': placement == 'bottom-left',
+                                'd-xl-none': placement == 'bottom-right'
+                            }" ngbDropdown [placement]="placement">
+                                <a 
+                                    class="navlinks nav-link custom-dropdown-toggle"
+                                    id="nav-bar-actions" 
+                                    ngbDropdownToggle 
+                                    aria-haspopup="true" 
+                                    aria-expanded="false">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                </a>
+                                <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                    <a class="dropdown-item" routerLink="/settings" >Settings</a>
+                                    <a class="dropdown-item" (click)="goTo('/users/logout')">Logout</a>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                    <div class="d-sm-none">
+                        <li class="nav-item">
+                            <a class="navlinks nav-link" routerLink="/settings">
+                                Settings
                             </a>
-                            <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
-                                <a class="dropdown-item" routerLink="/settings" >Settings</a>
-                                <a class="dropdown-item" href="/users/logout">Logout</a>
-                            </div>
-                        <!-- <a class="navlinks nav-link" href="/logout">Logout</a> -->
-                    </li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="navlinks nav-link" (click)="goTo('/users/logout')">
+                                Logout
+                            </a>
+                        </li>
+                    </div>
                 </ng-template>
                 <ng-template #login>
                     <li class="nav-item">

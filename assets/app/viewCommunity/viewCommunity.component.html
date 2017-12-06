@@ -1,10 +1,14 @@
 <!--<div class="container" id="viewCommunityPage">-->
     <div class="row">
-        <div class="col-md-3" id="leftSideOfContainer">
+        <div class="col-md-3 order-2 order-sm-1" id="leftSideOfContainer">
             <network-list [data]="data.members" *ngIf="!loading && loadsuccessful && status != '2'"></network-list>
+            <div id="mobile-feed-list" class="d-md-none">
+                <div *ngIf="status == '2'"><h6>{{data.title}} is a private community. Only individuals invited by the admin can see further details. </h6></div>
+                <feed-list class="row" [comm]="id"></feed-list>
+            </div>
             <tag-list [user]="null" [comm]="id" *ngIf="!loading && loadsuccessful && status != '2'"></tag-list>
         </div>
-        <div class="col-md-7" *ngIf="loadsuccessful">
+        <div class="col-md-7 order-1 order-sm-2" *ngIf="loadsuccessful">
             <div id="viewCommunityContainer" class="container">
                 <div id="topJumbo" class="jumbotron jumbotron-fluid p-0">
                     <div class="container">
@@ -46,8 +50,10 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="status == '2'"><h6>{{data.title}} is a private community. Only individuals invited by the admin can see further details. </h6></div>
-                <feed-list class="row" [comm]="id"></feed-list>
+                <div class="d-none d-sm-block">
+                    <div *ngIf="status == '2'"><h6>{{data.title}} is a private community. Only individuals invited by the admin can see further details. </h6></div>
+                    <feed-list class="row" [comm]="id"></feed-list>
+                </div>
             </div>
         </div>
         <div class="col-md-7" *ngIf="loading">
@@ -57,14 +63,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-7" *ngIf="!loadsuccessful">
+        <div class="col-md-7 order-2 order-sm-3" *ngIf="!loadsuccessful">
             <div id="viewCommunityContainer" class="container">
                 <div id="topJumbo" class="jumbotron">
                     <h2 style="overflow: auto" class="display-4">This community could not be found!</h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+        <div class="col-md-2 col-xl-2 offset-xl-0 col-md-7 offset-md-3 order-3 order-sm-4" id="rightSideOfContainer">
             <feedback-form *ngIf="loggedin"></feedback-form>
         </div>
     </div>

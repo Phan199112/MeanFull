@@ -3,7 +3,7 @@
 </div>
 <div class="container main-container" *ngIf="!reject">
     <div class="row">
-        <div class="col-sm-2 tab-list">
+        <div class="col-lg-2 col-sm-3 tab-list">
             <div class="container secondary-container">
                 <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'general'}">
                     <i class="fa fa-cogs" aria-hidden="true"></i>
@@ -168,8 +168,8 @@
                                     Security settings, such are changing your password are managed by Facebook.
                                 </div>
                                 <div *ngIf="passwordNotFB" class="row security-row" id="password-change">
-                                    <div class="col-sm-5">
-                                        <div class="icon d-inline-block" style="width:30px">
+                                    <div class="col-sm-6 col-9">
+                                        <div class="icon d-inline-block">
                                             <i class="fa fa-key" aria-hidden="true" style="position: absolute; top:3px; left:15px; font-size: 18px;"></i>
                                         </div>
                                         <div class="content d-inline-block" style="line-height:10px;">

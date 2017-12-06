@@ -37,6 +37,7 @@
                     </div>
                     <div class="col-md-6">
                         <app-doughnut-chart [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-doughnut-chart>
+                        <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.eventplot"></miniresults-table-component>
                     </div>
                 </ng-template>
                 <ng-template #formonly>

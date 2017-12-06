@@ -13,14 +13,11 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var flash = require('req-flash');
 var fs = require('fs');
+var sslRedirect = require('heroku-ssl-redirect');
 
 // HTTPS
-// howto: https://medium.com/netscape/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e
-// we need to get certificates from a certificate authority. we can get a 90day trial. but otherwise this is a paying service.
-// perhaps we should implement this just before going live.
-//var key = fs.readFileSync('/Users/arnebruyneel/Documents/SoftwareProjects/CrowdWorks/cert/private.key');
-//var cert = fs.readFileSync( '/Users/arnebruyneel/Documents/SoftwareProjects/CrowdWorks/cert/primary.crt' );
-//var ca = fs.readFileSync( '/Users/arnebruyneel/Documents/SoftwareProjects/CrowdWorks/cert/intermediate.crt' );
+// enable ssl redirect
+app.use(sslRedirect());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,8 +43,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Set up default mongoose connection
+
+// Arne test database
 //var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
-var mongoDB = 'mongodb://cwserver:HCW-9yE-9Tz-keb@ds249425-a0.mlab.com:49425,ds249425-a1.mlab.com:49425/cwlive?replicaSet=rs-ds249425';
+// Arne 2 node replica on mlab
+//var mongoDB = 'mongodb://cwserver:HCW-9yE-9Tz-keb@ds249425-a0.mlab.com:49425,ds249425-a1.mlab.com:49425/cwlive?replicaSet=rs-ds249425';
+// mongodb
+var mongoDB = 'mongodb://cwdbnode:owHHvHTL9pn2MFRo@cwdb-shard-00-00-zcm55.mongodb.net:27017,cwdb-shard-00-01-zcm55.mongodb.net:27017,cwdb-shard-00-02-zcm55.mongodb.net:27017/test?ssl=true&replicaSet=cwdb-shard-0&authSource=admin';
+
 
 mongoose.connect(mongoDB, {
     useMongoClient: true

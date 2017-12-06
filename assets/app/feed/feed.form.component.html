@@ -60,7 +60,7 @@
     <div class="row">
         <mini-show-form class= "maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired" [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
     </div>
-    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
+    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
         <div class="container" id="analysisContainer" *ngIf="form.showdata">
             <h4>Delve into the data</h4>
             <form [formGroup]="dataselectionform">
@@ -90,6 +90,11 @@
                 </div>
             </form>
         </div>
+    </div>
+    <div *ngIf="form.answered && !form.contracted && form.admin && form.typeevent">
+        <results-table-component [data]="eventdatatable" *ngIf="form.eventplot"></results-table-component>
+    </div>
+    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
         <div class="container" id="chatContainer">
             <h4>Join the conversation</h4>
             <discussion-list [id]="form.id"></discussion-list>

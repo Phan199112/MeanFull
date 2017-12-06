@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Http, Response} from "@angular/http";
 import { FeedForm } from "./feed.form.model";
 import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -13,7 +13,7 @@ import {PopupService} from "../popup.service";
     styleUrls: ['./feed.form.component.scss'],
     providers: [PopupService]
 })
-export class FeedFormComponent {
+export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
     submitted: boolean = false;
     showsubmit: boolean = false;
@@ -21,6 +21,9 @@ export class FeedFormComponent {
     showdiscussion: boolean = false;
     hide: boolean = false;
     loggedin: boolean = false;
+
+    // event data
+    eventdatatable: any[];
 
     otherloc: boolean = false;
     locations: Object[] = [];
@@ -65,6 +68,7 @@ export class FeedFormComponent {
             // did the current user complete this form, if so answers can be shown
             this.isFilledIn();
 
+            this.form.eventplot = false;
             this.form.contracted = this.form.questions.length > 1;
 
             // default ages
@@ -125,6 +129,11 @@ export class FeedFormComponent {
                     this.submitted = true;
                     this.showsubmit = false;
                     this.showdiscussion = true;
+
+                    if (this.form.typeevent) {
+                        this.retrieveEventData();
+                    }
+
                     this.form.setShowData(true);
 
                     // query top locations
@@ -392,6 +401,18 @@ export class FeedFormComponent {
                 //
             });
 
+    }
+
+    retrieveEventData() {
+        this.http.post(`/forms/resultstable`, {formid: this.form.id}).toPromise()
+            .then(res => {
+                if (res.json().status == '1') {
+                    this.eventdatatable = res.json().data;
+                    this.form.eventdatatotals = res.json().totals;
+                    this.form.eventplot = true;
+                }
+            })
+            .catch(error => alert("Error retrieving form: " + error));
     }
 
 }

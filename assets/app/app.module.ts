@@ -53,6 +53,8 @@ import {YourCommunityComponent} from './yourCommunities/yourcomm.component';
 import {YourFriendsListComponent} from './yourFriends/yourfriends.list.component';
 import {YourFriendsComponent} from './yourFriends/yourfriends.component';
 import {PopupInviteCommComponent} from "./popup/popup.invitecomm.component";
+import {ResultsTableComponent} from "./resultstable/resultstable.component";
+import {MiniResultsTableComponent} from "./resultstable/miniresultstable.component";
 
 @NgModule({
     declarations: [
@@ -95,7 +97,9 @@ import {PopupInviteCommComponent} from "./popup/popup.invitecomm.component";
         YourCommunityComponent,
         YourFriendsListComponent,
         YourFriendsComponent,
-        PopupInviteCommComponent
+        PopupInviteCommComponent,
+        ResultsTableComponent,
+        MiniResultsTableComponent
     ],
     imports: [
         // vendor //

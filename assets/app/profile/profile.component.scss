@@ -10,6 +10,11 @@ $navBarColor:  #0088cc;
   overflow:auto;
   border-radius: 1%;
   margin-top: 30px;
+
+  @media (max-width: 1140px){
+    min-height: 0;
+    overflow: hidden;
+  }   
 }
 
 #topJumbo {

@@ -11,7 +11,7 @@ $navBarColor:  #0077b3;
 }
 
 #mainLoginPageContainer{
-  margin-top: 100px;
+  margin-top: 40px;
 }
 
 .half {
@@ -148,14 +148,16 @@ $border-separator: 1px solid rgba(0,0,0,.1);
 #separator-middle {
   min-height: 300px;
   border-right: $border-separator;
-}
 
-@media (max-width: 768px) {
-  #separator-middle {
+  @media (max-width: 767px) {
     min-height: auto;
     margin: 65px 30px;
     border-right: 0;
     border-top: $border-separator;
+  }
+
+  @media (min-width: 767px) {
+    top: 185px;
   }
 }
 
@@ -193,5 +195,6 @@ $warningColor: rgb(234, 122, 133);
 }
 
 #forgotPwdLink {
-  margin: 20px 0;
+  margin-top: 20px;
+  height: 0;
 }

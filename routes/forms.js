@@ -7,6 +7,7 @@ var mathfunctions = require('../functions/math');
 var networkfunctions = require('../functions/network');
 var usersfunctions = require('../functions/users');
 var commfunctions = require('../functions/communities');
+var formfunctions = require('../functions/forms');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -212,6 +213,124 @@ module.exports = function(app, passport, manager, hashids) {
                 res.json({status: 0});
             }
         });
+    });
+
+    // get detailed data to be presented as a table
+    // this route is only accessable for the creator of a form, and if the form is an event
+    app.post('/forms/resultstable', manager.ensureLoggedIn('/users/login'), function(req,res) {
+        // input
+        var formid = hashids.decodeHex(req.body.formid);
+
+        // vars
+        var allanswers = [];
+        var promiselist = [];
+        var authorprofiles = [];
+        var questiontypes = [];
+        var exportdata;
+        var exportdata_totals;
+
+        return new Promise (function(resolve, reject) {
+            formfunctions.formEvent(formid).then(function(resulttype) {
+                if (resulttype) {
+                    formfunctions.formAdmin(formid, req.session.userid).then(function(result) {
+                        if (result) {
+                            resolve();
+
+                        } else {
+                            reject();
+                        }
+                    });
+
+                } else {
+                    reject();
+                }
+            });
+        })
+            .then(function() {
+                // get all the answers to this question
+                return new Promise(function(resolve, reject){
+                    AnswersModel.find({formid: formid}, function (err, k) {
+                        // retrieved and array with all answers
+                        if (err) {
+                            // error
+                            reject();
+                        } else {
+                            allanswers = k;
+                            resolve();
+                        }
+                    });
+                })
+                    .then(function() {
+                        var tempqtypes = function(x) {
+                            return new Promise(function(resolve, reject) {
+                                FormModel.findById(x, function (err, form) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        if (form) {
+                                            // what are the question types?
+                                            // short answer and paragraph should not be plotted
+                                            if (form.questions.length > 0) {
+                                                for (var a = 0; a < form.questions.length; a++) {
+                                                    questiontypes.push(form.questions[a].kind);
+                                                }
+                                            }
+
+                                        }
+                                        resolve();
+                                    }
+                                });
+                            }).catch(function () {
+                                console.log("failed q types");
+                            });
+                        };
+
+                        tempqtypes(formid).then(function() {
+                            console.log("did question types");
+                        })
+
+                    })
+                    .then(function () {
+                        // indentify the authors of the answers
+                        var tempfunction = function(x) {
+                            return new Promise(function(resolve, reject){
+                                UserModel.findById(x.userid, function (err, k) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        authorprofiles[x.userid] = k.name.first+" "+k.name.last;
+                                        resolve();
+                                    }
+                                });
+                            }).catch(function () {
+                                console.log("error query user");
+                            });
+                        };
+
+                        allanswers.forEach(function(author) {
+                            promiselist.push(tempfunction(author));
+                        });
+
+                        return Promise.all(promiselist).then(function () {
+                            exportdata = formfunctions.analyzeTable(allanswers, authorprofiles);
+                            exportdata_totals = formfunctions.analyzeAll(allanswers, questiontypes, false);
+                        });
+
+                })
+                    .then(function() {
+                        res.json({status: 1, data: exportdata, totals: exportdata_totals});
+                    })
+                    .catch(function() {
+                        // no permission or it failed
+                        res.json({status: 0});
+                    });
+
+            })
+            .catch(function() {
+                // no permission or it failed
+                res.json({status: 0});
+            });
+
     });
 
     // this function retrieved the feed
@@ -707,7 +826,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     AnswersModel.find({formid: formid}, function (err, allanswers) {
                                         // retrieved and array with all answers
                                         // compute
-                                        var exportdata = analyzeAll(allanswers, questiontypes);
+                                        var exportdata = formfunctions.analyzeAll(allanswers, questiontypes);
 
                                         //
                                         res.json({
@@ -846,7 +965,7 @@ module.exports = function(app, passport, manager, hashids) {
                     });
 
                     return Promise.all(authorprofilespromise).then(function () {
-                        exportdata = analyzeSegregated(allanswers, authorprofiles, req.body.dataselection, questiontypes);
+                        exportdata = formfunctions.analyzeSegregated(allanswers, authorprofiles, req.body.dataselection, questiontypes);
                     });
                 } else {
                     exportdata = null;
@@ -866,110 +985,6 @@ module.exports = function(app, passport, manager, hashids) {
             });
 
     });
-
-    function analyzeAll(x, types) {
-        var exportdataAll = [];
-        // compute
-        var firstanswer = x[0];
-        var noquestions = firstanswer.answers.length;
-
-
-        // loop through all questions
-        for (var i = 0; i < noquestions; i++) {
-            // test first of this question is of a suitable type:
-            if (types[i] !== "Short answer" && types[i] !== "Paragraph") {
-                // declare temp
-                var temp = [];
-                // loop through all forms and look at data for this question
-                for (var j = 0; j < x.length; j++) {
-                    current = x[j];
-                    currentq = current.answers[i];
-                    temp.push(currentq.answer);
-                }
-
-                // make a summary
-                var counts = {};
-                var total = 0;
-                for (k = 0; k < temp.length; k++) {
-                    counts[temp[k]] = (counts[temp[k]] + 1) || 1;
-                    total += 1;
-                }
-
-                // reformat
-                // and make percentage
-                var summaryLabels = [];
-                var summaryValues = [];
-                for (var key in counts) {
-                    summaryLabels.push(key);
-                    summaryValues.push(Math.round(((100/total)*counts[key])*100)/100);
-                }
-
-                //
-                exportdataAll.push([summaryLabels, summaryValues]);
-            } else {
-                // return a blank for this question
-                exportdataAll.push([[], []]);
-            }
-
-        }
-
-        return exportdataAll;
-    }
-
-    function analyzeSegregated(x, users, param, types) {
-        var exportdata = [];
-        // compute
-        var firstanswer = x[0];
-        var noquestions = firstanswer.answers.length;
-
-        // loop through all questions
-        for (var i = 0; i < noquestions; i++) {
-            // test first of this question is of a suitable type:
-            if (types[i] !== "Short answer" && types[i] !== "Paragraph") {
-                // declare temp
-                var temp = [];
-                // loop through all forms and look at data for this question
-                for (var j = 0; j < x.length; j++) {
-                    current = x[j];
-                    currentq = current.answers[i];
-
-                    if (users[current.userid] != null) {
-                        var templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
-                        if ((param.gender.indexOf(users[current.userid].gender) != "-1") && (param.age.indexOf(mathfunctions.calculateAge(users[current.userid])) != "-1") && (param.location.indexOf(templocation) != "-1")) {
-                            temp.push(currentq.answer);
-                        }
-                    }
-                }
-
-                // make a summary
-                var counts = {};
-                var total = 0;
-                for (k = 0; k < temp.length; k++) {
-                    counts[temp[k]] = (counts[temp[k]] + 1) || 1;
-                    total += 1;
-                }
-
-                // reformat
-                // and make percentage
-                var summaryLabels = [];
-                var summaryValues = [];
-                for (var key in counts) {
-                    summaryLabels.push(key);
-                    summaryValues.push(Math.round(((100/total)*counts[key])*100)/100);
-                }
-
-                //
-                exportdata.push([summaryLabels, summaryValues]);
-
-            } else {
-                // return a blank for this question
-                exportdata.push([[], []]);
-            }
-
-        }
-
-        return exportdata;
-    }
 
 
     /// has current form been completed by current user?

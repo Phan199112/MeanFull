@@ -94,4 +94,7 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error retrieving events list: " + error));
     }
 
+    goTo(url) {
+        window.location.href = url;
+    }
 }

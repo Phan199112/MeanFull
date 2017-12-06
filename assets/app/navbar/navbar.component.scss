@@ -4,6 +4,13 @@ $whiteColor: #fff;
 //color Salem
 $navBarColor:  #1E824C;
 
+/deep/ .navbar {
+  @media (max-width: 768px) {
+    padding-left: 15px;
+    padding-right: 0;
+  }
+}
+
 
 /* change the background color */
 .navbar-custom {
@@ -62,4 +69,14 @@ $navBarColor:  #1E824C;
 
 img {
   width: 30px;
+}
+
+.navbar-toggler {
+  margin-top: -7px;
+  margin-left: -5px;
+
+  i {
+    color: #fff;
+    font-size: 22px;
+  }
 }

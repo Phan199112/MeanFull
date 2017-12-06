@@ -111,6 +111,16 @@ button {
       display: inline-block;
     }
 
+    .content {
+      margin-left: 30px; 
+    }
+
+    .edit {
+      @media (max-width: 767px) {
+        margin-top: 20px;
+      }
+    }
+
     &#password-change {
       label {
         display: inline-block;
