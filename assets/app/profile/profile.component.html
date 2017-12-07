@@ -67,15 +67,7 @@
                 </div>
             </div>
 
-            <div class="container" id="profileContainer" *ngIf="loading">
-                <div id="profileContainer" class="container">
-                    <div id="topJumbo" class="jumbotron">
-                        <h2 style="overflow: auto" class="display-4">Loading...</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container" id="profileContainer" *ngIf="!loadsuccessful">
+            <div class="container" id="profileContainer" *ngIf="!loadsuccessful && !loading">
                 <div id="profileContainer" class="container">
                     <div id="topJumbo" class="jumbotron">
                         <h2 style="overflow: auto" class="display-4">This profile could not be found!</h2>

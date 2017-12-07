@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
     notifications: string[] = [];
     unreadNotifications: number = 0;
     events: any;
+    gender: string;
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler; 
 
@@ -35,6 +36,7 @@ export class NavbarComponent implements OnInit {
                 this.dbid = userData.dbid;
                 this.firstname = userData.firstname;
                 this.picdata = userData.picdata;
+                this.gender = userData.gender;
 
                 this.userService.setData({
                     dbid: this.dbid
@@ -52,7 +54,13 @@ export class NavbarComponent implements OnInit {
                         this.pictype = "local";
                         this.pic = this.picdata;
                     } else {
-                        this.pictype = "default";
+                        if (this.gender) {
+                            if (this.gender == 'male') {
+                                this.pictype = "default-male";
+                            } else {
+                                this.pictype = "default-female";
+                            }
+                        }
                     }
                 }
             } else {

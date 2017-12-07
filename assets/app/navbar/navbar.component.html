@@ -29,8 +29,11 @@
                                 <div *ngIf="pictype == 'local'">
                                     <img [src]="pic" height="30" width="30"/>
                                 </div>
-                                <div *ngIf="pictype == 'default'">
+                                <div *ngIf="pictype == 'default-male'">
                                     <img src="/images/male.png" height="30" width="30"/>
+                                </div>
+                                <div *ngIf="pictype == 'default-female'">
+                                    <img src="/images/female.png" height="30" width="30"/>
                                 </div>
                             </div>
                             <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>

@@ -1,10 +1,9 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var UserModel = require('../db.models/user.model');
-var FormModel = require('../db.models/form.model');
-var AnswersModel = require('../db.models/answers.model');
 var log = require("../functions/logs");
 var randommod = require("../functions/random");
+var usersfunctions = require('../functions/users');
 var email 	= require("../node_modules/emailjs/email");
 var server 	= email.server.connect({
     user:    "cw@arnebruyneel.be",
@@ -54,13 +53,11 @@ module.exports = function(app, passport, manager, hashids) {
             passwordField: 'password'
         },
         function(email, password, done) {
-        console.log(email,password);
             UserModel.findOne({ "local.email": email }, function (err, user) {
                 if (err) {
                     return done(err);
                 } else {
                     if (!user) {
-                        console.log("User not found");
                         return done(null, false, { message: 'Unknown user' });
                     }
 
@@ -107,8 +104,8 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     // loggedin
-    app.get("/loggedin", function(req, res) {
-        returnobj = {};
+    app.get("/users/loggedin", function(req, res) {
+        var returnobj = {};
 
         if (req.user != null) {
             returnobj = {};
@@ -116,12 +113,12 @@ module.exports = function(app, passport, manager, hashids) {
                 returnobj = {id: req.user.id, fullname: req.user.displayName,
                     firstname: req.user.name.givenName,
                     dbid: hashids.encodeHex(req.session.userid),
-                    picdata: req.user.pic};
+                    picdata: req.user.pic, gender: req.user.gender};
             } else {
                 // local login
                 returnobj =  {firstname: req.user.name.first,
                     dbid: hashids.encodeHex(req.session.userid),
-                    picdata: req.user.pic};
+                    picdata: req.user.pic, gender: req.user.gender};
             }
         }
 
@@ -133,8 +130,8 @@ module.exports = function(app, passport, manager, hashids) {
         function(req, res) {
             req.session.userid = req.user._id;
             log.writeLog(req.user._id, 'local signin', req.ip);
-            updateUserTags(req.session.userid);
-            res.status(200).json({success: true});
+            usersfunctions.updateUserTags(req.session.userid);
+            res.json({status: 1});
         });
 
     app.get('/users/login/facebook',
@@ -152,7 +149,7 @@ module.exports = function(app, passport, manager, hashids) {
                         // existing fb user
                         req.session.userid = person._id;
                         log.writeLog(person._id, 'fb signin - existing user', req.ip);
-                        updateUserTags(req.session.userid);
+                        usersfunctions.updateUserTags(req.session.userid);
                         res.redirect('/');
                     } else {
                         // new fb user
@@ -293,131 +290,6 @@ module.exports = function(app, passport, manager, hashids) {
             });
 
     });
-
-
-    function updateUserTags(userid) {
-        // this function will be executed when a user signs in and will make certain that the tags list associated with a user profile is up to date
-
-        // variables
-        var promiseslist = [];
-        var answerpromise = [];
-        var answerdata = [];
-        var tagsmaster = [];
-        var tags = [];
-
-        new Promise(function(resolve, reject) {
-            // surveys created by the user
-            var tempfunctionCreatedByUser = function() {
-                var promise = new Promise(function(resolve, reject){
-                    FormModel.find({userid: userid}).cursor()
-                        .on('data', function(form){
-                            if (form.public == true) {
-                                tagsmaster.push(form.hashtags);
-                            }
-                        })
-                        .on('error', function(err){
-                            reject(err);
-                        })
-                        .on('end', function(){
-                            console.log("done this bit");
-                            resolve();
-                        });
-                });
-                return promise;
-            };
-
-            // surveys answered by the user
-            var tempfunctionAnsweredByUser = function() {
-                var promise = new Promise(function(resolve, reject){
-                    AnswersModel.find({userid: userid}).cursor()
-                        .on('data', function(ans){
-                            answerdata.push({formid: ans.formid});
-                        })
-                        .on('error', function(err){
-                            reject(err);
-                        })
-                        .on('end', function(){
-                            resolve();
-                        });
-                }).then(function() {
-                    // get information of the associated form.
-                    var tempfunction = function(x) {
-                        var promise = new Promise(function(resolve, reject){
-                            FormModel.findById(x, function (err, form) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    if (form) {
-                                        if (form.public == true) {
-                                            tagsmaster.push(form.hashtags);
-                                            resolve();
-                                        } else {
-                                            // don't add any data
-                                            resolve();
-                                        }
-                                    } else {
-                                        // don't add any data
-                                        resolve();
-                                    }
-                                }
-                            });
-                        }).catch(function () {
-                            console.log("error answer form data");
-                        });
-                        return promise;
-                    };
-
-                    answerdata.forEach(function(answer) {
-                        answerpromise.push(tempfunction(answer.formid));
-                    });
-
-                    return Promise.all(answerpromise).then(function () {
-                        console.log("promise all completed interim");
-                    });
-                })
-                    .catch(function () {
-                        console.log("error: tempfunctionAnsweredByUser");
-                    });
-                return promise;
-            };
-
-
-            // execute
-            promiseslist.push(tempfunctionCreatedByUser());
-            promiseslist.push(tempfunctionAnsweredByUser());
-
-            return Promise.all(promiseslist).then(function () {
-                console.log("promise all completed");
-                resolve();
-            }).catch(function (err) {
-                console.log("error"+err);
-                reject();
-            });
-        })
-            .then(function () {
-                for (l = 0; l < tagsmaster.length; l++) {
-                    for (j=0; j < tagsmaster[l].length; j++) {
-                        if (tags.indexOf(tagsmaster[l][j]) == -1) {
-                            tags.push(tagsmaster[l][j]);
-                        }
-                    }
-                }
-                console.log(tags);
-            })
-            .then(function () {
-                UserModel.findByIdAndUpdate(userid,
-                    {$set: {"tags": tags}}, function(err, k) {
-                        if (err) {
-                            console.log("Error in setting tags"+err);
-                        } else {
-                            console.log("Updated tags");
-                        }
-                    });
-            })
-            .catch(function () {
-                console.log("Error in setting tags");
-            });
-    }
 
 };
 

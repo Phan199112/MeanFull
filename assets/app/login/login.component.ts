@@ -145,15 +145,16 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 (data) => {
                     // Handle response here
-                    let response = data.success;
-
-                    if (response == true) {
+                    if (data.status == 1) {
                         this.router.navigateByUrl('/');
+                        // force reload
+                        location.reload();
                     } else {
-                        this.router.navigateByUrl('/login');
+                        this.router.navigateByUrl('/users/login');
+                        // force reload
+                        location.reload();
                     }
-                    // force reload
-                    location.reload();
+
                 },
                 err => {
                     this.status = false;

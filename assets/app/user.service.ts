@@ -24,7 +24,7 @@ export class UserService {
     afterLoginCheck() {
         return new Promise((resolve, reject) => {
             if (!checkedLogin) {
-                this.http.get('/loggedin').toPromise()
+                this.http.get('/users/loggedin').toPromise()
                     .then(res => {
                         checkedLogin = true;
                         data = res.json();

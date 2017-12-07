@@ -84,8 +84,6 @@ app.use(function(req, res, next) {
     res.render("index");
 });
 
-
-
 // cron jobs
 var cron = require('node-cron');
 var TagsModel = require('./db.models/tags.model');
@@ -94,8 +92,8 @@ var CommunityModel = require('./db.models/community.model');
 
 
 
-cron.schedule('*/2 * * * *', function(){
-    console.log('running tags update task every 2 minutes');
+cron.schedule('*/5 * * * *', function(){
+    //console.log('running tags update task every 2 minutes');
 
     var tags = [];
     var datadump = [];
@@ -159,7 +157,6 @@ cron.schedule('*/2 * * * *', function(){
             var randomCommunitities = function() {
                 var promise = new Promise(function(resolve, reject) {
                     CommunityModel.syncRandom(function (err, result) {
-                        console.log(result.updated);
                         resolve();
                     });
                 });
@@ -191,7 +188,7 @@ cron.schedule('*/2 * * * *', function(){
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("tags updated");
+                    //console.log("tags updated");
                 }
             });
         });
