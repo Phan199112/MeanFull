@@ -41,7 +41,7 @@
                         <h6><i class="fa fa-pencil-square-o" aria-hidden="true">&nbsp;{{nocreated}}</i>  <i class="fa fa-pencil" aria-hidden="true">&nbsp;{{notaken}}</i>  <i class="fa fa-comments" aria-hidden="true">&nbsp;{{nodiscussion}}</i></h6>
                     </div>
                     <div id="ProfileName">
-                        <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="profile-menu-wrapper" *ngIf="loggedin">
+                        <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="profile-menu-wrapper" *ngIf="loggedin && !me">
                             <a
                                     class="navlinks nav-link custom-dropdown-toggle"
                                     id="profile-menu"
