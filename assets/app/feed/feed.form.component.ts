@@ -21,6 +21,7 @@ export class FeedFormComponent implements OnInit {
     showdiscussion: boolean = false;
     hide: boolean = false;
     loggedin: boolean = false;
+    count: string = null;
 
     // event data
     eventdatatable: any[];
@@ -110,14 +111,14 @@ export class FeedFormComponent implements OnInit {
         this.form.viewGraphs(false);
 
         // did the current user complete this particular survey?
-        var data = {link: this.form.id};
+        let data = {link: this.form.id};
 
         // post and get response
         this.http.post('/forms/data', data)
             .toPromise()
             .then(response => {
-                var responsedata = response.json().data;
-                var responsestatus = response.json().status;
+                let responsedata = response.json().data;
+                let responsestatus = response.json().status;
                 this.loggedin = response.json().loggedin;
 
                 // set parameters for visualising the results
@@ -129,6 +130,7 @@ export class FeedFormComponent implements OnInit {
                     this.submitted = true;
                     this.showsubmit = false;
                     this.showdiscussion = true;
+                    this.count = response.json().count;
 
                     if (this.form.typeevent) {
                         this.retrieveEventData();

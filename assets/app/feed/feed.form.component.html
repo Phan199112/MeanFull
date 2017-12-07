@@ -51,6 +51,7 @@
     <div class="row">
         <div class="col">
             <p #formsDescription>{{form.description}}</p>
+            <p *ngIf="count != null">This form was answered {{count}} times.</p>
         </div>
     </div>
     <div class="row mx-auto">

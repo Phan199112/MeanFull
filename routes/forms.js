@@ -832,10 +832,18 @@ module.exports = function(app, passport, manager, hashids) {
                                         // retrieved and array with all answers
                                         // compute
                                         var exportdata = formfunctions.analyzeAll(allanswers, questiontypes);
+                                        var answercount;
+
+                                        if (allanswers.length > 5) {
+                                            answercount = allanswers.length;
+                                        } else {
+                                            answercount = null;
+                                        }
 
                                         //
                                         res.json({
                                             data: exportdata,
+                                            count: answercount,
                                             status: 2,
                                             loggedin: loggedin
                                         });
@@ -846,6 +854,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     res.json({
                                         data: '',
                                         status: 0,
+                                        count: null,
                                         error: 'not completed',
                                         loggedin: loggedin
                                     });
@@ -856,6 +865,7 @@ module.exports = function(app, passport, manager, hashids) {
                         res.json({
                             data: '',
                             status: 3,
+                            count: null,
                             error: 'not public',
                             loggedin: loggedin
                         });
@@ -866,6 +876,7 @@ module.exports = function(app, passport, manager, hashids) {
                     res.json({
                         data: '',
                         status: 1,
+                        count: null,
                         error: 'error DB',
                         loggedin: loggedin
                     });
@@ -876,6 +887,7 @@ module.exports = function(app, passport, manager, hashids) {
             res.json({
                 data: '',
                 status: 1,
+                count: null,
                 error: 'not auth',
                 loggedin: loggedin
             });
