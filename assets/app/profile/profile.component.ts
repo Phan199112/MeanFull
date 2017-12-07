@@ -84,9 +84,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         this.userprofile = res.json().userprofile;
                         this.network = res.json().network;
 
-                        // is the viewer loggedin
-                        this.loggedin = res.json().loggedin;
-
                         // counts
                         this.nocreated = res.json().nocreated;
                         this.notaken = res.json().notaken;
@@ -126,6 +123,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                                 this.pictype = "default";
                             }
                         }
+
+                        // is the viewer logged in?
+                        this.loggedin = res.json().loggedin;
 
                         // switch off loading
                         this.loading = false;
