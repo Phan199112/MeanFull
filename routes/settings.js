@@ -76,16 +76,11 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     app.get('/users/settings/confirmemail/:id', function(req,res) {
-
-        //
-        console.log("email confirm request received"+req.params.id);
         //
         UserModel.findOneAndUpdate({'emailConfirmed.key': req.params.id}, {$set: {emailConfirmed: {value: true}}}, function(err, k) {
             if (err) {
-                console.log("Error in confirming user"+err);
                 res.json("Failure to update user account details.");
             } else {
-                console.log("Confirmed user");
                 res.json("User account verified, please login now.");
             }
         });
@@ -97,8 +92,6 @@ module.exports = function(app, passport, manager, hashids) {
         // all is linked to the userid in the session
         // req.session.userid
 
-        console.log("change pwd reached");
-
         var currentpwd = req.body.pwdsettings.current;
         var testuser = new UserModel();
         var newpwd = testuser.generateHash(req.body.pwdsettings.new);
@@ -106,13 +99,10 @@ module.exports = function(app, passport, manager, hashids) {
 
         new Promise(function(resolve, reject) {
             UserModel.findById(req.session.userid, function (err, user) {
-                console.log(user);
                 if (err) {
-                    console.log("error");
                     reject(err);
                 } else {
                     pwdconfirmed = user.validPassword(currentpwd);
-                    console.log("old confirmed "+pwdconfirmed);
                     resolve();
                 }
             })
@@ -125,7 +115,6 @@ module.exports = function(app, passport, manager, hashids) {
                             if (err) {
                                 console.log("Error in updating password"+err);
                             } else {
-                                console.log("Updated password");
                                 res.json({
                                     message: 'success',
                                     data: 1
@@ -144,16 +133,23 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.put('/users/settings/changeprivacy', manager.ensureLoggedIn('/users/login'), function(req, res) {
 
-        console.log("change privacy settings reached");
-        console.log(req.body);
-
         UserModel.findByIdAndUpdate(req.session.userid,
             {$set: req.body}, function(err, k) {
                 if (err) {
-                    console.log("Error in updating privacy settings"+err);
                     res.json({status: 0});
                 } else {
-                    console.log("Updated privacy settings");
+                    res.json({status: 1});
+                }
+            });
+    });
+
+    app.put('/users/settings/changeprofilepicture', manager.ensureLoggedIn('/users/login'), function(req, res) {
+
+        UserModel.findByIdAndUpdate(req.session.userid,
+            {$set: {pic: req.body.data}}, function(err, k) {
+                if (err) {
+                    res.json({status: 0});
+                } else {
                     res.json({status: 1});
                 }
             });

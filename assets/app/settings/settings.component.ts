@@ -29,6 +29,7 @@ export class SettingsComponent implements OnInit {
     network: any[];
     notifications: any[];
     reject: boolean = false;
+    picture: Object = {edit: false, formValue: null, current: null, newurl: null, success: false, failure: false};
 
     @ViewChild('tabs')
     private tabs:NgbTabset;
@@ -60,6 +61,9 @@ export class SettingsComponent implements OnInit {
                     this.profile = res.json().data;
                     this.network = res.json().network;
                     this.notifications = res.json().notifications;
+
+                    // process picture
+                    this.picture.current = this.profile.pic;
 
                     // process education
                     this.educationfield = {edit: false, values: this.profile.education, summary: ""};
@@ -476,6 +480,29 @@ export class SettingsComponent implements OnInit {
             .catch((error) => alert("Error posting general questions data:" + error));
     }
 
+
+    submitPicture() {
+        this.http.put('/users/settings/changeprofilepicture', {data: this.picture.newurl}).toPromise()
+            .then(res => {
+                //
+                if (res.json().status == 1) {
+                    this.retrieveData();
+                    this.picture.success = true;
+                    this.picture.newurl = null;
+                } else {
+                    this.picture.failure = true;
+                }
+            })
+            .catch((error) => alert("Error posting general questions data:" + error));
+    }
+
+    rejectPicture() {
+        this.picture.edit = false;
+    }
+
+
+    //// accept or reject
+
     acceptConnectionRequest(x) {
         this.http.post(`/users/settings/acceptnetworkrequest`, {eventid: x}).toPromise()
             .then(() => {
@@ -535,5 +562,56 @@ export class SettingsComponent implements OnInit {
             })
             .catch(error => alert("Error: " + error));
 
+    }
+
+
+    // picture upload code
+
+    onProfilePicChange($event) {
+        const file = $event.target.files[0];
+        if(file == null){
+            return alert('No file selected.');
+        }
+        this.getSignedRequest(file);
+    }
+
+    /*
+      Function to carry out the actual PUT request to S3 using the signed request from the app.
+    */
+    uploadFile(file, signedRequest, url){
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', signedRequest);
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState === 4){
+                if(xhr.status === 200){
+                    this.picture.newurl = url;
+                }
+                else{
+                    alert('Could not upload file.');
+                }
+            }
+        };
+        xhr.send(file);
+    }
+    /*
+      Function to get the temporary signed request from the app.
+      If request successful, continue to upload the file using this signed
+      request.
+    */
+    getSignedRequest(file){
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState === 4){
+                if(xhr.status === 200){
+                    const response = JSON.parse(xhr.responseText);
+                    this.uploadFile(file, response.signedRequest, response.url);
+                }
+                else{
+                    alert('Could not get signed URL.');
+                }
+            }
+        };
+        xhr.send();
     }
 }

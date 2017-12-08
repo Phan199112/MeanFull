@@ -101,6 +101,60 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div *ngIf="!passwordNotFB">
+                                    <div class="row field">
+                                        <div class="col-sm-2">
+                                            <div class="field-name">Profile picture</div>
+                                        </div>
+                                        <div class="col">
+                                            <div *ngIf="!picture.edit" class="visualization">
+                                                <span class="field-value text-muted">Profile picture</span>
+                                                <a (click)="picture.edit = true" class="edit-btn">Edit</a>
+                                            </div>
+                                            <form *ngIf="picture.edit" class="edit">
+                                                <div class="form-group">
+
+
+                                                    <div class="input-group image-preview">
+                                                        <span class="input-group-btn">
+                                                        <div class="btn btn-default image-preview-input">
+                                                            <span><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+                                                            <span class="image-preview-input-title">Browse</span>
+                                                            <input (change)="onProfilePicChange($event)" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                                        </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <p><b>Current profile picture</b></p>
+                                                        <p *ngIf="picture.current == null">You currently do not have a profile picture.</p>
+                                                        <img style="border:1px solid gray;width:100px;"  id="previewold" [src]="picture.current" *ngIf="picture.current != null">
+                                                    </div>
+                                                    <div class="col-sm-6" *ngIf="picture.newurl">
+                                                        <p><b>New profile picture</b></p>
+                                                        <img style="border:1px solid gray;width:100px;"  id="preview" [src]="picture.newurl">
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="row">
+                                                    <div class="alert alert-success" *ngIf="picture.success">
+                                                        <strong>Success!</strong> Your profile picture was updated.
+                                                    </div>
+                                                    <div class="alert alert-warning" *ngIf="picture.failure">
+                                                        <strong>Warning!</strong> Updating your profile picture failed. Please try again.
+                                                    </div>
+                                                </div>
+
+                                                    <button class="btn btn-primary" [disabled]="!picture.newurl" (click)="submitPicture()">Save</button>
+                                                    <button class="btn btn-secondary" (click)="rejectPicture()">Cancel</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </ng-template>
                     </ngb-tab>
