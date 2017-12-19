@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { FeedForm } from "./feed.form.model";
 
 @Component({
@@ -42,6 +42,7 @@ export class MiniShowFormComponent implements OnInit {
         for (let question of this.data.questions) {
             let groupObject = {
                 body: question.body,
+                kind: question.kind,
                 number: question.number
             };
             if (question.kind === 'Checkboxes') {
@@ -54,6 +55,18 @@ export class MiniShowFormComponent implements OnInit {
                 } else {
                     groupObject.answer = this.fb.group(groupObject.answer);
                 }
+            } else if (question.kind === 'Rank') {
+                groupObject.answer = question.options.map(option => option.body);
+                groupObject.answer = this.fb.array(groupObject.answer);                
+            } else if (question.kind === 'Matrix') {
+                groupObject.answer = {};
+                for (let row of question.rows) {
+                    groupObject.answer[row] = "";
+                    if (question.required) {
+                        groupObject.answer[row] = [groupObject.answer[row], Validators.required];
+                    }
+                }
+                groupObject.answer = this.fb.group(groupObject.answer);                
             } else {
                 groupObject.answer = "";
                 if (question.required) {
@@ -110,7 +123,7 @@ export class MiniShowFormComponent implements OnInit {
         if (this.submitted) return;
         let value = Object.assign({}, this.questionnaire.value);
         for (let question of value.questions) {
-            if (typeof question.answer == 'object') {
+            if (question.kind === 'Checkboxes') {
                 question.answer = Object.keys(question.answer).filter(k => question.answer[k]);
             }
         }

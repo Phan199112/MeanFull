@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
+import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {FormService} from "../form.service";
 import {UserService} from "../user.service";
 import {Router, ActivatedRoute} from "@angular/router";
@@ -18,7 +18,8 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 })
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
-    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Paragraph"];
+    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Paragraph", "Rank", "Matrix"];
+    kindsWithOptions: string[] = ["Radio", "Checkboxes", "Drop-down", "Rank"];
     edit: boolean = false;
     activeQuestion: string;
     autoScroll: any;
@@ -57,14 +58,13 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                     this.edit = true;
                 }
 
-                if (params.event) {
-                    this.typeevent = true;
-
-                } else {
-                    this.typeevent = false;
-                }
+                this.typeevent = !!params.event;
 
                 this.createForm();
+
+                if (this.typeevent) {
+                    this.questionnaire.get('public').setValue(false);
+                }
             });
         } else {
             this.reject = true;
@@ -130,14 +130,23 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         
         if (this.edit) {
             let data = this.formService.getData();
+            console.log(data);
             for (let key of Object.keys(data)) {
-                if (key !== "questions") {
+                if (key !== "questions" && key !== "hashtags") {
                     let control = this.questionnaire.get(key);
                     if (control) {
                        control.setValue(data[key]);
                     }
+                } else if (key === 'hashtags') {
+                    var tagarray = [];
+                    for (let tag of data['hashtags']) {
+                        tagarray.push(this.transformHashtagArray(tag));
+                    }
+                    console.log(tagarray);
+                    this.questionnaire.get('hashtags').setValue(tagarray);
                 }
             }
+
             for (let question of data.questions) {
                 question.options = this.fb.array(question.options.map(option => this.fb.group(option)));
                 if (question.pic) {
@@ -145,6 +154,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 }
                 this.questionnaire.controls["questions"].push(this.fb.group(question));
             }
+
+            if (this.typeevent) {
+                this.questionnaire.get('public').setValue(false);
+                this.questionnaire.get('resultsPublic').setValue(false);
+            }
+
         } else {
            this.addQuestion();
         }
@@ -160,15 +175,33 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     addQuestion() {
         let questions = this.questionnaire.controls.questions;
-        questions.push(this.fb.group({
+        let question = this.fb.group({
             body: ['', Validators.required],
             kind: ['', Validators.required],
             options: this.fb.array([]),
             required: false,
             number: questions.length + 1,
             id: Math.random().toString().substring(2)
-        }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions])}));
+        }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+        questions.push(question);
         this.questionnaire.wasChecked = false;
+
+        question.kindHasOptions = () => this.kindsWithOptions.includes(question.get('kind').value);
+        question.isOneOf = (kinds) => kinds.includes(question.get('kind').value);
+
+        question.get('kind').valueChanges.subscribe(kind => {
+            if (kind === 'Matrix') {
+                question.addControl('columns', this.fb.array([]));
+                question.addControl('rows', this.fb.array([]));
+                this.addOneTo(question, 'columns');
+                this.addOneTo(question, 'columns');                
+                this.addOneTo(question, 'rows');
+                this.addOneTo(question, 'rows');                                               
+            } else { 
+                question.removeControl('columns');
+                question.removeControl('rows');                                
+            }
+        });
     }
 
     deleteQuestion(i) {
@@ -203,8 +236,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     hasNoOptions(input) {
-        let kind = input.get('kind').value;
-        if ((kind === "Radio" || kind === "Checkboxes" || kind === "Drop-down") && input.controls.options.length === 0) {
+        if (input.kindHasOptions && input.kindHasOptions() && input.controls.options.length === 0) {
             return {noOptions: true};
         } else {
             return null;
@@ -223,11 +255,33 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         return error;
     }
 
+    valueIsUnique(input) {
+        let error = null;
+        if (input && input.value && input.parent) {
+            for (let other of input.parent.value) {
+                if (input.value == other) {
+                    error = {duplicateValue: true};
+                }
+            }
+        }
+        return error;
+    }
+
+    inputHasError(error) {
+        return (input) => this.isInvalid(input) && input.hasError(error);
+    }
+
     addOption(question) {
         question.get("options").push(this.fb.group({
             body: ["", Validators.compose([this.optionIsUnique, Validators.required])]
         }));
         this.questionnaire.wasChecked = false;
+    }
+
+    addOneTo(question, collection) {
+        question.get(collection).push(
+            this.fb.control("", Validators.compose([this.valueIsUnique, Validators.required]))
+        );
     }
 
     transformHashtag(value) {
@@ -241,6 +295,19 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             display: `#${value}`, 
             value: value
         });
+    }
+
+    transformHashtagArray(value) {
+        if (value !== null && typeof value === 'object') {
+            value = value.value;
+        }
+        if (value[0] === "#") {
+            value = value.substring(1);
+        }
+        return {
+            display: `#${value}`,
+            value: value
+        };
     }
 
     transformName(x) {
@@ -316,6 +383,15 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         });
     }
 
+    onMatrixDrag(event, matrix) {
+        // if scrollable
+        if (matrix.scrollWidth > matrix.clientWidth) {
+            // prevent drag
+            event.stopPropagation();
+        }
+        return true;
+    }
+
     setAsTouched(group) {
         group.markAsTouched();
         for (let i in group.controls) {
@@ -382,11 +458,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     postForm() {
-        let date = new Date();
-
-        this.http.post('/forms/create', this.questionnaireData()).toPromise()
+        var formdata = this.questionnaireData();
+        console.log(formdata);
+        this.http.post('/forms/create', formdata).toPromise()
             .then(response => {
-                let formData = Object.assign(this.questionnaireData());
+                let formData = Object.assign(formdata);
                 formData.id = response.json().id;
                 this.formService.setData(formData);
                 this.router.navigate(['previewForm']);

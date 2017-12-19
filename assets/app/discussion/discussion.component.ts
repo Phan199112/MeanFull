@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { DiscussionModel } from "./discussion.model";
-import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { Http } from "@angular/http";
 
 @Component({
     selector: 'discussion-item',

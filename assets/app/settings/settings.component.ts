@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../user.service";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import {NgbTabset} from "@ng-bootstrap/ng-bootstrap";
+import { Http } from "@angular/http";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UserService } from "../user.service";
+import { ActivatedRoute } from "@angular/router";
+import { NgbTabset} from "@ng-bootstrap/ng-bootstrap";
 
 
 let UsaSchools = require("../data/US-schools.json");

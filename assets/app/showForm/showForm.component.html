@@ -30,6 +30,42 @@
                     <select class="form-control" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
                         <option *ngFor="let option of question.options" [value]="option.body">{{option.body}}</option>
                     </select>
+                    <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
+                        <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
+                            <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="form-control">
+                                <span class="rank">{{j + 1}}</span>
+                                <label>{{option}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="matrix" *ngIf="question.kind == 'Matrix'" formGroupName="answer">
+                        <table class="table-responsive">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td class="label" *ngFor="let column of question.columns; let i = index">
+                                        <div class="contents">
+                                            <label>{{column}}</label>
+                                        </div>                                                        
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="matrix-row" *ngFor="let row of question.rows; let i = index">
+                                    <td class="label">
+                                        <div class="contents">
+                                            <label>{{row}}</label>                                                
+                                        </div>
+                                    </td>
+                                    <td class="field" *ngFor="let column of question.columns; let j = index">
+                                        <div class="contents">
+                                            <input type="radio" [formControlName]="row" [value]="column"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
                 <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>

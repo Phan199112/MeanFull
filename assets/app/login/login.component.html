@@ -21,10 +21,6 @@
                 <div class="top clearfix">
                     <div class="left">
                         <h5 class="title">Login to our site</h5>
-                        <p>Enter username and password to log on:</p>
-                    </div>
-                    <div class="right">
-                        <i class="fa fa-key" aria-hidden="true"></i>
                     </div>
                 </div>
                 <div class="bottom">
@@ -33,7 +29,7 @@
                             <p>LOGIN FAILED: Please confirm password and/or e-mail address for accuracy.</p>
                         </div>
                         <div class="form-group">
-                            <input 
+                            <input type="text" class="form-control"
                                 formControlName="email"
                                 placeholder="e-mail address..."
                                 [ngClass]="{'form-control': true, 'is-invalid': login.get('email').invalid && login.get('email').touched}">
@@ -42,34 +38,30 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input 
+                            <input type="password" class="form-control"
                                 formControlName="password"
                                 placeholder="Password..."
-                                type="password"
                                 [ngClass]="{'form-control': true, 'is-invalid': login.get('password').invalid && login.get('password').touched}">
                             <div *ngIf="login.get('password').invalid && login.get('password').touched" class="invalid-feedback">
                                 Password is required
                             </div>
                         </div>
-                        <button type="submit" class="btn" [disabled]="login.invalid && login.wasChecked" (click)="checkSubmit(login, 'login')">Sign in!</button>
+                        <div>
+                            <button type="submit" class="btn btn-success" [disabled]="login.invalid && login.wasChecked" (click)="checkSubmit(login, 'login')">Sign in!</button>
+                            <button type="button" class="btn btn-danger" (click)="showForgotPwd = true">Forgot password?</button>
+                        </div>
                     </form>
                 </div>
             </div>
-            <a id="forgotPwdLink" class="regular d-block" (click)="showForgotPwd = true">Forgot password?</a>
+
             <div class="login-box" *ngIf="showForgotPwd">
                 <div class="top clearfix">
                     <div class="left">
                         <h5 class="title">Password Reset</h5>
-                        <p>Enter your email address and we'll send you password reset instructions:</p>
-                    </div>
-                    <div class="right">
-                        <i class="fa fa-key" aria-hidden="true"></i>
+                        <p>Enter your email address to get password reset instructions:</p>
                     </div>
                 </div>
                 <div class="bottom">
-                    <div *ngIf="statusreset == false" class="invalid-feedback">
-                        Password reset: e-mail address could not be found.
-                    </div>
                     <form [formGroup]="pwdReset">
                         <div class="form-group">
                             <input 
@@ -81,12 +73,15 @@
                                 Email is required
                             </div>
                         </div>
-                        <div *ngIf="pwdReset.submitted" class="row">
-                            <div  class="col text-center submitted-message">
-                                <p class="alert alert-success">Your password link is sent to your email!</p>
+                        <div class="row">
+                            <div class="col text-center submitted-message" *ngIf="statusresetok" >
+                                <p class="alert alert-success">A new password was sent to your email address!</p>
+                            </div>
+                            <div class="alert alert-danger" role="alert" *ngIf="statusresetfailed">
+                                <p>Reset failed!</p>
                             </div>
                         </div>
-                        <button *ngIf="!pwdReset.submitted" type="submit" class="btn" [disabled]="pwdReset.invalid && pwdReset.wasChecked" (click)="checkSubmit(pwdReset, 'pwdReset')">Submit</button>
+                        <button *ngIf="!statusresetok && !statusresetfailed" type="submit" class="btn btn-success" [disabled]="pwdReset.invalid && pwdReset.wasChecked" (click)="checkSubmit(pwdReset, 'pwdReset')">Submit</button>
                     </form>
                 </div>
             </div>
@@ -98,11 +93,10 @@
                 <div class="top clearfix">
                     <div class="left">
                         <h5 class="title">Sign up now</h5>
-                        <p>Fill in the form below to get instant access:</p>
                     </div>
-                    <div class="right">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </div>
+                    <!--<div class="right">-->
+                        <!--<i class="fa fa-pencil" aria-hidden="true"></i>-->
+                    <!--</div>-->
                 </div>
                 <div class="bottom">
                     <div *ngIf="!signupcompleted && !signupfailed">
@@ -124,40 +118,19 @@
                             </div>
 
                             <!--email-->
-                            <div formGroupName="email">
-                                <div class="form-group">
-                                    <input formControlName="email" [ngClass]="{'form-control': true, 'is-invalid': signup.get('email').get('email').invalid && signup.get('email').get('email').touched}" type="email" name="" placeholder="Email">
-                                    <div *ngIf="signup.get('email').get('email').invalid && signup.get('email').get('email').touched" class="invalid-feedback">
-                                        Email is required
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input
-                                            formControlName="confirmation"
-                                            [ngClass]="{'form-control': true, 'is-invalid': signup.get('email').invalid && signup.get('email').get('confirmation').touched}" type="email" name="" placeholder="Confirm Email">
-                                    <div *ngIf="signup.get('email').invalid && signup.get('email').get('confirmation').touched" class="invalid-feedback">
-                                        Emails don't match
-                                    </div>
+                            <div class="form-group">
+                                <input formControlName="email" [ngClass]="{'form-control': true, 'is-invalid': signup.get('email').invalid && signup.get('email').touched}" type="email" name="" placeholder="Email">
+                                <div *ngIf="signup.get('email').invalid && signup.get('email').touched" class="invalid-feedback">
+                                    Email is required
                                 </div>
                             </div>
 
                             <!--password-->
-                            <div formGroupName="password">
-                                <div class="form-group">
-                                    <input
-                                            formControlName="password"
-                                            [ngClass]="{'form-control': true, 'is-invalid': signup.get('password').get('password').invalid && signup.get('password').get('password').touched}" type="password" placeholder="Password">
-                                    <div *ngIf="signup.get('password').get('password').invalid && signup.get('password').get('password').touched" class="invalid-feedback">
-                                        Password is required
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input
-                                            formControlName="confirmation"
-                                            [ngClass]="{'form-control': true, 'is-invalid': signup.get('password').invalid && signup.get('password').get('confirmation').touched}" type="password" placeholder="Confirm Password">
-                                    <div *ngIf="signup.get('password').invalid && signup.get('password').get('confirmation').touched" class="invalid-feedback">
-                                        Passwords don't match
-                                    </div>
+                            <div class="form-group">
+                                <input formControlName="password"
+                                        [ngClass]="{'form-control': true, 'is-invalid': signup.get('password').invalid && signup.get('password').touched}" type="password" placeholder="Password">
+                                <div *ngIf="signup.get('password').invalid && signup.get('password').touched" class="invalid-feedback">
+                                    Password is required
                                 </div>
                             </div>
 
@@ -545,7 +518,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn" [disabled]="signup.invalid && signup.wasChecked" (click)="checkSubmit(signup, 'signup')">
+                            <button class="btn btn-success" [disabled]="signup.invalid && signup.wasChecked" (click)="checkSubmit(signup, 'signup')">
                                 Let's do it!
                             </button>
 

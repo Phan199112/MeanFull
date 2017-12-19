@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { DiscussionModel } from "./discussion.model";
-import { Http, Response, Headers, RequestOptions } from "@angular/http";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import { Http } from "@angular/http";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({

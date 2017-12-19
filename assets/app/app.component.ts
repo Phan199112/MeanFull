@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef, ComponentFactoryResolver, ViewChild, ComponentRef } from '@angular/core';
 import { HTMLElementUtil} from './HTMLUtilities';
-import { PopupShareComponent} from './popup/popup.share.component';
 import { PopupComponent} from './popup/popup.component';
 
 @Component({

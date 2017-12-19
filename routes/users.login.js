@@ -4,13 +4,7 @@ var UserModel = require('../db.models/user.model');
 var log = require("../functions/logs");
 var randommod = require("../functions/random");
 var usersfunctions = require('../functions/users');
-var email 	= require("../node_modules/emailjs/email");
-var server 	= email.server.connect({
-    user:    "cw@arnebruyneel.be",
-    password:"HCW-9yE-9Tz-keb",
-    host:    "send.one.com",
-    ssl:     true
-});
+var emailfunctions 	= require("../functions/email");
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -64,10 +58,10 @@ module.exports = function(app, passport, manager, hashids) {
                     if (user.emailConfirmed != null) {
                         if (user.emailConfirmed.value == true) {
                             if (!user.validPassword(password)) {
-                                console.log("wrong password");
+                                //console.log("wrong password");
                                 return done(null, false, {message: 'Invalid password'});
                             } else {
-                                console.log("logged in");
+                                //console.log("logged in");
                                 return done(null, user);
                             }
 
@@ -202,7 +196,7 @@ module.exports = function(app, passport, manager, hashids) {
         var userfound = 10; // set default to 'reject' value
 
         new Promise(function(resolve, reject) {
-            UserModel.findOne({ $or:[ {"local.email": data.email.email}, {'email': data.email.email} ]}, function (err, k) {
+            UserModel.findOne({ $or:[ {"local.email": data.email}, {'email': data.email} ]}, function (err, k) {
                 if (err) {
                     reject(err);
                 } else {
@@ -232,37 +226,32 @@ module.exports = function(app, passport, manager, hashids) {
                     UserModel.create({
                         name: {first: data.name.firstname, last: data.name.lastname},
                         searchname: data.name.firstname+" "+data.name.lastname,
-                        email: data.email.email,
+                        email: data.email,
                         emailConfirmed: {value: false, key: randomkey},
                         location: {city: data.city, state: data.state, country: data.country},
                         gender: data.gender,
                         dob: data.dob,
                         pic: data.pic,
                         local: {
-                            email: data.email.email,
-                            password: testuser.generateHash(data.password.password)
+                            email: data.email,
+                            password: testuser.generateHash(data.password)
                         },
                         facebookID: null,
                         facebookProfile: null,
-                        public: true
+                        public: true,
+                        timestamp: Date.now()
                     }, function (err, k) {
                         if (err) {
                             // failed
                             console.log("Error: manual signup - " + err);
-                            res.json({
-                                status: 0,
-                            });
+                            res.json({status: 0});
+
                         } else {
                             //req.session.userid = k._id;
                             // send email validation
                             var confirmlink = "https://www.crowdworks.us/users/settings/confirmemail/"+randomkey;
                             // send email
-                            server.send({
-                                text:    "A request was received to generate a user account with your email address. If you made this request, please confirm by clicking on the link. If not, please ignore this email.: "+confirmlink,
-                                from:    "CrowdWorks Account Verification <cw@arnebruyneel.be>",
-                                to:      "<"+data.email.email+">",
-                                subject: "Account verification"
-                            }, function(err, message) { console.log(err || message); });
+                            emailfunctions.sendEmailVerification(data.email, confirmlink);
 
                             // return
                             log.writeLog(k._id, 'manual signup - new user', req.ip);
@@ -274,18 +263,14 @@ module.exports = function(app, passport, manager, hashids) {
 
                 } else {
                     // failed
-                    res.json({
-                        status: 0,
-                    });
+                    res.json({status: 0});
 
                 }
 
             })
             .catch(function() {
                 // failed
-                res.json({
-                    status: 0
-                });
+                res.json({status: 0});
 
             });
 

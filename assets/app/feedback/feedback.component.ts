@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Http, Response, Headers } from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import { Http } from "@angular/http";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: 'feedback-form',

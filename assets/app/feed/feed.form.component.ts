@@ -1,11 +1,10 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { Http, Response} from "@angular/http";
+import { Http } from "@angular/http";
 import { FeedForm } from "./feed.form.model";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormArray, FormControl, FormGroup } from "@angular/forms";
 import { AppComponent } from '../app.component';
-import { PopupShareComponent} from '../popup/popup.share.component';
-import { PopupComponent} from '../popup/popup.component';
-import {PopupService} from "../popup.service";
+import { PopupShareComponent } from '../popup/popup.share.component';
+import { PopupService } from "../popup.service";
 
 @Component({
     selector: 'feed-form-component',

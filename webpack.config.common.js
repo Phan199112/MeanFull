@@ -1,4 +1,6 @@
 var webpack = require('webpack');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
     entry: {
@@ -36,6 +38,7 @@ module.exports = {
         new webpack.ContextReplacementPlugin(
             /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
             './chart'
-        )
+        ),
+        new BundleAnalyzerPlugin()
     ]
 };

@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy  } from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {DragulaService} from 'ng2-dragula/ng2-dragula';
+import * as autoScroll from 'dom-autoscroller';
 
 @Component({
     selector: 'show-form',
@@ -7,8 +9,9 @@ import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angul
     styleUrls: ['./showForm.component.scss']
 })
 
-export class ShowFormComponent implements OnInit {
+export class ShowFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
+    autoScroll: any;    
 
     @Input()
     data: Object = {};
@@ -22,10 +25,25 @@ export class ShowFormComponent implements OnInit {
     @Output()
     submitForm: EventEmitter<Object> = new EventEmitter<Object>();
 
-    constructor(private fb: FormBuilder) {}
+    constructor(
+        private fb: FormBuilder,
+        private dragulaService: DragulaService        
+    ) {
+        this.dragulaService.drag.subscribe(args => {
+            if (!this.autoScroll) {
+                this.autoScroll = autoScroll([window, document.body], {margin: 50, autoScroll: () => this.dragulaService.bags[0].drake.dragging});
+            }
+        });
+    }
 
     ngOnInit() {
         this.createForm();
+    }
+
+    ngOnDestroy() {
+        if (this.autoScroll) {
+            this.autoScroll.destroy();
+        }
     }
 
     createForm() {
@@ -47,6 +65,18 @@ export class ShowFormComponent implements OnInit {
                 } else {
                     groupObject.answer = this.fb.group(groupObject.answer);
                 }
+            } else if (question.kind === 'Rank') {
+                groupObject.answer = question.options.map(option => option.body);
+                groupObject.answer = this.fb.array(groupObject.answer);
+            } else if (question.kind === 'Matrix') {
+                groupObject.answer = {};
+                for (let row of question.rows) {
+                    groupObject.answer[row] = "";
+                    if (question.required) {
+                        groupObject.answer[row] = [groupObject.answer[row], Validators.required];
+                    }
+                }
+                groupObject.answer = this.fb.group(groupObject.answer);                
             } else {
                 groupObject.answer = "";
                 if (question.required) {
@@ -103,7 +133,7 @@ export class ShowFormComponent implements OnInit {
         if (this.submitted) return;
         let value = Object.assign({}, this.questionnaire.value);
         for (let question of value.questions) {
-            if (typeof question.answer == 'object') {
+            if (question.kind === 'Checkboxes') {
                 question.answer = Object.keys(question.answer).filter(k => question.answer[k]);
             }
         }

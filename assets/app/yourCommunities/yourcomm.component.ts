@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { YourCommunitiesModel } from "./yourcomm.model";
-import { Http, Response, Headers } from "@angular/http";
+import { Http } from "@angular/http";
 
 @Component({
     selector: 'your-comm-component',

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response, Headers } from "@angular/http";
-import { FormService } from "../form.service";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import { PopupComponent} from '../popup/popup.component';
+import { Http } from "@angular/http";
+import { ActivatedRoute } from "@angular/router";
 import { AppComponent } from '../app.component';
-import {PopupService} from "../popup.service";
-import {PopupInviteCommComponent} from "../popup/popup.invitecomm.component";
+import { PopupService } from "../popup.service";
+import { PopupInviteCommComponent } from "../popup/popup.invitecomm.component";
 
 @Component({
     selector: 'view-community',

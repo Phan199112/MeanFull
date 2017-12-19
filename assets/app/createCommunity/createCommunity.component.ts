@@ -1,13 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
+import { Component } from '@angular/core';
+import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import {FormService} from "../form.service";
 import {UserService} from "../user.service";
-import {Router, ActivatedRoute} from "@angular/router";
-import {DragulaService} from 'ng2-dragula/ng2-dragula';
-import * as autoScroll from 'dom-autoscroller';
 
 @Component({
     selector: 'create-community',

@@ -47,9 +47,9 @@ app.use(passport.session());
 // Arne test database
 //var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
 // Arne 2 node replica on mlab
-//var mongoDB = 'mongodb://cwserver:HCW-9yE-9Tz-keb@ds249425-a0.mlab.com:49425,ds249425-a1.mlab.com:49425/cwlive?replicaSet=rs-ds249425';
+var mongoDB = 'mongodb://cwserver:HCW-9yE-9Tz-keb@ds249425-a0.mlab.com:49425,ds249425-a1.mlab.com:49425/cwlive?replicaSet=rs-ds249425';
 // mongodb (this is the live version with real data, if you'd like to do tests us the mlab 2 node replica)
-var mongoDB = 'mongodb://cwdbnode:owHHvHTL9pn2MFRo@cwdb-shard-00-00-zcm55.mongodb.net:27017,cwdb-shard-00-01-zcm55.mongodb.net:27017,cwdb-shard-00-02-zcm55.mongodb.net:27017/test?ssl=true&replicaSet=cwdb-shard-0&authSource=admin';
+//var mongoDB = 'mongodb://cwdbnode:owHHvHTL9pn2MFRo@cwdb-shard-00-00-zcm55.mongodb.net:27017,cwdb-shard-00-01-zcm55.mongodb.net:27017,cwdb-shard-00-02-zcm55.mongodb.net:27017/test?ssl=true&replicaSet=cwdb-shard-0&authSource=admin';
 
 mongoose.connect(mongoDB, {
     useMongoClient: true
@@ -86,6 +86,7 @@ app.use(function(req, res, next) {
 // cron jobs
 var cron = require('node-cron');
 var TagsModel = require('./db.models/tags.model');
+var UserModel = require('./db.models/user.model');
 var FormModel = require('./db.models/form.model');
 var CommunityModel = require('./db.models/community.model');
 
@@ -101,7 +102,7 @@ cron.schedule('*/5 * * * *', function(){
     // mongoDB query for tags, only query public forms
     new Promise(function(resolve, reject) {
             var tempfunctionTagsForms = function () {
-                var promise = new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) {
                     FormModel.find({public: true, shared: true}).cursor()
                         .on('data', function (form) {
                             // form is one entry of many
@@ -124,11 +125,10 @@ cron.schedule('*/5 * * * *', function(){
                             resolve();
                         });
                 });
-                return promise;
             };
 
             var tempfunctionTagsCommunities = function () {
-                var promise = new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) {
                     CommunityModel.find({public: true}).cursor()
                         .on('data', function (comm) {
                             // form is one entry of many
@@ -150,22 +150,38 @@ cron.schedule('*/5 * * * *', function(){
                             resolve();
                         });
                 });
-                return promise;
             };
 
             var randomCommunitities = function() {
-                var promise = new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) {
                     CommunityModel.syncRandom(function (err, result) {
                         resolve();
                     });
                 });
-                return promise;
+            };
+
+            var tempfunctionListUsers = function () {
+                var userlist = [];
+                return new Promise(function(resolve, reject) {
+                    UserModel.find({}).cursor()
+                        .on('data', function (user) {
+                            userlist.push(user.name.first+" "+user.name.last);
+                        })
+                        .on('error', function (err) {
+                            reject(err);
+                        })
+                        .on('end', function () {
+                            console.log(userlist);
+                            resolve();
+                        });
+                });
             };
 
             // push promises to array
             promiseslist.push(tempfunctionTagsForms());
             //promiseslist.push(tempfunctionTagsCommunities());
             promiseslist.push(randomCommunitities());
+            //promiseslist.push(tempfunctionListUsers());
 
             return Promise.all(promiseslist).then(function () {
                 for (var key in tags) {

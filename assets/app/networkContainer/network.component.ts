@@ -1,9 +1,4 @@
-import { Component, OnInit, OnDestroy, ɵisObservable, Input } from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import {UserService} from "../user.service";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'network-item',

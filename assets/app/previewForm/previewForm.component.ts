@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormService} from "../form.service";
 import {UserService} from "../user.service";
 import {Router} from "@angular/router";
-import {Http, Response, Headers} from "@angular/http";
+import {Http } from "@angular/http";
 
 @Component({
     selector: 'preview-form',

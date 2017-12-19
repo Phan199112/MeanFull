@@ -102,7 +102,7 @@ canvas {
 
 #profile-menu-wrapper {
   position: absolute;
-  top: 2rem;
+  top: 4rem;
   right: 0.8rem;
 
   #profile-menu {
@@ -110,4 +110,11 @@ canvas {
   }
 }
 
-
+.addToNetwork {
+  position: absolute;
+  top: 2rem;
+  right: 0.8rem;
+  margin-right: 10px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}

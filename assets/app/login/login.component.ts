@@ -1,13 +1,15 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
 import {Http} from "@angular/http";
-import {Router, ParamMap, ActivatedRoute} from "@angular/router";
+import {Router} from "@angular/router";
+import {UserService} from "../user.service";
 let UsSchools = require("../data/US-schools.json");
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    providers: [UserService]
 })
 export class LoginComponent implements OnInit {
     login: FormGroup;
@@ -17,7 +19,11 @@ export class LoginComponent implements OnInit {
     profilePicURL: string;
     status: boolean = true;
     UsSchools: string[] = UsSchools;
-    statusreset: boolean = true;
+    // reset
+    showForgotPwd: boolean = false;
+    statusresetfailed: boolean = false;
+    statusresetok: boolean = false;
+    // signup
     signupstarted: boolean = false;
     signuppending: boolean = false;
     signupfailed: boolean = false;
@@ -27,25 +33,9 @@ export class LoginComponent implements OnInit {
         private fb: FormBuilder,
         private http: Http,
         private router: Router,
-        private route: ActivatedRoute
+        private userService: UserService
     ){
 
-    }
-
-    emailMatchValidator(input) {
-        let errors = null;
-        if (input.get('email') && input.get('confirmation') && input.get('email').value != input.get('confirmation').value) {
-            errors = {emailMismatch: true};
-        }
-        return errors;
-    }
-
-    passwordMatchValidator(input) {
-        let errors = null;
-        if (input.get('password') && input.get('confirmation') && input.get('password').value != input.get('confirmation').value) {
-            errors = {passwordMismatch: true};
-        }
-        return errors;
     }
     
     ngOnInit() {
@@ -59,18 +49,8 @@ export class LoginComponent implements OnInit {
                 firstname: ['', Validators.compose([Validators.minLength(2), Validators.required])],
                 lastname: ['', Validators.compose([Validators.minLength(2), Validators.required])]
             }),
-            email: this.fb.group({
-                email: ['', Validators.required],
-                confirmation: '',
-            }, {
-                validator: this.emailMatchValidator
-            }),
-            password: this.fb.group({
-                password: ['', Validators.required],
-                confirmation: ''
-            }, {
-                validator: this.passwordMatchValidator
-            }),
+            email: ['', Validators.required],
+            password: ['', Validators.required],
             city: ['', Validators.required],
             state: ['', Validators.required],
             country: ['United States', Validators.required],
@@ -127,10 +107,10 @@ export class LoginComponent implements OnInit {
 
         this.http.post('/users/pwdReset', data).toPromise()
              .then(k => {
-                if (k.data == 1) {
-                    this.pwdReset.submitted = true;
+                if (k.json().status == 1) {
+                    this.statusresetok = true;
                 } else {
-                    this.statusreset = false;
+                    this.statusresetfailed = true;
                 }
 
             })
@@ -146,13 +126,14 @@ export class LoginComponent implements OnInit {
                 (data) => {
                     // Handle response here
                     if (data.status == 1) {
-                        this.router.navigateByUrl('/');
-                        // force reload
-                        location.reload();
+                        // reload userservice
+                        this.userService.afterLoginReload();
+                        // navigate to feed
+                        this.router.navigate(['/']);
+                        // reload the page
+                        location.reload(true);
                     } else {
-                        this.router.navigateByUrl('/users/login');
-                        // force reload
-                        location.reload();
+                        this.status = false;
                     }
 
                 },
@@ -170,9 +151,7 @@ export class LoginComponent implements OnInit {
         this.signupfailed = false;
 
         // data
-        let date = new Date();
         let signupData = Object.assign({
-            createdAt: date.toString(),
             profilePic: this.profilePicURL
         }, this.signup.value);
 

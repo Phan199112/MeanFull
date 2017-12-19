@@ -21,7 +21,8 @@ var UserSchema = new Schema({
     facebookProfile: Object,
     education: Object,
     report: Object,
-    tags: [{type: String}]
+    tags: [{type: String}],
+    timestamp: String
 });
 
 UserSchema.methods.generateHash = function(password) {

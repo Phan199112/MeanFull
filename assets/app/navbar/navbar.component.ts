@@ -26,9 +26,15 @@ export class NavbarComponent implements OnInit {
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler; 
 
-    constructor(private http: Http, private userService: UserService) { }
+    constructor(private http: Http,
+                private userService: UserService) { }
 
-    checkLoggedin = function() {
+
+    ngOnInit() {
+        this.checkLoggedin();
+    }
+
+    checkLoggedin() {
         this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
                 this.loggedin = true;
@@ -76,10 +82,6 @@ export class NavbarComponent implements OnInit {
         }
     }
 
-    ngOnInit() {
-        this.checkLoggedin();
-    }
-
     getEventsList() {
         this.userService.afterLoginCheck().then(response => {
             // request eventslist
@@ -105,6 +107,11 @@ export class NavbarComponent implements OnInit {
                 //console.log("updated as seen");
             })
             .catch(error => alert("Error retrieving events list: " + error));
+    }
+
+    logout() {
+        this.userService.clearLogin();
+        this.goTo('/users/logout');
     }
 
     goTo(url) {

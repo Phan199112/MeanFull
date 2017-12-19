@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FeedForm } from "./feed.form.model";
-import { Http, Response, Headers } from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+import { Http } from "@angular/http";
 import {UserService} from "../user.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'feed-page',
@@ -12,14 +11,28 @@ import {UserService} from "../user.service";
 })
 export class FeedPageComponent implements OnInit  {
     loggedin: boolean = false;
+    emailconfirmfailed: boolean = false;
+    emailconfirmok: boolean = false;
 
-    constructor(private http: Http, private userService: UserService) {
+    constructor(private http: Http, private userService: UserService, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
         this.userService.afterLoginCheck().then(data => {
             if (data != 0) {
                 this.loggedin = true;
+            }
+        });
+
+        this.route.queryParams.subscribe(params => {
+            if (params.message) {
+                if (params.message == "emailconfirmfailed") {
+                    this.emailconfirmfailed = true;
+
+                } else if (params.message == "emailconfirmok") {
+                    this.emailconfirmok = true;
+
+                }
             }
         });
     }

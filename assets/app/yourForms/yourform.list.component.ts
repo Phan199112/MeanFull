@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { YourFormModel } from "./yourform.model";
-import { Http, Response, Headers } from "@angular/http";
+import { Http } from "@angular/http";
 
 @Component({
     selector: 'yourform-list',

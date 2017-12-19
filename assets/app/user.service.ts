@@ -17,6 +17,12 @@ export class UserService {
         data = received;
     }
 
+    clearLogin() {
+        data = null;
+        checkedLogin = false;
+        loggedin = false;
+    }
+
     getLoggedin() {
         return loggedin;
     }
@@ -30,6 +36,8 @@ export class UserService {
                         data = res.json();
                         if (data != null) {
                             loggedin = true;
+                        } else {
+                            loggedin = false;
                         }
                         resolve(data);
                     })
@@ -40,6 +48,31 @@ export class UserService {
             } else {
                 resolve(data);
             }
+        })
+            .catch(function() {
+                data = null;
+                checkedLogin = false;
+                loggedin = false;
+            });
+    }
+
+    afterLoginReload() {
+        return new Promise((resolve, reject) => {
+            this.http.get('/users/loggedin').toPromise()
+                .then(res => {
+                    checkedLogin = true;
+                    data = res.json();
+                    if (data != null) {
+                        loggedin = true;
+                    } else {
+                        loggedin = false;
+                    }
+                    resolve(data);
+                })
+                .catch(error => {
+                    alert("Error checking if logged in: " + error);
+                    reject(error);
+                });
         })
             .catch(function() {
                 data = null;

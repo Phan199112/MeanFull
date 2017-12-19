@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ɵisObservable } from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import {UserService} from "../user.service";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Http } from "@angular/http";
+import { ActivatedRoute } from "@angular/router";
+import { UserService} from "../user.service";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
     selector: 'profile',

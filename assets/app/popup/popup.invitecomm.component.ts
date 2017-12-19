@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppComponent } from '../app.component';
-import {PopupService} from "../popup.service";
+import { PopupService } from "../popup.service";
 
 @Component(
     {

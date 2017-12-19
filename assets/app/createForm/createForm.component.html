@@ -38,7 +38,7 @@
                                     [separatorKeyCodes]="[32, 13]"
                                     formControlName="hashtags"
                                     id="tags">
-                                    <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceTag.bind(this)">
+                                    <tag-input-dropdown [autocompleteObservable]="observableSourceTag.bind(this)">
                                     </tag-input-dropdown>
                                  </tag-input>
                             </div>
@@ -87,10 +87,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row form-group form-control">
+                        <div class="row form-group form-control" *ngIf="!typeevent">
                             <div class="col">
-                                <label class="lead" *ngIf="!typeevent">Privacy settings of the survey</label>
-                                <label class="lead" *ngIf="typeevent">Privacy settings of the event</label>
+                                <label class="lead">Privacy settings of the survey</label>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-check">
@@ -184,6 +183,57 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row form-group form-control" *ngIf="typeevent">
+                            <div class="col">
+                                <label class="lead">Invite friends to take your event questionaire</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input
+                                                        type="hidden"
+                                                        class="form-check-input"
+                                                        aria-describedby="publicDesc"
+                                                        formControlName="public"
+                                                        [value]="false">
+                                            </label>
+
+
+                                                <div class="form-group"  *ngIf="questionnaire.get('public').value == false">
+                                                    <div class="tag-input-wrapper form-control">
+                                                        <div [ngClass]="{'d-none': showPrivateShares || questionnaire.get('sharedWithUsers').value}"
+                                                             class="tag-placeholder text-muted"
+                                                             (click)="showPrivateShares = true; focusTagInput(sharedWith)" style="width: 700px">
+                                                            Share with friends
+                                                        </div>
+                                                        <tag-input #sharedWith
+                                                                   [ngClass]="{'d-none': !showPrivateShares && questionnaire.get('sharedWithUsers').value === null}"
+                                                                   id="private-shares"
+                                                                   [identifyBy]="'value'"
+                                                                   [displayBy]="'display'"
+                                                                   placeholder="Name"
+                                                                   secondaryPlaceholder="Name"
+                                                                   [onAdding]="transformName"
+                                                                   (onBlur)="showPrivateShares = false"
+                                                                   [separatorKeyCodes]="[32, 13]"
+                                                                   formControlName="sharedWithUsers"
+                                                                   [onlyFromAutocomplete]="true" style="width: 700px">
+                                                            <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceUser.bind(this)">
+                                                            </tag-input-dropdown>
+                                                        </tag-input>
+
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                         <div class="row form-group form-control" *ngIf="!typeevent">
                             <div class="col">
                                 <label class="lead">Should the results be public to survey takers?</label>
@@ -276,13 +326,14 @@
                                         <!-- <input type="hidden" formControlName="pic"/> -->
                                    </div>
                                    <div *ngIf="question.get('kind').value">
-                                       <div *ngIf="question.get('kind').value == 'Radio' || question.get('kind').value == 'Checkboxes' || question.get('kind').value == 'Drop-down'">
+                                       <div *ngIf="question.kindHasOptions()">
                                            <div class="form-group" formArrayName="options">
                                                <div *ngFor="let option of question.get('options').controls; let j = index" [formGroupName]="j">
-                                                   <input name="option" *ngIf="question.get('kind').value == 'Radio' || question.get('kind').value == 'Checkboxes'" [type]="getInputType(question)"/>
-                                                   <span *ngIf="question.get('kind').value == 'Drop-down'">{{j+1}}. </span>
+                                                   <input name="option" [type]="getInputType(question)" *ngIf="question.isOneOf(['Radio', 'Checkboxes'])"
+                                                    />
+                                                   <span *ngIf="question.isOneOf(['Drop-down', 'Rank'])">{{j+1}}. </span>
                                                    <input 
-                                                       type="text" 
+                                                       type="text"
                                                        [focus]="j == question.get('options').controls.length - 1" 
                                                        [ngClass]="{'is-invalid': isInvalid(option.get('body')), 'option-input': true}"
                                                        formControlName="body" />
@@ -304,7 +355,61 @@
                                        </div>
                                        <input type="text" *ngIf="question.get('kind').value == 'Short answer'">
                                        <textarea *ngIf="question.get('kind').value == 'Paragraph'"></textarea>
-                                   </div>
+                                       <div class="matrix" *ngIf="question.get('kind').value == 'Matrix'">
+                                            <table #matrix class="table-responsive" (mousemove)="onMatrixDrag($event, matrix)" (touchmove)="onMatrixDrag($event, matrix)">
+                                                <thead>
+                                                    <tr formArrayName="columns">
+                                                        <td></td>
+                                                        <td class="label" *ngFor="let column of question.get('columns').controls; let i = index">
+                                                            <div class="contents">
+                                                                <input type="text" [formControlName]="i" [ngClass]="{'is-invalid': isInvalid(column), 'option-input': true}">
+                                                                <i *ngIf="i > 1" class="fa fa-trash-o mouseChangeToHand" (click)="question.get('columns').removeAt(i)" aria-hidden="true"></i>                                                        
+                                                            </div>                                                        
+                                                        </td>
+                                                        <td>
+                                                            <div class="contents">
+                                                                <i class="fa fa-plus btn btn-outline-secondary mouseChangeToHand" style="border:none" (click)="addOneTo(question, 'columns')" aria-hidden="true"></i>                                                    
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody formArrayName="rows">
+                                                    <tr class="matrix-row" *ngFor="let row of question.get('rows').controls; let i = index">
+                                                        <td class="label">
+                                                            <div class="contents">
+                                                                <input type="text" [formControlName]="i" [ngClass]="{'is-invalid': isInvalid(row), 'option-input': true}">
+                                                                <i *ngIf="i > 1" class="fa fa-trash-o mouseChangeToHand" (click)="question.get('rows').removeAt(i)" aria-hidden="true"></i>                                                                                                                                                                            
+                                                            </div>
+                                                        </td>
+                                                        <td class="field" *ngFor="let column of question.get('columns').controls; let j = index">
+                                                            <div class="contents">
+                                                                <input type="radio" [name]="row"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <i class="fa fa-plus btn btn-outline-secondary mouseChangeToHand" style="border:none" (click)="addOneTo(question, 'rows')" aria-hidden="true"></i>                                                    
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <ul class="invalid-feedback-list">
+                                                <li *ngIf="question.get('rows').controls.some(inputHasError('required'))" class="invalid-feedback">
+                                                    Row name is required
+                                                </li>
+                                                <li *ngIf="question.get('rows').controls.some(inputHasError('duplicateValue'))" class="invalid-feedback">
+                                                    Row name must be unique
+                                                </li>
+                                                <li *ngIf="question.get('columns').controls.some(inputHasError('required'))" class="invalid-feedback">
+                                                    Column name is required
+                                                </li>
+                                                <li *ngIf="question.get('columns').controls.some(inputHasError('duplicateValue'))" class="invalid-feedback">
+                                                    Column name must be unique
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                </div>
                             </div>
                         </div>

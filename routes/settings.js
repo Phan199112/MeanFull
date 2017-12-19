@@ -5,14 +5,7 @@ var EventModel = require('../db.models/event.model');
 var NetworkEdgesModel = require('../db.models/networkedges.model');
 var randommod = require("../functions/random");
 var commfunctions = require('../functions/communities');
-
-var email 	= require("../node_modules/emailjs/email");
-var server 	= email.server.connect({
-    user:    "cw@arnebruyneel.be",
-    password:"HCW-9yE-9Tz-keb",
-    host:    "send.one.com",
-    ssl:     true
-});
+var emailfunctions 	= require("../functions/email");
 
 
 // expose this function to our app using module.exports
@@ -20,17 +13,13 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/users/pwdReset', function(req, res) {
 
-        console.log("Password reset request");
-
         var userid;
         var newpassword = randommod.makeRandomPassword();
         var testuser = new UserModel();
 
         new Promise(function(resolve, reject) {
             UserModel.findOne({'local.email': req.body.email}, function (err, user) {
-                console.log(user);
                 if (err) {
-                    console.log("error");
                     reject(err);
                 } else {
                     if (user != null) {
@@ -46,32 +35,18 @@ module.exports = function(app, passport, manager, hashids) {
                 UserModel.findByIdAndUpdate(userid,
                     {$set: {"local.password": testuser.generateHash(newpassword)}}, function(err, k) {
                         if (err) {
-                            console.log("Error in updating password"+err);
+                            res.json({status: 0});
                         } else {
-                            console.log("Updated password");
-
                             // send email
-                            server.send({
-                                text:    "new password: "+newpassword,
-                                from:    "CrowdWorks Password Reset <cw@arnebruyneel.be>",
-                                to:      "<"+req.body.email+">",
-                                subject: "New password"
-                            }, function(err, message) { console.log(err || message); });
-
-                            res.json({
-                                message: 'success',
-                                data: 1
-                            });
+                            emailfunctions.sendNewPassword(req.body.email, newpassword);
+                            // send status to front-end
+                            res.json({status: 1});
                         }
                     });
 
             })
             .catch(function () {
-                console.log("failed");
-                res.json({
-                    message: 'failed',
-                    data: 0
-                });
+                res.json({status: 0});
             });
     });
 
@@ -79,9 +54,13 @@ module.exports = function(app, passport, manager, hashids) {
         //
         UserModel.findOneAndUpdate({'emailConfirmed.key': req.params.id}, {$set: {emailConfirmed: {value: true}}}, function(err, k) {
             if (err) {
-                res.json("Failure to update user account details.");
+                res.redirect('/?message=emailconfirmfailed');
             } else {
-                res.json("User account verified, please login now.");
+                if (k) {
+                    res.redirect('/?message=emailconfirmok');
+                } else {
+                    res.redirect('/?message=emailconfirmfailed');
+                }
             }
         });
     });
@@ -520,17 +499,39 @@ module.exports = function(app, passport, manager, hashids) {
                             }
                         });
                     } else {
-                        resolve();
+                        reject();
                     }
-                });
+                })
+
+                    .then(function () {
+                        // send an email
+                        // current username:
+                        var sendername = '';
+                        if (req.user != null) {
+                            if (req.user.provider === "facebook") {
+                                sendername = req.user.displayName;
+                            } else {
+                                sendername = req.user.name.first+' '+req.user.name.last;
+                            }
+                        }
+
+                        //
+                        UserModel.findById(targetuserid, function(err, k) {
+                            if (err) {
+                                // err
+                            } else {
+                                emailfunctions.sendNotificationFriendRequest(k.email, sendername)
+                            }
+                        });
+                    });
             })
             .then(function () {
                 res.json({status: status});
 
             })
             .catch(function () {
-            console.log("error query user");
-        });
+                console.log("error request network");
+            });
     });
 
     app.post('/users/settings/acceptnetworkrequest', manager.ensureLoggedIn('/users/login'), function(req,res) {

@@ -9,8 +9,8 @@
             <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>CrowdWorks</a>
             <div class="navbar-collapse collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ml-auto">
-                    <div *ngIf="loggedin;then picture else login"></div>
-                    <ng-template #picture>
+                    <div *ngIf="loggedin; then fullbar else login"></div>
+                    <ng-template #fullbar>
                         <li class="nav-item">
                             <a class="navlinks nav-link" routerLink="/createForm" title="Create Form">
                                 Create Form
@@ -98,7 +98,7 @@
                                     </a>
                                     <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
                                         <a class="dropdown-item" routerLink="/settings">Settings</a>
-                                        <a class="dropdown-item" (click)="goTo('/users/logout')">Logout</a>
+                                        <a class="dropdown-item" (click)="logout()">Logout</a>
                                     </div>
                                 </li>
                             </div>
@@ -110,7 +110,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="navlinks nav-link" (click)="goTo('/users/logout')">
+                                <a class="navlinks nav-link" (click)="logout()">
                                     Logout
                                 </a>
                             </li>

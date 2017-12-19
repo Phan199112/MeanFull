@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { TagModel } from "./tag.model";
-import { Http, Response, Headers, RequestOptions } from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import {FormBuilder, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { Http } from "@angular/http";
+import { Router, ActivatedRoute } from "@angular/router";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 

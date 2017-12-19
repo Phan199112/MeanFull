@@ -90,3 +90,35 @@ $warningColor: rgb(234, 122, 133);
     color: $warningColor;
     display: block;
 }
+
+.rank {
+  background-color: green;
+  width: 30px;
+  height: 20px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 10px;
+  color: white;
+  vertical-align: middle;
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px;
+  margin-top: 2px;
+}
+
+.matrix {
+  td {
+      padding: 10px 20px;
+      vertical-align: top;
+      white-space: nowrap;
+  }
+  tbody {
+      tr:nth-child(even) {
+          background-color: #F6F6F6;
+      }
+      td.field {
+          text-align: center;
+      }
+  }
+}

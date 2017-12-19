@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { CommunityModel } from "./community.model";
-import { Http, Response, Headers } from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+import { Http } from "@angular/http";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: 'community-list',

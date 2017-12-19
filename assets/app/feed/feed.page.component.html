@@ -1,15 +1,20 @@
-<!--<div class="container" id="FeedPage">-->
-    <div class="row">
-        <div class="col-md-3" id="leftSideOfContainer">
-            <community-list [user]="null"></community-list>
-            <yourform-list *ngIf="loggedin"></yourform-list>
-            <tag-list [user]="null" [comm]="null"></tag-list>
-        </div>
-        <div id="" class="col-md-7">
-            <feed-list [user]="null"></feed-list>
-        </div>
-        <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
-            <feedback-form *ngIf="loggedin"></feedback-form>
-        </div>
+<div class="row">
+    <div class="col-md-3" id="leftSideOfContainer">
+        <community-list [user]="null"></community-list>
+        <yourform-list *ngIf="loggedin"></yourform-list>
+        <tag-list [user]="null" [comm]="null"></tag-list>
     </div>
-<!--</div>-->
+    <div id="" class="col-md-7">
+        <br>
+        <div class="card" *ngIf="emailconfirmfailed">
+            <div class="card-body btn-danger">Validation of your email address failed. Please try again later.</div>
+        </div>
+        <div class="card" *ngIf="emailconfirmok">
+            <div class="card-body btn-success">Your email address was confirmed! Many thanks for joining CrowdWorks!</div>
+        </div>
+        <feed-list [user]="null"></feed-list>
+    </div>
+    <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+        <feedback-form *ngIf="loggedin"></feedback-form>
+    </div>
+</div>

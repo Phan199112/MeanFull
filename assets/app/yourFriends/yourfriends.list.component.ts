@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import { YourFriendsModel } from "./yourfriends.model";
-import { Http, Response, Headers } from "@angular/http";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+import { Http } from "@angular/http";
 
 @Component({
     selector: 'your-friends-list-component',

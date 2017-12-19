@@ -65,14 +65,13 @@ $navBarColor:  #0077b3;
       margin: 0;
 
       .form-control {
-        border: 3px solid #ddd;
+        //border: 3px solid #ddd;
         font-size: inherit;
       }
       
       button {
         cursor: hand;
-        width: 100%;
-        background: #0077b3;
+        //width: 100%;
         color: #fff;
         font-size: inherit;
       }
@@ -197,4 +196,12 @@ $warningColor: rgb(234, 122, 133);
 #forgotPwdLink {
   margin-top: 20px;
   height: 0;
+}
+
+.centerContent {
+  text-align: center;
+}
+
+.button {
+  font-size: inherit;
 }
