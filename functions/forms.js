@@ -172,7 +172,21 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types) {
                     }
 
                     if ((param.gender.indexOf(users[current.userid].gender) != "-1") && (param.age.indexOf(age) != "-1") && (param.location.indexOf(templocation) != "-1")) {
-                        temp.push(currentq.answer);
+
+                        if (types[i] === 'Checkboxes') {
+                            if (currentq.answer.constructor === Array) {
+                                for (var r = 0; r < currentq.answer.length; r++) {
+                                    temp.push(currentq.answer[r]);
+                                }
+
+                            } else {
+                                temp.push(currentq.answer);
+                            }
+
+                        } else {
+                            temp.push(currentq.answer);
+
+                        }
                     }
                 }
             }
