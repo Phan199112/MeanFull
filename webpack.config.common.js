@@ -38,7 +38,7 @@ module.exports = {
         new webpack.ContextReplacementPlugin(
             /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
             './chart'
-        ),
-        new BundleAnalyzerPlugin()
+        )//,
+        //new BundleAnalyzerPlugin()
     ]
 };

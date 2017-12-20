@@ -72,11 +72,33 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
         if (types[i] !== "Short answer" && types[i] !== "Paragraph" && types[i] !== "Rank" && types[i] !== "Matrix") {
             // declare temp
             var temp = [];
+
             // loop through all forms and look at data for this question
-            for (var j = 0; j < x.length; j++) {
-                current = x[j];
-                currentq = current.answers[i];
-                temp.push(currentq.answer);
+            if (types[i] === 'Checkboxes') {
+                // if multiple selected split.
+                for (var j = 0; j < x.length; j++) {
+                    var current = x[j];
+                    var currentq = current.answers[i];
+
+                    if (currentq.answer.constructor === Array) {
+                        for (var r = 0; r < currentq.answer.length; r++) {
+                            temp.push(currentq.answer[r]);
+                        }
+
+                    } else {
+                        temp.push(currentq.answer);
+                    }
+
+                }
+
+            } else {
+                //
+                for (var j = 0; j < x.length; j++) {
+                    var current = x[j];
+                    var currentq = current.answers[i];
+                    temp.push(currentq.answer);
+                }
+
             }
 
             // make a summary
