@@ -243,3 +243,36 @@ exports.analyzeTable = function analyzeTable(x, users) {
 
     return exportdata;
 };
+
+exports.exportTable = function exportTable(x, users) {
+    var exportdata = "Name";
+    // compute
+    var firstanswer = x[0];
+    var noquestions = firstanswer.answers.length;
+
+    // header
+    for (var i = 0; i < noquestions; i++) {
+        exportdata += ",Q"+(i+1);
+    }
+
+    // loop through answers and link to users at the same time
+    for (var k = 0; k < x.length; k++) {
+        var temp = x[k];
+        var ans;
+
+        // loop through all questions
+        for (var i = 0; i < noquestions; i++) {
+            if (ans) {
+                ans += ","+temp.answers[i].answer;
+            } else {
+                ans = ","+temp.answers[i].answer;
+            }
+
+
+        }
+
+        exportdata += "\n"+users[temp.userid]+ans;
+    }
+
+    return exportdata;
+};

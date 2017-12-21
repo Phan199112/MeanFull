@@ -55,6 +55,19 @@ exports.sendNotificationFriendRequest = function sendNotificationFriendRequest(e
     this.sendEmail(email, "New network request from Crowdworks", message, messagesafe);
 };
 
+exports.sendNotificationFormRequest = function sendNotificationFormRequest(email, friendname, link) {
+    var message = `<div class="card text-center" style="width: 60%; margin: 0 auto 0 auto;">
+                                    <div class="card-body">
+                                        <p class="card-text">`+friendname+` requested you to fill in a form on CrowdWorks</p>
+                                         <a href="https://www.crowdworks.us/feed;survey=`+link+`" class="btn btn-success">View the survey</a>
+                                    </div>
+                                </div>
+                   `;
+    var messagesafe = "Hello! "+friendname+" requested you to fill in a form on CrowdWorks. Please review the notifications page to review your pending requests. https://www.crowdworks.us/settings;page=notifications";
+
+    this.sendEmail(email, "New survey request from Crowdworks", message, messagesafe);
+};
+
 exports.sendEmail = function sendEmail(email, subject, message, messagesafe) {
     server.send({
         text:    messagesafe,

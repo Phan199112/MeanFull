@@ -11,6 +11,7 @@
     "@angular/animations": "^4.4.6",
     "@angular/cdk": "^5.0.0-rc.2",
     "@angular/common": "^4.4.6",
+    "@angular/compiler": "^4.4.6",
     "@angular/core": "^4.4.6",
     "@angular/forms": "^4.4.6",
     "@angular/http": "^4.4.6",
@@ -29,6 +30,7 @@
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
+    "csv-export": "^1.0.1",
     "d3": "^4.12.0",
     "d3.chart.pie": "^0.4.2",
     "d3pie": "^0.2.1",
@@ -68,6 +70,7 @@
     "supports-color": "^5.1.0",
     "to-string-loader": "^1.1.5",
     "webpack-sass-loaders": "^1.0.0",
+    "xlsx": "^0.11.14",
     "yargs": "^9.0.1",
     "zone.js": "^0.8.14"
   },

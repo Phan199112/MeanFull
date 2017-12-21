@@ -22,6 +22,7 @@ export class FeedForm {
     shared: boolean;
     typeevent: boolean;
     public: boolean;
+    download: string;
 
     constructor(private object: Object) {
         // general data
@@ -39,6 +40,7 @@ export class FeedForm {
         this.answered = false;
         this.plotdata = null;
         this.viewGraphsbool = false;
+        this.download = "./forms/download/"+this.id;
 
         // author info
         if (object.author != null) {

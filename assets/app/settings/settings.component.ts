@@ -370,7 +370,7 @@ export class SettingsComponent implements OnInit {
                 inputs: [
                     {
                         name: "country",
-                        type: "text"
+                        type: "country"
                     }
                 ]
             }

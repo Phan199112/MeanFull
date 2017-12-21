@@ -8,6 +8,9 @@ var networkfunctions = require('../functions/network');
 var usersfunctions = require('../functions/users');
 var commfunctions = require('../functions/communities');
 var formfunctions = require('../functions/forms');
+var exportfunctions = require('../functions/export');
+var emailfunctions 	= require("../functions/email");
+var fs = require('fs');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -66,7 +69,7 @@ module.exports = function(app, passport, manager, hashids) {
                 console.log("Error in updating form"+err);
                 res.json({status: 0});
             } else {
-                if (k.shared == true) {
+                if (k.shared === true) {
                     res.json({status: 1});
                 } else {
                     res.json({status: 0});
@@ -125,7 +128,32 @@ module.exports = function(app, passport, manager, hashids) {
                 // notification
                 if (unhashedUsers != null) {
                     for (var i = 0; i < unhashedUsers.length; i++) {
+                        // insite notification
                         notifications.createNotification(unhashedUsers[i], "form", "New survey", hashids.encodeHex(k._id));
+                        // email notification
+                        var sendername = '';
+                        if (receivedData.anonymous === true) {
+                            sendername = 'Anonymous';
+
+                        } else {
+                            if (req.user != null) {
+                                if (req.user.provider === "facebook") {
+                                    sendername = req.user.displayName;
+                                } else {
+                                    sendername = req.user.name.first+' '+req.user.name.last;
+                                }
+                            }
+                        }
+
+
+                        UserModel.findById(unhashedUsers[i], function(err, l) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                emailfunctions.sendNotificationFormRequest(l.email, sendername, hashids.encodeHex(k._id));
+                            }
+                        });
+
                     }
                 }
 
@@ -1026,15 +1054,11 @@ module.exports = function(app, passport, manager, hashids) {
                 } else {
                     console.log(answer);
                     if (answer != null) {
-                        res.json({
-                            data: 1
-                        });
+                        res.json({data: 1});
 
                     } else {
                         // user did not complete this form
-                        res.json({
-                            data: 0,
-                        });
+                        res.json({data: 0});
                     }
                 }
             });
@@ -1123,6 +1147,146 @@ module.exports = function(app, passport, manager, hashids) {
                 // failure
                 res.json({status: 0});
             });
+    });
+
+
+    // update the form
+    app.get('/forms/download/:id', manager.ensureLoggedIn('/users/login'), function(req, res) {
+
+        var formid = hashids.decodeHex(req.params.id);
+
+        // vars
+        var allanswers = [];
+        var promiselist = [];
+        var authorprofiles = [];
+        var questiontypes = [];
+        var exportdata;
+        var tempdest;
+
+        return new Promise (function(resolve, reject) {
+            formfunctions.formEvent(formid).then(function(resulttype) {
+                if (resulttype) {
+                    formfunctions.formAdmin(formid, req.session.userid).then(function(result) {
+                        if (result) {
+                            resolve();
+
+                        } else {
+                            reject();
+                        }
+                    });
+
+                } else {
+                    reject();
+                }
+            });
+        })
+            .then(function() {
+                // get all the answers to this question
+                return new Promise(function(resolve, reject){
+                    AnswersModel.find({formid: formid}, function (err, k) {
+                        // retrieved and array with all answers
+                        if (err) {
+                            // error
+                            reject();
+                        } else {
+                            allanswers = k;
+                            resolve();
+                        }
+                    });
+                })
+                    .then(function() {
+                        var tempqtypes = function(x) {
+                            return new Promise(function(resolve, reject) {
+                                FormModel.findById(x, function (err, form) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        if (form) {
+                                            // what are the question types?
+                                            // short answer and paragraph should not be plotted
+                                            if (form.questions.length > 0) {
+                                                for (var a = 0; a < form.questions.length; a++) {
+                                                    questiontypes.push(form.questions[a].kind);
+                                                }
+                                            }
+
+                                        }
+                                        resolve();
+                                    }
+                                });
+                            }).catch(function () {
+                                console.log("failed q types");
+                            });
+                        };
+
+                        tempqtypes(formid).then(function() {
+                            console.log("did question types");
+                        })
+
+                    })
+                    .then(function () {
+                        // indentify the authors of the answers
+                        var tempfunction = function(x) {
+                            return new Promise(function(resolve, reject){
+                                UserModel.findById(x.userid, function (err, k) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        authorprofiles[x.userid] = k.name.first+" "+k.name.last;
+                                        resolve();
+                                    }
+                                });
+                            }).catch(function () {
+                                console.log("error query user");
+                            });
+                        };
+
+                        allanswers.forEach(function(author) {
+                            promiselist.push(tempfunction(author));
+                        });
+
+                        return Promise.all(promiselist).then(function () {
+                            exportdata = formfunctions.exportTable(allanswers, authorprofiles);
+                            console.log("did promises");
+                        });
+
+                    })
+                    .then(function() {
+                        tempdest = exportfunctions.exportcsv(exportdata);
+
+                    })
+                    .then(function() {
+                        console.log("download");
+                        console.log("stored temp file  "+exportdata+"\n"+tempdest);
+
+                        fs.readFile(tempdest, function (err, content) {
+                            if (err) {
+                                res.writeHead(400, {'Content-type':'text/html'});
+                                console.log(err);
+                                res.end("No such file");
+                            } else {
+                                //specify Content will be an attachment
+                                res.setHeader('Content-disposition', 'attachment; filename=output.csv');
+                                res.end(content);
+                            }
+                        });
+
+                    })
+                    .catch(function() {
+                        // no permission or it failed
+                        console.log('error');
+                        res.writeHead(400, {'Content-type':'text/html'});
+                        res.end("No such file");
+                    });
+
+            })
+            .catch(function() {
+                // no permission or it failed
+                res.writeHead(400, {'Content-type':'text/html'});
+                res.end("No such file");
+            });
+
+
     });
 
 };
