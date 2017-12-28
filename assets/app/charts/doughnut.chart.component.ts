@@ -18,7 +18,14 @@ export class DoughnutChartComponent implements OnInit {
 
     ngOnInit() {
         if (this.dataLabels) {
+            // append (%) signs to the labels such that the interpretation of the hoover tooltip is clear
             this.doughnutChartLabels = this.dataLabels;
+            //
+            for (let i = 0; i < this.doughnutChartLabels.length; i++) {
+                this.doughnutChartLabels[i] = this.doughnutChartLabels[i]+" (%)";
+            }
+
+            // the data
             this.doughnutChartData = this.dataValues;
         }
     }

@@ -1256,13 +1256,10 @@ module.exports = function(app, passport, manager, hashids) {
 
                     })
                     .then(function() {
-                        console.log("download");
-                        console.log("stored temp file  "+exportdata+"\n"+tempdest);
-
                         fs.readFile(tempdest, function (err, content) {
                             if (err) {
                                 res.writeHead(400, {'Content-type':'text/html'});
-                                console.log(err);
+                                emailfunctions.sendNotificationError(err);
                                 res.end("No such file");
                             } else {
                                 //specify Content will be an attachment
@@ -1274,7 +1271,6 @@ module.exports = function(app, passport, manager, hashids) {
                     })
                     .catch(function() {
                         // no permission or it failed
-                        console.log('error');
                         res.writeHead(400, {'Content-type':'text/html'});
                         res.end("No such file");
                     });

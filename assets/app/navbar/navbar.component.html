@@ -133,8 +133,8 @@
     }">
         <div class="container">
             <div [ngClass]="{'navbar-collapse': true, 'collapse': !navExpanded}">
-                <ul class="navbar-nav ml-auto" (click)="navExpanded = false">
-                    <div *ngIf="loggedin;then picture else login"></div>
+                <ul class="navbar-nav ml-auto" (click)="navExpanded = !navExpanded">
+                    <div *ngIf="loggedin;then fullbar else login"></div>
                 </ul>
             </div>
         </div>

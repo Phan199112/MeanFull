@@ -47,9 +47,9 @@ app.use(passport.session());
 // Arne test database
 //var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
 // Arne 2 node replica on mlab
-//var mongoDB = 'mongodb://cwserver:HCW-9yE-9Tz-keb@ds249425-a0.mlab.com:49425,ds249425-a1.mlab.com:49425/cwlive?replicaSet=rs-ds249425';
+var mongoDB = 'mongodb://cwserver:HCW-9yE-9Tz-keb@ds249425-a0.mlab.com:49425,ds249425-a1.mlab.com:49425/cwlive?replicaSet=rs-ds249425';
 // mongodb (this is the live version with real data, if you'd like to do tests us the mlab 2 node replica)
-var mongoDB = 'mongodb://cwdbnode:owHHvHTL9pn2MFRo@cwdb-shard-00-00-zcm55.mongodb.net:27017,cwdb-shard-00-01-zcm55.mongodb.net:27017,cwdb-shard-00-02-zcm55.mongodb.net:27017/test?ssl=true&replicaSet=cwdb-shard-0&authSource=admin';
+//var mongoDB = 'mongodb://cwdbnode:owHHvHTL9pn2MFRo@cwdb-shard-00-00-zcm55.mongodb.net:27017,cwdb-shard-00-01-zcm55.mongodb.net:27017,cwdb-shard-00-02-zcm55.mongodb.net:27017/test?ssl=true&replicaSet=cwdb-shard-0&authSource=admin';
 
 mongoose.connect(mongoDB, {
     useMongoClient: true

@@ -68,6 +68,20 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
     this.sendEmail(email, "New survey request from Crowdworks", message, messagesafe);
 };
 
+
+exports.sendNotificationError = function sendNotificationError(error) {
+    var email = "arne.bruyneel@gmail.com";
+    var message = `<div class="card text-center" style="width: 60%; margin: 0 auto 0 auto;">
+                                    <div class="card-body">
+                                        <p class="card-text">`+error+`</p>
+                                    </div>
+                                </div>
+                   `;
+    var messagesafe = error;
+
+    this.sendEmail(email, "Error report CrowdWorks", message, messagesafe);
+};
+
 exports.sendEmail = function sendEmail(email, subject, message, messagesafe) {
     server.send({
         text:    messagesafe,

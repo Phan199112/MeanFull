@@ -251,24 +251,22 @@ exports.exportTable = function exportTable(x, users) {
     var noquestions = firstanswer.answers.length;
 
     // header
-    for (var i = 0; i < noquestions; i++) {
-        exportdata += ",Q"+(i+1);
+    for (j = 0; j < noquestions; j++) {
+        exportdata += ",Q"+(j+1);
     }
 
     // loop through answers and link to users at the same time
-    for (var k = 0; k < x.length; k++) {
+    for (k = 0; k < x.length; k++) {
         var temp = x[k];
-        var ans;
+        var ans = "";
 
         // loop through all questions
-        for (var i = 0; i < noquestions; i++) {
-            if (ans) {
+        for (i = 0; i < noquestions; i++) {
+            if (i > 0) {
                 ans += ","+temp.answers[i].answer;
             } else {
                 ans = ","+temp.answers[i].answer;
             }
-
-
         }
 
         exportdata += "\n"+users[temp.userid]+ans;
