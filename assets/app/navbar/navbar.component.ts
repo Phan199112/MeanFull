@@ -86,6 +86,14 @@ export class NavbarComponent implements OnInit {
         });
     };
 
+    clearNotifications() {
+        // clean current data list
+        var l = this.notifications.length;
+        while (l--) {
+            this.notifications.splice(l, 1);
+        }
+    }
+
     addNotification(notification) {
         this.notifications.push(notification);
         if (notification.seen == false) {
@@ -99,8 +107,13 @@ export class NavbarComponent implements OnInit {
             if (response != null) {
                 this.http.get('/events/list').toPromise()
                     .then(eventsdata => {
+                        // store the data
                         this.events = eventsdata.json().events; // array of objects
 
+                        // clear the current list
+                        this.clearNotifications();
+
+                        // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
                                 this.addNotification(e);
