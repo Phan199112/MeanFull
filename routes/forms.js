@@ -1215,12 +1215,12 @@ module.exports = function(app, passport, manager, hashids) {
                                     }
                                 });
                             }).catch(function () {
-                                console.log("failed q types");
+                                //console.log("failed q types");
                             });
                         };
 
                         tempqtypes(formid).then(function() {
-                            console.log("did question types");
+                            //console.log("did question types");
                         })
 
                     })
@@ -1247,7 +1247,6 @@ module.exports = function(app, passport, manager, hashids) {
 
                         return Promise.all(promiselist).then(function () {
                             exportdata = formfunctions.exportTable(allanswers, authorprofiles);
-                            console.log("did promises");
                         });
 
                     })
@@ -1259,7 +1258,6 @@ module.exports = function(app, passport, manager, hashids) {
                         fs.readFile(tempdest, function (err, content) {
                             if (err) {
                                 res.writeHead(400, {'Content-type':'text/html'});
-                                emailfunctions.sendNotificationError(err);
                                 res.end("No such file");
                             } else {
                                 //specify Content will be an attachment

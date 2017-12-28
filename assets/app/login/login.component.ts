@@ -129,9 +129,12 @@ export class LoginComponent implements OnInit {
                         // reload userservice
                         this.userService.afterLoginReload();
                         // navigate to feed
-                        this.router.navigate(['/']);
-                        // reload the page
-                        location.reload(true);
+                        this.router.navigate(['/'])
+                            .then(function() {
+                                // reload the page
+                                location.reload(true);
+                            });
+
                     } else {
                         this.status = false;
                     }
