@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import {Observable} from 'rxjs/Rx';
 import {Http} from "@angular/http";
 import {UserService} from "../user.service";
 
@@ -24,7 +25,8 @@ export class NavbarComponent implements OnInit {
     events: any;
     gender: string;
     navExpanded: boolean = false;
-    @ViewChild('toggler') toggler; 
+    @ViewChild('toggler') toggler;
+    private obs: any;
 
     constructor(private http: Http,
                 private userService: UserService) { }
@@ -32,6 +34,15 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
         this.checkLoggedin();
+
+        // update the list every 30 seconds
+        this.obs = Observable.interval(1000 * 30).subscribe(x => {
+            this.getEventsList();
+        });
+    }
+
+    ngOnDestroy() {
+        this.obs.unsubscribe();
     }
 
     checkLoggedin() {
@@ -96,7 +107,7 @@ export class NavbarComponent implements OnInit {
                             }
                         }
                     })
-                    .catch(error => alert("Error retrieving events list: " + error));
+                    .catch(error => alert("Error retrieving events list: "));
             }
         });
     }
@@ -106,7 +117,7 @@ export class NavbarComponent implements OnInit {
             .then(eventsdata => {
                 //console.log("updated as seen");
             })
-            .catch(error => alert("Error retrieving events list: " + error));
+            .catch(error => alert("Error retrieving events list: "));
     }
 
     logout() {
