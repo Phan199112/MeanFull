@@ -87,6 +87,8 @@ export class NavbarComponent implements OnInit {
     };
 
     clearNotifications() {
+        // reset the counter
+        this.unreadNotifications = 0;
         // clean current data list
         var l = this.notifications.length;
         while (l--) {
