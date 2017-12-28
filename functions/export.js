@@ -4,7 +4,7 @@ var randomfunction = require('./random');
 exports.exportcsv = function exportcsv(data) {
 
     var random = randomfunction.makeRandomFilename();
-    var dest = "./public/temp/"+random+".csv";
+    var dest = "/tmp/"+random+".csv";
     fs.writeFileSync(dest, data);
 
     return dest;
