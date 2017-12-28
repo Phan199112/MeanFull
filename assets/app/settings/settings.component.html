@@ -450,7 +450,7 @@
                                             <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
                                         </div>
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(data.edgeid)">Delete</button>
+                                            <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
                                         </div>
                                     </div>
                                 </div>
