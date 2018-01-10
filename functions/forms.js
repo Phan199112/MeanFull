@@ -77,26 +77,31 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
             if (types[i] === 'Checkboxes') {
                 // if multiple selected split.
                 for (var j = 0; j < x.length; j++) {
-                    var current = x[j];
-                    var currentq = current.answers[i];
-
-                    if (currentq.answer.constructor === Array) {
-                        for (var r = 0; r < currentq.answer.length; r++) {
-                            temp.push(currentq.answer[r]);
+                    if (x[j].answers[i].answer.constructor === Array) {
+                        for (var r = 0; r < x[j].answers[i].answer.length; r++) {
+                            temp.push(x[j].answers[i].answer[r]);
                         }
 
                     } else {
-                        temp.push(currentq.answer);
+                        temp.push(x[j].answers[i].answer);
                     }
 
+                }
+
+            } else if (types[i] === 'Stars') {
+                // add the word star(s) to the numerical value
+                for (var j = 0; j < x.length; j++) {
+                    if (x[j].answers[i].answer > 1) {
+                        temp.push(x[j].answers[i].answer+" stars");
+                    } else {
+                        temp.push(x[j].answers[i].answer+" star");
+                    }
                 }
 
             } else {
                 //
                 for (var j = 0; j < x.length; j++) {
-                    var current = x[j];
-                    var currentq = current.answers[i];
-                    temp.push(currentq.answer);
+                    temp.push(x[j].answers[i].answer);
                 }
 
             }
@@ -160,9 +165,17 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types) {
 
                 if (users[current.userid] != null) {
                     if (users[current.userid].location != null) {
-                        templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
+                        if (users[current.userid].location.city !== "" && users[current.userid].location.state !== "" && users[current.userid].location.country !== "") {
+                            templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
+
+                        } else {
+                            templocation = 'Earth';
+
+                        }
+
                     } else {
                         templocation = 'Earth';
+
                     }
 
                     if (users[current.userid].dob != null) {
@@ -171,7 +184,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types) {
                         age = 0;
                     }
 
-                    if ((param.gender.indexOf(users[current.userid].gender) != "-1") && (param.age.indexOf(age) != "-1") && (param.location.indexOf(templocation) != "-1")) {
+                    if ((param.gender.indexOf(users[current.userid].gender) !== "-1") && (param.age.indexOf(age) !== "-1") && (param.location.indexOf(templocation) !== "-1")) {
 
                         if (types[i] === 'Checkboxes') {
                             if (currentq.answer.constructor === Array) {
@@ -182,6 +195,15 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types) {
                             } else {
                                 temp.push(currentq.answer);
                             }
+
+                        } else if (types[i] === 'Stars') {
+                            if (currentq.answer > 1) {
+                                temp.push(currentq.answer+" stars");
+
+                            } else {
+                                temp.push(currentq.answer+" star");
+                            }
+
 
                         } else {
                             temp.push(currentq.answer);

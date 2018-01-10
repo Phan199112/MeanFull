@@ -283,6 +283,39 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="main-row form-group">
+                                        <label class="lead" id="create-survey-as">Make the form public or private?
+                                            <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
+                                        </label>
+                                        <div class="row top-options">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input
+                                                                type="radio"
+                                                                class="form-check-input"
+                                                                formControlName="public"
+                                                                [value]="true">
+                                                        Public
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input
+                                                                type="radio"
+                                                                class="form-check-input"
+                                                                formControlName="public"
+                                                                [value]="false">
+                                                        Private
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="main-row form-group">
                                         <label class="lead">Share with friends on Questionsly and outside
                                             <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
@@ -340,7 +373,7 @@
                                         </label>
                                         <!-- DOCUMENTATION: https://murhafsousli.github.io/ngx-sharebuttons/#/ -->
                                         <div class="col p-0">
-                                            <share-buttons [theme]="'default'" [showText]="true" [include]="['facebook','linkedin', 'twitter']"></share-buttons>                                        
+                                            <share-buttons [theme]="'default'" [url]="shareLink" [showText]="true" [include]="['facebook','linkedin', 'twitter']"></share-buttons>
                                         </div>
                                     </div>
                                     <div id="share-link" *ngIf="!typeevent" class="main-row row form-group">
@@ -406,7 +439,7 @@
                                 <div class="col-10">
                                     <button
                                     class="btn btn-outline-success mouseChangeToHand" 
-                                    (click)="setAsUntouched(questionnaire); step = 1" 
+                                    (click)="setAsUntouched(questionnaire); step = 1; updateform = true"
                                     [disabled]="questionnaire.invalid && questionnaire.wasChecked">Previous</button>
                                 </div>
                                 <div class="col-2 text-center p-0">
