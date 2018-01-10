@@ -14,6 +14,7 @@ var FormSchema = new Schema({
     sharedWithCommunities: [{type: String}],
     expires: Object,
     typeevent: Boolean,
+    loginRequired: Boolean,
     description: String,
     expired: Boolean,
     timestamp: String,

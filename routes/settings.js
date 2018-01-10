@@ -111,9 +111,28 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     app.put('/users/settings/changeprivacy', manager.ensureLoggedIn('/users/login'), function(req, res) {
-
+        // privacy settings
         UserModel.findByIdAndUpdate(req.session.userid,
-            {$set: req.body}, function(err, k) {
+            {$set: {public: req.body.public}}, function(err, k) {
+                if (err) {
+                    res.json({status: 0});
+                } else {
+                    res.json({status: 1});
+                }
+            });
+    });
+
+    app.put('/users/settings/changenotifications', manager.ensureLoggedIn('/users/login'), function(req, res) {
+        // notification settings, ie should emails be send?
+        // reformat the data
+        var updateddate = {"notifications.networkrequest": req.body.networkrequest,
+            "notifications.formrequest": req.body.formrequest,
+            "notifications.discussion": req.body.discussion,
+            "notifications.formactivity": req.body.formactivity};
+
+        // update db
+        UserModel.findByIdAndUpdate(req.session.userid,
+            {$set: updateddate}, function(err, k) {
                 if (err) {
                     res.json({status: 0});
                 } else {
@@ -136,12 +155,9 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     app.put('/users/settings/changesettings', manager.ensureLoggedIn('/users/login'), function(req, res) {
-
-        console.log("change settings reached");
-        console.log(req.body);
+        // change general settings
         var key = Object.keys(req.body);
         var value = req.body[key];
-        console.log(key,value);
 
         if (key == 'name') {
 
@@ -262,7 +278,13 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         datauserinfo = {gender: userinfo.gender, email: userinfo.email, name: userinfo.name,
                             dob: userinfo.dob, pic: userinfo.pic, facebookID: userinfo.facebookID,
-                            location: userinfo.location, education: userinfo.education, public: userinfo.public};
+                            location: userinfo.location, education: userinfo.education, public: userinfo.public,
+                            notifications: userinfo.notifications};
+
+                        if (datauserinfo.notifications === null) {
+                            datauserinfo.notifications = {networkrequest: true, formrequest: true};
+                        }
+
                         resolve();
                     }
                 }
@@ -346,7 +368,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     });
 
 
-                                } else if (x.type === "form") {
+                                } else if (x.type === "form" || x.type === "form-answer" || x.type === "form-discussion") {
                                     FormModel.findById(hashids.decodeHex(x.data), function (err, form) {
                                         if (err) {
                                             reject(err);
@@ -467,11 +489,10 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     app.post('/users/settings/addtonetwork', manager.ensureLoggedIn('/users/login'), function(req,res) {
-
-        var targetuserid = hashids.decodeHex(req.body.targetid);
-        console.log("add to network request "+targetuserid+" "+req.session.userid);
+        // send a request to add an existing user to the network of the signed-on user.
 
         // variables
+        var targetuserid = hashids.decodeHex(req.body.targetid);
         var edgeid = null;
         var status = 0;
 
@@ -515,12 +536,21 @@ module.exports = function(app, passport, manager, hashids) {
                             }
                         }
 
-                        //
+                        // get notification settings of the user and if allowed send an invitation email.
                         UserModel.findById(targetuserid, function(err, k) {
                             if (err) {
                                 // err
                             } else {
-                                emailfunctions.sendNotificationFriendRequest(k.email, sendername)
+                                //
+                                if (Object.keys(k.notifications).length === 0) {
+                                    if (k.notifications.networkrequest === true) {
+                                        emailfunctions.sendNotificationFriendRequest(k.email, sendername)
+                                    }
+                                } else {
+                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                    emailfunctions.sendNotificationFriendRequest(k.email, sendername)
+                                }
+
                             }
                         });
                     });

@@ -69,6 +69,34 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
 };
 
 
+exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, friendname, link) {
+    var message = `<div class="card text-center" style="width: 60%; margin: 0 auto 0 auto;">
+                                    <div class="card-body">
+                                        <p class="card-text">`+friendname+` commented on your form on CrowdWorks</p>
+                                         <a href="https://www.crowdworks.us/feed;survey=`+link+`" class="btn btn-success">View the survey</a>
+                                    </div>
+                                </div>
+                   `;
+    var messagesafe = "Hello! "+friendname+" commented on your form on CrowdWorks. Please review the notifications page to review your pending requests. https://www.crowdworks.us/settings;page=notifications";
+
+    this.sendEmail(email, "Survey comments on Crowdworks", message, messagesafe);
+};
+
+
+exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, link) {
+    var message = `<div class="card text-center" style="width: 60%; margin: 0 auto 0 auto;">
+                                    <div class="card-body">
+                                        <p class="card-text">Users are completing your form on CrowdWorks</p>
+                                         <a href="https://www.crowdworks.us/feed;survey=`+link+`" class="btn btn-success">View the survey and results</a>
+                                    </div>
+                                </div>
+                   `;
+    var messagesafe = "Hello! Users are completing your form on CrowdWorks. Please review the notifications page to review your pending requests. https://www.crowdworks.us/settings;page=notifications";
+
+    this.sendEmail(email, "Survey activity on Crowdworks", message, messagesafe);
+};
+
+
 exports.sendNotificationError = function sendNotificationError(error) {
     var email = "arne.bruyneel@gmail.com";
     var message = `<div class="card text-center" style="width: 60%; margin: 0 auto 0 auto;">

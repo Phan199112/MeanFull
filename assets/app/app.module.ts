@@ -9,6 +9,10 @@ import {DragulaModule} from "ng2-dragula";
 import {TagInputModule } from 'ngx-chips';
 import {Ng2FlatpickrComponent} from 'ng2-flatpickr/ng2-flatpickr';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {Autosize} from 'ng-autosize';
+import {NgForageModule} from "ngforage";
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { ShareButtonModule } from '@ngx-share/button';
 
 import {AppComponent } from "./app.component";
 import {routing} from "./app.routing";
@@ -55,6 +59,7 @@ import {YourFriendsComponent} from './yourFriends/yourfriends.component';
 import {PopupInviteCommComponent} from "./popup/popup.invitecomm.component";
 import {ResultsTableComponent} from "./resultstable/resultstable.component";
 import {MiniResultsTableComponent} from "./resultstable/miniresultstable.component";
+import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component";
 
 @NgModule({
     declarations: [
@@ -99,12 +104,17 @@ import {MiniResultsTableComponent} from "./resultstable/miniresultstable.compone
         YourFriendsComponent,
         PopupInviteCommComponent,
         ResultsTableComponent,
-        MiniResultsTableComponent
+        MiniResultsTableComponent,
+        Autosize,
+        StarsQuestionComponent
     ],
     imports: [
         // vendor //
         DragulaModule,
         TagInputModule,
+        NgForageModule,
+        ShareButtonsModule.forRoot(),
+        ShareButtonModule.forRoot(),             
         NgbModule.forRoot(),
         BrowserModule,
         BrowserAnimationsModule,

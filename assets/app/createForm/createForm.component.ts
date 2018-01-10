@@ -13,13 +13,28 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 @Component({
     selector: 'create-form',
     templateUrl: './createForm.component.html',
-    styleUrls: ['./createForm.component.scss'],
+    styleUrls: [
+        './createForm.component.scss'
+    ],
     providers: [FormService, UserService]
 })
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
-    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Paragraph", "Rank", "Matrix"];
+    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Rank", "Matrix", "Stars"];
     kindsWithOptions: string[] = ["Radio", "Checkboxes", "Drop-down", "Rank"];
+    kindIcons: any = {
+        'Radio': 'list.png',
+        'Checkboxes': 'checkbox.png',
+        'Drop-down': 'sort.png',
+        'Rank': 'rank.png',
+        'Short answer': 'textbox.png',
+        'Matrix': 'matrix.png',
+        'Stars': 'stars.png'
+    };
+    kindAliases: any = {
+        'Radio': 'Multiple Choice',
+        'Short answer': 'Text question'
+    };
     edit: boolean = false;
     activeQuestion: string;
     autoScroll: any;
@@ -28,6 +43,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     datePickerConfig: FlatpickrOptions;
     reject: boolean = false;
     typeevent: boolean = false;
+    focusedOption: number = 0;
+    step: number = 1;
+    updateform: boolean = false; // so when you go back to the previous page to correct something that it doesn't create a new database entry for the form
+    published: boolean = false;
+    shareLink: string = "";
 
     constructor(
         private fb: FormBuilder,
@@ -61,10 +81,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.typeevent = !!params.event;
 
                 this.createForm();
-
-                if (this.typeevent) {
-                    this.questionnaire.get('public').setValue(false);
-                }
             });
         } else {
             this.reject = true;
@@ -105,27 +121,15 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
         this.questionnaire = this.fb.group({
             title: '',
-            description: '',
             hashtags: null,
             anonymous: false,
-            public: true,
-            resultsPublic: true,
             sharedWithCommunities: null,
             sharedWithUsers: null,
-            expires: false,
+            sharedWithFb: null,
+            public: !this.typeevent,
+            loginRequired: true,
             typeevent: this.typeevent,
-            expireTime: defaultExpDate,
-            expireDate: defaultExpDate,
             questions: this.fb.array([])
-        });
-
-        this.questionnaire.get('anonymous').valueChanges.subscribe(data => {
-            if (data) {
-                this.isAnonymous = true;
-                this.questionnaire.get('public').setValue(true);
-            } else {
-                this.isAnonymous = null;
-            }
         });
         
         if (this.edit) {
@@ -138,7 +142,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                        control.setValue(data[key]);
                     }
                 } else if (key === 'hashtags') {
-                    var tagarray = [];
+                    let tagarray = [];
                     for (let tag of data['hashtags']) {
                         tagarray.push(this.transformHashtagArray(tag));
                     }
@@ -155,14 +159,16 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.questionnaire.controls["questions"].push(this.fb.group(question));
             }
 
-            if (this.typeevent) {
-                this.questionnaire.get('public').setValue(false);
-                this.questionnaire.get('resultsPublic').setValue(false);
-            }
-
         } else {
            this.addQuestion();
+           this.forceOptionRequired(0);
         }
+    }
+
+    forceOptionRequired(index) {
+        let requiredControl = this.questionnaire.get('questions').get(index.toString()).get('required');
+        requiredControl.setValue(true);
+        requiredControl.disable();
     }
 
     onPicChange(question, $event) {
@@ -190,6 +196,18 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         question.isOneOf = (kinds) => kinds.includes(question.get('kind').value);
 
         question.get('kind').valueChanges.subscribe(kind => {
+            if (this.kindsWithOptions.includes(kind)) {
+                if (question.controls.options.length === 0) {
+                    this.addOption(question);
+                    this.addOption(question);
+                    this.addOption(question);
+                }
+            } else {
+                while (question.controls.options.length > 0) {
+                    question.controls.options.removeAt(0);
+                }
+            }
+
             if (kind === 'Matrix') {
                 question.addControl('columns', this.fb.array([]));
                 question.addControl('rows', this.fb.array([]));
@@ -197,15 +215,25 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.addOneTo(question, 'columns');                
                 this.addOneTo(question, 'rows');
                 this.addOneTo(question, 'rows');                                               
-            } else { 
+            } else {
                 question.removeControl('columns');
-                question.removeControl('rows');                                
+                question.removeControl('rows');                              
+                this.focusedOption = 0;               
             }
         });
+
+        //enable first required control when adding second question
+        if (questions.controls.length === 2) {
+            this.questionnaire.get('questions').get('0').get('required').enable();
+        }
     }
 
     deleteQuestion(i) {
-        this.questionnaire.get("questions").removeAt(i);
+        let questions = this.questionnaire.get("questions");
+        questions.removeAt(i);
+        if (questions.length === 1) {
+            this.forceOptionRequired(0);
+        }
     }
 
     getInputType(question) {
@@ -271,17 +299,32 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         return (input) => this.isInvalid(input) && input.hasError(error);
     }
 
-    addOption(question) {
+    addOption(question, focus = false) {
         question.get("options").push(this.fb.group({
             body: ["", Validators.compose([this.optionIsUnique, Validators.required])]
         }));
         this.questionnaire.wasChecked = false;
+        if (focus) {
+            this.focusedOption = question.get("options").controls.length - 1;
+        }
     }
 
     addOneTo(question, collection) {
         question.get(collection).push(
             this.fb.control("", Validators.compose([this.valueIsUnique, Validators.required]))
         );
+    }
+
+    optionClicked(question, i) {
+        if (i === question.get("options").length - 1) {
+            this.addOption(question);
+        }
+    }
+
+    fieldClicked(question, collection, i) {
+        if (i === question.get(collection).length - 1) {
+            this.addOneTo(question, collection);
+        }
     }
 
     transformHashtag(value) {
@@ -315,13 +358,16 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         if (x !== null && typeof x === 'object') {
             value = x.value;
             display = x.display;
+            if (value[0] === "@") {
+                value = value.substring(1);
+            }
             return Observable.of({
-                display: display,
+                display: `@${display}`,
                 value: value
             });
         } else {
             return Observable.of({
-                display: x,
+                display: `@${x}`,
                 value: x
             });
         }
@@ -330,6 +376,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     observableSourceTag(keyword: any): Observable<any[]> {
         if (keyword) {
+            if (keyword[0] === "#") {
+                keyword = keyword.substring(1);
+                if (keyword.length === 0) {
+                    return Observable.of([]);
+                }
+            }
             return this.http.post('/search', {type: 'tag', keyword: keyword})
                 .map(this.observableProcessRaw.bind(this))
                 .catch(err => {
@@ -342,6 +394,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     observableSourceCom(keyword: any): Observable<any[]> {
         if (keyword) {
+            if (keyword[0] === "@") {
+                keyword = keyword.substring(1);
+                if (keyword.length === 0) {
+                    return Observable.of([]);
+                }
+            }
             return this.http.post('/search', {type: 'comm', keyword: keyword})
                 .map(this.observableProcessRaw.bind(this))
                 .catch(err => {
@@ -354,6 +412,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     observableSourceUser(keyword: any): Observable<any[]> {
         if (keyword) {
+            if (keyword[0] === "@") {
+                keyword = keyword.substring(1);
+                if (keyword.length === 0) {
+                    return Observable.of([]);
+                }
+            }
             return this.http.post('/search', {type: 'user', keyword: keyword})
                 .map(this.observableProcessRaw.bind(this))
                 .catch(err => {
@@ -365,6 +429,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     observableProcessRaw(data) {
+        console.log(data.json());
         if (data.json().status == 1) {
             let searchoutput = [];
             let results = data.json().results;
@@ -376,6 +441,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             return [];
         }
     };
+
+
+    acMatching() {
+        return true;
+    }
 
     focusTagInput(tagInput) {
         setTimeout(() => {
@@ -392,6 +462,10 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         return true;
     }
 
+    kindText(kind) {
+        return this.kindAliases[kind] || kind;
+    }
+
     setAsTouched(group) {
         group.markAsTouched();
         for (let i in group.controls) {
@@ -403,12 +477,46 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         }
     }
 
+    setAsUntouched(group) {
+        group.markAsUntouched();
+        for (let i in group.controls) {
+            if (group.controls[i] instanceof FormControl) {
+                group.controls[i].markAsUntouched();
+            } else {
+                this.setAsUntouched(group.controls[i]);
+            }
+        }
+    }
+
     checkSubmit() {
         this.setAsTouched(this.questionnaire);
         if (this.questionnaire.invalid) {
             this.questionnaire.wasChecked = true;
         } else {
-            this.submitForm();
+            if (!this.updateform) {
+                this.submitForm();
+            } else {
+                this.updateForm();
+            }
+        }
+    }
+
+    checkPreview() {
+        this.setAsTouched(this.questionnaire);
+        if (this.questionnaire.invalid) {
+            this.questionnaire.wasChecked = true;
+        } else {
+            var formdata = this.questionnaireData();
+            this.formService.setPersistedData(formdata).then(() => window.open("/previewForm"));
+        }
+    }
+
+    checkPublish() {
+        this.setAsTouched(this.questionnaire);
+        if (this.questionnaire.invalid) {
+            this.questionnaire.wasChecked = true;
+        } else {
+            this.updateForm();
         }
     }
 
@@ -441,7 +549,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         
         for (let tagField of ['hashtags', 'sharedWith']) {
             if (data[tagField]) {
-                data[tagField] = data[tagField].map(tag => tag.value);
+                data[tagField] = data[tagField].map(tag => tag.value ? tag.value : tag);
             }
         }
 
@@ -458,16 +566,16 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     postForm() {
-        var formdata = this.questionnaireData();
-        console.log(formdata);
-        this.http.post('/forms/create', formdata).toPromise()
+        var formData = this.questionnaireData();
+        console.log(formData);
+        this.http.post('/forms/create', formData).toPromise()
             .then(response => {
-                let formData = Object.assign(formdata);
                 formData.id = response.json().id;
+                this.shareLink = `https://www.crowdworks.us/takeForm/${formData.id}`;                
                 this.formService.setData(formData);
-                this.router.navigate(['previewForm']);
+                this.step = 2;
             })
-            .catch(error => alert("Error posting form: " + error));
+            .catch(error => alert("Error posting form: " + error));        
     }
 
     updateForm() {
@@ -477,10 +585,16 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         };
         let data = Object.assign(this.questionnaireData(), meta);
 
+        console.log(data);
+
         this.http.put(`/forms/${data.id}`, data).toPromise()
             .then(response => {
                 this.formService.setData(Object.assign(this.questionnaireData(), meta));
-                this.router.navigate(['previewForm']);
+                if (this.step === 1) {
+                    this.step = 2;
+                } else {
+                    this.published = true;
+                }
             })
             .catch(error => alert("Error updating form: " + error));
     }

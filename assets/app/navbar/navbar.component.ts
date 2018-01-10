@@ -90,7 +90,7 @@ export class NavbarComponent implements OnInit {
         // reset the counter
         this.unreadNotifications = 0;
         // clean current data list
-        var l = this.notifications.length;
+        let l = this.notifications.length;
         while (l--) {
             this.notifications.splice(l, 1);
         }
@@ -106,7 +106,7 @@ export class NavbarComponent implements OnInit {
     getEventsList() {
         this.userService.afterLoginCheck().then(response => {
             // request eventslist
-            if (response != null) {
+            if (response != '0') {
                 this.http.get('/events/list').toPromise()
                     .then(eventsdata => {
                         // store the data

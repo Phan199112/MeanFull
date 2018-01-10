@@ -62,6 +62,14 @@
                                             <div *ngIf="notification.seen">{{notification.message}}</div>
                                             <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
                                         </div>
+                                        <div class="dropdown-item" *ngIf="notification.type == 'form-answer'" [routerLink]="['/feed', {'survey': notification.data}]" >
+                                            <div *ngIf="notification.seen">{{notification.message}}</div>
+                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                        </div>
+                                        <div class="dropdown-item" *ngIf="notification.type == 'form-discussion'" [routerLink]="['/feed', {'survey': notification.data}]" >
+                                            <div *ngIf="notification.seen">{{notification.message}}</div>
+                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                        </div>
                                         <div class="dropdown-item" *ngIf="notification.type == 'network'" [routerLink]="['/settings', {'page': 'notifications'}]">
                                             <div *ngIf="notification.seen">Network request</div>
                                             <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">Network request</div>

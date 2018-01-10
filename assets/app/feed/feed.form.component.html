@@ -1,4 +1,4 @@
-<div class="container-fluid" id="formContainer" *ngIf="!hide">
+<div class="container-fluid formContainer" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {'border': '1px solid #0088cc'}">
     <div class="row">
         <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-2" id="authorPicture">
             <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
@@ -109,4 +109,7 @@
             </button>
         </div>
     </div>
+</div>
+<div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
+    <h4>Oops this form could not be found!</h4>
 </div>

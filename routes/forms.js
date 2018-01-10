@@ -17,18 +17,76 @@ module.exports = function(app, passport, manager, hashids) {
 
     // update the form
     app.put('/forms/:id', manager.ensureLoggedIn('/users/login'), function(req, res) {
-        receivedData = req.body;
+        // this is after page 2
+        var receivedData = req.body;
+
+        // outputs
+        var unhashedCommunities = [];
+        var unhashedUsers = [];
+
+        if (receivedData.sharedWithCommunities != null) {
+            for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {
+                unhashedCommunities.push(hashids.decodeHex(receivedData.sharedWithCommunities[i].value));
+            }
+        }
+
+        if (receivedData.sharedWithUsers != null) {
+            for (var i = 0; i < receivedData.sharedWithUsers.length; i++) {
+                // save value
+                unhashedUsers.push(hashids.decodeHex(receivedData.sharedWithUsers[i].value));
+            }
+        }
 
         // momgoDB update
         FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
-            {$set: {questions: receivedData.questions,
-                title: receivedData.title,
-            description: receivedData.description}}, function(err, k) {
+            {$set: {questions: receivedData.questions, title: receivedData.title,
+            description: receivedData.description, anonymous: receivedData.anonymous,
+                    hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
+                public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers,
+                    sharedWithCommunities: unhashedCommunities, }}, function(err, k) {
             if (err) {
-                console.log("Error in updating form"+err);
                 res.send({status: 0});
+
             } else {
-                console.log("Updated form"+k._id);
+                // notification
+                if (unhashedUsers != null) {
+                    for (var i = 0; i < unhashedUsers.length; i++) {
+                        // insite notification
+                        notifications.createNotification(unhashedUsers[i], "form", "New survey", hashids.encodeHex(k._id));
+
+                        // email notification
+                        var sendername = '';
+                        if (receivedData.anonymous === true) {
+                            sendername = 'Anonymous';
+
+                        } else {
+                            if (req.user != null) {
+                                if (req.user.provider === "facebook") {
+                                    sendername = req.user.displayName;
+                                } else {
+                                    sendername = req.user.name.first+' '+req.user.name.last;
+                                }
+                            }
+                        }
+
+
+                        UserModel.findById(unhashedUsers[i], function(err, l) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                if (Object.keys(l.notifications).length === 0) {
+                                    if (l.notifications.formrequest === true) {
+                                        emailfunctions.sendNotificationFormRequest(l.email, sendername, hashids.encodeHex(k._id));
+                                    }
+                                } else {
+                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                    emailfunctions.sendNotificationFormRequest(l.email, sendername, hashids.encodeHex(k._id));
+                                }
+                            }
+                        });
+
+                    }
+                }
                 res.send({status: 1});
             }
         });
@@ -85,23 +143,6 @@ module.exports = function(app, passport, manager, hashids) {
         // input
         var receivedData =  req.body;
 
-        // outputs
-        var unhashedCommunities = [];
-        var unhashedUsers = [];
-
-        if (receivedData.sharedWithCommunities != null) {
-            for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {
-                unhashedCommunities.push(hashids.decodeHex(receivedData.sharedWithCommunities[i].value));
-            }
-        }
-
-        if (receivedData.sharedWithUsers != null) {
-            for (var i = 0; i < receivedData.sharedWithUsers.length; i++) {
-                // save value
-                unhashedUsers.push(hashids.decodeHex(receivedData.sharedWithUsers[i].value));
-            }
-        }
-
         // mongodb create
         FormModel.create({userid: req.session.userid,
             title: receivedData.title,
@@ -109,54 +150,18 @@ module.exports = function(app, passport, manager, hashids) {
             description: receivedData.description,
             anonymous: receivedData.anonymous,
             hashtags: receivedData.hashtags,
-            public: receivedData.public,
+            public: false,
             shared: false,
-            resultsPublic: receivedData.resultsPublic,
-            sharedWithUsers: unhashedUsers,
-            sharedWithCommunities: unhashedCommunities,
-            expires: {bool: receivedData.expires, expireTime: receivedData.expireTime},
+            resultsPublic: true,
+            expires: {bool: false},
             typeevent: receivedData.typeevent,
             timestamp: Date.now()}, function(err, k) {
             if (err) {
-                console.log("Error in writing new form "+err);
+                // Error in writing new form
                 res.json({status: 0});
             } else {
                 // log
-                console.log("Writing new form "+k._id);
                 log.writeLog(req.session.userid, 'create form', req.ip);
-
-                // notification
-                if (unhashedUsers != null) {
-                    for (var i = 0; i < unhashedUsers.length; i++) {
-                        // insite notification
-                        notifications.createNotification(unhashedUsers[i], "form", "New survey", hashids.encodeHex(k._id));
-                        // email notification
-                        var sendername = '';
-                        if (receivedData.anonymous === true) {
-                            sendername = 'Anonymous';
-
-                        } else {
-                            if (req.user != null) {
-                                if (req.user.provider === "facebook") {
-                                    sendername = req.user.displayName;
-                                } else {
-                                    sendername = req.user.name.first+' '+req.user.name.last;
-                                }
-                            }
-                        }
-
-
-                        UserModel.findById(unhashedUsers[i], function(err, l) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                emailfunctions.sendNotificationFormRequest(l.email, sendername, hashids.encodeHex(k._id));
-                            }
-                        });
-
-                    }
-                }
-
                 // return
                 res.json({id: hashids.encodeHex(k._id), status: 1});
             }
@@ -165,15 +170,17 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     app.post('/forms/answers', manager.ensureLoggedIn('/users/login'), function(req, res, next) {
-        console.log("Reached node backend");
-        receivedData = req.body;
-        console.log("Survey submitted data: ", JSON.stringify(req.body));
-
+        // add new answer
+        var receivedData = req.body;
+        var answerformid = hashids.decodeHex(receivedData.id);
+        var formauthorid = null;
         // double check to see whether this user has already submitted an answer:
         var checkedfordouble = true; // true means do not add again
+        // promises
+        var promises = [];
 
         new Promise(function(resolve, reject) {
-                AnswersModel.findOne({userid: req.session.userid, formid: hashids.decodeHex(receivedData.id)}, function(err,obj) {
+                AnswersModel.findOne({userid: req.session.userid, formid: answerformid}, function(err,obj) {
                     if (err) {
                         reject(err);
                     } else {
@@ -189,23 +196,93 @@ module.exports = function(app, passport, manager, hashids) {
                 });
             })
             .then(function () {
-                if (checkedfordouble == false) {
-                    // mongodb
-                    AnswersModel.create({userid: req.session.userid,
-                        formid: hashids.decodeHex(receivedData.id),
-                        answers: receivedData.questions}, function(err, k) {
-                        if (err) {
-                            console.log("error in writing new answer"+err);
+                if (checkedfordouble === false) {
+                    // add the answer and send an email/notification
+
+
+                    var writeanswerfunction = function (x, y) {
+                        return new Promise(function (resolve, reject) {
+                            AnswersModel.create({
+                                userid: req.session.userid,
+                                formid: x,
+                                answers: y
+                            }, function (err, k) {
+                                if (err) {
+                                    reject();
+                                } else {
+                                    resolve();
+                                }
+                            });
+                        });
+                    };
+
+                    var formauthorfunction = function (x) {
+                        return new Promise(function (resolve, reject) {
+                            FormModel.findById(x, function (err, form) {
+                                if (err) {
+                                    reject();
+                                } else {
+                                    if (form) {
+                                        // look up the author of the form
+                                        formauthorid = form.userid;
+                                    }
+                                    resolve();
+                                }
+                            });
+                        });
+                    };
+
+                    promises.push(writeanswerfunction(answerformid, receivedData.questions));
+                    promises.push(formauthorfunction(answerformid));
+
+                    return Promise.all(promises).then(function () {
+                        // log
+                        log.writeLog(req.session.userid, 'answered form');
+
+                        // insite notification
+                        notifications.createNotification(formauthorid, "form-answer", "New answer", hashids.encodeHex(answerformid));
+
+                        // email notification
+                        // check the notification settings of this user
+                        UserModel.findById(formauthorid, function (err, l) {
+                            if (err) {
+                                // no email
+                                res.json({status: 1});
+
+                            } else {
+                                if (l) {
+                                    // send
+                                    if (Object.keys(l.notifications).length === 0) {
+                                        if (l.notifications.formactivity === true) {
+                                            emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                            res.json({status: 1});
+                                        } else {
+                                            // no email
+                                            res.json({status: 1});
+                                        }
+                                    } else {
+                                        // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                        emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                        res.json({status: 1});
+                                    }
+
+                                } else {
+                                    //no user found
+                                    res.json({status: 1});
+                                }
+
+                            }
+                        });
+
+                    })
+                        .catch(function () {
                             res.json({status: 0});
-                        } else {
-                            console.log("Writing new answer"+k._id);
-                            log.writeLog(req.session.userid, 'answered form');
-                            res.json({status: 1});
-                        }
-                    });
+                        });
+
                 } else {
                     res.json({status: 0});
                 }
+
             })
             .catch(function () {
                 res.json({status: 0});
@@ -361,10 +438,12 @@ module.exports = function(app, passport, manager, hashids) {
 
     });
 
-    // this function retrieved the feed
-    // limits to 10 posts
-    // only public posts
     app.post('/forms/feed',function (req, res, next) {
+        // this function retrieved the feed
+        // limits to 10 posts
+        // only public posts
+
+        // enable different types of queries
         // query a tag
         var selectedtags = req.body.tag;
         var topsurvey;
@@ -390,7 +469,7 @@ module.exports = function(app, passport, manager, hashids) {
             selectedcomm = hashids.decodeHex(req.body.comm);
         }
 
-        console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
+        //console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
         if (selectedtags != null && selecteduser == null) {
             queryobj = {public: true, shared: true, hashtags: selectedtags};
@@ -462,7 +541,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                     } else {
                         commfunctions.commMember(selectedcomm, req.session.userid).then(function(result) {
-                            console.log("comm member check "+result);
+                            //console.log("comm member check "+result);
                             if (result === true) {
                                 resolve();
                             } else {
@@ -480,17 +559,17 @@ module.exports = function(app, passport, manager, hashids) {
             .then(function() {
                 // retrieve forms by DB id
                 var tempfunctionByID = function() {
-                    var promise = new Promise(function(resolve, reject) {
+                    return new Promise(function(resolve, reject) {
                         FormModel.findById(topsurvey, function (err, form) {
                             if (err) {
                                 reject(err);
                             } else {
                                 if (form) {
-                                    if (((form.public == true || form.sharedWithUsers.indexOf(req.session.userid) >= 0) && form.shared == true) || form.userid == req.session.userid) {
+                                    if (((form.public === true || form.sharedWithUsers.indexOf(req.session.userid) >= 0) && form.shared === true) || form.userid === req.session.userid) {
                                         // was the form generated by the current user?
                                         var adminrights = false;
                                         if (req.isAuthenticated()) {
-                                            if (req.session.userid == form.userid) {
+                                            if (req.session.userid === form.userid) {
                                                 // yes
                                                 adminrights = true;
                                             }
@@ -515,12 +594,11 @@ module.exports = function(app, passport, manager, hashids) {
                         .catch(function () {
                             console.log("error query form by id");
                         });
-                    return promise;
                 };
 
                 // retrieve forms by compley queries
                 var tempfunctionByQuery = function() {
-                    var promise = new Promise(function(resolve, reject){
+                    return new Promise(function(resolve, reject){
                         FormModel.find(queryobj).sort({'timestamp': 'desc'}).limit(10).cursor()
                             .on('data', function(form){
                                 // was the form generated by the current user?
@@ -545,12 +623,11 @@ module.exports = function(app, passport, manager, hashids) {
                                 resolve();
                             });
                     });
-                    return promise;
                 };
 
                 // retrieve forms associated with particular users
                 var tempfunctionByUser = function() {
-                    var promise = new Promise(function(resolve, reject){
+                    return new Promise(function(resolve, reject){
                         AnswersModel.find({userid: queryobj.userid}).limit(10).cursor()
                             .on('data', function(ans){
                                 answerdata.push({formid: ans.formid});
@@ -564,17 +641,17 @@ module.exports = function(app, passport, manager, hashids) {
                     }).then(function() {
                         // get information of the associated form.
                         var tempfunction = function(x) {
-                            var promise = new Promise(function(resolve, reject){
+                            return new Promise(function(resolve, reject){
                                 FormModel.findById(x, function (err, form) {
                                     if (err) {
                                         reject(err);
                                     } else {
                                         if (form) {
-                                            if (form.public == true && form.shared == true) {
+                                            if (form.public === true && form.shared === true) {
                                                 // was the form generated by the current user?
                                                 var adminrights = false;
                                                 if (req.isAuthenticated()) {
-                                                    if (req.session.userid == form.userid) {
+                                                    if (req.session.userid === form.userid) {
                                                         // yes
                                                         adminrights = true;
                                                     }
@@ -599,7 +676,6 @@ module.exports = function(app, passport, manager, hashids) {
                             }).catch(function () {
                                 console.log("error answer form data");
                             });
-                            return promise;
                         };
 
                         answerdata.forEach(function(answer) {
@@ -613,7 +689,6 @@ module.exports = function(app, passport, manager, hashids) {
                         .catch(function () {
                             console.log("error query user")
                         });
-                    return promise;
                 };
 
                 // execute
@@ -640,8 +715,8 @@ module.exports = function(app, passport, manager, hashids) {
                 // query the users
                 // link users to formids
                 var tempfunction = function(x) {
-                    var promise = new Promise(function(resolve, reject){
-                        if (x.anonymous == false) {
+                    return new Promise(function(resolve, reject){
+                        if (x.anonymous === false) {
                             UserModel.findById(x.userid, function (err, k) {
                                 if (err) {
                                     reject(err);
@@ -657,7 +732,6 @@ module.exports = function(app, passport, manager, hashids) {
                     }).catch(function () {
                         console.log("error query user")
                     });
-                    return promise;
                 };
 
                 authors.forEach(function(author) {
@@ -671,12 +745,21 @@ module.exports = function(app, passport, manager, hashids) {
             .then(function () {
                 // merge the data
                 for (l = 0; l < selectedforms.length; l++) {
-                    outputformsdatatemp[l] = {formdata: selectedforms[l].formdata, id: selectedforms[l].id, author: authorprofiles[hashids.decodeHex(selectedforms[l].id)]};
+                    outputformsdatatemp[l] = {formdata: selectedforms[l].formdata, id: selectedforms[l].id, author: authorprofiles[hashids.decodeHex(selectedforms[l].id)], highlight: false, found: true};
                 }
 
                 // add to the beginning
-                if (topsurvey != null && Object.keys(firstform).length !== 0) {
-                    outputformsdatatemp.unshift({formdata: firstform.formdata, id: firstform.id, author: authorprofiles[hashids.decodeHex(firstform.id)]});
+                if (topsurvey != null) {
+                    if (Object.keys(firstform).length !== 0) {
+                        outputformsdatatemp.unshift({
+                            formdata: firstform.formdata,
+                            id: firstform.id,
+                            author: authorprofiles[hashids.decodeHex(firstform.id)],
+                            highlight: true, found: true
+                        });
+                    } else {
+                        outputformsdatatemp.unshift({highlight: true, found: false});
+                    }
                 }
             })
             .then(function () {
@@ -687,7 +770,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                 // loop and check
                 for (l = 0; l < outputformsdatatemp.length; l++) {
-                    if (alreadyincluded.indexOf(outputformsdatatemp[l].id) == -1) {
+                    if (alreadyincluded.indexOf(outputformsdatatemp[l].id) === -1) {
                         outputformsdata.push(outputformsdatatemp[l]);
                         alreadyincluded.push(outputformsdatatemp[l].id);
                     }

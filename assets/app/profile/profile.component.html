@@ -42,7 +42,7 @@
                     </div>
                     <button type="button"
                             class="btn btn-success btn-sm addToNetwork"
-                            (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending && !me">Add To Network
+                            (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network
                     </button>
                     <button type="button"
                             class="btn btn-success btn-sm addToNetwork" *ngIf="pending" >Network request is pending

@@ -23,52 +23,59 @@ export class FeedForm {
     typeevent: boolean;
     public: boolean;
     download: string;
+    found: boolean;
+    highlight: boolean;
 
     constructor(private object: Object) {
-        // general data
-        this.title = object.formdata.title;
-        this.id = object.id; //   encrypted
-        this.description = object.formdata.description;
-        this.questions = object.formdata.questions;
-        this.hashtags = object.formdata.hashtags;
-        this.timestamp = object.formdata.timestamp;
-        this.admin = object.formdata.admin;
-        this.expired = object.formdata.expired;
-        this.shared = object.formdata.shared;
-        this.public = object.formdata.public;
-        this.typeevent = object.formdata.typeevent;
-        this.answered = false;
-        this.plotdata = null;
-        this.viewGraphsbool = false;
-        this.download = "./forms/download/"+this.id;
+        this.found = object.found;
 
-        // author info
-        if (object.author != null) {
-            if (object.author.anonymous == false) {
-                this.author = object.author.name;
-                this.authorlink = object.author.link;
-                this.authorlinkdisabled = false;
-                // deal with picture
-                if (object.author.facebookID != null) {
-                    this.pic = object.author.facebookID;
-                    this.pictype = "fb";
-                } else {
-                    if (object.author.pic != null) {
-                        this.pictype = "local";
-                        this.pic = object.author.pic;
+        if (this.found) {
+            // general data
+            this.title = object.formdata.title;
+            this.id = object.id; //   encrypted
+            this.description = object.formdata.description;
+            this.questions = object.formdata.questions;
+            this.hashtags = object.formdata.hashtags;
+            this.timestamp = object.formdata.timestamp;
+            this.admin = object.formdata.admin;
+            this.expired = object.formdata.expired;
+            this.shared = object.formdata.shared;
+            this.public = object.formdata.public;
+            this.typeevent = object.formdata.typeevent;
+            this.answered = false;
+            this.plotdata = null;
+            this.viewGraphsbool = false;
+            this.download = "./forms/download/"+this.id;
+            this.highlight = object.highlight;
+
+            // author info
+            if (object.author != null) {
+                if (object.author.anonymous == false) {
+                    this.author = object.author.name;
+                    this.authorlink = object.author.link;
+                    this.authorlinkdisabled = false;
+                    // deal with picture
+                    if (object.author.facebookID != null) {
+                        this.pic = object.author.facebookID;
+                        this.pictype = "fb";
                     } else {
-                        this.pictype = "default";
-                        this.authorgender = object.author.gender;
+                        if (object.author.pic != null) {
+                            this.pictype = "local";
+                            this.pic = object.author.pic;
+                        } else {
+                            this.pictype = "default";
+                            this.authorgender = object.author.gender;
+                        }
                     }
+                } else {
+                    this.author = "Anonymous";
+                    this.authorlink = "";
+                    this.authorlinkdisabled = true;
+                    this.pictype = "anonymous";
                 }
             } else {
-                this.author = "Anonymous";
-                this.authorlink = "";
-                this.authorlinkdisabled = true;
-                this.pictype = "anonymous";
+                this.setFailed();
             }
-        } else {
-            this.setFailed();
         }
     }
 

@@ -34,15 +34,10 @@ export class UserService {
                     .then(res => {
                         checkedLogin = true;
                         data = res.json();
-                        if (data != null) {
-                            loggedin = true;
-                        } else {
-                            loggedin = false;
-                        }
+                        loggedin = data != null;
                         resolve(data);
                     })
                     .catch(error => {
-                        alert("Error checking if logged in: " + error);
                         reject(error);
                     });
             } else {
@@ -62,11 +57,7 @@ export class UserService {
                 .then(res => {
                     checkedLogin = true;
                     data = res.json();
-                    if (data != null) {
-                        loggedin = true;
-                    } else {
-                        loggedin = false;
-                    }
+                    loggedin = data != null;
                     resolve(data);
                 })
                 .catch(error => {

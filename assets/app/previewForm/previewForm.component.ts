@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormService} from "../form.service";
 import {UserService} from "../user.service";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {Http } from "@angular/http";
 
 @Component({
@@ -19,16 +19,18 @@ export class PreviewFormComponent implements OnInit {
     constructor(private formService: FormService,
                 private router: Router,
                 private http: Http,
+                private route: ActivatedRoute,
                 private userService: UserService) {
     }
 
     ngOnInit() {
         if (this.userService.getLoggedin() === true) {
-            this.data = this.formService.getData();
+            this.formService.getPersistedData().then(data => {
+                this.data = data;
+            });
         } else {
             this.reject = true;
         }
-
     }
 
     share() {

@@ -298,11 +298,10 @@ module.exports = function(app, passport, manager, hashids) {
         promiseslist.push(tempfunctionNetworkEdges());
 
         return Promise.all(promiseslist).then(function () {
-            console.log("promise all completed");
             // merge some data
             if (innetworktemp.found === true && innetworktemp.status === true) {
                 userdata.innetwork = true;
-            } else if (innetworktemp.found === true && innetworktemp.status === false) {
+            } else if (innetworktemp.found === true && innetworktemp.status === false && me === false) {
                 userdata.pending = true;
             } else {
                 userdata.innetwork = false;

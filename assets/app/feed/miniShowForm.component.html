@@ -63,6 +63,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>
                             </div>
                             <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
                             <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
@@ -135,6 +136,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>                                                            
                             </div>
                             <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
                             <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>

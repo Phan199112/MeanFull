@@ -2,7 +2,7 @@ $formContainerColor: #fff;
 $whiteColor: #fff;
 //$insideColor: #e6f7ff;
 $insideColor: #F6F6F6;
-$navBarColor:  #0088cc;
+$navBarColor:  #1E824C;
 
 #createFormContainer {
     background-color: $whiteColor;
@@ -11,6 +11,11 @@ $navBarColor:  #0088cc;
     overflow:auto;
     border-radius: 1%;
     margin-top: 30px;
+}
+
+#page-title {
+    padding: 0 15px;
+    padding-bottom: 15px;
 }
 
 #topJumbo {
@@ -33,9 +38,94 @@ $navBarColor:  #0088cc;
     border:none;
 }
 
-#buttonText {
-
+.btn-primary {
+    background-color: $navBarColor;
+    border-color: $navBarColor;
+    &:not([disabled]):not(.disabled).active, &:not([disabled]):not(.disabled):active {
+        color: #fff;
+        background-color: $navBarColor;
+        border-color: $navBarColor;
+        box-shadow: 0 0 0 0.2rem rgba(30, 130, 76, 0.5);
+    }
+    i {
+        margin-right: 5px;
+    }
 }
+
+.btn-outline-secondary {
+    color: $navBarColor;
+    border-color: $navBarColor;
+    box-shadow: none !important;
+    &:hover {
+        color: #fff;
+        background-color: $navBarColor;
+    }
+}
+
+.form-control:focus {
+    border-color: $navBarColor;
+}
+
+.underlined-input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    border-width: 2px;
+    box-shadow: none;
+
+    &:focus {
+        box-shadow: none;
+    }
+    &.active {
+        border-color: $navBarColor;
+    }
+    &.is-invalid {
+        box-shadow: none;
+    }
+}
+
+a.btn {
+    color: $navBarColor;
+}
+a.btn:hover {
+    color: #fff;
+}
+
+.btn-small {
+    width: 30px;
+    display: inline-block;
+}
+.btn-circle {
+    text-align: center;
+    i {
+        border-radius: 100%;
+        width: 24px;
+        display: block;
+        /* height: 25px; */
+        color: #fff;
+        font-size: 14px !important;
+        font-weight: normal;
+        vertical-align: middle;
+        margin: 0 auto;
+    }
+    &.btn-subtract {
+        i {
+            padding: 5px 6px;
+            background-color: #e90808;        
+        }
+    }
+    &.btn-add {
+        i {
+            padding: 5px 6.6px;
+            background-color: $navBarColor;
+        }
+    }
+}
+
+// .tag-input-wrapper {
+//     width: 50%;
+// }
 
 #questions {
     margin-bottom: 20px;
@@ -52,6 +142,94 @@ $navBarColor:  #0088cc;
     label {
         cursor: move;
     }
+
+    .select-kind {
+        display: inline-block;
+        .select-kind-btn {
+            background-color: white;
+            position: relative;
+            width: 400px;
+            text-align: left;
+            span {
+                font-size: inherit;
+            }
+        }
+        .select-kind-dropdown {
+            width: 400px;
+            img {
+                margin-top: -3px;
+            }
+            span {
+                color: #2c3841;
+                font-size: 16px;
+            }
+            .dropdown-item {
+                padding-left: 20px;
+                .icon {
+                    width: 40px;
+                    display: inline-block;
+                    text-align: center;
+                    &.Radio {
+                        margin-left: 4px;
+                        margin-right: -4px;
+                    }
+                    &.Stars {
+                        margin-left: -1px;
+                        margin-right: 1px;
+                    }
+                }
+            }
+            .dropdown-item:hover {
+                background-color: white;
+                outline: 2px solid $navBarColor;
+                span {
+                    color: $navBarColor;
+                }
+            }
+        }
+        .select-kind-btn::after {
+            position: absolute;
+            top: 43%;
+            right: 10px;
+        }
+    
+        &.show {
+            .select-kind-btn {
+                border-color: $navBarColor;
+                box-shadow: 0 0 0 0.2rem rgba(30, 130, 76, .25);
+            }
+        }
+    }
+
+    .question-body {
+        display: inline-block;
+    }
+
+    .button-right {
+        text-align: center;
+        float: right;
+
+        i {
+            font-size: 25px;
+        }
+        i:hover {
+            color: $navBarColor;
+        }
+    }
+
+    .question-option {
+        margin: 10px 0;
+        input {
+            vertical-align: middle;
+        }
+        .delete-option {
+            vertical-align: middle;
+            margin-left: 3px;
+        }
+        .add-option {
+            vertical-align: middle;
+        }
+    }
 }
 
 .question.active {
@@ -61,11 +239,6 @@ $navBarColor:  #0088cc;
     hr {
         border-color: rgba(0,0,0,0);
     }
-}
-
-
-.delete-question {
-    width: 100%;
 }
 
 $warningColor: rgb(234, 122, 133);
@@ -88,9 +261,9 @@ input.option-input.is-invalid {
         //text-align: center;
     }
     #survey-title {
-        input {
+        textarea {
             //font-size: 30px;
-            width: 50%;
+            //width: 50%;
         }
     }
     #survey-description {
@@ -106,8 +279,13 @@ input.option-input.is-invalid {
 }
 
 .file-input {
+    margin-right: 15px;
     label {
         cursor: hand;
+        display: block;
+    }
+    .delete-question {
+        display: block;
     }
     input {
         width: 0.1px;
@@ -119,8 +297,12 @@ input.option-input.is-invalid {
     }
 }
 
-#middle-section {
+#step-2 {
     padding: 0 15px;
+
+    .main-row {
+        margin-bottom: 40px;
+    }
 
     .lead {
         margin-bottom: 20px;
@@ -216,6 +398,25 @@ input.option-input.is-invalid {
         
         .invalid-feedback {
             display: list-item;
+        }
+    }
+}
+
+/deep/ share-button {
+    margin-right: 20px !important;
+}
+
+.star {
+    display: inline-block;
+}
+
+#share-link {
+    /deep/ share-button {
+        visibility: hidden;
+    }
+    &:hover {
+        /deep/ share-button {
+            visibility: visible;
         }
     }
 }

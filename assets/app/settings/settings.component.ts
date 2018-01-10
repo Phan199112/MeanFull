@@ -23,7 +23,8 @@ export class SettingsComponent implements OnInit {
     passwordForm: FormGroup;
     activeTab: string = "general";
     generalQuestionsForm: FormGroup = new FormGroup({});
-    profilepublic: Object = {};
+    profilepublic: Object = {form: {}, question: {}};
+    notificationsettings: Object = {form: {}, question: {}};
     generalQuestions: any[];
     educationfield: Object = {edit: false, values: "", summary: ""};
     network: any[];
@@ -92,6 +93,7 @@ export class SettingsComponent implements OnInit {
                     // privacy stuff
                     this.profilepublic.form = this.fb.group({
                         public: [this.profile.public, Validators.required]});
+
                     this.profilepublic.question = {
                         body: "Would you like your profile to be visible to anyone visiting CrowdWorks?",
                         name: "public",
@@ -100,6 +102,50 @@ export class SettingsComponent implements OnInit {
                             {value: true, label: "Yes"},
                             {value: false, label: "No"}]
                     };
+
+                    // notification settings
+                    this.notificationsettings.form = this.fb.group({
+                        networkrequest: [this.profile.notifications.networkrequest, Validators.required],
+                        formrequest: [this.profile.notifications.formrequest, Validators.required],
+                        discussion: [this.profile.notifications.discussion, Validators.required],
+                        formactivity: [this.profile.notifications.formactivity, Validators.required]});
+
+                    this.notificationsettings.question = [{
+                        label: "Network requests",
+                        body: "Would you like to receive emails with networking requests?",
+                        name: "networkrequest",
+                        type: "radio",
+                        options: [
+                            {value: true, label: "Yes"},
+                            {value: false, label: "No"}]
+                    },
+                        {
+                            label: "Form requests",
+                            body: "Would you like to receive emails with form completion requests?",
+                            name: "formrequest",
+                            type: "radio",
+                            options: [
+                                {value: true, label: "Yes"},
+                                {value: false, label: "No"}]
+                        },
+                        {
+                            label: "Discussions",
+                            body: "Would you like to receive emails when users comment on your forms?",
+                            name: "discussion",
+                            type: "radio",
+                            options: [
+                                {value: true, label: "Yes"},
+                                {value: false, label: "No"}]
+                        },
+                        {
+                            label: "Form activity",
+                            body: "Would you like to receive emails when users complete your forms?",
+                            name: "formactivity",
+                            type: "radio",
+                            options: [
+                                {value: true, label: "Yes"},
+                                {value: false, label: "No"}]
+                        }];
 
                     // which page should be opened
                     this.route.params.subscribe(params => {
@@ -457,12 +503,22 @@ export class SettingsComponent implements OnInit {
     }
 
     submitPublicField() {
-        let data;
-
         this.checkSubmit(this.profilepublic.form, () => {
             let formValue = this.profilepublic.form.value;
 
             this.http.put(`/users/settings/changeprivacy`, formValue).toPromise()
+                .then(res => {
+
+                })
+                .catch(error => alert("Error submitting settings: " + error));
+        });
+    }
+
+    submitNotificationSettingsField() {
+        this.checkSubmit(this.notificationsettings.form, () => {
+            let formValue = this.notificationsettings.form.value;
+
+            this.http.put(`/users/settings/changenotifications`, formValue).toPromise()
                 .then(res => {
 
                 })
