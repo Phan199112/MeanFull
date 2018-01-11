@@ -274,8 +274,9 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     optionIsUnique(input) {
         let error = null;
         if (input && input.value && input.parent && input.parent.parent) {
-            for (let option of input.parent.parent.value) {
-                if (input.value == option.body) {
+            for (let option of input.parent.parent.controls) {
+                option = option.controls.body;
+                if (input !== option && input.value == option.value) {
                     error = {duplicateOption: true};
                 }
             }
@@ -529,7 +530,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     questionnaireData() {
-        let data = this.questionnaire.value;
+        let data = this.questionnaire.getRawValue();
 
         if (this.pics) {
             for (let l=0; l < data.questions.length; l++) {

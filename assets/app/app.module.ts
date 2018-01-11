@@ -45,8 +45,7 @@ import {NguiAutoCompleteModule } from '@ngui/auto-complete';
 import {TagBannerListComponent} from "./tagsBanner/tagbanner.list.component";
 import {DiscussionComponent} from "./discussion/discussion.component";
 import {DiscussionListComponent} from "./discussion/discussion.list.component";
-import {BarChartComponent} from "./charts/bar.chart.component";
-import {DoughnutChartComponent} from "./charts/doughnut.chart.component";
+import {ChartJSComponent} from "./charts/chartjs.component";
 import {ChartsModule} from 'ng2-charts';
 import {NetworkComponent} from "./networkContainer/network.component";
 import {NetworkListComponent} from "./networkContainer/network.list.component";
@@ -76,8 +75,7 @@ import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component"
         FeedListComponent,
         LoginComponent,
         MiniShowFormComponent,
-        BarChartComponent,
-        DoughnutChartComponent,
+        ChartJSComponent,
         ProfileComponent,
         TagListComponent,
         TagComponent,

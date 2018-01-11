@@ -146,10 +146,10 @@
                                                             <span title="Add new option" *ngIf="j == question.get('options').controls.length - 1" class="btn-small btn-circle btn-add add-option">
                                                                 <i class="fa fa-plus mouseChangeToHand" (click)="addOption(question, true)" aria-hidden="true"></i>
                                                             </span>
-                                                            <div *ngIf="isInvalid(option.get('body')) && question.hasError('required')" class="invalid-feedback">
+                                                            <div *ngIf="isInvalid(option.get('body')) && option.get('body').hasError('required')" class="invalid-feedback">
                                                                 Option body is required
                                                             </div>
-                                                            <div *ngIf="isInvalid(option.get('body')) && question.hasError('duplicateOption')" class="invalid-feedback">
+                                                            <div *ngIf="isInvalid(option.get('body')) && option.get('body').hasError('duplicateOption')" class="invalid-feedback">
                                                                 You can't have multiple options with the same value
                                                             </div>
                                                         </div>
