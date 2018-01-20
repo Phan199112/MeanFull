@@ -127,3 +127,13 @@
     }
   }
 }
+
+/deep/ ngb-tooltip-window {
+  .arrow {
+    top: 44% !important;
+  }
+}
+
+/deep/ .invalid-feedback {
+  font-size: 14px !important;  
+}

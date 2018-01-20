@@ -18,7 +18,7 @@ export class ShareFormComponent implements OnInit {
 
     ngOnInit() {
         if (this.userService.getLoggedin() === true) {
-            this.link = `https://www.crowdworks.us/takeForm/${this.formService.getData().id}`;
+            this.link = `https://www.questionsly.com/takeForm/${this.formService.getData().id}`;
         } else {
             this.reject = true;
         }

@@ -24,13 +24,15 @@ export class PreviewFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.userService.getLoggedin() === true) {
-            this.formService.getPersistedData().then(data => {
-                this.data = data;
-            });
-        } else {
-            this.reject = true;
-        }
+        this.userService.afterLoginCheck().then(userData => {
+            if (userData != 0) {            
+                this.formService.getPersistedData().then(data => {
+                    this.data = data;
+                });
+            } else {
+                this.reject = true;
+            }
+        });
     }
 
     share() {

@@ -19,7 +19,7 @@ module.exports = function(app, passport, manager, hashids) {
     passport.use('facebook', new FacebookStrategy({
             clientID: '669514259923041',
             clientSecret: '5c8625d2b8d7a5edd938725ab0490e86',
-            callbackURL: 'https://www.crowdworks.us/users/login/facebook/return',
+            callbackURL: 'https://www.questionsly.com/users/login/facebook/return',
             profileFields: ['id', 'displayName', 'email', 'hometown', 'about', 'birthday','education','favorite_athletes',
                 'favorite_teams','first_name','gender','inspirational_people','interested_in','is_verified','languages',
                 'last_name','link','locale','location','middle_name','meeting_for','name_format','political', 'quotes',
@@ -251,7 +251,7 @@ module.exports = function(app, passport, manager, hashids) {
                         } else {
                             //req.session.userid = k._id;
                             // send email validation
-                            var confirmlink = "https://www.crowdworks.us/users/settings/confirmemail/"+randomkey;
+                            var confirmlink = "https://www.questionsly.com/users/settings/confirmemail/"+randomkey;
                             // send email
                             emailfunctions.sendEmailVerification(data.email, confirmlink);
 

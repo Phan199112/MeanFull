@@ -544,11 +544,11 @@ module.exports = function(app, passport, manager, hashids) {
                                 //
                                 if (Object.keys(k.notifications).length === 0) {
                                     if (k.notifications.networkrequest === true) {
-                                        emailfunctions.sendNotificationFriendRequest(k.email, sendername)
+                                        emailfunctions.sendNotificationFriendRequest(k.email, req.user)
                                     }
                                 } else {
                                     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                    emailfunctions.sendNotificationFriendRequest(k.email, sendername)
+                                    emailfunctions.sendNotificationFriendRequest(k.email, req.user)
                                 }
 
                             }

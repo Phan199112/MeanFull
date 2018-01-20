@@ -143,6 +143,8 @@ module.exports = function(app, passport, manager, hashids) {
         // input
         var receivedData =  req.body;
 
+        console.log(receivedData);
+
         // mongodb create
         FormModel.create({userid: req.session.userid,
             title: receivedData.title,
@@ -1022,7 +1024,7 @@ module.exports = function(app, passport, manager, hashids) {
             FormModel.findById(formid, function (err, form) {
                 if (err) {
                     reject(err);
-                    console.log("error form find");
+
                 } else {
                     if (form) {
                         // are the results public?
@@ -1041,7 +1043,6 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         resultsPublic = false;
                         reject();
-                        console.log("not public");
                     }
                 }
             });
@@ -1055,7 +1056,7 @@ module.exports = function(app, passport, manager, hashids) {
                         if (err) {
                             // error
                             reject();
-                            console.log("error answers");
+
                         } else {
                             allanswers = k;
                             resolve();
@@ -1065,7 +1066,6 @@ module.exports = function(app, passport, manager, hashids) {
 
                 return promise.then(function () {
                     //ok
-                    console.log("all answers:");
                 }, function () {
                     console.log("promise not ok");
                 });
@@ -1073,7 +1073,7 @@ module.exports = function(app, passport, manager, hashids) {
             })
             .then(function () {
                 //
-                if (resultsPublic == true) {
+                if (resultsPublic === true) {
                     // dataselection
                     // tempfunction to query the user for gender
                     var tempfunction = function(x) {
@@ -1083,7 +1083,6 @@ module.exports = function(app, passport, manager, hashids) {
                                     reject(err);
                                 } else {
                                     authorprofiles[x.userid] = {gender: k.gender, dob: k.dob, location: k.location};
-                                    console.log(authorprofiles[x.userid]);
                                     resolve();
                                 }
                             });
@@ -1098,7 +1097,6 @@ module.exports = function(app, passport, manager, hashids) {
 
                     return Promise.all(authorprofilespromise).then(function () {
                         exportdata = formfunctions.analyzeSegregated(allanswers, authorprofiles, req.body.dataselection, questiontypes);
-                        console.log("export data ");
                     })
                         .catch(function(err) {
                             console.log("promise error: "+err);

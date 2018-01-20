@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [dataType]="'doughnut'"></app-chartjs>
+                        <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [questionkind]="question.kind" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-chartjs>
                         <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.eventplot"></miniresults-table-component>
                     </div>
                 </ng-template>

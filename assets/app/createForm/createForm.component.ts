@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
@@ -16,7 +16,10 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
     styleUrls: [
         './createForm.component.scss'
     ],
-    providers: [FormService, UserService]
+    providers: [FormService, UserService],
+    host: {
+        '(document:click)': 'onDocClick($event)',
+    }
 })
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
@@ -41,13 +44,15 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     pics: Object = {};
     timePickerConfig: FlatpickrOptions;
     datePickerConfig: FlatpickrOptions;
-    reject: boolean = false;
+    reject: any = null;
     typeevent: boolean = false;
     focusedOption: number = 0;
     step: number = 1;
     updateform: boolean = false; // so when you go back to the previous page to correct something that it doesn't create a new database entry for the form
     published: boolean = false;
     shareLink: string = "";
+    @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
+    @ViewChildren("imgTooltipToggle") imgTooltipToggles;         
 
     constructor(
         private fb: FormBuilder,
@@ -72,25 +77,40 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        if (this.userService.getLoggedin() === true) {
-            this.route.queryParams.subscribe(params => {
-                if (params.edit) {
-                    this.edit = true;
-                }
+        this.route.queryParams.subscribe(params => {
+            if (params.edit) {
+                this.edit = true;
+            }
 
-                this.typeevent = !!params.event;
+            this.typeevent = !!params.event;
 
-                this.createForm();
-            });
-        } else {
-            this.reject = true;
-        }
+            this.createForm();
+        });       
+        this.userService.afterLoginCheck().then(userData => {            
+            if (userData != 0) {
+                this.reject = false;
+            } else {
+                this.reject = true;
+            }
+        });
     }
 
     ngOnDestroy() {
         if (this.autoScroll) {
             this.autoScroll.destroy();
         }
+    }
+
+    onDocClick(event) {
+        this.imgTooltipCtrls.forEach((ctrl, i) => {
+            if (
+                ctrl.isOpen() &&
+                !document.querySelector(`#${ctrl._ngbTooltipWindowId}`).contains(event.target) && 
+                event.target != this.imgTooltipToggles.toArray()[i].nativeElement
+            )  {
+                ctrl.close();
+            }
+        });
     }
 
     createForm() {
@@ -179,6 +199,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.getSignedRequest(file, question);
     }
 
+    setPicUrl(index, url) {
+        this.pics[this.questionnaire.get('questions').get(index.toString()).get('id').value] = url;
+        this.imgTooltipCtrls.toArray()[index].close();
+    }
+
     addQuestion() {
         let questions = this.questionnaire.controls.questions;
         let question = this.fb.group({
@@ -187,7 +212,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             options: this.fb.array([]),
             required: false,
             number: questions.length + 1,
-            id: Math.random().toString().substring(2)
+            id: Math.random().toString().substring(2),
         }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
         questions.push(question);
         this.questionnaire.wasChecked = false;
@@ -572,7 +597,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.http.post('/forms/create', formData).toPromise()
             .then(response => {
                 formData.id = response.json().id;
-                this.shareLink = `https://www.crowdworks.us/takeForm/${formData.id}`;                
+                this.shareLink = `https://www.questionsly.com/takeForm/${formData.id}`;
                 this.formService.setData(formData);
                 this.step = 2;
             })

@@ -62,8 +62,9 @@ $navBarColor:  #1E824C;
     }
 }
 
-.form-control:focus {
-    border-color: $navBarColor;
+/deep/ .form-control:focus {
+    border-color: $navBarColor !important;
+    box-shadow: 0 0 0 0.2rem rgba(30, 130, 76, .25) !important;    
 }
 
 .underlined-input {
@@ -287,13 +288,40 @@ input.option-input.is-invalid {
     .delete-question {
         display: block;
     }
-    input {
+    .image-file {
         width: 0.1px;
-	      height: 0.1px;
-	      opacity: 0;
-	      overflow: hidden;
-	      position: absolute;
-	      z-index: -1;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+    /deep/ ngb-tooltip-window {
+        .tooltip-inner {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+            font-size: 14px;
+            max-width: none;
+            width: 232px;
+            .input-group, label {
+                margin: 5px 0;
+                font-size: inherit;
+            }
+            .input-group {
+                margin-bottom: 10px;
+                &, button {
+                    height: 38px;
+                    border-color: #ced4da;
+                }
+                input, i {
+                    font-size: inherit !important;
+                }
+                i:hover {
+                    color: #fff !important;
+                }
+            }
+        }
     }
 }
 

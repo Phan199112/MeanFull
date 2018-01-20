@@ -8,19 +8,30 @@ export class ChartJSComponent implements OnInit {
     // inputs
     @Input() private dataLabels: Array<any>;
     @Input() private dataValues: Array<any>;
-    @Input() private dataType: String;
+    @Input() private questionkind: string;
 
     // chart
     public ChartLabels:string[];
     public ChartData:number[];
     public ChartType:string;
+    public ChartOptions:any;
+    public ChartLegend:boolean;
 
     constructor () {
     }
 
     ngOnInit() {
         if (this.dataLabels) {
-            this.ChartType = this.dataType;
+            // set the type
+            if (this.dataValues.length == 1) {
+                this.ChartType = "doughnut";
+                this.ChartLegend = true;
+
+            } else {
+                this.ChartType = "bar";
+                this.ChartLegend = false;
+            }
+
 
             // append (%) signs to the labels such that the interpretation of the hoover tooltip is clear
             this.ChartLabels = this.dataLabels;
@@ -30,13 +41,48 @@ export class ChartJSComponent implements OnInit {
             }
 
             // the data
-            if (this.ChartType === 'doughnut' || this.ChartType === 'radar') {
-                this.ChartData = [{data: this.dataValues, label: ''}];
+            this.ChartData = this.dataValues;
 
-            } else {
-                this.ChartData = this.dataValues;
+            //options
+            // depends on the chart type
+            if (this.ChartType == "bar") {
+                this.ChartOptions = {
+                    scaleShowVerticalLines: false,
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: false
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            ticks: {
+                                beginAtZero: true,
+                                steps: 10,
+                                stepValue: 10,
+                                max: 100
+                            }
+                        }]
+                    }
+                };
+
+            } else if (this.ChartType == "radar") {
+                this.ChartOptions = {
+                    scale: {
+                        ticks: {
+                            beginAtZero: true,
+                            steps: 10,
+                            stepValue: 10,
+                            max: 100
+                        },
+                        display: true
+                    }
+                };
 
             }
+
 
         }
     }
