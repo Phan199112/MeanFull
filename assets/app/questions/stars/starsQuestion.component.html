@@ -2,6 +2,7 @@
   <span class="star" *ngFor="let n of [1,2,3,4,5]">
       <i 
         [ngClass]="{'fa': true, 'fa-star-o': control.value < n, 'fa-star': control.value >= n}" 
-        (click)="control.setValue(n)"></i>
+        (click)="control.setValue(n); loginPopup.check()"></i>
   </span>
 </div>
+<login-popup #loginPopup></login-popup>

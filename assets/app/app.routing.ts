@@ -18,10 +18,11 @@ const APP_ROUTES: Routes = [
     {path: 'takeForm/:id', component: TakeFormComponent},
     {path: 'feed', component: FeedPageComponent},
     {path: 'users/login', component: LoginComponent},
-    {path: 'profile/:id', component: ProfileComponent},
+    {path: 'profile/:id', component: ProfileComponent},    
+    {path: 'profile/:id/:subsection', component: ProfileComponent},
     {path: 'settings', component: SettingsComponent},
     {path: 'createCommunity', component: CreateCommunityComponent},
-    {path: 'community/:id', component: ViewCommunityComponent},
+    {path: 'community/:id', component: ViewCommunityComponent}
 ]
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

@@ -1,0 +1,27 @@
+#page-title {
+  text-transform: capitalize;
+}
+
+.item {
+  border: 1px solid #e9ebee;
+  width: calc(33% - 10px);
+  display: inline-block;
+  margin: 5px;
+
+  img {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+  }
+  .name {
+    vertical-align: middle;
+    font-weight: bold;
+    color: #365899;
+    display: inline-block;
+    max-width: calc(100% - 100px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+}

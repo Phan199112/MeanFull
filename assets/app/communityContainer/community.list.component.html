@@ -1,6 +1,9 @@
 <div class="container main-container" id="tagsListComponent">
     <div class="secondary-container">
-        <h5 class="title">Communities</h5>
+        <a *ngIf="user" routerLink="/profile/{{user}}/communities">                
+            <h5 class="title">Communities</h5>
+        </a>
+        <h5 *ngIf="!user" class="title">Communities</h5>        
         <div *ngIf="communitylist.length != 0">
             <div class="adaptable-matrix">
                 <community-component

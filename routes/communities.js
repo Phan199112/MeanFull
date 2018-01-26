@@ -15,19 +15,18 @@ module.exports = function(app, passport, manager, hashids) {
     // save a new community
     app.post('/community/save', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var receivedData =  req.body;
-        var unhashedUsers = [];
+        var unhashedAdmins = [];
 
-        if (receivedData.sharedWith != null) {
-            for (var i = 0; i < receivedData.sharedWith.length; i++) {
+        if (receivedData.admins != null) {
+            for (var i = 0; i < receivedData.admins.length; i++) {
                 // save value
-                unhashedUsers.push(hashids.decodeHex(receivedData.sharedWith[i]));
+                unhashedAdmins.push(hashids.decodeHex(receivedData.admins[i]));
             }
         }
 
         // mongodb
         CommunityModel.create({adminuserid: [req.session.userid],
             title: receivedData.title,
-            description: receivedData.description,
             hashtags: receivedData.hashtags,
             public: receivedData.public,
             pic: receivedData.pic,
@@ -36,9 +35,9 @@ module.exports = function(app, passport, manager, hashids) {
                     res.json({status: 0});
                 } else {
                     // write notifictions
-                    if (unhashedUsers != null) {
-                        for (var i = 0; i < unhashedUsers.length; i++) {
-                            notifications.createNotification(unhashedUsers[i], "comm", "Community invitation", hashids.encodeHex(k._id));
+                    if (unhashedAdmins != null) {
+                        for (var i = 0; i < unhashedAdmins.length; i++) {
+                            notifications.createNotification(unhashedAdmins[i], req.session.userid, "comm-admin", "Community invitation", hashids.encodeHex(k._id));
                         }
                     }
 
@@ -53,14 +52,15 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/community/invite', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
-        var userid = hashids.decodeHex(req.body.userid);
 
         commfunctions.commAdmin(commid, req.session.userid).then(function(result) {
             if (result === true) {
                 // the current user is an admin
-                notifications.createNotification(userid, "comm", "Community invitation", req.body.commid);
+                req.body.userids.forEach(function(userid) {
+                    var seluserid = hashids.decodeHex(userid);
+                    notifications.createNotification(seluserid, req.session.userid, "comm", "Community invitation", req.body.commid);
+                });
                 res.json({status: 1});
-
             } else {
                 console.log("not an admin");
                 res.json({status: 0});

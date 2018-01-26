@@ -56,29 +56,12 @@
                                         <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
                                     </div>
                                 </a>
-                                <div ngbDropdownMenu aria-labelledby="notifications">
-                                    <div *ngFor="let notification of notifications.reverse(); let i = index">
-                                        <div class="dropdown-item" *ngIf="notification.type == 'form'" [routerLink]="['/feed', {'survey': notification.data}]" >
-                                            <div *ngIf="notification.seen">{{notification.message}}</div>
-                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
+                                <div class="p-0 notifications" ngbDropdownMenu aria-labelledby="notifications">
+                                    <div *ngFor="let notification of notifications.reverse(); let i = index" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdown-item" [routerLink]="notificationLink(notification)" >
+                                        <div (click)="setAsSeen(notification)">
+                                            <img src="{{notificationPic(notification)}}"/>
+                                            <span>{{notificationMessage(notification)}}</span>
                                         </div>
-                                        <div class="dropdown-item" *ngIf="notification.type == 'form-answer'" [routerLink]="['/feed', {'survey': notification.data}]" >
-                                            <div *ngIf="notification.seen">{{notification.message}}</div>
-                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
-                                        </div>
-                                        <div class="dropdown-item" *ngIf="notification.type == 'form-discussion'" [routerLink]="['/feed', {'survey': notification.data}]" >
-                                            <div *ngIf="notification.seen">{{notification.message}}</div>
-                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
-                                        </div>
-                                        <div class="dropdown-item" *ngIf="notification.type == 'network'" [routerLink]="['/settings', {'page': 'notifications'}]">
-                                            <div *ngIf="notification.seen">Network request</div>
-                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">Network request</div>
-                                        </div>
-                                        <div class="dropdown-item" *ngIf="notification.type == 'comm'" [routerLink]="['/settings', {'page': 'notifications'}]">
-                                            <div *ngIf="notification.seen">{{notification.message}}</div>
-                                            <div (click)="setAsSeen(notification.id)" *ngIf="!notification.seen" class="newnotification">{{notification.message}}</div>
-                                        </div>
-                                        <div *ngIf="i < notifications.length - 1" class="dropdown-divider"></div>
                                     </div>
                                 </div>
                             </li>
@@ -104,7 +87,7 @@
                                         aria-expanded="false">
                                         <i class="fa fa-cog" aria-hidden="true"></i>
                                     </a>
-                                    <div ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                    <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
                                         <a class="dropdown-item" routerLink="/settings">Settings</a>
                                         <a class="dropdown-item" (click)="logout()">Logout</a>
                                     </div>

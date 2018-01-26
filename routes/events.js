@@ -5,13 +5,41 @@ var UserModel = require('../db.models/user.model');
 module.exports = function(app, passport, manager, hashids) {
 
     app.get('/events/list', manager.ensureLoggedIn('/users/login'), function(req, res) {
-
+        var promises = [];
         var outputevents = [];
 
         new Promise(function(resolve, reject) {
             EventModel.find({userid: req.session.userid}).cursor()
                 .on('data', function(event){
-                    outputevents.push({type: event.type, message: event.message, data: event.data, id: hashids.encodeHex(event._id), seen: event.seen});
+                    var eventdata = {
+                        type: event.type, 
+                        message: event.message, 
+                        data: event.data, 
+                        id: hashids.encodeHex(event._id), 
+                        seen: event.seen,
+                        timestamp: event.timestamp
+                    };
+                    promises.push(new Promise(function (resolve, reject) {
+                        if (event.fromuser) {
+                            UserModel.findById(event.fromuser, function (err, userinfo) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    eventdata.fromuser = {
+                                        fb: userinfo.facebookID,
+                                        pic: userinfo.pic,
+                                        gender: userinfo.gender,
+                                        name: userinfo.name.first + " " + userinfo.name.last
+                                    };
+                                    outputevents.push(eventdata);                                                            
+                                    resolve();
+                                }
+                            });
+                        } else {
+                            outputevents.push(eventdata);                                                    
+                            resolve();
+                        }
+                    }));
                 })
                 .on('error', function(err){
                     // handle error
@@ -21,13 +49,18 @@ module.exports = function(app, passport, manager, hashids) {
                     // final callback
                     resolve();
                 });
+        }).then(function() {
+            Promise.all(promises).then(function() {
+                res.json({status: 1, events: outputevents.sort(function(a, b) {
+                    return a.timestamp > b.timestamp;
+                })});
+            }).catch(function() {
+                res.json({status: 0});                
+            });
         })
-            .then(function() {
-                res.json({status: 1, events: outputevents});
+        .catch(function() {
+            res.json({status: 0});
         })
-            .catch(function() {
-                res.json({status: 0});
-        });
     });
 
     app.post('/events/seen', manager.ensureLoggedIn('/users/login'), function(req, res) {

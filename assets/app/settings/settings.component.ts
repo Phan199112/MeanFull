@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import { UserService } from "../user.service";
 import { ActivatedRoute } from "@angular/router";
 import { NgbTabset} from "@ng-bootstrap/ng-bootstrap";
+import { ShareService } from "../share.service";
 
 
 let UsaSchools = require("../data/US-schools.json");
@@ -39,7 +40,8 @@ export class SettingsComponent implements OnInit {
         private http: Http,
         private fb: FormBuilder,
         private route: ActivatedRoute,
-        private userService: UserService
+        private userService: UserService,
+        private shareService: ShareService
     ) {}
 
     range(start, end) {
@@ -602,13 +604,12 @@ export class SettingsComponent implements OnInit {
             .catch(error => alert("Error " + error));
     }
 
-    acceptCommunityRequest(x) {
-        this.http.post(`/users/settings/acceptcommrequest`, {eventid: x}).toPromise()
+    acceptCommunityRequest(x, asAdmin = false) {
+        this.http.post(`/users/settings/acceptcommrequest`, {eventid: x, asadmin: asAdmin}).toPromise()
             .then(() => {
                 this.retrieveData();
             })
             .catch(error => alert("Error: " + error));
-
     }
 
     deleteCommunityRequest(x) {
@@ -619,7 +620,6 @@ export class SettingsComponent implements OnInit {
             .catch(error => alert("Error: " + error));
 
     }
-
 
     // picture upload code
 
@@ -641,6 +641,7 @@ export class SettingsComponent implements OnInit {
             if(xhr.readyState === 4){
                 if(xhr.status === 200){
                     this.picture.newurl = url;
+                    this.shareService.set("profilePic", url);
                 }
                 else{
                     alert('Could not upload file.');

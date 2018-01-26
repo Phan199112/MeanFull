@@ -1,0 +1,29 @@
+<mjml>
+  <mj-head>
+    <mj-title>{{subject}}</mj-title>
+  </mj-head>
+  <mj-body>
+    <mj-container background-color="#1E824C">
+      <mj-section background-color="#fff" border-top="5px solid #1e824c">
+        <mj-column>
+          <mj-text font-size="32px" color="#1E824C" align="center">
+            <b>Questionsly</b>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section background-color="#f9f9f9" border-top="1px solid #dddddd" border-bottom="5px solid #1e824c">
+        <mj-group>
+          <mj-column width="20%" vertical-align="middle">
+            <!--<mj-image width="80" padding-right="0" src="http://Questionsly.us/images/male.png"/>-->
+            <mj-image width="80" href="{{link}}" padding-right="0" src="{{pic}}"/>
+          </mj-column>
+          <mj-column width="80%" vertical-align="middle">
+            <mj-text font-size="18px" color="#3a3137" padding="0 20px">
+              <p><a style="text-decoration:none; color:inherit" href="{{link}}">{{friendName}} commented on your form on Questionsly</a></p>
+            </mj-text>
+          </mj-column>
+        </mj-group>
+      </mj-section>
+    </mj-container>
+  </mj-body>
+</mjml>

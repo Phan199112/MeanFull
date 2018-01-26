@@ -364,7 +364,7 @@
                                                         <div class="btn btn-default image-preview-input">
                                                             <span><i class="fa fa-folder-open" aria-hidden="true"></i></span>
                                                             <span class="image-preview-input-title">Browse</span>
-                                                            <input (change)="onProfilePicChange($event)" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                                            <input (change)="imgChangedEvent = $event; imgEditor.open()" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
                                                         </div>
                                                         </span>
                                                     </div>
@@ -461,6 +461,21 @@
                                                 <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteCommunityRequest(notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
                                             </div>
                                         </div>
+                                        <div class="row" *ngIf="notification.type == 'comm-admin'">
+                                            <div class="col-md-1">
+                                                <div *ngIf="!notification.seen">NEW</div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                {{notification.timestamp | date}}
+                                            </div>
+                                            <div class="col-md-5">
+                                                Community invitation (as admin): <a [routerLink]="['/community', notification.details.link]">{{notification.details.name}}</a>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptCommunityRequest(notification.id, true)" *ngIf="!notification.acted">Accept request</button>
+                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteCommunityRequest(notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
+                                            </div>
+                                        </div>
                                         <div class="row"  *ngIf="notification.type == 'form'">
                                             <div class="col-md-1">
                                                 <div *ngIf="!notification.seen">NEW</div>
@@ -486,8 +501,8 @@
                                             </div>
                                             <div class="col-md-5">
                                                 New message:
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" *ngIf="notification.seen">{{notification.details.title}}</a>
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
+                                                <a [routerLink]="['/feed', {'survey': notification.data.formid}]" *ngIf="notification.seen">{{notification.details.title}}</a>
+                                                <a [routerLink]="['/feed', {'survey': notification.data.formid}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
                                             </div>
                                             <div class="col-md-3">
                                                 <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
@@ -627,3 +642,4 @@
         </div>
     </div>
 </div>
+<image-editor #imgEditor [imgChangedEvent]="imgChangedEvent" (done)="getSignedRequest($event)"></image-editor>

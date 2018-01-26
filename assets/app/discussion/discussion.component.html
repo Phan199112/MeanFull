@@ -1,3 +1,9 @@
 <div id="chatbox" *ngIf="!hide">
-    {{data.timestamp | date}} - {{data.author}}: {{data.message}} <a (click)="deleteMessage()" *ngIf="data.admin">(delete)</a>
+    {{data.timestamp | date}} - 
+    <a routerLink="/profile/{{data.author.id}}">
+        <img *ngIf="data.author.fb" src="https://graph.facebook.com/{{data.author.fb}}/picture?width=30&height=30" height="30" width="30">
+        <img *ngIf="!data.author.fb" class="profile-pic" src="{{data.author.pic ? data.author.pic : '/images/' + data.author.gender + '.png'}}" height="30" width="30">
+        {{data.author.name}}
+    </a>
+    : {{data.message}} <a (click)="deleteMessage()" *ngIf="data.admin">(delete)</a>
 </div>

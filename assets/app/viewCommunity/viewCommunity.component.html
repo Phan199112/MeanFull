@@ -52,7 +52,7 @@
             </div>
             <div class="d-none d-sm-block">
                 <div *ngIf="status == '2'"><h6>{{data.title}} is a private community. Only individuals invited by the admin can see further details. </h6></div>
-                <feed-list class="row" [comm]="id"></feed-list>
+                <feed-list *ngIf="status !== '2'" class="row" [comm]="id"></feed-list>
             </div>
         </div>
     </div>
@@ -69,3 +69,58 @@
         <feedback-form *ngIf="loggedin"></feedback-form>
     </div>
 </div>
+
+<ng-template #invitationModal let-c="close" let-d="dismiss">
+    <!--<div class="modal-header" [formGroup]="inviteForm">
+        <h4 class="modal-title">Invite your friends to this community</h4>
+    </div>-->
+    <div class="modal-body container" [formGroup]="inviteForm">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="friendsInput" [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showFriends == true}">
+                    <div 
+                        [ngClass]="{'d-none': showFriends || inviteForm.get('friends').value}"
+                        class="tag-placeholder text-muted" 
+                        (click)="showFriends = true; focusTagInput(admins)">
+                        Names of your friends you want to invite
+                    </div>
+                    <tag-input
+                        #admins
+                        [ngClass]="{'d-none': !showFriends && inviteForm.get('friends').value === null}"
+                        [onAdding]="transformName"
+                        [identifyBy]="'value'"
+                        [displayBy]="'display'"
+                        placeholder="@name"
+                        secondaryPlaceholder="@name"
+                        (onBlur)="showFriends = false"
+                        [separatorKeyCodes]="[32, 13, 188]"
+                        formControlName="friends"
+                        [onlyFromAutocomplete]="true">
+                        <tag-input-dropdown 
+                            identifyBy="id" 
+                            displayBy="name" 
+                            [matchingFn]="nameMatching" 
+                            [focusFirstElement]="true" 
+                            [autocompleteItems]="friends">
+                        </tag-input-dropdown>
+                    </tag-input>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 20px">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>                    
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer" style="justify-content: center">
+        <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>
+    </div>-->
+</ng-template>

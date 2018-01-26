@@ -13,6 +13,7 @@ import {Autosize} from 'ng-autosize';
 import {NgForageModule} from "ngforage";
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareButtonModule } from '@ngx-share/button';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 import {AppComponent } from "./app.component";
 import {routing} from "./app.routing";
@@ -59,6 +60,12 @@ import {PopupInviteCommComponent} from "./popup/popup.invitecomm.component";
 import {ResultsTableComponent} from "./resultstable/resultstable.component";
 import {MiniResultsTableComponent} from "./resultstable/miniresultstable.component";
 import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component";
+import {ImageEditorComponent} from "./imageEditor/imageEditor.component";
+import {ResourceListComponent} from './resourceList/resourceList.component';
+import {LoginPopupComponent} from './loginPopup/loginPopup.component';
+import { ConfirmationPopupComponent } from './confirmationPopup/confirmationPopup.component';
+
+import { ShareService } from "./share.service";
 
 @NgModule({
     declarations: [
@@ -104,7 +111,11 @@ import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component"
         ResultsTableComponent,
         MiniResultsTableComponent,
         Autosize,
-        StarsQuestionComponent
+        StarsQuestionComponent,
+        ImageEditorComponent,
+        ResourceListComponent,
+        LoginPopupComponent,
+        ConfirmationPopupComponent
     ],
     imports: [
         // vendor //
@@ -124,6 +135,7 @@ import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component"
         ChartsModule,
         ToolTipModule,
         NguiAutoCompleteModule,
+        ImageCropperModule,        
         RouterModule.forRoot([
             {
                 //Register here to stop error "no factory resolver for PopupComponent". It is not used as routing
@@ -145,6 +157,7 @@ import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component"
             }
         ])
     ],
+    providers: [ShareService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

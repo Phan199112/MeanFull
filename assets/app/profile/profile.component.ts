@@ -3,6 +3,7 @@ import { Http } from "@angular/http";
 import { ActivatedRoute } from "@angular/router";
 import { UserService} from "../user.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ShareService } from '../share.service';
 
 @Component({
     selector: 'profile',
@@ -38,11 +39,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     nodiscussion: string;
     pending: boolean = false;
     status: string = 0;
+    subsection: any = null;
+    subsectionList: any[] = [];
+    subsectionResource: string;
 
     constructor(
         private http: Http, 
         private route: ActivatedRoute, 
         private userService: UserService,
+        private shareService: ShareService,
         private fb: FormBuilder) {
     }
 
@@ -74,6 +79,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.route.params.subscribe(params => {
             this.clearAll();
             this.id = params.id;
+            this.subsection = params.subsection;
+            if (this.subsection) {
+                switch (this.subsection) {
+                    case "network":
+                        this.http.get("/users/network", {params: {user: params.id}}).toPromise().then(res => {
+                            this.subsectionList = res.json().data;
+                            this.subsectionResource = "user";
+                        });
+                        break;
+                    case "communities":
+                        this.http.post("/community/list", {user: params.id}).toPromise().then(res => {
+                            this.subsectionList = res.json().data;
+                            this.subsectionResource = "community";                            
+                        });
+                }
+            }
             this.http.get(`/users/profile/${this.id}`).toPromise()
                 .then(res => {
                     this.status = res.json().status;
@@ -111,15 +132,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         }
 
                         // deal with picture
-                        if (this.userprofile.facebookID != null) {
-                            this.pic = this.userprofile.facebookID;
-                            this.pictype = "fb";
+                        // if pic was uploaded in settings
+                        if (this.shareService.data.profilePic) {
+                            this.pictype = "local";
+                            this.pic = this.shareService.data.profilePic;
                         } else {
-                            if (this.userprofile.pic != null) {
-                                this.pictype = "local";
-                                this.pic = this.userprofile.pic;
+                            if (this.userprofile.facebookID != null) {
+                                this.pic = this.userprofile.facebookID;
+                                this.pictype = "fb";
                             } else {
-                                this.pictype = "default";
+                                if (this.userprofile.pic != null) {
+                                    this.pictype = "local";
+                                    this.pic = this.userprofile.pic;
+                                } else {
+                                    this.pictype = "default";
+                                }
                             }
                         }
 

@@ -38,54 +38,6 @@ $navBarColor:  #1E824C;
     border:none;
 }
 
-.btn-primary {
-    background-color: $navBarColor;
-    border-color: $navBarColor;
-    &:not([disabled]):not(.disabled).active, &:not([disabled]):not(.disabled):active {
-        color: #fff;
-        background-color: $navBarColor;
-        border-color: $navBarColor;
-        box-shadow: 0 0 0 0.2rem rgba(30, 130, 76, 0.5);
-    }
-    i {
-        margin-right: 5px;
-    }
-}
-
-.btn-outline-secondary {
-    color: $navBarColor;
-    border-color: $navBarColor;
-    box-shadow: none !important;
-    &:hover {
-        color: #fff;
-        background-color: $navBarColor;
-    }
-}
-
-/deep/ .form-control:focus {
-    border-color: $navBarColor !important;
-    box-shadow: 0 0 0 0.2rem rgba(30, 130, 76, .25) !important;    
-}
-
-.underlined-input {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
-    border-width: 2px;
-    box-shadow: none;
-
-    &:focus {
-        box-shadow: none;
-    }
-    &.active {
-        border-color: $navBarColor;
-    }
-    &.is-invalid {
-        box-shadow: none;
-    }
-}
-
 a.btn {
     color: $navBarColor;
 }
@@ -447,4 +399,11 @@ input.option-input.is-invalid {
             visibility: visible;
         }
     }
+}
+
+.field-info {
+    vertical-align: top;
+    margin-top: -8px;
+    font-size: 20px;
+    color: $navBarColor;
 }

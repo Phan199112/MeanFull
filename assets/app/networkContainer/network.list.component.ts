@@ -13,6 +13,7 @@ export class NetworkListComponent implements OnInit {
     networklist: NetworkModel[] = [];
 
     @Input() data: [Object];
+    @Input() user: string;
 
     constructor(private http: Http, private route: ActivatedRoute) {
     }

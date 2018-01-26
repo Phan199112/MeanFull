@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
     userid: String,
+    fromuser: String,
     type: String,
     message: String,
     seen: Boolean,

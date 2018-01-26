@@ -351,7 +351,7 @@ module.exports = function(app, passport, manager, hashids) {
                                             resolve();
                                         });
 
-                                } else if (x.type === "comm") {
+                                } else if (x.type === "comm" || x.type === "comm-admin") {
                                     CommunityModel.findById(hashids.decodeHex(x.data), function (err, comm) {
                                         if (err) {
                                             reject(err);
@@ -366,10 +366,24 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         }
                                     });
-
-
-                                } else if (x.type === "form" || x.type === "form-answer" || x.type === "form-discussion") {
+                                } else if (x.type === "form" || x.type === "form-answer") {
                                     FormModel.findById(hashids.decodeHex(x.data), function (err, form) {
+                                        if (err) {
+                                            reject(err);
+                                        } else {
+                                            if (form) {
+                                                eventdata[x.data] = {title: form.title, description: form.description};
+                                                resolve();
+
+                                            } else {
+                                                eventdata[x.data] = {title: "Not found", description: "Not found"};
+                                                resolve();
+                                            }
+                                        }
+                                    });
+
+                                } else if (x.type === "form-discussion") {
+                                    FormModel.findById(hashids.decodeHex(x.data.formid), function (err, form) {
                                         if (err) {
                                             reject(err);
                                         } else {
@@ -511,7 +525,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                 return new Promise(function(resolve, reject) {
                     if (edgeid != null) {
-                        EventModel.create({userid: targetuserid, type: "network", seen: false, acted: false, data: edgeid, timestamp: Date.now()}, function(err, k) {
+                        EventModel.create({userid: targetuserid, fromuser: req.session.userid, type: "network", seen: false, acted: false, data: edgeid, timestamp: Date.now()}, function(err, k) {
                             if (err) {
                                 reject(err);
                             } else {
@@ -778,7 +792,13 @@ module.exports = function(app, passport, manager, hashids) {
             });
         })
             .then(function () {
-                CommunityModel.findOneAndUpdate({_id: commid}, {$push: {members: req.session.userid}}, function(err, k) {
+                var operation;
+                if (req.body.asadmin) {
+                    operation = {adminuserid: req.session.userid};
+                } else {
+                    operation = {members: req.session.userid};
+                }
+                CommunityModel.findOneAndUpdate({_id: commid}, {$push: operation}, function(err, k) {
                     if (err) {
                         res.json({status: 0});
                     } else {
@@ -801,5 +821,4 @@ module.exports = function(app, passport, manager, hashids) {
             }
         });
     });
-
 };

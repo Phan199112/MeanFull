@@ -18,9 +18,9 @@
             </div>
             <div class="col-md-9">
                 <textarea rows="2" class="form-control text-comment" placeholder="Comments?" id="entrybox"
-                          formControlName="message" [ngClass]="{'form-control': true, 'is-invalid': newmessage.get('message').invalid && newmessage.get('message').touched}">
+                          formControlName="message" [ngClass]="{'form-control': true, 'is-invalid': newmessage.get('message').invalid && newmessage.get('message').dirty}">
                 </textarea>
-                <div *ngIf="newmessage.get('message').invalid && newmessage.get('message').touched" class="invalid-message">
+                <div *ngIf="newmessage.get('message').invalid && newmessage.get('message').dirty" class="invalid-message">
                     Please provide a longer message!
                 </div>
 
@@ -28,7 +28,7 @@
             <div class="col-md-1">
                 <button id="formSubmitButton"
                         class="d-flex justify-content-left btn btn-outline-primary mouseChangeToHand"
-                        [disabled]="newmessage.get('message').invalid && newmessage.get('message').touched || !newmessage.get('message').touched"
+                        [disabled]="newmessage.invalid"
                         (click)="checkSubmit()">
                     Send
                 </button>

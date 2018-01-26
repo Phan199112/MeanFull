@@ -18,7 +18,7 @@ export class YourFriendsListComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.http.get(`/users/yourlist`).toPromise()
+        this.http.get(`/users/network`).toPromise()
             .then(res => {
                 if (res.json().status == '1') {
                     this.data = res.json().data;

@@ -322,7 +322,7 @@ exports.analyzeTable = function analyzeTable(x, users) {
             ans.push(temp.answers[i].answer);
         }
 
-        exportdata.push({name: users[temp.userid], answers: ans});
+        exportdata.push({user: users[temp.userid], answers: ans});
     }
 
     return exportdata;

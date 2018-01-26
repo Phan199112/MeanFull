@@ -3,7 +3,7 @@
         <div class="col-md-3 order-2 order-sm-1" id="leftSideOfContainer">
             <div class="row">
                 <community-list class="col-12 order-2 order-sm-2" [user]="id" *ngIf="!hidetags"></community-list>                
-                <network-list class="col-12 order-1 order-sm-1" [data]="network" *ngIf="!hidetags && network.length != 0"></network-list>
+                <network-list class="col-12 order-1 order-sm-1" [data]="network" [user]="id" *ngIf="!hidetags && network.length != 0"></network-list>
                 <div class="col-12 d-md-none order-3">
                     <div class="container">
                         <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
@@ -69,8 +69,22 @@
                 </div>
                 <hr class="d-none d-sm-block">
                 <div class="d-none d-sm-block">
-                    <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
-                    <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
+                    <div *ngIf="!subsection">
+                        <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
+                        <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
+                    </div>
+                    <div *ngIf="subsection" class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h3 style="text-transform: capitalize">{{subsection}}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <resource-list [resource]="subsectionResource" [list]="subsectionList"></resource-list>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

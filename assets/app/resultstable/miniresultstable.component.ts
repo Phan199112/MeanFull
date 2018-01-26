@@ -8,7 +8,7 @@ import {Component, Input, OnInit} from "@angular/core";
 export class MiniResultsTableComponent implements OnInit {
     @Input() data;
     labels: string[];
-    counts: string[];
+    counts: string[] = [];
     show: boolean = false;
 
     constructor() {
@@ -18,7 +18,12 @@ export class MiniResultsTableComponent implements OnInit {
     ngOnInit() {
         if (this.data[0][0] != null) {
             this.labels = this.data[0];
-            this.counts = this.data[1];
+            for (let i = 0; i < this.labels.length; i++) {
+                if (this.data[1][i].label === "all") {
+                    this.counts.push(this.data[1][i].data[0]);
+                }
+            }
+
             this.show = true;
         }
     }

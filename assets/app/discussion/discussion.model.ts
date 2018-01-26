@@ -1,6 +1,7 @@
 export class DiscussionModel {
     id: string;
-    author: string;
+    fb: string;
+    author: any;
     message: string;
     timestamp: string;
     admin: string;
@@ -8,6 +9,7 @@ export class DiscussionModel {
     constructor(private object: Object) {
         // general data
         this.id = object.id;
+        this.fb = object.fb;
         this.author = object.author;
         this.message = object.message;
         this.timestamp = object.timestamp;

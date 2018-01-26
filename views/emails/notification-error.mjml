@@ -1,0 +1,23 @@
+<mjml>
+  <mj-head>
+    <mj-title>{{subject}}</mj-title>
+  </mj-head>
+  <mj-body>
+    <mj-container background-color="#1E824C">
+      <mj-section background-color="#fff" border-top="5px solid #1e824c">
+        <mj-column>
+          <mj-text font-size="32px" color="#1E824C" align="center">
+            <b>Questionsly</b>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section background-color="#f9f9f9" border-top="1px solid #dddddd" border-bottom="5px solid #1e824c">
+        <mj-column>
+          <mj-text font-size="18px" color="#3a3137" padding="0px 25px">
+            <p>{{error}}</p>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-container>
+  </mj-body>
+</mjml>

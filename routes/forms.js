@@ -52,7 +52,7 @@ module.exports = function(app, passport, manager, hashids) {
                 if (unhashedUsers != null) {
                     for (var i = 0; i < unhashedUsers.length; i++) {
                         // insite notification
-                        notifications.createNotification(unhashedUsers[i], "form", "New survey", hashids.encodeHex(k._id));
+                        notifications.createNotification(unhashedUsers[i], req.session.userid, "form", "New survey", hashids.encodeHex(k._id));
 
                         // email notification
                         var sendername = '';
@@ -76,11 +76,11 @@ module.exports = function(app, passport, manager, hashids) {
                             } else {
                                 if (Object.keys(l.notifications).length === 0) {
                                     if (l.notifications.formrequest === true) {
-                                        emailfunctions.sendNotificationFormRequest(l.email, sendername, hashids.encodeHex(k._id));
+                                        emailfunctions.sendNotificationFormRequest(l.email, req.user, hashids.encodeHex(k._id));
                                     }
                                 } else {
                                     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                    emailfunctions.sendNotificationFormRequest(l.email, sendername, hashids.encodeHex(k._id));
+                                    emailfunctions.sendNotificationFormRequest(l.email, req.user, hashids.encodeHex(k._id));
                                 }
                             }
                         });
@@ -155,7 +155,7 @@ module.exports = function(app, passport, manager, hashids) {
             public: false,
             shared: false,
             resultsPublic: true,
-            expires: {bool: false},
+            expired: false,
             typeevent: receivedData.typeevent,
             timestamp: Date.now()}, function(err, k) {
             if (err) {
@@ -178,29 +178,71 @@ module.exports = function(app, passport, manager, hashids) {
         var formauthorid = null;
         // double check to see whether this user has already submitted an answer:
         var checkedfordouble = true; // true means do not add again
+        var checkedexpired = true;
+        var proceed = false;
         // promises
         var promises = [];
+        var promiseschecks = [];
 
         new Promise(function(resolve, reject) {
-                AnswersModel.findOne({userid: req.session.userid, formid: answerformid}, function(err,obj) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        if (obj == null) {
-                            checkedfordouble = false;
-                            resolve();
+
+            var fcheckedfordouble = function () {
+                return new Promise(function (resolve, reject) {
+                    AnswersModel.findOne({userid: req.session.userid, formid: answerformid}, function (err, obj) {
+                        if (err) {
+                            reject(err);
                         } else {
-                            // don't add any data
-                            checkedfordouble = true;
+                            if (obj == null) {
+                                checkedfordouble = false;
+                                resolve();
+                            } else {
+                                // don't add any data
+                                checkedfordouble = true;
+                                resolve();
+                            }
+                        }
+                    });
+                });
+            };
+
+            var fcheckexpired = function () {
+                return new Promise(function (resolve, reject) {
+                    FormModel.findById(answerformid, function (err, form) {
+                        if (err) {
+                            reject();
+                        } else {
+                            if (form) {
+                                // look up the author of the form
+                                checkedexpired = form.expired;
+                            }
                             resolve();
                         }
-                    }
+                    });
                 });
+            };
+
+            promiseschecks.push(fcheckedfordouble());
+            promiseschecks.push(fcheckexpired());
+
+            return Promise.all(promiseschecks).then(function () {
+                if (checkedfordouble === false && checkedexpired === false) {
+                    proceed = true;
+                } else {
+                    proceed = false;
+                }
+                resolve();
+
+            }).catch(function() {
+                proceed = false;
+                reject();
+            });
+
+
+
             })
             .then(function () {
-                if (checkedfordouble === false) {
+                if (proceed === true) {
                     // add the answer and send an email/notification
-
 
                     var writeanswerfunction = function (x, y) {
                         return new Promise(function (resolve, reject) {
@@ -242,7 +284,7 @@ module.exports = function(app, passport, manager, hashids) {
                         log.writeLog(req.session.userid, 'answered form');
 
                         // insite notification
-                        notifications.createNotification(formauthorid, "form-answer", "New answer", hashids.encodeHex(answerformid));
+                        notifications.createNotification(formauthorid, req.session.userid, "form-answer", "New answer", hashids.encodeHex(answerformid));
 
                         // email notification
                         // check the notification settings of this user
@@ -405,7 +447,12 @@ module.exports = function(app, passport, manager, hashids) {
                                     if (err) {
                                         reject(err);
                                     } else {
-                                        authorprofiles[x.userid] = k.name.first+" "+k.name.last;
+                                        authorprofiles[x.userid] = {
+                                            name: k.name.first+" "+k.name.last,
+                                            pic: k.pic,
+                                            gender: k.gender,
+                                            id: hashids.encodeHex(x.userid)
+                                        };
                                         resolve();
                                     }
                                 });

@@ -15,7 +15,7 @@ export class YourFriendsComponent {
     }
 
     inviteToComm() {
-        this.http.post(`/community/invite`, {commid: this.yourfriend.link, userid: this.yourfriend.id}).toPromise()
+        this.http.post(`/community/invite`, {commid: this.yourfriend.link, userids: [this.yourfriend.id]}).toPromise()
             .then((result) => {
                 if (result.json().status == 1) {
                     //console.log("accepted comm invite request");

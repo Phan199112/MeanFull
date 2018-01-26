@@ -67,19 +67,19 @@
                                                 <option style="background: url('/images/icons/textbox.png') left no-repeat; width: 200px" *ngFor="let kind of kinds" [value]="kind">{{kindAliases[kind] || kind}}</option>
                                             </select>
                                             <div ngbDropdown class="d-inline-block select-kind">
-                                                    <button [ngClass]="{'form-control': true, 'select-kind-btn': true, 'is-invalid': isInvalid(question.get('kind'))}" ngbDropdownToggle>
-                                                        <img *ngIf="question.get('kind').value" src="/images/icons/{{kindIcons[question.get('kind').value]}}"/>
-                                                        <span>{{kindText(question.get('kind').value) || 'Select A Question Type'}}</span>
-                                                    </button>
-                                                    <div ngbDropdownMenu class="select-kind-dropdown">
-                                                        <button (click)="question.get('kind').setValue(kind)" class="dropdown-item" *ngFor="let kind of kinds">
-                                                            <span [ngClass]="['icon', kind]">
-                                                                <img src="/images/icons/{{kindIcons[kind]}}"/>
-                                                            </span>
-                                                            <span>{{kindText(kind)}}</span>
-                                                        </button>                                                
-                                                    </div>
+                                                <button [ngClass]="{'form-control': true, 'select-kind-btn': true, 'is-invalid': isInvalid(question.get('kind'))}" ngbDropdownToggle>
+                                                    <img *ngIf="question.get('kind').value" src="/images/icons/{{kindIcons[question.get('kind').value]}}"/>
+                                                    <span>{{kindText(question.get('kind').value) || 'Select A Question Type'}}</span>
+                                                </button>
+                                                <div ngbDropdownMenu class="select-kind-dropdown">
+                                                    <button (click)="question.get('kind').setValue(kind)" class="dropdown-item" *ngFor="let kind of kinds">
+                                                        <span [ngClass]="['icon', kind]">
+                                                            <img src="/images/icons/{{kindIcons[kind]}}"/>
+                                                        </span>
+                                                        <span>{{kindText(kind)}}</span>
+                                                    </button>                                                
                                                 </div>
+                                            </div>
                                             <span title="Remove question" *ngIf="questionnaire.get('questions').controls.length > 1" style="float:right;" class="btn-small btn-circle btn-subtract delete-question">
                                                     <i class="fa fa-minus mouseChangeToHand delete-question" (click)="deleteQuestion(i)" aria-hidden="true"></i>
                                             </span>
@@ -279,6 +279,7 @@
                                                             formControlName="anonymous" 
                                                             [value]="false">
                                                         Yourself
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
                                                     </label>
                                                     <!--<small id="yourselfDesc" class="form-text">
                                                         People tend to answer questions more when they know who’s posting it! Get a lot more responses
@@ -295,6 +296,7 @@
                                                             formControlName="anonymous" 
                                                             [value]="true">
                                                         Anonymous
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
                                                     </label>
                                                     <!--<small id="anonymousDesc" class="form-text d-inline-block">
                                                         Your survey will be show up on CrowdWorks anonymously. So, ask anything!!
@@ -319,6 +321,7 @@
                                                                 formControlName="public"
                                                                 [value]="true">
                                                         Public
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
                                                     </label>
                                                 </div>
                                             </div>
@@ -331,6 +334,7 @@
                                                                 formControlName="public"
                                                                 [value]="false">
                                                         Private
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
                                                     </label>
                                                 </div>
                                             </div>
@@ -340,6 +344,7 @@
                                     <div class="main-row form-group">
                                         <label class="lead">Share with friends on Questionsly and outside
                                             <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
                                         </label>
                                         <div class="tag-input-wrapper form-control">
                                             <div [ngClass]="{'d-none': showPrivateShares || questionnaire.get('sharedWithUsers').value}"
@@ -366,6 +371,7 @@
                                     <div class="main-row form-group">
                                         <label class="lead">
                                             {{typeevent ? "Invite people from a community on Questionsly" : "Share it with a Questionsly community"}}
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
                                         </label>
                                         <div class="tag-input-wrapper form-control">
                                             <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}"
@@ -391,6 +397,7 @@
                                     <div *ngIf="!typeevent" class="main-row row form-group">
                                         <label class="lead col-lg-3" style="margin-top: 6px">
                                             Share it on:
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
                                         </label>
                                         <!-- DOCUMENTATION: https://murhafsousli.github.io/ngx-sharebuttons/#/ -->
                                         <div class="col p-0">
@@ -400,6 +407,7 @@
                                     <div id="share-link" *ngIf="!typeevent" class="main-row row form-group">
                                         <label class="lead col-lg-3" style="margin-top: 6px">
                                             Shareable link:
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
                                         </label>
                                         <input class="col form-control" style="max-height: 40px" [value]="shareLink"/>                                       
                                         <share-button [theme]="'default'"
@@ -417,11 +425,13 @@
                                                 class="form-check-input"
                                                 formControlName="loginRequired">
                                                 Required login to answer the questions
+                                                <i title="description" class="fa fa-question-circle field-info"></i>
                                         </label>
                                     </div>
                                     <div *ngIf="typeevent" class="row main-row form-group">
                                         <label class="lead col-lg-5" style="margin-top: 10px">
                                             Invite friends from Facebook:
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
                                         </label>
                                         <div class="col p-0">
                                             <a class="btn btn-outline-success mouseChangeToHand">Link Facebook</a>

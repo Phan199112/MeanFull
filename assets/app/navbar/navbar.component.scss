@@ -36,8 +36,35 @@ $navBarColor:  #1E824C;
 
 .dropdown-item {
   cursor: hand;
+  padding: 10px;
+  &:not(:last-of-type) {
+    border-bottom: 1px solid #ddd;
+  }
   &:hover {
+    background-color: darkgreen;
+    color: #fff !important;
+  }
+}
+
+.notification {
+  &.new {
+    color: #fff !important;
     background-color: $navBarColor;
+    border-bottom: 1px solid darkgreen;
+    &:hover {
+      background-color: darkgreen;
+      color: #fff !important;
+    }
+  }
+  &:hover:not(.new) {
+    background-color: #eee;
+    color: #000 !important;
+  }
+  img {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
   }
 }
 

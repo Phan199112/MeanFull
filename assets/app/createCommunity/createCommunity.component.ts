@@ -17,10 +17,23 @@ export class CreateCommunityComponent  {
     fgCreateCommunity: FormGroup;
     submissionfailed: boolean = false;
     submitted: boolean = false;
-    commPicURL: string;
+    commPicURL: any;
     visitbutton: boolean = false;
     commurl: String;
-    reject: boolean = false;
+    reject: any = null;
+    privacyOptions = [{
+        label: "Public Community",
+        icon: "globe",
+        description: "Everyone can see the community members and surveys",
+        value: true
+    }, {
+        label: "Private Community",
+        icon: "lock",
+        description: "Only members can see the community members and surveys",
+        value: false
+    }];
+    privacyOption = 0;
+    friends: any[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -31,21 +44,28 @@ export class CreateCommunityComponent  {
     }
 
     ngOnInit() {
-        if (this.userService.getLoggedin() === true) {
-            this.createForm();
-
-        } else {
-            this.reject = true;
-        }
+        this.createForm();
+        this.userService.afterLoginCheck().then(userData => {            
+            if (userData != 0) {
+                this.reject = false;
+                this.http.get("/users/network").toPromise().then(res => {
+                    var json = res.json();
+                    if (json.data) {
+                        this.friends = json.data;
+                    }
+                });
+            } else {
+                this.reject = true;
+            }
+        });
     }
 
     createForm() {
         this.fgCreateCommunity = this.fb.group({
             title: '',
-            description: '',
             hashtags: null,
             public: true,
-            sharedWith: null,
+            admins: null
         });
     }
 
@@ -80,6 +100,7 @@ export class CreateCommunityComponent  {
             pic: this.commPicURL
         };
         let data = Object.assign(this.createcommunityData(), meta);
+        console.log("posted", data);
 
         this.http.post('/community/save', data).toPromise()
             .then(response => {
@@ -100,7 +121,7 @@ export class CreateCommunityComponent  {
     createcommunityData() {
         let data = this.fgCreateCommunity.value;
 
-        for (let tagField of ['hashtags', 'sharedWith']) {
+        for (let tagField of ['hashtags', 'admins']) {
             if (data[tagField]) {
                 data[tagField] = data[tagField].map(tag => tag.value);
             }
@@ -131,8 +152,14 @@ export class CreateCommunityComponent  {
 
     observableSourceTag(keyword: any): Observable<any[]> {
         if (keyword) {
+            if (keyword[0] === "#") {
+                keyword = keyword.substring(1);
+                if (keyword.length === 0) {
+                    return Observable.of([]);
+                }
+            }
             return this.http.post('/search', {type: 'tag', keyword: keyword})
-                .map(this.observableTagProcess.bind(this))
+                .map(this.observableProcessRaw.bind(this))
                 .catch(err => {
                     return [];
                 });
@@ -154,18 +181,6 @@ export class CreateCommunityComponent  {
         }
     }
 
-    observableSourceUser(keyword: any): Observable<any[]> {
-        if (keyword) {
-            return this.http.post('/search', {type: 'user', keyword: keyword})
-                .map(this.observableProcessRaw.bind(this))
-                .catch(err => {
-                    return [];
-                });
-        } else {
-            return Observable.of([]);
-        }
-    }
-
     observableProcessRaw(data) {
         if (data.json().status == 1) {
             let searchoutput = [];
@@ -184,19 +199,32 @@ export class CreateCommunityComponent  {
         if (x !== null && typeof x === 'object') {
             value = x.value;
             display = x.display;
+            if (value[0] === "@") {
+                value = value.substring(1);
+            }
             return Observable.of({
-                display: display,
+                display: `@${display}`,
                 value: value
             });
         } else {
             return Observable.of({
-                display: x,
+                display: `@${x}`,
                 value: x
             });
         }
 
     }
 
+    nameMatching(keyword, target) {
+        var targetValue = target.name;
+
+        if (keyword[0] === "@") {
+            keyword = keyword.substring(1);
+        }
+        return keyword.length > 0 && 
+            targetValue && 
+            targetValue.toLowerCase().indexOf(keyword.toLowerCase()) === 0;
+    }
 
     /*
       Function to carry out the actual PUT request to S3 using the signed request from the app.
@@ -228,7 +256,7 @@ export class CreateCommunityComponent  {
             if(xhr.readyState === 4){
                 if(xhr.status === 200){
                     const response = JSON.parse(xhr.responseText);
-                    this.uploadFile(file, response.signedRequest, response.url);
+                   this.uploadFile(file, response.signedRequest, response.url);
                 }
                 else{
                     alert('Could not get signed URL.');

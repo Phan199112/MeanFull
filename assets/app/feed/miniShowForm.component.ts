@@ -38,6 +38,10 @@ export class MiniShowFormComponent implements OnInit {
 
     createForm() {
         //
+        let tempf = function(x) {
+            return {label: x.label, body: x.body};
+        };
+        //
         let questions = [];
         for (let question of this.data.questions) {
             let groupObject = {
@@ -56,7 +60,7 @@ export class MiniShowFormComponent implements OnInit {
                     groupObject.answer = this.fb.group(groupObject.answer);
                 }
             } else if (question.kind === 'Rank') {
-                groupObject.answer = question.options.map(option => option.body);
+                groupObject.answer = question.options.map(option => tempf(option));
                 groupObject.answer = this.fb.array(groupObject.answer);                
             } else if (question.kind === 'Matrix') {
                 groupObject.answer = {};

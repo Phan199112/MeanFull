@@ -14,27 +14,27 @@
                     <div *ngIf="question.kind == 'Radio'">
                         <div *ngFor="let option of question.options" class="form-control">
                             <label>
-                                <input formControlName="answer" [value]="option.body" type="radio"/>
-                                {{option.body}}
+                                <input formControlName="answer" [value]="option.label" type="radio"/>
+                                {{option.label}}. {{option.body}}
                             </label>
                         </div>
                     </div>
                     <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
                         <div *ngFor="let option of question.options" class="form-control">
                             <label>
-                                <input [formControlName]="option.body" type="checkbox"/>
-                                {{option.body}}
+                                <input [formControlName]="option.label" type="checkbox"/>
+                                {{option.label}}. {{option.body}}
                             </label>
                         </div>
                     </div>
                     <select class="form-control" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
-                        <option *ngFor="let option of question.options" [value]="option.body">{{option.body}}</option>
+                        <option *ngFor="let option of question.options" [value]="option.label">{{option.label}}. {{option.body}}</option>
                     </select>
                     <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
                         <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
                             <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="form-control">
                                 <span class="rank">{{j + 1}}</span>
-                                <label>{{option}}</label>
+                                <label>{{option.label}}. {{option.body}}</label>
                             </div>
                         </div>
                     </div>

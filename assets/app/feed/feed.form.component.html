@@ -98,7 +98,6 @@
     </div>
     <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
         <div class="container" id="chatContainer">
-            <h4>Join the conversation</h4>
             <discussion-list [id]="form.id"></discussion-list>
         </div>
     </div>
@@ -113,3 +112,4 @@
 <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
     <h4>Oops this form could not be found!</h4>
 </div>
+<confirmation-popup></confirmation-popup>

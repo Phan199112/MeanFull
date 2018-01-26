@@ -9,7 +9,12 @@
     <tbody>
     <tr *ngFor="let resp of data; let j = index;">
         <th scope="row">{{j+1}}</th>
-        <td>{{resp.name}}</td>
+        <td class="user">
+            <a routerLink="/profile/{{resp.user.id}}">
+                <img src="{{resp.user.pic ? resp.user.pic : '/images/' + resp.user.gender + '.png'}}" /> 
+                {{resp.user.name}}
+            </a>
+        </td>
         <td *ngFor="let item of resp.answers">{{item}}</td>
     </tr>
     </tbody>

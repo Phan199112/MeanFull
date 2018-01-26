@@ -46,7 +46,10 @@ module.exports = function(app, passport, manager, hashids) {
                         // user found?
                         if (authorid !== null) {
                             // insite notification
-                            notifications.createNotification(authorid, "form-discussion", "New comment", receivedData.formid);
+                            notifications.createNotification(authorid, req.session.userid, "form-discussion", "New comment", {
+                                formid: receivedData.formid,
+                                messageid: hashids.encodeHex(k._id)
+                            });
 
                             // email notification
                             // check the notification settings of this user
@@ -70,7 +73,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         // send
                                         if (Object.keys(l.notifications).length === 0) {
                                             if (l.notifications.discussion === true) {
-                                                emailfunctions.sendNotificationDiscussion(l.email, sendername, receivedData.formid);
+                                                emailfunctions.sendNotificationDiscussion(l.email, req.user, receivedData.formid);
                                                 res.json({status: 1});
                                             } else {
                                                 // no email
@@ -78,7 +81,7 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         } else {
                                             // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationDiscussion(l.email, sendername, receivedData.formid);
+                                            emailfunctions.sendNotificationDiscussion(l.email, req.user, receivedData.formid);
                                             res.json({status: 1});
                                         }
 
@@ -156,7 +159,13 @@ module.exports = function(app, passport, manager, hashids) {
                             if (err) {
                                 reject(err);
                             } else {
-                                authorprofiles[k._id] = k.name.first+' '+k.name.last;
+                                authorprofiles[k._id] = {
+                                    name: k.name.first+' '+k.name.last,
+                                    fb: k.facebookID,
+                                    pic: k.pic,
+                                    gender: k.gender,
+                                    id: hashids.encodeHex(k._id)
+                                };
                                 resolve();
                             }
                         });

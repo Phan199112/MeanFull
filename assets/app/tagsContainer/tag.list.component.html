@@ -10,6 +10,7 @@
                        [list-formatter]="myListFormatter"
                        value-property-name="tag"
                        display-property-name="tag"
+                       (click)="loginPopup.check()"
                        placeholder="Search Tag">
                 <div class="text-center">
                     <button id="formSubmitButton"
@@ -31,3 +32,4 @@
         </div>
     </div>
 </div>
+<login-popup #loginPopup></login-popup>

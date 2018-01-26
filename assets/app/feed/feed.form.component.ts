@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { Http } from "@angular/http";
 import { FeedForm } from "./feed.form.model";
 import { FormArray, FormControl, FormGroup } from "@angular/forms";
 import { AppComponent } from '../app.component';
 import { PopupShareComponent } from '../popup/popup.share.component';
 import { PopupService } from "../popup.service";
+import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
 
 @Component({
     selector: 'feed-form-component',
@@ -21,6 +22,7 @@ export class FeedFormComponent implements OnInit {
     hide: boolean = false;
     loggedin: boolean = false;
     count: string = null;
+    @ViewChild(ConfirmationPopupComponent) confirmationPopup;
 
     // event data
     eventdatatable: any[];
@@ -345,24 +347,32 @@ export class FeedFormComponent implements OnInit {
 
     deleteForm() {
         // post and get response
-        this.http.post('/forms/delete', {id: this.form.id})
-            .toPromise()
-            .then(response => {
-                if (response.json().status == 1) {
-                    this.hide = true;
-                }
-            });
+        this.confirmationPopup.confirm('Are you sure you want to delete this survey?').then(answer => {
+            if (answer) {
+                this.http.post('/forms/delete', {id: this.form.id})
+                    .toPromise()
+                    .then(response => {
+                        if (response.json().status == 1) {
+                            this.hide = true;
+                        }
+                    });
+            }
+        });
     }
 
     expireForm() {
         // post and get response
-        this.http.post('/forms/expire', {id: this.form.id})
-            .toPromise()
-            .then(response => {
-                if (response.json().status == 1) {
-                    this.form.expired = true;
-                }
-            });
+        this.confirmationPopup.confirm('Are you sure you want to expire this survey? No further answers will be accepted, this action can not be undone.').then(answer => {
+            if (answer) {
+                this.http.post('/forms/expire', {id: this.form.id})
+                    .toPromise()
+                    .then(response => {
+                        if (response.json().status == 1) {
+                            this.form.expired = true;
+                        }
+                    });
+            }
+        });
     }
 
     releaseForm() {

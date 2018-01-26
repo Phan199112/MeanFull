@@ -51,6 +51,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     updateform: boolean = false; // so when you go back to the previous page to correct something that it doesn't create a new database entry for the form
     published: boolean = false;
     shareLink: string = "";
+    alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles;         
 
@@ -86,7 +87,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
             this.createForm();
         });       
-        this.userService.afterLoginCheck().then(userData => {            
+        this.userService.afterLoginCheck().then(userData => {  
             if (userData != 0) {
                 this.reject = false;
             } else {
@@ -455,7 +456,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     observableProcessRaw(data) {
-        console.log(data.json());
         if (data.json().status == 1) {
             let searchoutput = [];
             let results = data.json().results;
@@ -567,9 +567,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             }
         }
 
-        for (let dateField of ['expireDate', 'expireTime']) {
-            if (data[dateField] && data[dateField].length) {
-                data[dateField] = data[dateField][0];
+        for (let i=0; i < data.questions.length; i++) {
+            if (this.kindsWithOptions.indexOf(data.questions[i].kind) !== -1) {
+                console.log(data.questions[i]);
+                for (let j=0; j < data.questions[i].options.length; j++) {
+                    data.questions[i].options[j].label = this.alphabeth[j];
+                }
             }
         }
         
@@ -578,22 +581,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 data[tagField] = data[tagField].map(tag => tag.value ? tag.value : tag);
             }
         }
-
-        if (data.expires) {
-            data.expireDate.setHours(data.expireTime.getHours());
-            data.expireDate.setMinutes(data.expireTime.getMinutes());
-            data.expireDate = data.expireDate.toString();
-        } else {
-            delete data.expireDate;
-        }
-        delete data.expireTime;
         
         return data;
     }
 
     postForm() {
-        var formData = this.questionnaireData();
-        console.log(formData);
+        let formData = this.questionnaireData();
         this.http.post('/forms/create', formData).toPromise()
             .then(response => {
                 formData.id = response.json().id;
@@ -601,7 +594,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.formService.setData(formData);
                 this.step = 2;
             })
-            .catch(error => alert("Error posting form: " + error));        
+            .catch(error => alert("Error posting form: " + error));
     }
 
     updateForm() {

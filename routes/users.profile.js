@@ -9,18 +9,27 @@ var math = require("../functions/math");
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
 
-    app.get('/users/yourlist', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.get('/users/network', function (req, res) {
         var yourfriendsdata = [];
         var networkdatatemp = [];
         var networkpromise = [];
+        var userid;
+
+        if (req.query.user) {
+            userid = hashids.decodeHex(req.query.user);
+        } else if (req.session && req.session.userid) {
+            userid = req.session.userid;
+        } else {
+            return res.json({status: 0});
+        }
 
         // mongoDB query
         return new Promise(function(resolve, reject){
-            NetworkEdgesModel.find({userid: req.session.userid}).cursor()
+            NetworkEdgesModel.find({userid: userid}).cursor()
                 .on('data', function(edge){
-                    // edge.userid will contain two IDs, we want the other one (not req.session.userid)
+                    // edge.userid will contain two IDs, we want the other one (not req.body.user)
                     if (edge.status === true) {
-                        if (edge.userid[0] !== req.session.userid) {
+                        if (edge.userid[0] !== userid) {
                             networkdatatemp.push(edge.userid[0]);
                         } else {
                             networkdatatemp.push(edge.userid[1]);
@@ -44,7 +53,12 @@ module.exports = function(app, passport, manager, hashids) {
                                 reject(err);
                             } else {
                                 if (user) {
-                                    yourfriendsdata.push({name: user.name.first+" "+user.name.last, id: hashids.encodeHex(user._id)});
+                                    yourfriendsdata.push({
+                                        name: user.name.first+" "+user.name.last, 
+                                        id: hashids.encodeHex(user._id),
+                                        pic: user.pic,
+                                        gender: user.gender
+                                    });
                                 }
                                 resolve();
                             }

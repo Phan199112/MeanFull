@@ -19,7 +19,7 @@ module.exports = function(app, passport, manager, hashids) {
     passport.use('facebook', new FacebookStrategy({
             clientID: '669514259923041',
             clientSecret: '5c8625d2b8d7a5edd938725ab0490e86',
-            callbackURL: 'https://www.questionsly.com/users/login/facebook/return',
+            callbackURL: 'http://localhost:3000/users/login/facebook/return',
             profileFields: ['id', 'displayName', 'email', 'hometown', 'about', 'birthday','education','favorite_athletes',
                 'favorite_teams','first_name','gender','inspirational_people','interested_in','is_verified','languages',
                 'last_name','link','locale','location','middle_name','meeting_for','name_format','political', 'quotes',
@@ -56,7 +56,7 @@ module.exports = function(app, passport, manager, hashids) {
                     }
 
                     if (user.emailConfirmed != null) {
-                        if (user.emailConfirmed.value == true) {
+                        if (user.emailConfirmed.value === true) {
                             if (!user.validPassword(password)) {
                                 //console.log("wrong password");
                                 return done(null, false, {message: 'Invalid password'});
@@ -90,11 +90,32 @@ module.exports = function(app, passport, manager, hashids) {
     // example does not have a database, the complete Facebook profile is serialized
     // and deserialized.
     passport.serializeUser(function(user, cb) {
-        cb(null, user);
+        if (user.facebookID !== null) {
+            cb(null, {facebookID: user.id});
+        } else {
+            cb(null, {_id: user.id});
+        }
     });
 
     passport.deserializeUser(function(obj, cb) {
-        cb(null, obj);
+        var temp = {};
+        UserModel.findOne(obj, function(err, user) {
+            if (user) {
+                temp.id = user._id;
+                temp.name = user.name;
+                temp.pic = user.pic;
+                temp.gender = user.gender;
+                if (user.facebookID !== null) {
+                    temp.fb = true;
+                    temp.fbid = user.facebookID;
+                } else {
+                    temp.fb = false;
+                    temp.fbid = null;
+                }
+            }
+
+            cb(err, temp);
+        });
     });
 
     // loggedin
@@ -102,18 +123,10 @@ module.exports = function(app, passport, manager, hashids) {
         var returnobj = {};
 
         if (req.user != null) {
-            returnobj = {};
-            if (req.user.provider == "facebook") {
-                returnobj = {id: req.user.id, fullname: req.user.displayName,
-                    firstname: req.user.name.givenName,
+            returnobj = {firstname: req.user.name.first,
                     dbid: hashids.encodeHex(req.session.userid),
-                    picdata: req.user.pic, gender: req.user.gender};
-            } else {
-                // local login
-                returnobj =  {firstname: req.user.name.first,
-                    dbid: hashids.encodeHex(req.session.userid),
-                    picdata: req.user.pic, gender: req.user.gender};
-            }
+                    picdata: req.user.pic, gender: req.user.gender,
+                    fbid:req.user.fbid, fb: req.user.fb};
         }
 
         res.send(req.isAuthenticated() ? returnobj : '0');

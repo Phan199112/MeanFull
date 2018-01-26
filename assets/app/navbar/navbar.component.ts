@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import {Http} from "@angular/http";
 import {UserService} from "../user.service";
+import {ShareService} from "../share.service";
 
 @Component({
     selector: 'app-navbar',
@@ -28,8 +29,11 @@ export class NavbarComponent implements OnInit {
     @ViewChild('toggler') toggler;
     private obs: any;
 
-    constructor(private http: Http,
-                private userService: UserService) { }
+    constructor(
+        private http: Http,
+        private userService: UserService,
+        private shareService: ShareService
+    ) { }
 
 
     ngOnInit() {
@@ -49,7 +53,7 @@ export class NavbarComponent implements OnInit {
         this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
                 this.loggedin = true;
-                this.fbid = userData.id;
+                this.fbid = userData.fbid;
                 this.dbid = userData.dbid;
                 this.firstname = userData.firstname;
                 this.picdata = userData.picdata;
@@ -80,6 +84,11 @@ export class NavbarComponent implements OnInit {
                         }
                     }
                 }
+                //if local pic is uploaded in settings
+                this.shareService.get("profilePic").subscribe(pic => {
+                    this.pictype = "local";
+                    this.pic = pic;
+                });
             } else {
                 this.loggedin = false;
             }
@@ -127,12 +136,83 @@ export class NavbarComponent implements OnInit {
         });
     }
 
-    setAsSeen(x) {
-        this.http.post('/events/seen', {id: x}).toPromise()
+    setAsSeen(notification) {
+        if (notification.seen) return;
+        this.http.post('/events/seen', {id: notification.id}).toPromise()
             .then(eventsdata => {
                 //console.log("updated as seen");
+                this.unreadNotifications--;
+                notification.seen = true;                
             })
             .catch(error => alert("Error retrieving events list: "));
+    }
+
+    notificationLink(notification) {
+        switch (notification.type) {
+            case "form":
+            case "form-answer":
+                return ['/feed', {'survey': notification.data}];
+            case "form-discussion":
+                if (typeof notification.data == "object") {
+                    return ['/feed', {'survey': notification.data.formid, 'message': notification.data.messageid}];
+                } else {
+                    return ['/feed', {'survey': notification.data}];                    
+                }
+            case "network":
+            case "comm":
+            case "comm-admin":
+                return ['/settings', {'page': 'notifications'}];
+        }
+    }
+
+    notificationPic(notification) {
+        if (notification.fromuser) {
+            if (notification.fromuser.fb !== null) {
+                return `https://graph.facebook.com/${notification.fromuser.fb}/picture?width=30&height=30`;
+            } else {
+                if (notification.fromuser.pic) {
+                    return notification.fromuser.pic;
+                } else {
+                    return `/images/${notification.fromuser.gender}.png`;
+                }
+            }
+        } else {
+            return "/images/question.jpg";
+        }
+    }
+
+    notificationMessage(notification) {
+        var name;
+        var pronoun;
+
+        if (notification.fromuser) {
+            name = notification.fromuser.name;
+            if (notification.fromuser.gender == "male") {
+                pronoun = "his";
+            } else if (notification.fromuser.gender == "female") {
+                pronoun = "her";
+            } else {
+                pronoun = "their";
+            }
+        } else {
+            name = "Someone";
+            pronoun = "their";
+        }
+
+        switch (notification.type) {
+            case "form":
+                return `${name} has created a new survey`;
+            case "form-answer":
+                return `${name} has answered your survey`;
+            case "form-discussion":
+                return `${name} has commented on your survey`;            
+            case "network":
+                return `${name} has invited you to be a part of ${pronoun} network`;
+            case "comm":
+                return `${name} has invited you to a community`;
+            case "comm-admin":
+                return `${name} has invited you to be an admin in a community`;                        
+        }
     }
 
     logout() {

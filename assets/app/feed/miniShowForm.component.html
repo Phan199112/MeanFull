@@ -14,24 +14,24 @@
                             <div  *ngIf="question.options">
                                 <div *ngIf="question.kind == 'Radio'">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input formControlName="answer" [value]="option.body" type="radio"/>
-                                        <label>{{option.body}}</label>
+                                        <input (click)="loginPopup.check()" formControlName="answer" [value]="option.label" type="radio"/>
+                                        <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input [formControlName]="option.body" type="checkbox"/>
-                                        <label>{{option.body}}</label>
+                                        <input (click)="loginPopup.check()" [formControlName]="option.label" type="checkbox"/>
+                                        <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
                                 <select class="form-control" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
-                                    <option *ngFor="let option of question.options" [value]="option.body">{{option.body}}</option>
+                                    <option *ngFor="let option of question.options" [value]="option.label">{{option.label}}. {{option.body}}</option>
                                 </select>
                                 <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
                                     <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
                                         <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="form-control">
                                             <span class="rank">{{j + 1}}</span>
-                                            <label>{{option}}</label>
+                                            <label>{{option.label}}. {{option.body}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                             </td>
                                             <td class="field" *ngFor="let column of question.columns; let j = index">
                                                 <div class="contents">
-                                                    <input type="radio" [formControlName]="row" [value]="column"/>
+                                                    <input (click)="loginPopup.check()" type="radio" [formControlName]="row" [value]="column"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -65,8 +65,8 @@
                                 </div>
                                 <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>
                             </div>
-                            <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
-                            <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
+                            <input (click)="loginPopup.check()" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                            <textarea (click)="loginPopup.check()" class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                             <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                 Option is required
                             </div>
@@ -87,24 +87,24 @@
                             <div  *ngIf="question.options">
                                 <div *ngIf="question.kind == 'Radio'">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input formControlName="answer" [value]="option.body" type="radio"/>
-                                        <label>{{option.body}}</label>
+                                        <input (click)="loginPopup.check()" formControlName="answer" [value]="option.label" type="radio"/>
+                                        <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input [formControlName]="option.body" type="checkbox"/>
-                                        <label>{{option.body}}</label>
+                                        <input (click)="loginPopup.check()" [formControlName]="option.label" type="checkbox"/>
+                                        <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
                                 <select class="form-control" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
-                                    <option *ngFor="let option of question.options" [value]="option.body">{{option.body}}</option>
+                                    <option *ngFor="let option of question.options" [value]="option.label">{{option.label}}. {{option.body}}</option>
                                 </select>
                                 <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
                                     <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
                                         <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="form-control">
                                             <span class="rank">{{j + 1}}</span>
-                                            <label>{{option}}</label>
+                                            <label>{{option.label}}. {{option.body}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                                 </td>
                                                 <td class="field" *ngFor="let column of question.columns; let j = index">
                                                     <div class="contents">
-                                                        <input type="radio" [formControlName]="row" [value]="column"/>
+                                                        <input (click)="loginPopup.check()" type="radio" [formControlName]="row" [value]="column"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -138,7 +138,7 @@
                                 </div>
                                 <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>                                                            
                             </div>
-                            <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                            <input (click)="loginPopup.check()" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
                             <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                             <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                 Option is required
@@ -178,3 +178,4 @@
     </div>
 </form>
 </div>
+<login-popup #loginPopup></login-popup>
