@@ -23,7 +23,7 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 })
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
-    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Rank", "Matrix", "Stars"];
+    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Rank", "Stars"]; //, "Matrix"
     kindsWithOptions: string[] = ["Radio", "Checkboxes", "Drop-down", "Rank"];
     kindIcons: any = {
         'Radio': 'list.png',
