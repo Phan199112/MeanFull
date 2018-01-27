@@ -46,13 +46,14 @@ export class MiniShowFormComponent implements OnInit {
         for (let question of this.data.questions) {
             let groupObject = {
                 body: question.body,
+                label: question.label,
                 kind: question.kind,
                 number: question.number
             };
             if (question.kind === 'Checkboxes') {
                 groupObject.answer = {};
                 for (let option of question.options) {
-                    groupObject.answer[option.body] = false;
+                    groupObject.answer[option.label] = false;
                 }
                 if (question.required) {
                     groupObject.answer = this.fb.group(groupObject.answer, {validator: this.checkboxesRequired});

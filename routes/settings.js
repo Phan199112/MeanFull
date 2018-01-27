@@ -267,6 +267,7 @@ module.exports = function(app, passport, manager, hashids) {
         var outputeventstemp = [];
         var eventdata = [];
         var eventpromises = [];
+        var communitiesdata = [];
 
         new Promise(function(resolve, reject) {
             UserModel.findById(req.session.userid, function (err, userinfo) {
@@ -310,7 +311,6 @@ module.exports = function(app, passport, manager, hashids) {
                         // get some more info on these events: username and link to profile for a network request
                         // or the name of the survey and description if a survey
                         var tempfunction = function(x) {
-                            console.log("tempf called");
                             return new Promise(function(resolve, reject){
                                 if (x.type === "network") {
                                     var targetuserid;
@@ -494,7 +494,43 @@ module.exports = function(app, passport, manager, hashids) {
 
             })
             .then(function () {
-                res.json({status: 1, data: datauserinfo, network: networkdata, notifications: outputevents});
+                // get the list of communities of which the current user is a member or admin
+                // vars
+
+                return new Promise(function (resolve, reject) {
+                    CommunityModel.find({
+                        $or: [{'adminuserid': req.session.userid}, {'members': req.session.userid}]
+                    }).limit(100).cursor()
+                        .on('data', function (comm) {
+                            var temp = "/images/question.jpg";
+                            if (comm.pic != null) {
+                                temp = comm.pic;
+                            }
+
+                            communitiesdata.push({
+                                title: comm.title,
+                                link: hashids.encodeHex(comm._id),
+                                pic: temp
+                            });
+                        })
+                        .on('error', function (err) {
+                            // handle error
+                            console.log("Error in reading feed " + err);
+                            reject(err);
+                        })
+                        .on('end', function () {
+                            // final callback
+                            // send data back
+                            resolve();
+                        });
+                })
+                    .catch(function () {
+                        console.log("failed to get some user communitities");
+                    });
+
+            })
+            .then(function () {
+                res.json({status: 1, data: datauserinfo, network: networkdata, notifications: outputevents, comm: communitiesdata});
             })
             .catch(function () {
                 res.json({status: 0});

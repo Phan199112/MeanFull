@@ -17,6 +17,7 @@ let UsaSchools = require("../data/US-schools.json");
 })
 export class SettingsComponent implements OnInit {
     profile: any;
+    comm: any;
     profileFields: any[];
     passwordNotFB: boolean = false;
     passwordEdit: boolean = false;
@@ -62,6 +63,7 @@ export class SettingsComponent implements OnInit {
             .then(res => {
                 if (res.json().status == 1) {
                     this.profile = res.json().data;
+                    this.comm = res.json().comm;
                     this.network = res.json().network;
                     this.notifications = res.json().notifications;
 

@@ -58,22 +58,25 @@ export class ShowFormComponent implements OnInit, OnDestroy {
         for (let question of this.data.questions) {
             let groupObject = {
                 body: question.body,
+                label: question.label,
                 kind: question.kind,
                 number: question.number
             };
             if (question.kind === 'Checkboxes') {
                 groupObject.answer = {};
                 for (let option of question.options) {
-                    groupObject.answer[option.body] = false;
+                    groupObject.answer[option.label] = false;
                 }
                 if (question.required) {
                     groupObject.answer = this.fb.group(groupObject.answer, {validator: this.checkboxesRequired});
                 } else {
                     groupObject.answer = this.fb.group(groupObject.answer);
                 }
+
             } else if (question.kind === 'Rank') {
                 groupObject.answer = question.options.map(option => tempf(option));
                 groupObject.answer = this.fb.array(groupObject.answer);
+
             } else if (question.kind === 'Matrix') {
                 groupObject.answer = {};
                 for (let row of question.rows) {
@@ -82,7 +85,8 @@ export class ShowFormComponent implements OnInit, OnDestroy {
                         groupObject.answer[row] = [groupObject.answer[row], Validators.required];
                     }
                 }
-                groupObject.answer = this.fb.group(groupObject.answer);                
+                groupObject.answer = this.fb.group(groupObject.answer);
+
             } else {
                 groupObject.answer = "";
                 if (question.required) {

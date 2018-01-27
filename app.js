@@ -49,8 +49,6 @@ app.use(passport.session());
 
 // mongodb (this is the live version with real data, if you'd like to do tests us the mlab above)
 // PRODUCTION LEVEL DB
-//var mongoDB = 'mongodb://cwdbnode:owHHvHTL9pn2MFRo@cwdb-shard-00-00-zcm55.mongodb.net:27017,cwdb-shard-00-01-zcm55.mongodb.net:27017,cwdb-shard-00-02-zcm55.mongodb.net:27017/test?ssl=true&replicaSet=cwdb-shard-0&authSource=admin';
-// new kartik
 var mongoDB = 'mongodb://questionslyadmindb:ZWWZ4DhPrNgzIR8T@questionslydb1-shard-00-00-hv0tz.mongodb.net:27017,questionslydb1-shard-00-01-hv0tz.mongodb.net:27017,questionslydb1-shard-00-02-hv0tz.mongodb.net:27017/questionslydb1?ssl=true&replicaSet=questionslydb1-shard-0&authSource=admin';
 
 mongoose.connect(mongoDB, {

@@ -21,6 +21,14 @@
                     <i class="fa fa-user-secret" aria-hidden="true"></i>
                     <a (click)="tabs.select('privacy-tab'); activeTab = 'privacy'">Privacy</a>
                 </div>
+                <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'connections'}">
+                    <i class="fa fa-address-book" aria-hidden="true"></i>
+                    <a (click)="tabs.select('connections-tab'); activeTab = 'connections'">Connections</a>
+                </div>
+                <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'communities'}">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <a (click)="tabs.select('communities-tab'); activeTab = 'communities'">Communities</a>
+                </div>
             </div>
         </div>
         <div class="col">
@@ -614,8 +622,13 @@
                                         </form>
                                     </div>
                                 </div>
-                                <hr>
-                                <h6>Your connections</h6>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab id="connections-tab" title="Connections">
+                        <ng-template ngbTabContent>
+                            <h5 class="tab-title">Your connections</h5>
+                            <div class="settings-box">
                                 <div *ngIf="network.length > 0">
                                     <div class="col" *ngFor="let data of network">
                                         <div class="row">
@@ -630,6 +643,27 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteConnection(data.edgeid)">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab id="communities-tab" title="Communities">
+                        <ng-template ngbTabContent>
+                            <h5 class="tab-title">Your communities</h5>
+                            <div class="settings-box">
+                                <div *ngIf="comm.length > 0">
+                                    <div class="col" *ngFor="let data of comm">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img *ngIf="data.pic" src="{{data.pic}}" height="30" width="30">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <a [routerLink]="['/community', data.link]">{{data.title}}</a>
+                                            </div>
+                                            <div class="col-md-3">
                                             </div>
                                         </div>
                                     </div>
