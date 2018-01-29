@@ -63,7 +63,8 @@ import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component"
 import {ImageEditorComponent} from "./imageEditor/imageEditor.component";
 import {ResourceListComponent} from './resourceList/resourceList.component';
 import {LoginPopupComponent} from './loginPopup/loginPopup.component';
-import { ConfirmationPopupComponent } from './confirmationPopup/confirmationPopup.component';
+import {ConfirmationPopupComponent} from './confirmationPopup/confirmationPopup.component';
+import {SearchPageComponent} from "./search/search.page.component";
 
 import { ShareService } from "./share.service";
 
@@ -115,7 +116,8 @@ import { ShareService } from "./share.service";
         ImageEditorComponent,
         ResourceListComponent,
         LoginPopupComponent,
-        ConfirmationPopupComponent
+        ConfirmationPopupComponent,
+        SearchPageComponent
     ],
     imports: [
         // vendor //

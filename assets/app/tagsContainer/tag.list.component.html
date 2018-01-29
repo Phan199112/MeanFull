@@ -2,32 +2,6 @@
     <div class="secondary-container">
         <h5 class="title">Tags</h5>
         <div>
-            <form [formGroup]="tagsearch">
-                <input class="form-control form-control-sm"
-                        ngui-auto-complete
-                       formControlName="searchword"
-                       [source]="observableSource.bind(this)"
-                       [list-formatter]="myListFormatter"
-                       value-property-name="tag"
-                       display-property-name="tag"
-                       (click)="loginPopup.check()"
-                       placeholder="Search Tag">
-                <div class="text-center">
-                    <button id="formSubmitButton"
-                            class="btn btn-outline-primary mouseChangeToHand"
-                            [disabled]="tagsearch.get('searchword').invalid && tagsearch.get('searchword').touched || !tagsearch.get('searchword').touched"
-                            (click)="checkSubmit()">
-                        Search!
-                    </button>
-                </div>
-
-            </form>
-        </div>
-        <hr>
-        <div *ngIf="user == null">
-            <a routerLink="/">Show all</a>
-        </div>
-        <div>
             <tag-component class="" [tag]="tag" *ngFor="let tag of taglist"> </tag-component>
         </div>
     </div>

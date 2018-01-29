@@ -15,15 +15,19 @@ export class ResourceListComponent {
   ) {}
 
   pic(item) {
-    if (item.pic) {
-      return item.pic;
+    if (item.fb) {
+        return `https://graph.facebook.com/${item.fb}/picture?width=30&height=30`;
     } else {
-      switch (this.resource) {
-        case "user":
-          return `/images/${item.gender}.png`;
-        case "community":
-          return "/images/question.jpg";
-      }
+        if (item.pic) {
+            return item.pic;
+        } else {
+            switch (this.resource) {
+                case "user":
+                    return `/images/${item.gender}.png`;
+                case "community":
+                    return "/images/question.jpg";
+            }
+        }
     }
   }
 

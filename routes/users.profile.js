@@ -56,6 +56,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     yourfriendsdata.push({
                                         name: user.name.first+" "+user.name.last, 
                                         id: hashids.encodeHex(user._id),
+                                        fb: user.facebookID,
                                         pic: user.pic,
                                         gender: user.gender
                                     });

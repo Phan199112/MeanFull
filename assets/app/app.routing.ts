@@ -9,6 +9,7 @@ import {SettingsComponent} from "./settings/settings.component";
 import {CreateCommunityComponent} from "./createCommunity/createCommunity.component";
 import {ViewCommunityComponent} from "./viewCommunity/viewCommunity.component";
 import {FeedPageComponent} from "./feed/feed.page.component";
+import {SearchPageComponent} from "./search/search.page.component";
 
 const APP_ROUTES: Routes = [
     {path: '', component: FeedPageComponent, pathMatch: 'full'},
@@ -22,7 +23,8 @@ const APP_ROUTES: Routes = [
     {path: 'profile/:id/:subsection', component: ProfileComponent},
     {path: 'settings', component: SettingsComponent},
     {path: 'createCommunity', component: CreateCommunityComponent},
-    {path: 'community/:id', component: ViewCommunityComponent}
-]
+    {path: 'community/:id', component: ViewCommunityComponent},
+    {path: 'searchresults', component: SearchPageComponent}
+];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

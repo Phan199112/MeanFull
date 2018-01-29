@@ -3,6 +3,8 @@ import {Observable} from 'rxjs/Rx';
 import {Http} from "@angular/http";
 import {UserService} from "../user.service";
 import {ShareService} from "../share.service";
+import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-navbar',
@@ -14,6 +16,7 @@ import {ShareService} from "../share.service";
     }
 })
 export class NavbarComponent implements OnInit {
+    searchbox: FormGroup;
     loggedin = false;
     fbid = false;
     firstname = null;
@@ -31,8 +34,10 @@ export class NavbarComponent implements OnInit {
 
     constructor(
         private http: Http,
+        private fb: FormBuilder,
         private userService: UserService,
-        private shareService: ShareService
+        private shareService: ShareService,
+        private router: Router
     ) { }
 
 
@@ -42,6 +47,11 @@ export class NavbarComponent implements OnInit {
         // update the list every 30 seconds
         this.obs = Observable.interval(1000 * 30).subscribe(x => {
             this.getEventsList();
+        });
+
+        // init search form
+        this.searchbox = this.fb.group({
+            searchterm: ['', Validators.required]
         });
     }
 
@@ -130,8 +140,7 @@ export class NavbarComponent implements OnInit {
                                 this.addNotification(e);
                             }
                         }
-                    })
-                    .catch(error => alert("Error retrieving events list: "));
+                    });
             }
         });
     }
@@ -140,11 +149,9 @@ export class NavbarComponent implements OnInit {
         if (notification.seen) return;
         this.http.post('/events/seen', {id: notification.id}).toPromise()
             .then(eventsdata => {
-                //console.log("updated as seen");
                 this.unreadNotifications--;
                 notification.seen = true;                
-            })
-            .catch(error => alert("Error retrieving events list: "));
+            });
     }
 
     notificationLink(notification) {
@@ -229,4 +236,34 @@ export class NavbarComponent implements OnInit {
             this.navExpanded = false;
         }
     }
+
+
+    /// deal with search form
+    setAsTouched(group) {
+        group.markAsTouched();
+        for (let i in group.controls) {
+            if (group.controls[i] instanceof FormControl) {
+                group.controls[i].markAsTouched();
+            } else {
+                this.setAsTouched(group.controls[i]);
+            }
+        }
+    }
+
+
+    checkSubmit(form) {
+        this.setAsTouched(form);
+        if (form.invalid) {
+            form.wasChecked = true;
+        } else {
+            // submit
+            this.submitSearch();
+        }
+    }
+
+    submitSearch() {
+        this.router.navigate(['/searchresults', {'q': this.searchbox.value.searchterm}]);
+    }
+
+
 }

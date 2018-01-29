@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-3" id="leftSideOfContainer">
+        <community-list [user]="null"></community-list>
+        <yourform-list *ngIf="loggedin"></yourform-list>
+        <tag-list [user]="null" [comm]="null"></tag-list>
+    </div>
+    <div id="SearchPageContainer" class="col-md-7">
+        <br>
+        <div *ngIf="results">
+            <div class="row">
+                <div class="col">
+                    <h3 style="text-transform: capitalize">Users</h3>
+                </div>
+            </div>
+            <div class="row">
+                <resource-list [resource]="'user'" [list]="usersearchresultsList"></resource-list>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <h3 style="text-transform: capitalize">Communities</h3>
+                </div>
+            </div>
+            <div class="row">
+                <resource-list [resource]="'community'" [list]="communitysearchresultsList"></resource-list>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <h3 style="text-transform: capitalize">Tags</h3>
+                </div>
+            </div>
+            <div class="row">
+                <tag-banner-list [data]="tagsList"></tag-banner-list>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+        <feedback-form *ngIf="loggedin"></feedback-form>
+    </div>
+</div>

@@ -97,10 +97,8 @@ var FormModel = require('./db.models/form.model');
 var CommunityModel = require('./db.models/community.model');
 
 
-
+// crons for tags
 cron.schedule('*/5 * * * *', function(){
-    //console.log('running tags update task every 2 minutes');
-
     var tags = [];
     var datadump = [];
     var promiseslist = [];

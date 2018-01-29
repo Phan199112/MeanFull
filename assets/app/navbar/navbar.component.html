@@ -7,6 +7,14 @@
                 </span>
             </button>
             <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>Questionsly</a>
+            <form class="form-inline my-2 my-lg-0" [formGroup]="searchbox">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search"
+                       formControlName="searchterm"
+                       [ngClass]="{'form-control': true, 'is-invalid': searchbox.get('searchterm').invalid && searchbox.get('searchterm').touched}">
+                <button class="btn btn-outline-success my-2 my-sm-0"
+                        type="submit"
+                        [disabled]="searchbox.invalid && searchbox.wasChecked" (click)="checkSubmit(searchbox)">Search</button>
+            </form>
             <div class="navbar-collapse collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ml-auto">
                     <div *ngIf="loggedin; then fullbar else login"></div>

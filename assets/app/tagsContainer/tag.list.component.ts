@@ -71,7 +71,7 @@ export class TagListComponent implements OnInit, OnDestroy {
     }
 
     Submit() {
-        this.router.navigate(['/feed', {'tag': this.tagsearch.value.searchword}]);
+        this.router.navigate(['/searchresults', {'tag': this.tagsearch.value.searchword}]);
     }
 
     setAsTouched(group) {
