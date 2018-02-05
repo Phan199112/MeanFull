@@ -44,7 +44,7 @@
                     <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
                     <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
                     <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
-                    <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report</a>
+                    <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
                 </div>
             </div>
         </div>
@@ -64,33 +64,38 @@
     </div>
     <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
         <div class="container" id="analysisContainer" *ngIf="form.showdata">
-            <h4>Delve into the data</h4>
-            <form [formGroup]="dataselectionform">
-                Gender:
-                <label><input type="checkbox" value="male" name="gender" formControlName="male" (ngModelChange)="doDataSelectionUpdate({input: 'gender', value: 'male', status: $event})"> Male &nbsp;</label>
-                <label><input type="checkbox" value="female" name="gender" formControlName="female" (ngModelChange)="doDataSelectionUpdate({input: 'gender', value: 'female', status: $event})"> Female &nbsp;</label><br>
-                Age group:
-                <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
-                <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
-                <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
-                <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
-                <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
-                <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
-                <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
-                Location:
-                <div formArrayName="alllocations">
-                    <div *ngFor="let loc of locations; let i = index">
-                        <label>
-                                  <span formGroupName="{{i}}">
-                                    <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
-                                  </span>
-                        </label>
+            <h4 (click)="expandDataForm()">Delve into the data</h4>
+            <div *ngIf="expandedData">
+                <form [formGroup]="dataselectionform">
+                    Age group:
+                    <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
+                    <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
+                    <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
+                    <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
+                    <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
+                    <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
+                    <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
+                    Location:
+                    <div formArrayName="alllocations">
+                        <div *ngFor="let loc of locations; let i = index">
+                            <label>
+                                      <span formGroupName="{{i}}">
+                                        <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
+                                      </span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div *ngIf="otherloc">
-                    <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
-                </div>
-            </form>
+                    <div *ngIf="otherloc">
+                        <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
+                    </div>
+                </form>
+
+                <button
+                        class="d-flex justify-content-center btn btn-outline-primary mouseChangeToHand"
+                        (click)="expandShowtable()">
+                    View data as table
+                </button>
+            </div>
         </div>
     </div>
     <div *ngIf="form.answered && !form.contracted && form.admin && form.typeevent">
@@ -98,7 +103,8 @@
     </div>
     <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
         <div class="container" id="chatContainer">
-            <discussion-list [id]="form.id"></discussion-list>
+            <h4 (click)="expandDiscussion()">Discussion</h4>
+            <discussion-list [id]="form.id" *ngIf="expandedDiscussion"></discussion-list>
         </div>
     </div>
     <div class="row" *ngIf="form.contracted">
@@ -113,3 +119,36 @@
     <h4>Oops this form could not be found!</h4>
 </div>
 <confirmation-popup></confirmation-popup>
+
+<ng-template #shareModal let-c="close" let-d="dismiss">
+    <!--<div class="modal-header" [formGroup]="inviteForm">
+        <h4 class="modal-title">Invite your friends to this community</h4>
+    </div>-->
+    <div class="modal-body container">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Share this survey</h3>
+
+            <div *ngIf="loggedin">
+                <h6>Community</h6>
+
+                <yourcomm-list [link]="form.id"></yourcomm-list>
+            </div>
+            <div>
+                <h6>Link</h6>
+                You can use this link to send the surveys to anybody you'd like.
+                Whilst anybody can see surveys, signup is required to submit answers.
+                <a href="https://www.questionsly.com/takeForm/{{form.id}}" target="_blank" >https://www.questionsly.com/takeForm/{{form.id}}</a>
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer" style="justify-content: center">
+        <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>
+    </div>-->
+</ng-template>

@@ -25,6 +25,10 @@ export class FeedForm {
     download: string;
     found: boolean;
     highlight: boolean;
+    loginRequired: boolean;
+    showtable: boolean = false;
+    eventdatatotals: any[];
+    eventplot: boolean = false;
 
     constructor(private object: Object) {
         this.found = object.found;
@@ -42,6 +46,7 @@ export class FeedForm {
             this.shared = object.formdata.shared;
             this.public = object.formdata.public;
             this.typeevent = object.formdata.typeevent;
+            this.loginRequired = object.formdata.loginRequired;
             this.answered = false;
             this.plotdata = null;
             this.viewGraphsbool = false;

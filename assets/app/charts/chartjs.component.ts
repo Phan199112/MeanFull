@@ -28,8 +28,16 @@ export class ChartJSComponent implements OnInit {
                 this.ChartLegend = true;
 
             } else {
-                this.ChartType = "bar";
-                this.ChartLegend = false;
+                // alter graph type depending on no groups
+                if (this.dataValues[0].data.length > 2) {
+                    this.ChartType = "radar";
+                    this.ChartLegend = false;
+
+                } else {
+                    this.ChartType = "bar";
+                    this.ChartLegend = false;
+                }
+
             }
 
 

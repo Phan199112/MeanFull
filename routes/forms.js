@@ -171,7 +171,7 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
 
-    app.post('/forms/answers', manager.ensureLoggedIn('/users/login'), function(req, res, next) {
+    app.post('/forms/answers', function(req, res, next) {
         // add new answer
         var receivedData = req.body;
         var answerformid = hashids.decodeHex(receivedData.id);
@@ -179,158 +179,264 @@ module.exports = function(app, passport, manager, hashids) {
         // double check to see whether this user has already submitted an answer:
         var checkedfordouble = true; // true means do not add again
         var checkedexpired = true;
+        var checkedloginRequired = true;
         var proceed = false;
         // promises
         var promises = [];
         var promiseschecks = [];
 
-        new Promise(function(resolve, reject) {
-
-            var fcheckedfordouble = function () {
-                return new Promise(function (resolve, reject) {
-                    AnswersModel.findOne({userid: req.session.userid, formid: answerformid}, function (err, obj) {
-                        if (err) {
-                            reject(err);
+        // functions
+        var fcheckedfordouble = function () {
+            return new Promise(function (resolve, reject) {
+                AnswersModel.findOne({userid: req.session.userid, formid: answerformid}, function (err, obj) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        if (obj == null) {
+                            checkedfordouble = false;
+                            resolve();
                         } else {
-                            if (obj == null) {
-                                checkedfordouble = false;
-                                resolve();
-                            } else {
-                                // don't add any data
-                                checkedfordouble = true;
-                                resolve();
-                            }
-                        }
-                    });
-                });
-            };
-
-            var fcheckexpired = function () {
-                return new Promise(function (resolve, reject) {
-                    FormModel.findById(answerformid, function (err, form) {
-                        if (err) {
-                            reject();
-                        } else {
-                            if (form) {
-                                // look up the author of the form
-                                checkedexpired = form.expired;
-                            }
+                            // don't add any data
+                            checkedfordouble = true;
                             resolve();
                         }
-                    });
+                    }
                 });
-            };
-
-            promiseschecks.push(fcheckedfordouble());
-            promiseschecks.push(fcheckexpired());
-
-            return Promise.all(promiseschecks).then(function () {
-                if (checkedfordouble === false && checkedexpired === false) {
-                    proceed = true;
-                } else {
-                    proceed = false;
-                }
-                resolve();
-
-            }).catch(function() {
-                proceed = false;
-                reject();
             });
+        };
+
+        var fcheckexpired = function () {
+            return new Promise(function (resolve, reject) {
+                FormModel.findById(answerformid, function (err, form) {
+                    if (err) {
+                        reject();
+                    } else {
+                        if (form) {
+                            // look up the author of the form
+                            checkedexpired = form.expired;
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var fcheckloginRequired = function () {
+            return new Promise(function (resolve, reject) {
+                FormModel.findById(answerformid, function (err, form) {
+                    if (err) {
+                        reject();
+                    } else {
+                        if (form) {
+                            // look up the author of the form
+                            checkedloginRequired = form.loginRequired;
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var writeanswerfunction = function (x, y, a) {
+            return new Promise(function (resolve, reject) {
+                AnswersModel.create({
+                    userid: a,
+                    formid: x,
+                    answers: y
+                }, function (err, k) {
+                    if (err) {
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var formauthorfunction = function (x) {
+            return new Promise(function (resolve, reject) {
+                FormModel.findById(x, function (err, form) {
+                    if (err) {
+                        reject();
+                    } else {
+                        if (form) {
+                            // look up the author of the form
+                            formauthorid = form.userid;
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
 
 
+        // the execution of this function depends on whether the user is signed in
+        if (req.isAuthenticated()) {
+
+            new Promise(function(resolve, reject) {
+
+                promiseschecks.push(fcheckedfordouble());
+                promiseschecks.push(fcheckexpired());
+
+                return Promise.all(promiseschecks).then(function () {
+                    if (checkedfordouble === false && checkedexpired === false) {
+                        proceed = true;
+                    } else {
+                        proceed = false;
+                    }
+                    resolve();
+
+                }).catch(function() {
+                    proceed = false;
+                    reject();
+                });
 
             })
-            .then(function () {
-                if (proceed === true) {
-                    // add the answer and send an email/notification
+                .then(function () {
+                    if (proceed === true) {
+                        // add the answer and send an email/notification
 
-                    var writeanswerfunction = function (x, y) {
-                        return new Promise(function (resolve, reject) {
-                            AnswersModel.create({
-                                userid: req.session.userid,
-                                formid: x,
-                                answers: y
-                            }, function (err, k) {
+                        promises.push(writeanswerfunction(answerformid, receivedData.questions, req.session.userid));
+                        promises.push(formauthorfunction(answerformid));
+
+                        return Promise.all(promises).then(function () {
+                            // log
+                            log.writeLog(req.session.userid, 'answered form');
+
+                            // insite notification
+                            notifications.createNotification(formauthorid, req.session.userid, "form-answer", "New answer", hashids.encodeHex(answerformid));
+
+                            // email notification
+                            // check the notification settings of this user
+                            UserModel.findById(formauthorid, function (err, l) {
                                 if (err) {
-                                    reject();
+                                    // no email
+                                    res.json({status: 1});
+
                                 } else {
-                                    resolve();
-                                }
-                            });
-                        });
-                    };
-
-                    var formauthorfunction = function (x) {
-                        return new Promise(function (resolve, reject) {
-                            FormModel.findById(x, function (err, form) {
-                                if (err) {
-                                    reject();
-                                } else {
-                                    if (form) {
-                                        // look up the author of the form
-                                        formauthorid = form.userid;
-                                    }
-                                    resolve();
-                                }
-                            });
-                        });
-                    };
-
-                    promises.push(writeanswerfunction(answerformid, receivedData.questions));
-                    promises.push(formauthorfunction(answerformid));
-
-                    return Promise.all(promises).then(function () {
-                        // log
-                        log.writeLog(req.session.userid, 'answered form');
-
-                        // insite notification
-                        notifications.createNotification(formauthorid, req.session.userid, "form-answer", "New answer", hashids.encodeHex(answerformid));
-
-                        // email notification
-                        // check the notification settings of this user
-                        UserModel.findById(formauthorid, function (err, l) {
-                            if (err) {
-                                // no email
-                                res.json({status: 1});
-
-                            } else {
-                                if (l) {
-                                    // send
-                                    if (Object.keys(l.notifications).length === 0) {
-                                        if (l.notifications.formactivity === true) {
+                                    if (l) {
+                                        // send
+                                        if (Object.keys(l.notifications).length === 0) {
+                                            if (l.notifications.formactivity === true) {
+                                                emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                                res.json({status: 1});
+                                            } else {
+                                                // no email
+                                                res.json({status: 1});
+                                            }
+                                        } else {
+                                            // if no settings are recorded, emails should be send as this is default policity as signup as well
                                             emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
                                             res.json({status: 1});
-                                        } else {
-                                            // no email
-                                            res.json({status: 1});
                                         }
+
                                     } else {
-                                        // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                        emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                        //no user found
                                         res.json({status: 1});
                                     }
 
-                                } else {
-                                    //no user found
-                                    res.json({status: 1});
                                 }
+                            });
 
-                            }
-                        });
+                        })
+                            .catch(function () {
+                                res.json({status: 0});
+                            });
 
-                    })
-                        .catch(function () {
-                            res.json({status: 0});
-                        });
+                    } else {
+                        res.json({status: 0});
+                    }
 
-                } else {
+                })
+                .catch(function () {
                     res.json({status: 0});
-                }
+                });
+
+        } else {
+            // does the form allow anonymous submissions?
+
+            new Promise(function(resolve, reject) {
+
+                promiseschecks.push(fcheckloginRequired());// does the form allow anonymous submissions?
+                promiseschecks.push(fcheckexpired());
+
+                return Promise.all(promiseschecks).then(function () {
+                    if (checkedloginRequired === false && checkedexpired === false) {
+                        proceed = true;
+                    } else {
+                        proceed = false;
+                    }
+                    resolve();
+
+                }).catch(function() {
+                    proceed = false;
+                    reject();
+                });
 
             })
-            .catch(function () {
-                res.json({status: 0});
-            });
+                .then(function () {
+                    if (proceed === true) {
+                        // add the answer and send an email/notification
+
+                        promises.push(writeanswerfunction(answerformid, receivedData.questions,'anonymous'));
+                        promises.push(formauthorfunction(answerformid));
+
+                        return Promise.all(promises).then(function () {
+                            // log
+                            log.writeLog('anonymous', 'answered form');
+
+                            // insite notification
+                            notifications.createNotification(formauthorid, 'anonymous', "form-answer", "New answer", hashids.encodeHex(answerformid));
+
+                            // email notification
+                            // check the notification settings of this user
+                            UserModel.findById(formauthorid, function (err, l) {
+                                if (err) {
+                                    // no email
+                                    res.json({status: 1});
+
+                                } else {
+                                    if (l) {
+                                        // send
+                                        if (Object.keys(l.notifications).length === 0) {
+                                            if (l.notifications.formactivity === true) {
+                                                emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                                res.json({status: 1});
+                                            } else {
+                                                // no email
+                                                res.json({status: 1});
+                                            }
+                                        } else {
+                                            // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                            emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                            res.json({status: 1});
+                                        }
+
+                                    } else {
+                                        //no user found
+                                        res.json({status: 1});
+                                    }
+
+                                }
+                            });
+
+                        })
+                            .catch(function () {
+                                res.json({status: 0});
+                            });
+
+                    } else {
+                        res.json({status: 0});
+                    }
+
+                })
+                .catch(function () {
+                    res.json({status: 0});
+                });
+
+
+
+        }
     });
 
     app.post('/forms/expire', manager.ensureLoggedIn('/users/login'), function(req,res) {
@@ -487,6 +593,78 @@ module.exports = function(app, passport, manager, hashids) {
 
     });
 
+    app.post('/forms/resultstabletotals', manager.ensureLoggedIn('/users/login'), function(req,res) {
+        // input
+        var formid = hashids.decodeHex(req.body.formid);
+
+        // vars
+        var allanswers = [];
+        var questiontypes = [];
+        var exportdata_totals;
+
+        return new Promise (function(resolve, reject) {
+            // get all the answers to this question
+            return new Promise(function(resolve, reject){
+                AnswersModel.find({formid: formid}, function (err, k) {
+                    // retrieved and array with all answers
+                    if (err) {
+                        // error
+                        reject();
+                    } else {
+                        allanswers = k;
+                        resolve();
+                    }
+                });
+            })
+                .then(function() {
+                    var tempqtypes = function(x) {
+                        return new Promise(function(resolve, reject) {
+                            FormModel.findById(x, function (err, form) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    if (form) {
+                                        // what are the question types?
+                                        // short answer and paragraph should not be plotted
+                                        if (form.questions.length > 0) {
+                                            for (var a = 0; a < form.questions.length; a++) {
+                                                questiontypes.push(form.questions[a].kind);
+                                            }
+                                        }
+
+                                    }
+                                    resolve();
+                                }
+                            });
+                        });
+                    };
+
+                    tempqtypes(formid).then(function() {
+                        exportdata_totals = formfunctions.analyzeAll(allanswers, questiontypes, false);
+                        console.log("data");
+                    })
+                        .then(function() {
+                            resolve();
+                        })
+
+                })
+
+                .catch(function () {
+                    reject();
+                })
+        })
+            .then(function() {
+                console.log("send");
+                res.json({status: 1, totals: exportdata_totals});
+            })
+
+            .catch(function() {
+                // no permission or it failed
+                res.json({status: 0});
+            });
+
+    });
+
     app.post('/forms/feed',function (req, res, next) {
         // this function retrieved the feed
         // limits to 10 posts
@@ -624,7 +802,7 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         }
                                         // prepare the data
-                                        var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, expires: form.expires,
+                                        var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, loginRequired: form.loginRequired,
                                             timestamp: form.timestamp, description: form.description, title: form.title, admin: adminrights, public: form.public, typeevent: form.typeevent};
                                         firstform = {formdata: formdata, id: hashids.encodeHex(form._id)};
                                         authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
@@ -659,8 +837,8 @@ module.exports = function(app, passport, manager, hashids) {
                                     }
                                 }
                                 // prepare the data
-                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared,
-                                    expires: form.expires, timestamp: form.timestamp, description: form.description,
+                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, loginRequired: form.loginRequired,
+                                    timestamp: form.timestamp, description: form.description,
                                     title: form.title, admin: adminrights, public: form.public, typeevent: form.typeevent};
                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
                                 authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
@@ -706,8 +884,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                     }
                                                 }
                                                 // prepare the data
-                                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared,
-                                                    expires: form.expires, timestamp: form.timestamp, description: form.description,
+                                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, loginRequired: form.loginRequired,
+                                                    timestamp: form.timestamp, description: form.description,
                                                     title: form.title, admin: adminrights, public: form.public, typeevent: form.typeevent};
                                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
                                                 authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
@@ -1058,6 +1236,8 @@ module.exports = function(app, passport, manager, hashids) {
         // query answersdata for answers from the logged in user
         // unhash
         var formid = hashids.decodeHex(req.body.link);
+        var alltype = req.body.all;
+        var dataselection = req.body.dataselection;
         //
         var exportdata = [];
         var allanswers = [];
@@ -1125,14 +1305,22 @@ module.exports = function(app, passport, manager, hashids) {
                     // tempfunction to query the user for gender
                     var tempfunction = function(x) {
                         return new Promise(function(resolve, reject){
-                            UserModel.findById(x.userid, function (err, k) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    authorprofiles[x.userid] = {gender: k.gender, dob: k.dob, location: k.location};
-                                    resolve();
-                                }
-                            });
+                            if (x.userid === "anonymous") {
+                                authorprofiles[x.userid] = {type: false};
+                                resolve();
+
+                            } else {
+                                UserModel.findById(x.userid, function (err, k) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        authorprofiles[x.userid] = {gender: k.gender, dob: k.dob, location: k.location, type: true};
+                                        resolve();
+                                    }
+                                });
+
+                            }
+
                         }).catch(function () {
                             console.log("error query user");
                         });
@@ -1143,7 +1331,7 @@ module.exports = function(app, passport, manager, hashids) {
                     });
 
                     return Promise.all(authorprofilespromise).then(function () {
-                        exportdata = formfunctions.analyzeSegregated(allanswers, authorprofiles, req.body.dataselection, questiontypes);
+                        exportdata = formfunctions.analyzeSegregated(allanswers, authorprofiles, dataselection, questiontypes, alltype);
                     })
                         .catch(function(err) {
                             console.log("promise error: "+err);
@@ -1219,11 +1407,12 @@ module.exports = function(app, passport, manager, hashids) {
                             formdata = {
                                 hashtags: form.hashtags,
                                 questions: form.questions,
-                                expires: form.expires,
+                                expired: form.expired,
                                 timestamp: form.timestamp,
                                 description: form.description,
                                 title: form.title,
-                                anonymous: form.anonymous
+                                anonymous: form.anonymous,
+                                loginRequired: form.loginRequired
                             };
                             authorid = form.userid;
                             resolve();

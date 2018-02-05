@@ -14,13 +14,13 @@
                             <div  *ngIf="question.options">
                                 <div *ngIf="question.kind == 'Radio'">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input (click)="loginPopup.check()" formControlName="answer" [value]="option.label" type="radio"/>
+                                        <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio"/>
                                         <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input (click)="loginPopup.check()" [formControlName]="option.label" type="checkbox"/>
+                                        <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox"/>
                                         <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                             </td>
                                             <td class="field" *ngFor="let column of question.columns; let j = index">
                                                 <div class="contents">
-                                                    <input (click)="loginPopup.check()" type="radio" [formControlName]="row" [value]="column"/>
+                                                    <input (click)="loginPopup.check(data.loginRequired)" type="radio" [formControlName]="row" [value]="column"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -65,8 +65,8 @@
                                 </div>
                                 <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>
                             </div>
-                            <input (click)="loginPopup.check()" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
-                            <textarea (click)="loginPopup.check()" class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
+                            <input (click)="loginPopup.check(data.loginRequired)" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                            <textarea (click)="loginPopup.check(data.loginRequired)" class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                             <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                 Option is required
                             </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-md-6">
                         <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [questionkind]="question.kind" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-chartjs>
-                        <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.eventplot"></miniresults-table-component>
+                        <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && (data.eventplot || data.showtable)"></miniresults-table-component>
                     </div>
                 </ng-template>
                 <ng-template #formonly>
@@ -87,13 +87,13 @@
                             <div  *ngIf="question.options">
                                 <div *ngIf="question.kind == 'Radio'">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input (click)="loginPopup.check()" formControlName="answer" [value]="option.label" type="radio"/>
+                                        <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio"/>
                                         <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
                                     <div *ngFor="let option of question.options" class="form-control">
-                                        <input (click)="loginPopup.check()" [formControlName]="option.label" type="checkbox"/>
+                                        <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox"/>
                                         <label>{{option.label}}. {{option.body}}</label>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                                 </td>
                                                 <td class="field" *ngFor="let column of question.columns; let j = index">
                                                     <div class="contents">
-                                                        <input (click)="loginPopup.check()" type="radio" [formControlName]="row" [value]="column"/>
+                                                        <input (click)="loginPopup.check(data.loginRequired)" type="radio" [formControlName]="row" [value]="column"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -138,7 +138,7 @@
                                 </div>
                                 <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>                                                            
                             </div>
-                            <input (click)="loginPopup.check()" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                            <input (click)="loginPopup.check(data.loginRequired)" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
                             <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                             <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                 Option is required

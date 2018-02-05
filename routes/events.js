@@ -20,21 +20,34 @@ module.exports = function(app, passport, manager, hashids) {
                         timestamp: event.timestamp
                     };
                     promises.push(new Promise(function (resolve, reject) {
-                        if (event.fromuser) {
-                            UserModel.findById(event.fromuser, function (err, userinfo) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    eventdata.fromuser = {
-                                        fb: userinfo.facebookID,
-                                        pic: userinfo.pic,
-                                        gender: userinfo.gender,
-                                        name: userinfo.name.first + " " + userinfo.name.last
-                                    };
-                                    outputevents.push(eventdata);                                                            
-                                    resolve();
-                                }
-                            });
+                        if (event.fromuser !== null) {
+                            if (event.fromuser ===  "anonymous") {
+                                eventdata.fromuser = {
+                                    fb: null,
+                                    pic: null,
+                                    gender: null,
+                                    name: "Anonymous"
+                                };
+                                outputevents.push(eventdata);
+                                resolve();
+
+                            } else {
+                                // this is default case
+                                UserModel.findById(event.fromuser, function (err, userinfo) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        eventdata.fromuser = {
+                                            fb: userinfo.facebookID,
+                                            pic: userinfo.pic,
+                                            gender: userinfo.gender,
+                                            name: userinfo.name.first + " " + userinfo.name.last
+                                        };
+                                        outputevents.push(eventdata);
+                                        resolve();
+                                    }
+                                });
+                            }
                         } else {
                             outputevents.push(eventdata);                                                    
                             resolve();

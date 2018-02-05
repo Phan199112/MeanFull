@@ -142,7 +142,7 @@ module.exports = function(app, passport, manager, hashids) {
         });
 
     app.get('/users/login/facebook',
-        passport.authenticate('facebook'));
+        passport.authenticate('facebook', { scope: ['user_birthday', 'user_location']}));
 
     app.get('/users/login/facebook/return',
         passport.authenticate('facebook', { failureRedirect: '/users/login' }),

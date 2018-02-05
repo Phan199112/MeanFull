@@ -50,13 +50,10 @@ import {ChartJSComponent} from "./charts/chartjs.component";
 import {ChartsModule} from 'ng2-charts';
 import {NetworkComponent} from "./networkContainer/network.component";
 import {NetworkListComponent} from "./networkContainer/network.list.component";
-import {PopupComponent} from './popup/popup.component';
-import {PopupShareComponent} from './popup/popup.share.component';
 import {YourCommunityListComponent} from './yourCommunities/yourcomm.list.component';
 import {YourCommunityComponent} from './yourCommunities/yourcomm.component';
 import {YourFriendsListComponent} from './yourFriends/yourfriends.list.component';
 import {YourFriendsComponent} from './yourFriends/yourfriends.component';
-import {PopupInviteCommComponent} from "./popup/popup.invitecomm.component";
 import {ResultsTableComponent} from "./resultstable/resultstable.component";
 import {MiniResultsTableComponent} from "./resultstable/miniresultstable.component";
 import {StarsQuestionComponent} from "./questions/stars/starsQuestion.component";
@@ -102,13 +99,10 @@ import { ShareService } from "./share.service";
         TagBannerListComponent,
         DiscussionComponent,
         DiscussionListComponent,
-        PopupComponent,
-        PopupShareComponent,
         YourCommunityListComponent,
         YourCommunityComponent,
         YourFriendsListComponent,
         YourFriendsComponent,
-        PopupInviteCommComponent,
         ResultsTableComponent,
         MiniResultsTableComponent,
         Autosize,
@@ -137,27 +131,7 @@ import { ShareService } from "./share.service";
         ChartsModule,
         ToolTipModule,
         NguiAutoCompleteModule,
-        ImageCropperModule,        
-        RouterModule.forRoot([
-            {
-                //Register here to stop error "no factory resolver for PopupComponent". It is not used as routing
-                path: 'PopupComponent',
-                component: PopupComponent,
-
-            },
-            {
-                //Register here to stop error "no factory resolver for PopupComponent". It is not used as routing
-                path: 'PopupShareComponent',
-                component: PopupShareComponent,
-
-            },
-            {
-                //Register here to stop error "no factory resolver for PopupComponent". It is not used as routing
-                path: 'PopupInviteCommComponent',
-                component: PopupInviteCommComponent,
-
-            }
-        ])
+        ImageCropperModule
     ],
     providers: [ShareService],
     bootstrap: [AppComponent]

@@ -6,6 +6,7 @@ import { AppComponent } from '../app.component';
 import { PopupShareComponent } from '../popup/popup.share.component';
 import { PopupService } from "../popup.service";
 import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'feed-form-component',
@@ -21,8 +22,11 @@ export class FeedFormComponent implements OnInit {
     showdiscussion: boolean = false;
     hide: boolean = false;
     loggedin: boolean = false;
+    expandedData: boolean = false;
+    expandedDiscussion: boolean = false;
     count: string = null;
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
+    @ViewChild('shareModal') shareModal;
 
     // event data
     eventdatatable: any[];
@@ -33,8 +37,6 @@ export class FeedFormComponent implements OnInit {
     alllocationsarray: FormArray = new FormArray([]);
 
     dataselectionform = new FormGroup({
-        male: new FormControl(true),
-        female: new FormControl(true),
         agesmin17: new FormControl(true),
         ages17to23: new FormControl(true),
         ages24to29: new FormControl(true),
@@ -48,7 +50,7 @@ export class FeedFormComponent implements OnInit {
 
 
     defaultages: string[] = [];
-    plotselection: Object = {gender: ['male', 'female'], age: this.defaultages, location: []};
+    plotselection: Object = {age: this.defaultages, location: []};
 
     //ages
     valuesagesmin17: string[] = [];
@@ -60,7 +62,7 @@ export class FeedFormComponent implements OnInit {
     valuesplus60: string[] = [];
 
 
-    constructor(private http: Http, private popupService: PopupService) {
+    constructor(private http: Http, private modalService: NgbModal) {
         //
     }
 
@@ -153,9 +155,18 @@ export class FeedFormComponent implements OnInit {
                     this.showsubmit = false;
 
                 } else if (responsestatus == 1) {
-                    this.form.setAnswered(true);
-                    this.showdiscussion = false;
-                    this.showsubmit = false;
+                    //test whether this form can be submitted if not signed in.
+                    if (this.form.loginRequired === true) {
+                        this.form.setAnswered(true);
+                        this.showdiscussion = false;
+                        this.showsubmit = false;
+
+                    } else {
+                        this.form.setAnswered(false);
+                        this.showdiscussion = false;
+                        this.showsubmit = true;
+
+                    }
 
                 } else if (responsestatus == 0) {
                     this.form.setAnswered(false);
@@ -221,20 +232,7 @@ export class FeedFormComponent implements OnInit {
 
     doDataSelectionUpdate(x) {
         this.form.viewGraphs(false);
-        if (x.input == 'gender') {
-
-            if (x.status == false) {
-                var index = this.plotselection.gender.indexOf(x.value, 0);
-                if (index > -1) {
-                    this.plotselection.gender.splice(index, 1);
-                }
-
-            } else {
-                this.plotselection.gender.push(x.value);
-
-            }
-
-        } else if (x.input == 'age') {
+        if (x.input == 'age') {
 
             if (x.status == false) {
                 // remove entries from the array
@@ -312,7 +310,7 @@ export class FeedFormComponent implements OnInit {
 
     executePlotDataRetrieval() {
         // post and get response
-        this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection})
+        this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
             .then(response => {
                 var responsedata = response.json().data;
@@ -377,18 +375,19 @@ export class FeedFormComponent implements OnInit {
 
     releaseForm() {
         // update form parameters to make survey 'public': shared boolean set to true.
-        this.http.post('/forms/shared', {formid: this.form.id}).toPromise()
-            .then(response => {
-                if (response.json().status == 1) {
-                }
-            });
+        this.confirmationPopup.confirm('Are you sure you want to release this form? Users will be able to view and answer this form when you release it.').then(answer => {
+            if (answer) {
+                this.http.post('/forms/shared', {formid: this.form.id}).toPromise()
+                    .then(response => {
+                        if (response.json().status == 1) {
+                        }
+                    });
+            }
+        });
     }
 
     shareForm() {
-        // make a popup with various options
-        this.popupService.setLink(this.form.id);
-        //
-        var popup =  AppComponent.PopupControler.PopupComponent(PopupShareComponent);
+        this.modalService.open(this.shareModal);
     }
 
     reportForm() {
@@ -410,8 +409,75 @@ export class FeedFormComponent implements OnInit {
                     this.form.eventdatatotals = res.json().totals;
                     this.form.eventplot = true;
                 }
-            })
-            .catch(error => alert("Error retrieving form: " + error));
+            });
+    }
+
+    retrieveEventDataTotals() {
+        this.http.post(`/forms/resultstabletotals`, {formid: this.form.id}).toPromise()
+            .then(res => {
+                if (res.json().status == '1') {
+                    this.form.eventdatatotals = res.json().totals;
+                    this.form.showtable = !this.form.showtable;
+                }
+            });
+    }
+
+    expandDiscussion() {
+        // toggle the box
+        this.expandedDiscussion = !this.expandedDiscussion;
+    }
+
+    expandShowtable() {
+        if (!this.form.showtable) {
+            this.retrieveEventDataTotals();
+        } else {
+            this.form.showtable = !this.form.showtable;
+        }
+    }
+
+    expandDataForm() {
+        //
+        this.form.viewGraphs(false);
+
+        // toggle the box
+        this.expandedData = !this.expandedData;
+
+        // alter the graph type to split by gender
+        if (this.expandedData === true) {
+            this.http.post('/forms/alldata', {link: this.form.id, all: true})
+                .toPromise()
+                .then(response => {
+                    var responsedata = response.json().data;
+                    var responsestatus = response.json().status;
+
+                    // set parameters for visualising the results
+                    if (responsestatus == 2) {
+                        // make sure the plot is given the data
+                        this.form.setAnswered(true);
+                        this.form.setPlotData(responsedata);
+                        this.submitted = true;
+                        this.showsubmit = false;
+                        this.form.viewGraphs(true);
+
+                    } else if (responsestatus == 1) {
+                        this.form.setAnswered(false);
+                        this.showsubmit = false;
+
+                    } else if (responsestatus == 0) {
+                        this.form.setAnswered(false);
+                        this.showsubmit = true;
+
+                    } else {
+                        this.form.setAnswered(false);
+                        this.showsubmit = false;
+                    }
+                })
+                .catch(error => {
+                    this.form.setAnswered(false);
+                });
+        } else {
+            this.isFilledIn();
+        }
     }
 
 }

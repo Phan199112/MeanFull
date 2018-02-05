@@ -4,10 +4,6 @@
         </div>
         <div class="col-md-8">
 
-            <button *ngIf="!loggedin && !unavailable" class="btn btn-outline-success mouseChangeToHand" routerLink="/users/login">
-                Please login or register first to complete this survey!
-            </button>
-
             <div class="container" *ngIf="unavailable"><h3>This survey is unavailable!</h3></div>
 
             <div id="takeFormContainer" class="container" *ngIf="!unavailable">

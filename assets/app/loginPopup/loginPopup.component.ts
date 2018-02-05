@@ -20,11 +20,13 @@ export class LoginPopupComponent {
     this.modalService.open(this.content);
   }
 
-  check() {
-    this.userService.afterLoginCheck().then(response => {
-      if (response === 0) {
-        this.open();
-      }
-    });      
+  check(loginRequired) {
+    if (loginRequired === true) {
+        this.userService.afterLoginCheck().then(response => {
+            if (response === 0) {
+                this.open();
+            }
+        });
+    }
   }
 }
