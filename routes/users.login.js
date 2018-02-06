@@ -171,7 +171,7 @@ module.exports = function(app, passport, manager, hashids) {
                             first: req.user.name.givenName,
                             last: req.user.name.familyName,
                             middle: req.user.name.middleName},
-                            email: req.user.email,
+                            email: req.user.emails[0].value,
                             searchname: req.user.name.givenName+" "+req.user.name.familyName,
                             location: templocation,
                             gender: req.user.gender,
