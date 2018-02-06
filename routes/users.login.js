@@ -174,7 +174,7 @@ module.exports = function(app, passport, manager, hashids) {
                         if (req.user.emails) {
                             tempemail = req.user.emails[0].value;
                         } else {
-                            tempemail = "";
+                            tempemail = " ";
                         }
 
                         // write to DB
