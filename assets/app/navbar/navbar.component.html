@@ -20,15 +20,15 @@
                     <div *ngIf="loggedin; then fullbar else login"></div>
                     <ng-template #fullbar>
                         <li class="nav-item">
-                            <a class="navlinks nav-link" routerLink="/createForm" title="Create Form">
-                                Create Form
+                            <a class="navlinks nav-link" routerLink="/createForm" title="Ask questions">
+                                Ask questions
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">
-                                Create Event
-                            </a>
-                        </li>
+                        <!--<li class="nav-item">-->
+                            <!--<a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">-->
+                                <!--Create Event-->
+                            <!--</a>-->
+                        <!--</li>-->
                         <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                             <div *ngIf="pictype" class="d-inline-block">
                                 <div *ngIf="pictype == 'fb'">
