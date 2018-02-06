@@ -167,11 +167,12 @@ module.exports = function(app, passport, manager, hashids) {
                             templocation = req.user.location;
                         }
 
+                        //req.user.emails[0].value
                         UserModel.create({name: {
                             first: req.user.name.givenName,
                             last: req.user.name.familyName,
                             middle: req.user.name.middleName},
-                            email: req.user.emails[0].value,
+                            email: req.user.email,
                             searchname: req.user.name.givenName+" "+req.user.name.familyName,
                             location: templocation,
                             gender: req.user.gender,
