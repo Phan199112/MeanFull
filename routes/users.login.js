@@ -161,18 +161,28 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         // new fb user
                         var templocation;
+                        var tempemail;
+
+                        // extract location
                         if (req.user.location == null) {
                             templocation = {city: "", state: "", country: ""};
                         } else {
                             templocation = req.user.location;
                         }
 
-                        //req.user.emails[0].value
+                        // extract email
+                        if (req.user.emails) {
+                            tempemail = req.user.emails[0].value;
+                        } else {
+                            tempemail = "";
+                        }
+
+                        // write to DB
                         UserModel.create({name: {
                             first: req.user.name.givenName,
                             last: req.user.name.familyName,
                             middle: req.user.name.middleName},
-                            email: req.user.email,
+                            email: tempemail,
                             searchname: req.user.name.givenName+" "+req.user.name.familyName,
                             location: templocation,
                             gender: req.user.gender,
