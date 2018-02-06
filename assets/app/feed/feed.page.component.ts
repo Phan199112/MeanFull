@@ -13,6 +13,7 @@ export class FeedPageComponent implements OnInit  {
     loggedin: boolean = false;
     emailconfirmfailed: boolean = false;
     emailconfirmok: boolean = false;
+    completedform: boolean = false;
 
     constructor(private http: Http, private userService: UserService, private route: ActivatedRoute) {
     }
@@ -32,6 +33,8 @@ export class FeedPageComponent implements OnInit  {
                 } else if (params.message == "emailconfirmok") {
                     this.emailconfirmok = true;
 
+                } else if (params.message == "completedform") {
+                    this.completedform = true;
                 }
             }
         });

@@ -12,6 +12,9 @@
         <div class="card" *ngIf="emailconfirmok">
             <div class="card-body btn-success">Your email address was confirmed! Many thanks for joining Questionsly!</div>
         </div>
+        <div class="card" *ngIf="completedform">
+            <div class="card-body btn-success">Many thanks for completing a form on Questionsly!</div>
+        </div>
         <feed-list [user]="null"></feed-list>
     </div>
     <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">

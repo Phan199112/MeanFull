@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from "@angular/http";
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'take-form',
@@ -24,7 +24,7 @@ export class TakeFormComponent implements OnInit {
     pictype: string;
     timestamp: string;
 
-    constructor(private http: Http, private route: ActivatedRoute) {
+    constructor(private http: Http, private route: ActivatedRoute, private router: Router) {
     }
 
     ngOnInit() {
@@ -81,6 +81,8 @@ export class TakeFormComponent implements OnInit {
         this.http.post('/forms/answers', data).toPromise()
           .then(response => { 
               this.submitted = true;
+              // redirect
+              this.router.navigate(['/'], { queryParams: { message: 'completedform' } });
           })
           .catch(error => alert("Error posting survey: " + error));  
     }
