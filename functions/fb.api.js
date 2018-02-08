@@ -25,6 +25,7 @@ exports.FBLocation = function FBLocation(locid) {
                     console.log(!res ? 'error occurred' : res.error);
                     return null;
                 } else {
+                    console.log(res);
                     return res.location;
                 }
             });
