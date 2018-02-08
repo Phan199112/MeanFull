@@ -5,6 +5,7 @@ var log = require("../functions/logs");
 var randommod = require("../functions/random");
 var usersfunctions = require('../functions/users');
 var emailfunctions 	= require("../functions/email");
+var fbfunctions 	= require("../functions/fb.api");
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -161,14 +162,19 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         // new fb user
                         var templocation;
+                        var templocationfb;
                         var tempemail;
 
                         // extract location
-                        if (req.user.location == null) {
+                        if (req.user._json.location == null) {
                             templocation = {city: "", state: "", country: ""};
                         } else {
-                            templocation = req.user.location;
+                            templocationfb = fbfunctions.FBLocation(req.user._json.location.id);
+                            templocation = {city: templocationfb.city,
+                                state: templocationfb.state,
+                                country: templocationfb.country};
                         }
+
 
                         // extract email
                         if (req.user.emails) {
