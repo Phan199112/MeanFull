@@ -162,23 +162,28 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         // new fb user
                         var templocation;
-                        var templocationfb;
                         var tempemail;
 
                         // extract location
                         if (req.user._json.location == null) {
                             templocation = {city: "", state: "", country: ""};
-                        } else {
-                            templocationfb = fbfunctions.FBLocation(req.user._json.location.id);
-                            console.log(templocationfb);
-                            if (templocationfb !== null) {
-                                templocation = {city: templocationfb.city,
-                                    state: templocationfb.state,
-                                    country: templocationfb.country};
-                            } else {
-                                console.log('seems like this failed');
-                            }
 
+                        } else {
+                            // parse the information
+                            fbfunctions.FBLocation(req.user._json.location.id)
+                                .then(function(templocationfb) {
+                                    if (templocationfb !== null) {
+                                        templocation = {city: templocationfb.city,
+                                            state: templocationfb.state,
+                                            country: templocationfb.country};
+                                    } else {
+                                        console.log('seems like this failed');
+                                        templocation = {city: "", state: "", country: ""};
+                                    }
+                                })
+                                .catch(function() {
+                                    templocation = {city: "", state: "", country: ""};
+                                });
                         }
 
 
