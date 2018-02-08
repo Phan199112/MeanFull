@@ -63,39 +63,35 @@
         <mini-show-form class= "maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired" [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
     </div>
     <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
-        <div class="container" id="analysisContainer" *ngIf="form.showdata">
-            <h4 (click)="expandDataForm()">Delve into the data</h4>
-            <div *ngIf="expandedData">
-                <form [formGroup]="dataselectionform">
-                    Age group:
-                    <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
-                    <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
-                    <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
-                    <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
-                    <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
-                    <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
-                    <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
-                    Location:
-                    <div formArrayName="alllocations">
-                        <div *ngFor="let loc of locations; let i = index">
-                            <label>
+        <div class="container" id="analysisContainer">
+            <form [formGroup]="dataselectionform">
+                Age group:
+                <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
+                <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
+                <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
+                <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
+                <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
+                <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
+                <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
+                Location:
+                <div formArrayName="alllocations">
+                    <div *ngFor="let loc of locations; let i = index">
+                        <label>
                                       <span formGroupName="{{i}}">
                                         <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
                                       </span>
-                            </label>
-                        </div>
+                        </label>
                     </div>
-                    <div *ngIf="otherloc">
-                        <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
-                    </div>
-                </form>
+                </div>
+                <div *ngIf="otherloc">
+                    <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
+                </div>
+            </form>
 
-                <button
-                        class="d-flex justify-content-center btn btn-outline-primary mouseChangeToHand"
-                        (click)="expandShowtable()">
-                    View data as table
-                </button>
-            </div>
+            <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                Reset graphs
+            </button>
+
         </div>
     </div>
     <div *ngIf="form.answered && !form.contracted && form.admin && form.typeevent">
@@ -103,8 +99,7 @@
     </div>
     <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
         <div class="container" id="chatContainer">
-            <h4 (click)="expandDiscussion()">Discussion</h4>
-            <discussion-list [id]="form.id" *ngIf="expandedDiscussion"></discussion-list>
+            <discussion-list [id]="form.id"></discussion-list>
         </div>
     </div>
     <div class="row" *ngIf="form.contracted">

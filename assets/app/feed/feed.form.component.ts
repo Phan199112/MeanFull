@@ -22,8 +22,6 @@ export class FeedFormComponent implements OnInit {
     showdiscussion: boolean = false;
     hide: boolean = false;
     loggedin: boolean = false;
-    expandedData: boolean = false;
-    expandedDiscussion: boolean = false;
     count: string = null;
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
     @ViewChild('shareModal') shareModal;
@@ -138,6 +136,8 @@ export class FeedFormComponent implements OnInit {
                     if (this.form.typeevent) {
                         this.retrieveEventData();
                     }
+
+                    this.retrieveEventDataTotals();
 
                     this.form.setShowData(true);
 
@@ -417,67 +417,47 @@ export class FeedFormComponent implements OnInit {
             .then(res => {
                 if (res.json().status == '1') {
                     this.form.eventdatatotals = res.json().totals;
-                    this.form.showtable = !this.form.showtable;
+                    this.form.viewTablesbool = true;
                 }
             });
     }
 
-    expandDiscussion() {
-        // toggle the box
-        this.expandedDiscussion = !this.expandedDiscussion;
-    }
-
-    expandShowtable() {
-        if (!this.form.showtable) {
-            this.retrieveEventDataTotals();
-        } else {
-            this.form.showtable = !this.form.showtable;
-        }
-    }
-
-    expandDataForm() {
+    ResetDataForm() {
         //
         this.form.viewGraphs(false);
 
-        // toggle the box
-        this.expandedData = !this.expandedData;
-
         // alter the graph type to split by gender
-        if (this.expandedData === true) {
-            this.http.post('/forms/alldata', {link: this.form.id, all: true})
-                .toPromise()
-                .then(response => {
-                    var responsedata = response.json().data;
-                    var responsestatus = response.json().status;
+        this.http.post('/forms/alldata', {link: this.form.id, all: true})
+            .toPromise()
+            .then(response => {
+                var responsedata = response.json().data;
+                var responsestatus = response.json().status;
 
-                    // set parameters for visualising the results
-                    if (responsestatus == 2) {
-                        // make sure the plot is given the data
-                        this.form.setAnswered(true);
-                        this.form.setPlotData(responsedata);
-                        this.submitted = true;
-                        this.showsubmit = false;
-                        this.form.viewGraphs(true);
+                // set parameters for visualising the results
+                if (responsestatus == 2) {
+                    // make sure the plot is given the data
+                    this.form.setAnswered(true);
+                    this.form.setPlotData(responsedata);
+                    this.submitted = true;
+                    this.showsubmit = false;
+                    this.form.viewGraphs(true);
 
-                    } else if (responsestatus == 1) {
-                        this.form.setAnswered(false);
-                        this.showsubmit = false;
-
-                    } else if (responsestatus == 0) {
-                        this.form.setAnswered(false);
-                        this.showsubmit = true;
-
-                    } else {
-                        this.form.setAnswered(false);
-                        this.showsubmit = false;
-                    }
-                })
-                .catch(error => {
+                } else if (responsestatus == 1) {
                     this.form.setAnswered(false);
-                });
-        } else {
-            this.isFilledIn();
-        }
+                    this.showsubmit = false;
+
+                } else if (responsestatus == 0) {
+                    this.form.setAnswered(false);
+                    this.showsubmit = true;
+
+                } else {
+                    this.form.setAnswered(false);
+                    this.showsubmit = false;
+                }
+            })
+            .catch(error => {
+                this.form.setAnswered(false);
+            });
     }
 
 }

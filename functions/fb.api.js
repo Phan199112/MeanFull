@@ -3,6 +3,7 @@ var FB = require('fb');
 FB.options({appId: '669514259923041', appSecret: '5c8625d2b8d7a5edd938725ab0490e86'});
 
 exports.FBLocation = function FBLocation(locid) {
+    console.log('location id '+locid);
     // get location info
     new Promise(function(resolve, reject) {
         FB.api('oauth/access_token', {
@@ -30,6 +31,9 @@ exports.FBLocation = function FBLocation(locid) {
                 }
             });
 
+        })
+        .catch(function() {
+            return null;
         });
 
 };

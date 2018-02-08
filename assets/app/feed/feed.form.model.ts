@@ -14,7 +14,8 @@ export class FeedForm {
     pic: string;
     pictype: string;
     contracted: boolean = true;
-    viewGraphsbool: boolean;
+    viewGraphsbool: boolean = false;
+    viewTablesbool: boolean = false;
     hashtags: string[];
     showdata: boolean;
     expired: boolean;
@@ -26,7 +27,6 @@ export class FeedForm {
     found: boolean;
     highlight: boolean;
     loginRequired: boolean;
-    showtable: boolean = false;
     eventdatatotals: any[];
     eventplot: boolean = false;
 
