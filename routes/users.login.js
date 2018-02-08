@@ -159,65 +159,79 @@ module.exports = function(app, passport, manager, hashids) {
                         log.writeLog(person._id, 'fb signin - existing user', req.ip);
                         usersfunctions.updateUserTags(req.session.userid);
                         res.redirect('/');
+
                     } else {
                         // new fb user
                         var templocation;
                         var tempemail;
 
-                        // extract location
-                        if (req.user._json.location == null) {
-                            templocation = {city: "", state: "", country: ""};
-
-                        } else {
-                            // parse the information
-                            fbfunctions.FBLocation(req.user._json.location.id)
-                                .then(function(templocationfb) {
-                                    console.log('fb return '+templocationfb);
-                                    if (templocationfb !== null) {
-                                        templocation = {city: templocationfb.city,
-                                            state: templocationfb.state,
-                                            country: templocationfb.country};
-                                    } else {
-                                        console.log('seems like this failed');
-                                        templocation = {city: "", state: "", country: ""};
-                                    }
-                                })
-                                .catch(function() {
-                                    templocation = {city: "", state: "", country: ""};
-                                });
-                        }
-
-
-                        // extract email
-                        if (req.user.emails) {
-                            tempemail = req.user.emails[0].value;
-                        } else {
-                            tempemail = " ";
-                        }
-
-                        // write to DB
-                        UserModel.create({name: {
-                            first: req.user.name.givenName,
-                            last: req.user.name.familyName,
-                            middle: req.user.name.middleName},
-                            email: tempemail,
-                            searchname: req.user.name.givenName+" "+req.user.name.familyName,
-                            location: templocation,
-                            gender: req.user.gender,
-                            dob: {fbdate: req.user.dob},
-                            pic: null,
-                            facebookID: req.user.id,
-                            facebookProfile: req.user,
-                            notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true},
-                            public: true}, function(err, k) {
-                            if (err) {
-                                console.log("error in writing new user"+err);
+                        // run this as a promise:
+                        return new Promise(function(resolve, reject) {
+                            // extract email
+                            if (req.user.emails) {
+                                tempemail = req.user.emails[0].value;
                             } else {
-                                req.session.userid = k._id;
-                                log.writeLog(k._id, 'fb signin - new user', req.ip);
-                                res.redirect('/');
+                                tempemail = " ";
                             }
-                        });
+
+                            // location
+                            if (req.user._json.location == null) {
+                                templocation = {city: "", state: "", country: ""};
+                                resolve();
+
+                            } else {
+                                // parse the information
+                                fbfunctions.FBLocation(req.user._json.location.id)
+                                    .then(function(templocationfb) {
+                                        console.log('fb return '+templocationfb);
+                                        if (templocationfb !== null) {
+                                            templocation = {city: templocationfb.city,
+                                                state: templocationfb.state,
+                                                country: templocationfb.country};
+                                        } else {
+                                            console.log('seems like this failed');
+                                            templocation = {city: "", state: "", country: ""};
+                                        }
+                                        resolve();
+                                    })
+                                    .catch(function() {
+                                        templocation = {city: "", state: "", country: ""};
+                                        resolve();
+                                    });
+                            }
+
+                        })
+                            .then(function() {
+
+                                // write to DB
+                                UserModel.create({name: {
+                                        first: req.user.name.givenName,
+                                        last: req.user.name.familyName,
+                                        middle: req.user.name.middleName},
+                                    email: tempemail,
+                                    searchname: req.user.name.givenName+" "+req.user.name.familyName,
+                                    location: templocation,
+                                    gender: req.user.gender,
+                                    dob: {fbdate: req.user.dob},
+                                    pic: null,
+                                    facebookID: req.user.id,
+                                    facebookProfile: req.user,
+                                    notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true},
+                                    public: true}, function(err, k) {
+                                    if (err) {
+                                        console.log("error in writing new user"+err);
+                                    } else {
+                                        req.session.userid = k._id;
+                                        log.writeLog(k._id, 'fb signin - new user', req.ip);
+                                        res.redirect('/');
+                                    }
+                                });
+
+                            })
+                            .catch(function() {
+                                res.redirect('/');
+                            });
+
                     }
                 }
             });
