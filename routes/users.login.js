@@ -183,13 +183,11 @@ module.exports = function(app, passport, manager, hashids) {
                                 // parse the information
                                 fbfunctions.FBLocation(req.user._json.location.id)
                                     .then(function(templocationfb) {
-                                        console.log('fb return '+templocationfb);
                                         if (templocationfb !== null) {
                                             templocation = {city: templocationfb.city,
                                                 state: templocationfb.state,
                                                 country: templocationfb.country};
                                         } else {
-                                            console.log('seems like this failed');
                                             templocation = {city: "", state: "", country: ""};
                                         }
                                         resolve();
@@ -218,9 +216,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     facebookProfile: req.user,
                                     notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true},
                                     public: true}, function(err, k) {
-                                    if (err) {
-                                        console.log("error in writing new user"+err);
-                                    } else {
+                                    if (!err) {
                                         req.session.userid = k._id;
                                         log.writeLog(k._id, 'fb signin - new user', req.ip);
                                         res.redirect('/');
