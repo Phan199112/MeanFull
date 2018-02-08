@@ -172,6 +172,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // parse the information
                             fbfunctions.FBLocation(req.user._json.location.id)
                                 .then(function(templocationfb) {
+                                    console.log('fb return '+templocationfb);
                                     if (templocationfb !== null) {
                                         templocation = {city: templocationfb.city,
                                             state: templocationfb.state,
