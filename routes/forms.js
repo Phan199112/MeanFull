@@ -1067,7 +1067,7 @@ module.exports = function(app, passport, manager, hashids) {
                             if (err) {
                                 reject(err);
                             } else {
-                                if (k.location !== null) {
+                                if (k !== null) {
                                     authorprofiles.push(k.location.city+", "+k.location.state+", "+k.location.country);
                                 }
                                 resolve();
