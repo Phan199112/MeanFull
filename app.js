@@ -45,11 +45,11 @@ app.use(passport.session());
 //Set up default mongoose connection
 
 // FOR DEBUG AND TESTING
-//var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
+var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
 
 // mongodb (this is the live version with real data, if you'd like to do tests us the mlab above)
 // PRODUCTION LEVEL DB
-var mongoDB = 'mongodb://questionslyadmindb:ZWWZ4DhPrNgzIR8T@questionslydb1-shard-00-00-hv0tz.mongodb.net:27017,questionslydb1-shard-00-01-hv0tz.mongodb.net:27017,questionslydb1-shard-00-02-hv0tz.mongodb.net:27017/questionslydb1?ssl=true&replicaSet=questionslydb1-shard-0&authSource=admin';
+//var mongoDB = 'mongodb://questionslyadmindb:ZWWZ4DhPrNgzIR8T@questionslydb1-shard-00-00-hv0tz.mongodb.net:27017,questionslydb1-shard-00-01-hv0tz.mongodb.net:27017,questionslydb1-shard-00-02-hv0tz.mongodb.net:27017/questionslydb1?ssl=true&replicaSet=questionslydb1-shard-0&authSource=admin';
 
 mongoose.connect(mongoDB, {
     useMongoClient: true

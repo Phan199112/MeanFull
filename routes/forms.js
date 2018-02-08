@@ -1067,7 +1067,9 @@ module.exports = function(app, passport, manager, hashids) {
                             if (err) {
                                 reject(err);
                             } else {
-                                authorprofiles.push(k.location.city+", "+k.location.state+", "+k.location.country);
+                                if (k.location !== null) {
+                                    authorprofiles.push(k.location.city+", "+k.location.state+", "+k.location.country);
+                                }
                                 resolve();
                             }
                         });
