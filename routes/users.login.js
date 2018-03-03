@@ -125,6 +125,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         if (req.user != null) {
             returnobj = {firstname: req.user.name.first,
+                    lastname: req.user.name.last,
                     dbid: hashids.encodeHex(req.session.userid),
                     picdata: req.user.pic, gender: req.user.gender,
                     fbid:req.user.fbid, fb: req.user.fb};

@@ -1,41 +1,78 @@
-<div class="container-fluid formContainer" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {'border': '1px solid #0088cc'}">
-    <div class="row">
-        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-2" id="authorPicture">
-            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
-                <div *ngIf="form.pictype == 'fb'">
-                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=80&height=80" height="80" width="80">
-                </div>
-                <div *ngIf="form.pictype == 'local'">
-                    <img [src]="form.pic" width="80" height="80"/>
-                </div>
-                <div *ngIf="form.pictype == 'default'">
-                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="80" width="80"/>
-                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="80" width="80"/>
-                </div>
-                <div *ngIf="form.pictype == 'anonymous'">
-                    <img src="/images/question.jpg" height="80" width="80"/>
-                </div>
-            </a>
-        </div>
-        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-10 p-0" id="authorDetails">
-            <div class="row">
-                <div class="col-9 col-sm-9 col-md-10 col-lg-11" style="margin-bottom: -8px">
-                    <p><a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">{{form.author}}</a> </p>
-                    <p>{{form.timestamp | date}}</p>
-                </div>
-            </div>
-            <h3 *ngIf="form.typeevent">{{form.title}} (EVENT)</h3>
-            <h3 *ngIf="!form.typeevent">{{form.title}}</h3>
-        </div>
+<div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
+    <div class="bg">
+    <div class="userImagePos">
+        <div style="display: relative; z-index: 2">
 
+
+
+<svg class="namebanner" width="192px" height="20px" viewBox="0 0 192 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <polygon id="path-1" points="0 0 192 0 182.19078 10 192 20 0 20"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-156.000000, -129.000000)">
+            <g id="Group-2" transform="translate(114.000000, 104.000000)">
+                <g id="Group" transform="translate(42.000000, 25.000000)">
+                    <g id="Rectangle-2">
+                        <use fill="#a0ba82" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <path stroke="#417505" stroke-width="2" d="M1,1 L1,19 L189.61829,19 L180.789991,10 L189.61829,1 L1,1 Z"></path>
+                    </g>
+                    <text id="Fernando-Funes" font-family="Ralway, Avenir-Book, Avenir" font-size="13" font-weight="normal" fill="#2B2B2B">
+                        <tspan x="57.0375" y="14">{{form.author}}</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+
+        <!-- Long form to fit location as well -->
+
+        <!-- <svg class="namebanner" width="437px" height="20px" viewBox="0 0 437 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <polygon id="path-1" points="0 0 437 0 414.673806 10 437 20 0 20"></polygon>
+            </defs>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Artboard" transform="translate(-156.000000, -129.000000)">
+                    <g id="Group-2" transform="translate(114.000000, 104.000000)">
+                        <g id="Group" transform="translate(42.000000, 25.000000)">
+                            <g id="Group-3">
+                                <g id="Rectangle-2">
+                                    <use fill="#a0ba82" fill-rule="evenodd" xlink:href="#path-1"></use>
+                                    <path stroke="#417505" stroke-width="2" d="M1,1 L1,19 L432.321038,19 L412.227464,10 L432.321038,1 L1,1 Z"></path>
+                                </g>
+                                <text id="Fernando-Funes" font-family="Quicksand, Dosis, Avenir-Book, Avenir" font-size="13" font-weight="normal" fill="#2B2B2B">
+                                    <tspan x="134.0375" y="14">{{form.author}}</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </svg> -->
+
+        <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
+            <div *ngIf="form.pictype == 'fb'">
+                <img src="https://graph.facebook.com/{{form.pic}}/picture?width=100&height=100" height="100" width="100" class="userImage" />
+            </div>
+            <div *ngIf="form.pictype == 'local'">
+                <img [src]="form.pic" width="100" height="100"  class="userImage" />
+            </div>
+            <div *ngIf="form.pictype == 'default'">
+                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="100" width="100"  class="userImage"/>
+                <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="100" width="100"  class="userImage"  />
+            </div>
+            <div *ngIf="form.pictype == 'anonymous'">
+                <img src="/images/question.jpg" height="100" width="100" class="userImage"/>
+            </div>
+        </a>
+    </div>
+    </div>
+
+    <div class="share">
         <div class="col p-0" *ngIf="loggedin">
             <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
-                <a
-                        class="navlinks nav-link custom-dropdown-toggle"
-                        id="form-menu"
-                        ngbDropdownToggle
-                        aria-haspopup="true"
-                        aria-expanded="false">
+                <a class="navlinks nav-link custom-dropdown-toggle" id="form-menu" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                 </a>
                 <div ngbDropdownMenu aria-labelledby="form-menu">
@@ -49,59 +86,61 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <p #formsDescription>{{form.description}}</p>
-            <p *ngIf="count != null">This form was answered {{count}} times.</p>
+    <div class="flex" style="margin-top:0; padding-top: 0;">
+        <h3 *ngIf="form.questions.length === 1" class="userTitle">{{form.questions[0].body}}</h3>
+        <h3 *ngIf="form.questions.length !== 1" class="userTitle">{{form.title}}</h3>
+    </div>
+    <div class="responseBox">
+        <div class="row">
+            <mini-show-form class="maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
+                [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
         </div>
     </div>
-    <div class="row mx-auto">
-        <tag-banner-list [data]="form.hashtags"></tag-banner-list>
-    </div>
-    <hr>
-    <div class="row">
-        <mini-show-form class= "maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired" [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
-    </div>
-    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
-        <div class="container" id="analysisContainer">
-            <form [formGroup]="dataselectionform">
-                Age group:
-                <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
-                <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
-                <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
-                <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
-                <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
-                <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
-                <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
-                Location:
-                <div formArrayName="alllocations">
-                    <div *ngFor="let loc of locations; let i = index">
-                        <label>
-                                      <span formGroupName="{{i}}">
-                                        <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
-                                      </span>
-                        </label>
+        <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
+            <div class="container" id="analysisContainer">
+                <form [formGroup]="dataselectionform">
+                    <p class="filterCategory">Age Group</p>
+                    <div class="filterOptions">
+                    <label>
+                        <input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
+                    <label>
+                        <input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
+                    <label>
+                        <input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
+                    <label>
+                        <input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
+                    <label>
+                        <input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
+                    <label>
+                        <input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
+                    <label>
+                        <input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label>
                     </div>
-                </div>
-                <div *ngIf="otherloc">
-                    <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
-                </div>
-            </form>
+     
+                    <p class="filterCategory">Location</p>
+                    <div formArrayName="alllocations" class="filterOptions">
+                        <div *ngFor="let loc of locations; let i = index">
+                            <label>
+                                <span formGroupName="{{i}}">
+                                    <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
+                                </span>
+                            </label>
+                        </div>
+                    </div>
 
-            <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
-                Reset graphs
-            </button>
-
+                    <!-- What value does "other" offer? -->
+                    <!-- <div *ngIf="otherloc" class="filterOptions">
+                        <label>
+                            <input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
+                    </div> -->
+                </form>
+        
+                <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                    Reset graphs
+                </button>
+        
+            </div>
         </div>
-    </div>
-    <div *ngIf="form.answered && !form.contracted && form.admin && form.typeevent">
-        <results-table-component [data]="eventdatatable" *ngIf="form.eventplot"></results-table-component>
-    </div>
-    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
-        <div class="container" id="chatContainer">
-            <discussion-list [id]="form.id"></discussion-list>
-        </div>
-    </div>
     <div class="row" *ngIf="form.contracted">
         <div class="col text-center">
             <button (click)="expand()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
@@ -109,12 +148,18 @@
             </button>
         </div>
     </div>
-</div>
-<div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
-    <h4>Oops this form could not be found!</h4>
+    <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
+        <h4>Oops this form could not be found!</h4>
+    </div>
+    <div *ngIf="form.hashtags" class="line"></div>
+    <div class="hashtag">
+        <!-- <div class="row mx-auto"> -->
+        <tag-banner-list [data]="form.hashtags"></tag-banner-list>
+        <!-- </div> -->
+    </div>
+    </div>
 </div>
 <confirmation-popup></confirmation-popup>
-
 <ng-template #shareModal let-c="close" let-d="dismiss">
     <!--<div class="modal-header" [formGroup]="inviteForm">
         <h4 class="modal-title">Invite your friends to this community</h4>
@@ -137,9 +182,9 @@
             </div>
             <div>
                 <h6>Link</h6>
-                You can use this link to send the surveys to anybody you'd like.
-                Whilst anybody can see surveys, signup is required to submit answers.
-                <a href="https://www.questionsly.com/takeForm/{{form.id}}" target="_blank" >https://www.questionsly.com/takeForm/{{form.id}}</a>
+                You can use this link to send the surveys to anybody you'd like. Whilst anybody can see surveys, signup is required to submit
+                answers.
+                <a href="https://www.questionsly.com/takeForm/{{form.id}}" target="_blank">https://www.questionsly.com/takeForm/{{form.id}}</a>
             </div>
         </div>
     </div>

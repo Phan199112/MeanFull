@@ -62,6 +62,9 @@ import {ResourceListComponent} from './resourceList/resourceList.component';
 import {LoginPopupComponent} from './loginPopup/loginPopup.component';
 import {ConfirmationPopupComponent} from './confirmationPopup/confirmationPopup.component';
 import {SearchPageComponent} from "./search/search.page.component";
+import { UserFloat } from "./sidebar/user.float.component";
+import { Sidebar } from "./sidebar/sidebar.component";
+
 
 import { ShareService } from "./share.service";
 
@@ -111,7 +114,9 @@ import { ShareService } from "./share.service";
         ResourceListComponent,
         LoginPopupComponent,
         ConfirmationPopupComponent,
-        SearchPageComponent
+        SearchPageComponent,
+        UserFloat,
+        Sidebar
     ],
     imports: [
         // vendor //

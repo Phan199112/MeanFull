@@ -3,6 +3,18 @@ $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
 
+
+.formChoices {
+  font-weight: 700;
+  margin-left: 10%;
+
+  & label {
+    font-size: 1.4rem;
+    font-family: Raleway;
+    padding-left: 8px;
+  }
+}
+
 #miniFormQuestionBox {
   margin-bottom: 30px;
 }
@@ -55,6 +67,8 @@ $navBarColor:  #0088cc;
   margin-top: 20px;
   margin-bottom:20px;
 }
+
+
 
 .form-control input {
   vertical-align: middle;

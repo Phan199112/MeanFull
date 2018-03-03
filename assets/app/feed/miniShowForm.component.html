@@ -4,34 +4,42 @@
         <div  id="miniFormQuestionBox" *ngFor="let question of data.questions; let i = index">
             <div class="row">
                 <div *ngIf="(data.answered && data.showdata);then withanswer else formonly"></div>
+
                 <ng-template #withanswer>
+
+                    <!-- LHS -->
                     <div class="col-md-6">
                         <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                            <label class="lead">{{question.number}}. {{question.body}}<span *ngIf="question.required">*</span></label>
-                            <div *ngIf="question.pic" class="form-group question-pic">
+                            <label *ngIf="data.questions.length !== 1" class="lead">{{question.number}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                            
+                            
+
+                            <!-- Not showing image anymore right? -->
+                            <!-- <div *ngIf="question.pic" class="form-group question-pic">
                                 <img [src]="question.pic"/>
-                            </div>
+                            </div> -->
+
                             <div  *ngIf="question.options">
                                 <div *ngIf="question.kind == 'Radio'">
-                                    <div *ngFor="let option of question.options" class="form-control">
+                                    <div *ngFor="let option of question.options" class="formChoices">
                                         <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio"/>
-                                        <label>{{option.label}}. {{option.body}}</label>
+                                        <label>{{option.body}}</label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
-                                    <div *ngFor="let option of question.options" class="form-control">
+                                    <div *ngFor="let option of question.options" class="formChoices">
                                         <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox"/>
-                                        <label>{{option.label}}. {{option.body}}</label>
+                                        <label>{{option.body}}</label>
                                     </div>
                                 </div>
-                                <select class="form-control" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
-                                    <option *ngFor="let option of question.options" [value]="option.label">{{option.label}}. {{option.body}}</option>
+                                <select class="formChoices" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
+                                    <option *ngFor="let option of question.options" [value]="option.label">{{option.body}}</option>
                                 </select>
                                 <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
                                     <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
-                                        <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="form-control">
+                                        <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="formChoices">
                                             <span class="rank">{{j + 1}}</span>
-                                            <label>{{option.label}}. {{option.body}}</label>
+                                            <label>{{option.body}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -65,46 +73,54 @@
                                 </div>
                                 <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>
                             </div>
-                            <input (click)="loginPopup.check(data.loginRequired)" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
-                            <textarea (click)="loginPopup.check(data.loginRequired)" class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
+
+
+                            <!-- <input (click)="loginPopup.check(data.loginRequired)" type="text" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                            <textarea (click)="loginPopup.check(data.loginRequired)" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                             <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                 Option is required
-                            </div>
+                            </div> -->
+
+
                         </div>
                     </div>
+
+                    <!-- RHS -->
                     <div class="col-md-6">
                         <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [questionkind]="question.kind" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-chartjs>
-                        <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.viewTablesbool"></miniresults-table-component>
+                        <!-- <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.viewTablesbool"></miniresults-table-component> -->
                     </div>
                 </ng-template>
+
+
                 <ng-template #formonly>
                     <div class="col-md-12">
                         <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                            <label  class="lead">{{question.number}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                            <label  *ngIf="data.questions.length !== 1" class="lead">{{question.number}}. {{question.body}}<span *ngIf="question.required">*</span></label>
                             <div *ngIf="question.pic" class="form-group question-pic">
                                 <img [src]="question.pic"/>
                             </div>
                             <div  *ngIf="question.options">
                                 <div *ngIf="question.kind == 'Radio'">
-                                    <div *ngFor="let option of question.options" class="form-control">
+                                    <div *ngFor="let option of question.options" class="formChoices">
                                         <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio"/>
-                                        <label>{{option.label}}. {{option.body}}</label>
+                                        <label>{{option.body}}</label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
-                                    <div *ngFor="let option of question.options" class="form-control">
+                                    <div *ngFor="let option of question.options" class="formChoices">
                                         <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox"/>
-                                        <label>{{option.label}}. {{option.body}}</label>
+                                        <label>{{option.body}}</label>
                                     </div>
                                 </div>
-                                <select class="form-control" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
-                                    <option *ngFor="let option of question.options" [value]="option.label">{{option.label}}. {{option.body}}</option>
+                                <select class="formChoices" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
+                                    <option *ngFor="let option of question.options" [value]="option.label">{{option.body}}</option>
                                 </select>
                                 <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
                                     <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
-                                        <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="form-control">
+                                        <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="formChoices">
                                             <span class="rank">{{j + 1}}</span>
-                                            <label>{{option.label}}. {{option.body}}</label>
+                                            <label>{{option.body}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -138,8 +154,8 @@
                                 </div>
                                 <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>                                                            
                             </div>
-                            <input (click)="loginPopup.check(data.loginRequired)" type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
-                            <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
+                            <input (click)="loginPopup.check(data.loginRequired)" type="text" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                            <textarea class="formChoices" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                             <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                 Option is required
                             </div>

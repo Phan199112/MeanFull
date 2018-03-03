@@ -8,7 +8,7 @@ export class YourFormModel {
         this.title = object.title;
         this.id = object.id;
         if (object.shared == false) {
-            this.draft = '(draft)';
+            this.draft = '(Draft)';
         }
     }
 }

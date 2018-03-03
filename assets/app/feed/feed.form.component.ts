@@ -29,12 +29,14 @@ export class FeedFormComponent implements OnInit {
     // event data
     eventdatatable: any[];
 
-    otherloc: boolean = false;
+    otherloc: boolean = true;
     locations: Object[] = [];
     otherlocations: string[] = [];
     alllocationsarray: FormArray = new FormArray([]);
 
+
     dataselectionform = new FormGroup({
+        //set them to true to have filters true from the start
         agesmin17: new FormControl(true),
         ages17to23: new FormControl(true),
         ages24to29: new FormControl(true),
@@ -73,7 +75,7 @@ export class FeedFormComponent implements OnInit {
             this.form.eventplot = false;
             this.form.contracted = this.form.questions.length > 1;
 
-            // default ages
+            // default ages. Uncomment to have initial plot data include all ages
             for (let i=0; i < 120; i++) {
                 this.defaultages.push(i);
             }
@@ -133,6 +135,8 @@ export class FeedFormComponent implements OnInit {
                     this.showdiscussion = true;
                     this.count = response.json().count;
 
+                    console.log(this.form.plotdata);
+
                     if (this.form.typeevent) {
                         this.retrieveEventData();
                     }
@@ -185,6 +189,7 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.form.id;
+        // window.console.log("Data when submitted here: ", data)
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
               if (response.json().status == 1) {
@@ -209,8 +214,12 @@ export class FeedFormComponent implements OnInit {
                 var all = response.json().data;
                 for (let a of all) {
                     this.locations.push({name: a[0], count: a[1]});
+
+                    //comment out to add all locations to initial plot selection
                     this.plotselection.location.push(a[0]);
                     let fg = new FormGroup({});
+
+                    //change to true to have filters true from the start
                     fg.addControl(a[0], new FormControl(true));
                     this.alllocationsarray.push(fg);
                 }

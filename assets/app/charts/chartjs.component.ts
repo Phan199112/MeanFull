@@ -22,31 +22,35 @@ export class ChartJSComponent implements OnInit {
 
     ngOnInit() {
         if (this.dataLabels) {
+            window.console.log(this.dataLabels);
             // set the type
-            if (this.dataValues.length == 1) {
+            // if (this.dataValues.length == 1) {
+            this.dataValues.splice(1, this.dataValues.length -1);
                 this.ChartType = "doughnut";
                 this.ChartLegend = true;
 
-            } else {
-                // alter graph type depending on no groups
-                if (this.dataValues[0].data.length > 2) {
-                    this.ChartType = "radar";
-                    this.ChartLegend = false;
+            // } 
+            // else {
+            //     // alter graph type depending on no groups
+            //     if (this.dataValues[0].data.length > 2) {
+            //         this.ChartType = "radar";
+            //         this.ChartLegend = false;
 
-                } else {
-                    this.ChartType = "bar";
-                    this.ChartLegend = false;
-                }
+            //     } else {
+            //         this.ChartType = "bar";
+            //         this.ChartLegend = false;
+            //     }
 
-            }
+            // }
 
+
+            this.ChartLabels = this.dataLabels;
 
             // append (%) signs to the labels such that the interpretation of the hoover tooltip is clear
-            this.ChartLabels = this.dataLabels;
-            //
-            for (let i = 0; i < this.ChartLabels.length; i++) {
-                this.ChartLabels[i] = this.ChartLabels[i]+" (%)";
-            }
+
+            // for (let i = 0; i < this.ChartLabels.length; i++) {
+            //     this.ChartLabels[i] = this.ChartLabels[i]+" (%)";
+            // }
 
             // the data
             this.ChartData = this.dataValues;
@@ -89,7 +93,14 @@ export class ChartJSComponent implements OnInit {
                     }
                 };
 
-            }
+            } else if (this.ChartType == "pie" {
+                this.ChartOptions = {
+                    cutoutPercentage: 45,
+                    animation {
+                        animateScale: true
+                    }
+                }
+            })
 
 
         }

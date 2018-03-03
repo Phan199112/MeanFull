@@ -12,11 +12,15 @@
         </mj-column>
       </mj-section>
       <mj-section background-color="#f9f9f9" border-top="1px solid #dddddd" border-bottom="5px solid #1e824c">
-        <mj-column>
+        <mj-text font-size="18px" color="#3a3137" padding="0px 25px">
+          <p><a style="text-decoration:none; color:inherit; padding:0px 25px; " href="{{link}}">Good News {{author}}!</a></p>
+          <br/>
+        </mj-text>
+          <mj-image width="200" src={{rPic}} />
+
           <mj-text font-size="18px" color="#3a3137" padding="0px 25px">
-            <p><a style="text-decoration:none; color:inherit" href="{{link}}">Users are completing your form on Questionsly</a></p>
+            <p style="padding: 20px 25px"><span style="display:inline; color:#1E824C;">{{responder}}</span> has completed your survey on Questionsly!</p>
           </mj-text>
-        </mj-column>
       </mj-section>
     </mj-container>
   </mj-body>

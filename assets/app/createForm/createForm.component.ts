@@ -571,7 +571,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             if (this.kindsWithOptions.indexOf(data.questions[i].kind) !== -1) {
                 console.log(data.questions[i]);
                 for (let j=0; j < data.questions[i].options.length; j++) {
+
+                    // CHANGE HERE TO TAKE OUT PRECEEDING LETTER OPTION ****************
+                    
                     data.questions[i].options[j].label = this.alphabeth[j];
+                    // data.questions[i].options[j].label = data.questions[i].options[j].body;
+
                 }
             }
         }

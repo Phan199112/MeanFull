@@ -5,7 +5,13 @@
 // Importing the last version of bootstrap from npm module like this breaks the app's scrollbars
 // @import "~bootstrap/scss/bootstrap.scss";
 
+@import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500,700|Quicksand:400,500,700|Raleway:300,400,500,600,700');
+
 $navBarColor:  #1E824C;
+
+.background {
+  background: url("/images/qBackground.png") repeat;
+}
 
 // this is to avoid the base font size change done in public/stylesheets/style.css to affect lead classes
 /deep/.lead {
@@ -42,7 +48,7 @@ $navBarColor:  #1E824C;
 }
 
 /deep/ .main-container {
-  background-color: #fff;
+  background-color: transparent;
   overflow:auto;
   border-radius: 8px;
   margin-top: 30px;

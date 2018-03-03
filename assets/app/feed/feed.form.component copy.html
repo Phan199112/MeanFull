@@ -1,0 +1,243 @@
+    <div class="fBody">
+        <div class="userImagePos">
+            <img class="userImage" src="" />
+        </div>
+        <div class="share"> 
+
+        </div>
+        <h3 class="title">{{form.title}}</h3>
+
+        <div class="responseBox">
+            <!-- Question material -->
+        </div>
+        <div class="line"></div>
+        <div class="hashtag">
+            <!-- hashtags go here -->
+        </div>
+    </div>
+
+    <!-- /////////////////////////////////////////////////////////////////////// -->
+
+
+    <div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
+        <div class="userImagePos">
+            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" class="userImage">
+                <div *ngIf="form.pictype == 'fb'">
+                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=80&height=80" height="80" width="80">
+                </div>
+                <div *ngIf="form.pictype == 'local'">
+                    <img [src]="form.pic" width="80" height="80" />
+                </div>
+                <div *ngIf="form.pictype == 'default'">
+                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="80" width="80" />
+                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="80" width="80" />
+                </div>
+                <div *ngIf="form.pictype == 'anonymous'">
+                    <img src="/images/question.jpg" height="80" width="80" />
+                </div>
+            </a>
+        </div>
+        <div class="share">
+                    <div class="col p-0" *ngIf="loggedin">
+                        <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
+                            <a class="navlinks nav-link custom-dropdown-toggle" id="form-menu" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="form-menu">
+                                <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share</a>
+                                <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
+                                <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
+                                <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
+                                <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
+                                <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <h3 *ngIf="!form.typeevent" class="title">{{form.title}}</h3>
+        <div class="responseBox">
+            <!-- Question material -->
+        </div>
+        <div class="line"></div>
+        <div class="hashtag">
+            <!-- <!-- hashtags go<div class="row mx-auto"> -->
+                <tag-banner-list [data]="form.hashtags"></tag-banner-list>
+            <!-- </div> here --> -->
+        </div>
+    </div>
+
+
+
+    <!-- TOP TOP TOP TOP TOP TOP TOP TOP TOP TOP TOP TOP TOP  -->
+
+
+
+
+<div class="container-fluid formContainer" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {'border': '1px solid #0088cc'}">
+    <div class="row">
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-2" id="authorPicture">
+            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
+                <div *ngIf="form.pictype == 'fb'">
+                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=80&height=80" height="80" width="80">
+                </div>
+                <div *ngIf="form.pictype == 'local'">
+                    <img [src]="form.pic" width="80" height="80"/>
+                </div>
+                <div *ngIf="form.pictype == 'default'">
+                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="80" width="80"/>
+                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="80" width="80"/>
+                </div>
+                <div *ngIf="form.pictype == 'anonymous'">
+                    <img src="/images/question.jpg" height="80" width="80"/>
+                </div>
+            </a>
+        </div>
+
+
+<!-- done ^ -->
+
+
+        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-10 p-0" id="authorDetails">
+            <div class="row">
+                <div class="col-9 col-sm-9 col-md-10 col-lg-11" style="margin-bottom: -8px">
+                    <p><a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">{{form.author}}</a> </p>
+                    <p>{{form.timestamp | date}}</p>
+                </div>
+            </div>
+            <h3 *ngIf="form.typeevent">{{form.title}} (EVENT)</h3>
+            <h3 *ngIf="!form.typeevent">{{form.title}}</h3>
+        </div>
+
+        <!-- title and author ^  -->
+
+
+        <div class="col p-0" *ngIf="loggedin">
+            <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
+                <a
+                        class="navlinks nav-link custom-dropdown-toggle"
+                        id="form-menu"
+                        ngbDropdownToggle
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="form-menu">
+                    <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share</a>
+                    <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
+                    <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
+                    <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
+                    <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
+                    <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share ^  -->
+
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <p #formsDescription>{{form.description}}</p>
+            <p *ngIf="count != null">This form was answered {{count}} times.</p>
+        </div>
+    </div>
+    <!--    answer count -->
+
+
+    <div class="row mx-auto">
+        <tag-banner-list [data]="form.hashtags"></tag-banner-list>
+    </div>
+
+    <!-- hashtags -->
+
+    <hr>
+    <div class="row">
+        <mini-show-form class= "maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired" [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
+    </div>
+    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
+        <div class="container" id="analysisContainer">
+            <form [formGroup]="dataselectionform">
+                Age group:
+                <label><input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
+                <label><input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
+                <label><input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
+                <label><input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
+                <label><input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
+                <label><input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
+                <label><input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label><br>
+                Location:
+                <div formArrayName="alllocations">
+                    <div *ngFor="let loc of locations; let i = index">
+                        <label>
+                                      <span formGroupName="{{i}}">
+                                        <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
+                                      </span>
+                        </label>
+                    </div>
+                </div>
+                <div *ngIf="otherloc">
+                    <label><input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
+                </div>
+            </form>
+
+            <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                Reset graphs
+            </button>
+
+        </div>
+    </div>
+    <div *ngIf="form.answered && !form.contracted && form.admin && form.typeevent">
+        <results-table-component [data]="eventdatatable" *ngIf="form.eventplot"></results-table-component>
+    </div>
+    <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion">
+        <div class="container" id="chatContainer">
+            <discussion-list [id]="form.id"></discussion-list>
+        </div>
+    </div>
+    <div class="row" *ngIf="form.contracted">
+        <div class="col text-center">
+            <button (click)="expand()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
+                Expand to see more!
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
+    <h4>Oops this form could not be found!</h4>
+</div>
+<confirmation-popup></confirmation-popup>
+
+<ng-template #shareModal let-c="close" let-d="dismiss">
+    <!--<div class="modal-header" [formGroup]="inviteForm">
+        <h4 class="modal-title">Invite your friends to this community</h4>
+    </div>-->
+    <div class="modal-body container">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Share this survey</h3>
+
+            <div *ngIf="loggedin">
+                <h6>Community</h6>
+
+                <yourcomm-list [link]="form.id"></yourcomm-list>
+            </div>
+            <div>
+                <h6>Link</h6>
+                You can use this link to send the surveys to anybody you'd like.
+                Whilst anybody can see surveys, signup is required to submit answers.
+                <a href="https://www.questionsly.com/takeForm/{{form.id}}" target="_blank" >https://www.questionsly.com/takeForm/{{form.id}}</a>
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer" style="justify-content: center">
+        <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>
+    </div>-->
+</ng-template>

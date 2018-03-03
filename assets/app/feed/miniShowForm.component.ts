@@ -34,6 +34,7 @@ export class MiniShowFormComponent implements OnInit {
 
     ngOnInit() {
         this.createForm();
+        window.console.log("No answer yet: ", this.questionnaire);
     }
 
     createForm() {
@@ -43,7 +44,8 @@ export class MiniShowFormComponent implements OnInit {
         };
         //
         let questions = [];
-        for (let question of this.data.questions) {
+        let questionsx = this.data.questions.map(q => q.label = q.body);
+        for (let question of questionsx) {
             let groupObject = {
                 body: question.body,
                 label: question.label,
@@ -127,6 +129,7 @@ export class MiniShowFormComponent implements OnInit {
     submitIt() {
         if (this.submitted) return;
         let value = Object.assign({}, this.questionnaire.value);
+        window.console.log("Heerrreee: ", value);
         for (let question of value.questions) {
             if (question.kind === 'Checkboxes') {
                 question.answer = Object.keys(question.answer).filter(k => question.answer[k]);

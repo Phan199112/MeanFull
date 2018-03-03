@@ -6,7 +6,7 @@
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </span>
             </button>
-            <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
+            <a class="navbar-brand" href="#" routerLink="/"><i class="fa fa-group">&nbsp;</i>Questionsly</a>
             <form class="form-inline my-2 my-lg-0" [formGroup]="searchbox">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search"
                        formControlName="searchterm"
@@ -19,11 +19,11 @@
                 <ul class="navbar-nav ml-auto">
                     <div *ngIf="loggedin; then fullbar else login"></div>
                     <ng-template #fullbar>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="navlinks nav-link" routerLink="/createForm" title="Ask questions">
                                 Ask questions
                             </a>
-                        </li>
+                        </li> -->
                         <!--<li class="nav-item">-->
                             <!--<a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">-->
                                 <!--Create Event-->
@@ -65,11 +65,16 @@
                                     </div>
                                 </a>
                                 <div class="p-0 notifications" ngbDropdownMenu aria-labelledby="notifications">
-                                    <div *ngFor="let notification of notifications.reverse(); let i = index" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdown-item" [routerLink]="notificationLink(notification)" >
-                                        <div (click)="setAsSeen(notification)">
-                                            <img src="{{notificationPic(notification)}}"/>
-                                            <span>{{notificationMessage(notification)}}</span>
+                                    <div *ngFor="let notification of notifications.reverse(); let i = index">
+                                        <div *ngIf="i<5" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdown-item" [routerLink]="notificationLink(notification)" >
+                                            <div (click)="setAsSeen(notification)">
+                                                <img src="{{notificationPic(notification)}}"/>
+                                                <span>{{notificationMessage(notification)}}</span>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div *ngIf="notifications.length > 5" class="dropdown-item">
+                                        <span>+{{notifications.length - 6}} Notifications</span>
                                     </div>
                                 </div>
                             </li>

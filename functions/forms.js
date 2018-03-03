@@ -137,8 +137,8 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
             } else {
                 // counts
                 for (var key in counts) {
-                    summaryLabels.push(key);
-                    summaryValues.push(counts[key]);
+                    summaryLabels.push(key); //the answer
+                    summaryValues.push(counts[key]); //answer count
                 }
             }
 
@@ -159,7 +159,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
     var exportdata = [];
     // compute
     var firstanswer = x[0];
-    var noquestions = firstanswer.answers.length;
+    var noquestions = firstanswer.answers.length; //number of questions
 
     // loop through all questions
     for (var i = 0; i < noquestions; i++) {
@@ -187,6 +187,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
 
                         if (users[current.userid].location != null) {
                             if (users[current.userid].location.city !== "" && users[current.userid].location.state !== "" && users[current.userid].location.country !== "") {
+                                //add users location to temp location array
                                 templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
 
                             } else {
@@ -349,6 +350,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
             var summaryValues_undisclosed = [];
 
             for (var key in counts) {
+                // Trace labels --------
                 summaryLabels.push(key);
                 summaryValues.push(Math.round(((100/total)*counts[key])*100)/100);
 
@@ -370,8 +372,10 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
 
             }
 
-            //
-            exportdata.push([summaryLabels, [{data: summaryValues, label: "all"},{data: summaryValues_male, label: "male"},{data: summaryValues_female, label: "female"},{data: summaryValues_undisclosed, label: "undisclosed"}]]);
+            // CHECK THIS
+            // exportdata.push([summaryLabels, [{ data: summaryValues_male, label: "male" }, { data: summaryValues_female, label: "female" }, { data: summaryValues_undisclosed, label: "undisclosed" }]]);
+            exportdata.push([summaryLabels, [{ data: summaryValues, label: "all" }, { data: summaryValues_male, label: "male" }, { data: summaryValues_female, label: "female" }, { data: summaryValues_undisclosed, label: "undisclosed" }]]);
+
 
         } else {
             // return a blank for this question

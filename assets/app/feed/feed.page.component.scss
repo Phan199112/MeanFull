@@ -2,6 +2,7 @@ $formContainerColor: #fff;
 $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
+$primaryGreen: #1E824C;
 
 #FeedContainer {
   background-color: $whiteColor;
@@ -15,6 +16,24 @@ $navBarColor:  #0088cc;
 #topJumbo {
   border: 10px;
   background: $insideColor;
+}
+
+#askBtn {
+  display: block;
+  margin: 10px auto ;
+  width: 90%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  background-color: $primaryGreen;
+  border: 3px solid $primaryGreen;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: lighten($primaryGreen, 10);
+  }
+
+
 }
 
 .fa-heart {
@@ -45,3 +64,4 @@ $navBarColor:  #0088cc;
   margin-top: 20px;
   margin-bottom:20px;
 }
+

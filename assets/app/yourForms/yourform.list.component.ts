@@ -28,6 +28,7 @@ export class YourFormListComponent implements OnInit {
                     if (this.yourformlist.length > 0) {
                         this.visible = true;
                     }
+                    window.console.log(this.yourformlist)
                 }
 
             })

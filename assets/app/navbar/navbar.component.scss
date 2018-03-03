@@ -30,6 +30,11 @@ $navBarColor:  #1E824C;
   }
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .dropdown-toggle {
   display: inherit;
 }
@@ -112,3 +117,4 @@ img {
   width: 150px;
   margin-top: -1px;
 }
+

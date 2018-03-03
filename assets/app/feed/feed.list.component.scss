@@ -4,11 +4,12 @@ $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
 
 #FeedContainer {
-    background-color: $whiteColor;
+    background-color: none;
     padding-top: 20px;
     overflow:auto;
     border-radius: 1%;
     margin-top: 30px;
+    // max-height: 80vh;
 }
 
 #topJumbo {

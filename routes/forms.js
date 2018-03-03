@@ -98,7 +98,10 @@ module.exports = function(app, passport, manager, hashids) {
         new Promise(function (resolve, reject) {
             FormModel.find({userid: req.session.userid}).limit(20).cursor()
                 .on('data', function (form) {
-                    yourformdata.push({title: form.title, shared: form.shared, id: hashids.encodeHex(form._id)});
+                    var title;
+                    var elipsis = form.questions[0].body.length > 20 ? "..." : "";
+                    title = form.title !== "" ? form.title : (form.questions[0].body.substring(0,30) + elipsis);
+                    yourformdata.push({title: title, shared: form.shared, id: hashids.encodeHex(form._id)});
                 })
                 .on('error', function (err) {
                     // handle error
@@ -1169,7 +1172,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 if (answer != null) {
                                     // query all answers and prepare data for plot
                                     AnswersModel.find({formid: formid}, function (err, allanswers) {
-                                        // retrieved and array with all answers
+                                        // retrieved an array with all answers
                                         // compute
                                         var exportdata = formfunctions.analyzeAll(allanswers, questiontypes);
                                         var answercount;
@@ -1281,7 +1284,7 @@ module.exports = function(app, passport, manager, hashids) {
                 //
                 var promise = new Promise(function(resolve, reject){
                     AnswersModel.find({formid: formid}, function (err, k) {
-                        // retrieved and array with all answers
+                        // retrieved an array with all answers
                         if (err) {
                             // error
                             reject();
@@ -1328,6 +1331,8 @@ module.exports = function(app, passport, manager, hashids) {
                         });
                     };
 
+
+                    //Pushes author promises into an array authorprofilepromise that is. Look at like 1319, we get authorprofiles array
                     allanswers.forEach(function(author) {
                         authorprofilespromise.push(tempfunction(author));
                     });
