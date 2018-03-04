@@ -1,23 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validators} from "@angular/forms";
+
 
 @Component({
     selector: 'form-buttons',
     templateUrl: './formButton.component.html',
     styleUrls: ['./formButton.component.scss'],
-    providers: [{provide: NG_VALUE_ACCESSOR, multi: true, useExisting: FormButtons}]
+    providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: FormButtons }]
 })
 export class FormButtons implements ControlValueAccessor {
-    type: string;
+    @Input() qKind: string;
+    @Input() active: string;
     _onChange: (value: any) => void;
 
     constructor() {
-        this.type = "Radio";
     }
 
 
     writeValue(value: any) {
-        this.type = value;
+        // this.qKind = value;
     }
 
     registerOnChange(fn: (value:any) => void) {
@@ -27,7 +28,7 @@ export class FormButtons implements ControlValueAccessor {
     registerOnTouched(){}
 
     toggle(newType: string) {
-        this.type = newType;
+        // this.qKind = newType;
         this._onChange(newType);
     }
 }

@@ -88,6 +88,20 @@ module.exports = function(app, passport, manager, hashids) {
 
     });
 
+    //All users
+    app.get('/users/all', function (req, res) {
+        UserModel.find({}, function (err, users) {
+            var userMap = {};
+
+            users.forEach(function (user) {
+                userMap[user._id] = user;
+            });
+
+            res.send(userMap);
+        });
+    })
+
+
     // individual profile
     app.get('/users/profile/:id', function(req, res, next) {
 

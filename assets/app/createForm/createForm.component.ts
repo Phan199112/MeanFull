@@ -21,6 +21,17 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
         '(document:click)': 'onDocClick($event)',
     }
 })
+// @Component({
+//     selector: 'create-form',
+//     templateUrl: './createForm.componentssss.html',
+//     styleUrls: [
+//         './createForm.componentssss.scss'
+//     ],
+//     providers: [FormService, UserService],
+//     host: {
+//         '(document:click)': 'onDocClick($event)',
+//     }
+// })
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
     cool: string;
@@ -39,6 +50,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         'Radio': 'Multiple Choice',
         'Short answer': 'Text question'
     };
+    qKind: string = null;
+    question: any = null;
     edit: boolean = false;
     activeQuestion: string;
     autoScroll: any;
@@ -76,8 +89,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         //     }
         //     this.activeQuestion = args[1].dataset.id;
         // });
-
-        this.cool ="Fuck";
     }
 
     ngOnInit() {
@@ -151,7 +162,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.questionnaire = this.fb.group({
             title: '',
             hashtags: null,
-            kind: null,
             anonymous: false,
             sharedWithCommunities: null,
             sharedWithUsers: null,
@@ -226,6 +236,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             number: questions.length + 1,
             id: Math.random().toString().substring(2),
         }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+        
         questions.push(question);
         this.questionnaire.wasChecked = false;
 

@@ -17,7 +17,12 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 
 import {AppComponent } from "./app.component";
 import {routing} from "./app.routing";
+
+
+
 import {CreateFormComponent} from "./createForm/createForm.component";
+
+
 import {ShowFormComponent} from "./showForm/showForm.component";
 import {PreviewFormComponent} from "./previewForm/previewForm.component";
 import {ShareFormComponent} from "./shareForm/shareForm.component";

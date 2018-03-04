@@ -1,49 +1,62 @@
 <div class="centerxandy">
-    <div class="oContainer">
         <!-- Create Questions Container -->
+        <h3 class="containerTitle">Create a Question</h3>
+        <form [formGroup]="questionnaire" novalidate style="width: 100%">
+            <div class="oContainer">
+        <div class="qContainer">
+            <ul *ngFor="let k of kinds; let kIndex = index">
+                <form-buttons formControlName="kind" [active]="questionnaire.get('kind').value" [qKind]="k"></form-buttons>
+                <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>
+            </ul>
+        </div>
         <div class="lContainer">
-            <form [formGroup]="question">
-                <h3 class="containerTitle">Create a Question</h3>
-                <h3 class="iTitle">Select a Type of Qustion</h3>
-                <div class="typesContainer">
-                    <form-buttons formControlName="kind"></form-buttons>
-                </div>
-                <h3 class="iTitle">Craft the Response You Seek</h3>
+                <h1 *ngIf="questionnaire.get('kind').value === null" class="containerTitle">Select a Question Style to Begin</h1>
+                <div formArrayName="questions">
                 <div class="responseConfiguration">
                     <!-- -------option specific code------ -->
                     
                     <!-- //Multiple Choice -->
-                    <div class="multipleChoice">
-                        <div class="mcLeft">
-                            <input class="niceTextInput" formControlName="question" />
-                        </div>
-                        <div class="mcRight">
-                            <ul>
-                                <!-- <li *ngFor="let question in questionnaire.get('questions')">{{question.body[0]}}</li> -->
-                            </ul>
-                        </div>
-    
+                    <div *ngIf="questionnaire.get('kind').value === 'Radio'" class="multipleChoice">
+                        <p>What is your question?</p>
+                        <input class="niceTextInput" formControlName="question" />  
+                        <p>q value{{questionnaire.value | json}}</p>
                     </div>
 
-                    <!-- //Text Response
+                    <!-- //Text Response -->
+                    <div *ngIf="questionnaire.get('kind').value === 'Short answer'" class="multipleChoice">
+                        <p>What is your question?</p>
+                        <input class="niceTextInput" formControlName="question" />
+                        <p>q value{{questionnaire.value | json}}</p>
+                    </div>
 
-                    //Rating
+                    <!-- //Rating -->
+                    <div *ngIf="questionnaire.get('kind').value === 'Stars'" class="multipleChoice">
+                        <p>What is your question?</p>
+                        <input class="niceTextInput" formControlName="question" />
+                        <p>q value{{questionnaire.value | json}}</p>
+                    </div>
 
-                    //Number -->
-
+                    <!-- //Number -->
+                    <div *ngIf="questionnaire.get('kind').value === 'Number'" class="multipleChoice">
+                        <p>What is your question?</p>
+                        <input class="niceTextInput" formControlName="question" />
+                        <p>q value{{questionnaire.value | json}}</p>
+                    </div>
 
                 </div>
-            <div class="addQuestion">Add a Question</div>
-            </form>
+                <!-- <div class="addQuestion">Add another Question</div> -->
+            </div>
         </div>
 
         <!-- //Finished Questions Container -->
         <div class="rContainer">
-            <h3 class="containerTitle">Your Questions</h3>
+            <h3 class="containerTitle">Your Completed Questions Will Appear Here</h3>
             <!-- <div *ngFor="let question of questionnaire.get('questions').controls; let i = index" >
                 //list questions posted
                 <p>{{question.get('body') | json }}</p>
             </div> -->
         </div>
     </div>
+</form>
+
 </div>

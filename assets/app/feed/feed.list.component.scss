@@ -9,7 +9,10 @@ $navBarColor:  #0088cc;
     overflow:auto;
     border-radius: 1%;
     margin-top: 30px;
-    // max-height: 80vh;
+
+    &:first-child {
+        margin-top: -30px;
+    }
 }
 
 #topJumbo {

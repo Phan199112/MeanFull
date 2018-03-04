@@ -1,21 +1,20 @@
-$color1: #63D5C3;
-$color2: #3b3e52;
+$color1: #28ab64;
+$borderColor: rgb(226,226,226);
 
 .centerxandy {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    min-height: 80vh;
     width: 100%;
 }
 
 .oContainer {
     margin: auto auto;
     display: flex;
-    flex-flow: row wrap;
-    width: 70%;
-    min-width: 800px;
-    max-width: 1200px;
+    flex-flow: row nowrap;
+    width: 90%;
 }
 
 .typesContainer {
@@ -25,35 +24,68 @@ $color2: #3b3e52;
 }
 
 .containerTitle {
-    font-family: Dosis;
+    font-family: Karla;
     font-weight: 300;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     text-align: center;
     margin: 12px auto;
     margin-bottom: 25px;
+    color: #999;
 }
 
-.lContainer, .rContainer {
+
+.line {
+    height: 1px;
+    border: none;
+    border-top: 1px solid #DDD;
+    width: 85%;
+    margin: 8px auto;
+}
+
+.qTypeList {
+    padding: auto 15px;
+}
+
+.lContainer, .rContainer, .qContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
-    width: 50%;
+    width: 100%;
+}
+
+.qContainer {
+    width: auto;
+    padding: 20px 10px;
+    background: #FFF;
+    border-bottom-left-radius:  12px;   
+    border-top-left-radius:  12px;   
+    border: solid 1px $borderColor;
+    border-right: none;
+    min-width: 12rem;
+
+    ul {
+        padding-left: 0px;
+        margin-bottom: 0px;
+    }
 }
 
 .lContainer {
-    background: $color1;
-    border-bottom-left-radius:  12px;   
-    border-top-left-radius:  12px;   
+    background: #FFF;
+    border-top: solid 1px $borderColor;
+    border-bottom: solid 1px $borderColor;
 }
 
 .rContainer {
-    background: $color2;
+    background: #FFF;
     border-bottom-right-radius:  12px;   
     border-top-right-radius:  12px;  
+    border: solid 1px $borderColor;
+    // border-left: none;
 }
 
 .iTitle {
-    font-family: Raleway;
+    font-family: Karla;
     font-size: 1.1rem;
     font-weight: 500;
     text-align: center;
@@ -71,14 +103,10 @@ $color2: #3b3e52;
     width:90%;
 }
 
-.mcLeft {
-    width: 100%;
-}
-
 .niceTextInput {
     background: none;
     outline-style: none;
     border: none;
-    border-bottom: solid 2px darken($color1, 20);
+    border-bottom: solid 2px $color1;
     width: 100%;
 }

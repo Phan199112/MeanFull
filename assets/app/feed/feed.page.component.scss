@@ -2,7 +2,7 @@ $formContainerColor: #fff;
 $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
-$primaryGreen: #1E824C;
+$primaryGreen: #28ab64;
 
 #FeedContainer {
   background-color: $whiteColor;
@@ -21,12 +21,13 @@ $primaryGreen: #1E824C;
 #askBtn {
   display: block;
   margin: 10px auto ;
-  width: 90%;
-  font-size: 1.5rem;
-  font-weight: bold;
+  width: 250px;
+  padding: 6px 12px;
+  font-size: 1.2rem;
+  font-weight: 400;
   color: white;
   background-color: $primaryGreen;
-  border: 3px solid $primaryGreen;
+  // border: 3px solid $primaryGreen;
   border-radius: 10px;
 
   &:hover {

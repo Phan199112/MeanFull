@@ -25,12 +25,19 @@
                             [disabled]="questionnaire.invalid && questionnaire.wasChecked">Preview</button>
                         </div>
                     </div>
+
+
                     <form [formGroup]="questionnaire">
+
+
+                        <!-- //Adding Question Screen -->
                         <div *ngIf="step == 1">                                
                             <div id="survey-data" class="col-lg-6">
-                                <div id="survey-title" class="form-group">
+                                <!-- <div id="survey-title" class="form-group">
                                     <textarea autosize rows="1" formControlName="title" class="form-control underlined-input" placeholder="Title"></textarea>
-                                </div>
+                                </div> -->
+
+                                <!-- //Hashtag  -->
                                 <div class="form-group">
                                     <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}">
                                         <div 
@@ -55,10 +62,14 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- //Questions -->
                             <div formArrayName="questions" id="questions">
                                 <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls">
                                     <div [ngClass]="{'question': true, 'row': true, 'active': activeQuestion == question.get('id').value}" [attr.data-i]="i" [attr.data-id]="question.get('id').value" *ngFor="let question of questionnaire.get('questions').controls; let i = index" [formGroupName]="i" (click)="activeQuestion = question.get('id').value">
                                     <div class="col">
+
+                                        <!-- //Type selection on FormArray questions-->
                                         <div class="form-group">
                                             <select style="width: 400px; display: none;"
                                                     formControlName="kind"
@@ -71,6 +82,8 @@
                                                     <img *ngIf="question.get('kind').value" src="/images/icons/{{kindIcons[question.get('kind').value]}}"/>
                                                     <span>{{kindText(question.get('kind').value) || 'Select A Question Type'}}</span>
                                                 </button>
+
+                                                <!-- Dropdown displaying question choices -->
                                                 <div ngbDropdownMenu class="select-kind-dropdown">
                                                     <button (click)="question.get('kind').setValue(kind)" class="dropdown-item" *ngFor="let kind of kinds">
                                                         <span [ngClass]="['icon', kind]">
@@ -87,6 +100,9 @@
                                                 Question kind is required
                                             </div>
                                         </div>
+
+
+
                                         <div class="form-group">
                                             <!-- <label class="lead">Select A Question Type</label> -->
                                             <textarea style="width: 400px; margin-right: 10px;"
@@ -181,7 +197,7 @@
                                                 </div>
                                                 <input type="text" *ngIf="question.get('kind').value == 'Short answer'">
                                                 <textarea *ngIf="question.get('kind').value == 'Paragraph'"></textarea>
-                                                <div class="matrix" *ngIf="question.get('kind').value == 'Matrix'">
+                                                <!-- <div class="matrix" *ngIf="question.get('kind').value == 'Matrix'">
                                                     <table #matrix class="table-responsive" (mousemove)="onMatrixDrag($event, matrix)" (touchmove)="onMatrixDrag($event, matrix)">
                                                         <thead>
                                                             <tr formArrayName="columns">
@@ -242,7 +258,7 @@
                                                             Column name must be unique
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                </div> -->
                                                 <stars-question *ngIf="question.get('kind').value == 'Stars'"></stars-question>
                                             </div>
                                     </div>
@@ -264,7 +280,7 @@
 
 
 
-                        <!-- Share Page  -->
+                        <!-- Share Screen  -->
                         <div *ngIf="step == 2" id="step-2">
                             <div class="row">
                                 <div class="col-lg-10 p-0">

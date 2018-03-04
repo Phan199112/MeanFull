@@ -135,7 +135,6 @@ export class FeedFormComponent implements OnInit {
                     this.showdiscussion = true;
                     this.count = response.json().count;
 
-                    console.log(this.form.plotdata);
 
                     if (this.form.typeevent) {
                         this.retrieveEventData();
@@ -189,7 +188,6 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.form.id;
-        // window.console.log("Data when submitted here: ", data)
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
               if (response.json().status == 1) {

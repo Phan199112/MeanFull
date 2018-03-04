@@ -1,8 +1,11 @@
 $whiteColor: #fff;
-//$navBarColor:  #0077b3;
 
-//color Salem
-$navBarColor:  #1E824C;
+// $salem:  #1E824C;
+$salem:  #28ab64;
+
+$navBarColor:  #FFF;
+
+
 
 /deep/ .navbar {
   @media (max-width: 768px) {
@@ -18,7 +21,7 @@ $navBarColor:  #1E824C;
 }
 
 .navlinks {
-  color: $whiteColor !important;
+  color: $salem !important;
 }
 
 .nav-item {
@@ -76,7 +79,8 @@ $navBarColor:  #1E824C;
 /* change the brand and text color */
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
-  color: $whiteColor;
+  color: $salem;
+  font-weight: 700;
 }
 
 .navli:hover {

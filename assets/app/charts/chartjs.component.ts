@@ -22,7 +22,6 @@ export class ChartJSComponent implements OnInit {
 
     ngOnInit() {
         if (this.dataLabels) {
-            window.console.log(this.dataLabels);
             // set the type
             // if (this.dataValues.length == 1) {
             this.dataValues.splice(1, this.dataValues.length -1);

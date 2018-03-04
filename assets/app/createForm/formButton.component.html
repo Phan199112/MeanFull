@@ -1,6 +1,1 @@
-<div class="center">
-    <a class="choice" [ngClass]="{selected: type === 'Radio'}" (click)="toggle('Radio')">Multiple Choice</a>
-    <a class="choice" [ngClass]="{selected: type === 'Short answer'}" (click)="toggle('Short answer')">Short Response</a>
-    <a class="choice" [ngClass]="{selected: type === 'Stars'}" (click)="toggle('Stars')">Rating</a>
-    <a class="choice" [ngClass]="{selected: type === 'Number'}" (click)="toggle('Number')">Number</a>
-</div>
+<p class="choice" [ngClass]="{selected: qKind === active}" (click)="toggle(qKind)" >{{qKind}}</p>

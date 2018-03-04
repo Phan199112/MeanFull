@@ -72,6 +72,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // load new data
         this.loading = true;
         this.loadProfile();
+        window.console.log("-----LOOK HERE------",this.network);
 
     }
 

@@ -1,71 +1,28 @@
 <div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
     <div class="bg">
     <div class="userImagePos">
-        <div style="display: relative; z-index: 2">
-
-
-
-<svg class="namebanner" width="192px" height="20px" viewBox="0 0 192 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <polygon id="path-1" points="0 0 192 0 182.19078 10 192 20 0 20"></polygon>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Artboard" transform="translate(-156.000000, -129.000000)">
-            <g id="Group-2" transform="translate(114.000000, 104.000000)">
-                <g id="Group" transform="translate(42.000000, 25.000000)">
-                    <g id="Rectangle-2">
-                        <use fill="#a0ba82" fill-rule="evenodd" xlink:href="#path-1"></use>
-                        <path stroke="#417505" stroke-width="2" d="M1,1 L1,19 L189.61829,19 L180.789991,10 L189.61829,1 L1,1 Z"></path>
-                    </g>
-                    <text id="Fernando-Funes" font-family="Ralway, Avenir-Book, Avenir" font-size="13" font-weight="normal" fill="#2B2B2B">
-                        <tspan x="57.0375" y="14">{{form.author}}</tspan>
-                    </text>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
-
-        <!-- Long form to fit location as well -->
-
-        <!-- <svg class="namebanner" width="437px" height="20px" viewBox="0 0 437 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
-                <polygon id="path-1" points="0 0 437 0 414.673806 10 437 20 0 20"></polygon>
-            </defs>
-            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                <g id="Artboard" transform="translate(-156.000000, -129.000000)">
-                    <g id="Group-2" transform="translate(114.000000, 104.000000)">
-                        <g id="Group" transform="translate(42.000000, 25.000000)">
-                            <g id="Group-3">
-                                <g id="Rectangle-2">
-                                    <use fill="#a0ba82" fill-rule="evenodd" xlink:href="#path-1"></use>
-                                    <path stroke="#417505" stroke-width="2" d="M1,1 L1,19 L432.321038,19 L412.227464,10 L432.321038,1 L1,1 Z"></path>
-                                </g>
-                                <text id="Fernando-Funes" font-family="Quicksand, Dosis, Avenir-Book, Avenir" font-size="13" font-weight="normal" fill="#2B2B2B">
-                                    <tspan x="134.0375" y="14">{{form.author}}</tspan>
-                                </text>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg> -->
+        <div style="display: flex; z-index: 2; align-items: center">
 
         <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
             <div *ngIf="form.pictype == 'fb'">
-                <img src="https://graph.facebook.com/{{form.pic}}/picture?width=100&height=100" height="100" width="100" class="userImage" />
+                <img src="https://graph.facebook.com/{{form.pic}}/picture?width=70&height=70" height="70" width="70" class="userImage" />
             </div>
             <div *ngIf="form.pictype == 'local'">
-                <img [src]="form.pic" width="100" height="100"  class="userImage" />
+                <img [src]="form.pic" width="70" height="70"  class="userImage" />
             </div>
             <div *ngIf="form.pictype == 'default'">
-                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="100" width="100"  class="userImage"/>
-                <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="100" width="100"  class="userImage"  />
+                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="70" width="70"  class="userImage"/>
+                <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="70" width="70"  class="userImage"  />
             </div>
             <div *ngIf="form.pictype == 'anonymous'">
-                <img src="/images/question.jpg" height="100" width="100" class="userImage"/>
+                <img src="/images/question.jpg" height="70" width="70" class="userImage"/>
             </div>
         </a>
+        <div class="userInfoBox">
+            <p style="margin-bottom:3px"><b>Fernando Funes</b></p>
+            <p style="margin-bottom:3px">Palo Alto, CA</p>
+            <p style="margin-bottom:3px">12x 78x 88x</p>
+        </div>
     </div>
     </div>
 
