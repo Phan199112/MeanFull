@@ -88,19 +88,110 @@ module.exports = function(app, passport, manager, hashids) {
 
     });
 
-    //All users
-    app.get('/users/all', function (req, res) {
-        UserModel.find({}, function (err, users) {
-            var userMap = {};
 
-            users.forEach(function (user) {
-                userMap[user._id] = user;
+    app.get('/users/feedlist', function (req, res) {
+        // list for feed, provide 9 users
+
+        // variables
+        var loggedin = false;
+        var usersdata = [];
+        loggedin = req.isAuthenticated();
+
+        // mongoDB query
+        new Promise(function(resolve, reject) {
+            UserModel.find({public: true}).limit(100).exec(function (err, k) {
+                if (err) {
+                    reject(err);
+                } else {
+                    if (k != null) {
+                        if (k.length <= 9) {
+                            for (i=0; i<k.length; i++) {
+                                var user = k[i];
+                                usersdata.push({
+                                    name: user.name.first+" "+user.name.last,
+                                    id: hashids.encodeHex(user._id),
+                                    fb: user.facebookID,
+                                    pic: user.pic,
+                                    gender: user.gender
+                                });
+                            }
+
+                        } else {
+                            // get some random communities
+                            var randomints = [];
+                            var nmale = 0;
+                            var nfemale = 0;
+                            var cmale = 0;
+                            var cfemale = 0;
+
+                            // we'll get some from both genders
+                            if (!loggedin) {
+                                nmale = 5;
+                                nfemale = 4;
+
+                            } else {
+                                if (req.user.gender === "male") {
+                                    nmale = 5;
+                                    nfemale = 4;
+
+                                } else {
+                                    nmale = 6;
+                                    nfemale = 3;
+                                }
+                            }
+
+                            while (randomints.length !== 9) {
+                                var newval = math.getRandomInt(0, k.length);
+                                if (randomints.indexOf(newval) === -1) {
+                                    var temp = k[newval];
+
+                                    if (temp) {
+                                        if (temp.gender === 'male' && cmale < nmale) {
+                                            cmale = cmale +1;
+                                            randomints.push(newval);
+
+                                        } else if (temp.gender === 'female' && cfemale < nfemale) {
+                                            cfemale = cfemale +1;
+                                            randomints.push(newval);
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            // add some random members
+                            for (j in randomints) {
+                                var user = k[j];
+                                usersdata.push({
+                                    name: user.name.first+" "+user.name.last,
+                                    id: hashids.encodeHex(user._id),
+                                    fb: user.facebookID,
+                                    pic: user.pic,
+                                    gender: user.gender
+                                });
+                            }
+
+                        }
+                    }
+                    resolve();
+                }
+            })
+        })
+            .then(function () {
+                res.json({
+                    status: 1,
+                    data: usersdata,
+                    loggedin: loggedin
+                });
+            })
+            .catch(function() {
+                // failed
+                res.json({
+                    status: 0
+                });
             });
 
-            res.send(userMap);
-        });
-    })
-
+    });
 
     // individual profile
     app.get('/users/profile/:id', function(req, res, next) {
