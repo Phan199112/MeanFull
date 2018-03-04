@@ -64,6 +64,8 @@ import {ConfirmationPopupComponent} from './confirmationPopup/confirmationPopup.
 import {SearchPageComponent} from "./search/search.page.component";
 import { UserFloat } from "./sidebar/user.float.component";
 import { Sidebar } from "./sidebar/sidebar.component";
+import { FormButtons } from "./createForm/formButton.component";
+
 
 
 import { ShareService } from "./share.service";
@@ -116,7 +118,8 @@ import { ShareService } from "./share.service";
         ConfirmationPopupComponent,
         SearchPageComponent,
         UserFloat,
-        Sidebar
+        Sidebar,
+        FormButtons
     ],
     imports: [
         // vendor //

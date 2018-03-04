@@ -9,10 +9,6 @@
 
 $navBarColor:  #1E824C;
 
-.background {
-  background: url("/images/qBackground.png") repeat;
-}
-
 // this is to avoid the base font size change done in public/stylesheets/style.css to affect lead classes
 /deep/.lead {
   div, p, span, li, label, input, textarea, select, option, button, a {

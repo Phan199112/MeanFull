@@ -23,7 +23,8 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 })
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
-    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Stars"]; //, "Rank", "Matrix"
+    cool: string;
+    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Stars", "Number"]; //, "Rank", "Matrix"
     kindsWithOptions: string[] = ["Radio", "Checkboxes", "Drop-down", "Rank"];
     kindIcons: any = {
         'Radio': 'list.png',
@@ -61,20 +62,22 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         private formService: FormService, 
         private router: Router,
         private route: ActivatedRoute,
-        private dragulaService: DragulaService,
+        // private dragulaService: DragulaService,
         private userService: UserService
     ) {
-        this.dragulaService.drop.subscribe(args => {
-            this.questionnaire.get("questions").controls.forEach((q,i) => {
-                q.patchValue({number: i + 1});
-            });
-        });
-        this.dragulaService.drag.subscribe(args => {
-            if (!this.autoScroll) {
-                this.autoScroll = autoScroll([window, document.body], {margin: 50, autoScroll: () => this.dragulaService.bags[0].drake.dragging});
-            }
-            this.activeQuestion = args[1].dataset.id;
-        });
+        // this.dragulaService.drop.subscribe(args => {
+        //     this.questionnaire.get("questions").controls.forEach((q,i) => {
+        //         q.patchValue({number: i + 1});
+        //     });
+        // });
+        // this.dragulaService.drag.subscribe(args => {
+        //     if (!this.autoScroll) {
+        //         this.autoScroll = autoScroll([window, document.body], {margin: 50, autoScroll: () => this.dragulaService.bags[0].drake.dragging});
+        //     }
+        //     this.activeQuestion = args[1].dataset.id;
+        // });
+
+        this.cool ="Fuck";
     }
 
     ngOnInit() {
@@ -87,6 +90,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
             this.createForm();
         });       
+
+        //checks user is logged in
         this.userService.afterLoginCheck().then(userData => {  
             if (userData != 0) {
                 this.reject = false;
@@ -115,16 +120,18 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     createForm() {
-        //
+        //set expire date
         let defaultExpDate = new Date();
         defaultExpDate.setHours(23);
         defaultExpDate.setMinutes(59);
 
+        //see if editing form...only for event type I believe
         if (this.edit) {
             let prevData = this.formService.getData();
             this.typeevent = prevData.typeevent;
         }
 
+        
         this.timePickerConfig = {
             enableTime: true,
             noCalendar: true,
@@ -140,9 +147,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             defaultDate: defaultExpDate
         };
 
+        //Creates whole questionnaire, not individual questions
         this.questionnaire = this.fb.group({
             title: '',
             hashtags: null,
+            kind: null,
             anonymous: false,
             sharedWithCommunities: null,
             sharedWithUsers: null,
@@ -207,6 +216,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     addQuestion() {
         let questions = this.questionnaire.controls.questions;
+
+        //Create form group for individual question
         let question = this.fb.group({
             body: ['', Validators.required],
             kind: ['', Validators.required],
@@ -221,11 +232,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         question.kindHasOptions = () => this.kindsWithOptions.includes(question.get('kind').value);
         question.isOneOf = (kinds) => kinds.includes(question.get('kind').value);
 
+        //Observable for question kind. 
         question.get('kind').valueChanges.subscribe(kind => {
+
+            //If kind of question has options, add an option. Only if coming from non option kind
             if (this.kindsWithOptions.includes(kind)) {
                 if (question.controls.options.length === 0) {
-                    this.addOption(question);
-                    this.addOption(question);
                     this.addOption(question);
                 }
             } else {
@@ -247,6 +259,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.focusedOption = 0;               
             }
         });
+
+
 
         //enable first required control when adding second question
         if (questions.controls.length === 2) {

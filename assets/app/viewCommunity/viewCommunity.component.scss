@@ -7,7 +7,7 @@ $navBarColor:  #0088cc;
 #viewCommunityContainer {
   background-color: $whiteColor;
   padding-top: 20px;
-  overflow:auto;
+  overflow:none;
   border-radius: 1%;
   margin-top: 30px;
 }
@@ -51,7 +51,7 @@ $navBarColor:  #0088cc;
   text-align: center;
   
   #community-image {
-    height: 220px;
+    height: 240px;
   }
 }
 
@@ -84,4 +84,8 @@ feed-list {
   border-radius: 20px;
   border: 2px solid green;
   margin-top: -15px;
+}
+
+.lead {
+  font-family: Dosis;
 }

@@ -21,7 +21,7 @@ export class UserFloat implements OnInit {
 
     constructor(private userService: UserService, private shareService: ShareService
  ) {
-
+    this.checkLoggedin();
     }
 
     ngOnInit() {

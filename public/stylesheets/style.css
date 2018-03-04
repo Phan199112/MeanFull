@@ -15,3 +15,8 @@ div, p, span, li, label, input, textarea, select, option, button, a {
     padding-right: 40px;
   }
 }
+
+
+.background {
+  background: url("/images/qBackground.png") repeat;
+}

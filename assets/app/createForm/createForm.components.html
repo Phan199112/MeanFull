@@ -1,0 +1,496 @@
+<div class="container main-container" *ngIf="reject">
+        <h2>You are not authorised to create a new form. Please login first!</h2>
+    </div>
+    <div id="createFormPage" *ngIf="reject === false">
+        <div class="row">
+            <div class="col-md-2" id="leftSideOfContainer">
+            </div>
+            <div class="col-md-8">
+                <div id="createFormContainer" class="container">
+                    <!--<div id="topJumbo" class="jumbotron">-->
+                        <!--<h2 style="overflow: auto" class="display-4" *ngIf="!typeevent">Create A Survey</h2>-->
+                        <!--<h2 style="overflow: auto" class="display-4" *ngIf="typeevent">Create An Event</h2>-->
+                        <!--<p class="lead">Connect with a community of people to get all your questions answered!</p>-->
+                    <!--</div>-->
+                    <div class="row">
+                        <div class="col-10">
+                            <h3 id="page-title">
+                                {{typeevent ? (step == 1 ? "Create Event" : "Invite People") : (step == 1 ? "Ask questions" : "Share With People")}}
+                            </h3>
+                        </div>
+                        <div class="col-2 text-center">
+                            <button class="btn btn-outline-success mouseChangeToHand" 
+                            (click)="checkPreview()"
+                            title="Preview your survey" 
+                            [disabled]="questionnaire.invalid && questionnaire.wasChecked">Preview</button>
+                        </div>
+                    </div>
+                    <form [formGroup]="questionnaire">
+                        <div *ngIf="step == 1">                                
+                            <div id="survey-data" class="col-lg-6">
+                                <div id="survey-title" class="form-group">
+                                    <textarea autosize rows="1" formControlName="title" class="form-control underlined-input" placeholder="Title"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}">
+                                        <div 
+                                            [ngClass]="{'d-none': showHashtags || questionnaire.get('hashtags').value}"
+                                            class="tag-placeholder text-muted" 
+                                            (click)="showHashtags = true; focusTagInput(hashtags)">
+                                            hashtag #coffee #ucla #stanford
+                                        </div>
+                                        <tag-input
+                                            #hashtags
+                                            [ngClass]="{'d-none': !showHashtags && questionnaire.get('hashtags').value === null}"
+                                            [onAdding]="transformHashtag"
+                                            placeholder="#hashtag"
+                                            secondaryPlaceholder="#hashtag"
+                                            (onBlur)="showHashtags = false"
+                                            [separatorKeyCodes]="[32, 13, 188]"
+                                            formControlName="hashtags"
+                                            id="tags">
+                                            <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceTag.bind(this)">
+                                            </tag-input-dropdown>
+                                        </tag-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div formArrayName="questions" id="questions">
+                                <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls">
+                                    <div [ngClass]="{'question': true, 'row': true, 'active': activeQuestion == question.get('id').value}" [attr.data-i]="i" [attr.data-id]="question.get('id').value" *ngFor="let question of questionnaire.get('questions').controls; let i = index" [formGroupName]="i" (click)="activeQuestion = question.get('id').value">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <select style="width: 400px; display: none;"
+                                                    formControlName="kind"
+                                                    [ngClass]="{'form-control': true, 'question-type': true, 'is-invalid': isInvalid(question.get('kind'))}">
+                                                <option selected disabled value="">Select A Question Type</option>
+                                                <option style="background: url('/images/icons/textbox.png') left no-repeat; width: 200px" *ngFor="let kind of kinds" [value]="kind">{{kindAliases[kind] || kind}}</option>
+                                            </select>
+                                            <div ngbDropdown class="d-inline-block select-kind">
+                                                <button [ngClass]="{'form-control': true, 'select-kind-btn': true, 'is-invalid': isInvalid(question.get('kind'))}" ngbDropdownToggle>
+                                                    <img *ngIf="question.get('kind').value" src="/images/icons/{{kindIcons[question.get('kind').value]}}"/>
+                                                    <span>{{kindText(question.get('kind').value) || 'Select A Question Type'}}</span>
+                                                </button>
+                                                <div ngbDropdownMenu class="select-kind-dropdown">
+                                                    <button (click)="question.get('kind').setValue(kind)" class="dropdown-item" *ngFor="let kind of kinds">
+                                                        <span [ngClass]="['icon', kind]">
+                                                            <img src="/images/icons/{{kindIcons[kind]}}"/>
+                                                        </span>
+                                                        <span>{{kindText(kind)}}</span>
+                                                    </button>                                                
+                                                </div>
+                                            </div>
+                                            <span title="Remove question" *ngIf="questionnaire.get('questions').controls.length > 1" style="float:right;" class="btn-small btn-circle btn-subtract delete-question">
+                                                    <i class="fa fa-minus mouseChangeToHand delete-question" (click)="deleteQuestion(i)" aria-hidden="true"></i>
+                                            </span>
+                                            <div *ngIf="isInvalid(question.get('kind'))" class="invalid-feedback" >
+                                                Question kind is required
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- <label class="lead">Select A Question Type</label> -->
+                                            <textarea style="width: 400px; margin-right: 10px;"
+                                                autosize
+                                                rows="1"
+                                                [ngClass]="{'form-control': true, 'underlined-input': true, 'question-body': true, 'is-invalid': isInvalid(question.get('body'))}"
+                                                formControlName="body"
+                                                placeholder="Enter Your Question"></textarea>                                               
+                                            <span class="file-input button-right">
+                                                <div class="row">
+                                                    <div class="col" *ngIf="pics[question.get('id').value]">
+                                                        <img style="border:1px solid gray;width:100px;"  id="preview" [src]="pics[question.get('id').value]">
+                                                    </div>
+                                                    <div class="col p-0">
+                                                        <ng-template #imgTooltip>
+                                                            <div class="input-group">
+                                                                <input type="text" #imgUrl class="form-control" placeholder="Enter an image URL">
+                                                                <div class="input-group-append">
+                                                                    <button (click)="setPicUrl(i, imgUrl.value)" class="btn btn-outline-secondary">
+                                                                        <i class="fa fa-check"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <span>OR</span>
+                                                            <label [for]="'picFile-' + i" class="btn btn-primary">Upload image</label>
+                                                        </ng-template>
+                                                        <label
+                                                            title="Add an image to the question"
+                                                            [ngbTooltip]="imgTooltip" 
+                                                            #imgTooltipCtrl="ngbTooltip"
+                                                            placement="left"
+                                                            triggers="manual" 
+                                                            (click)="imgTooltipCtrl.open()"
+                                                            class="btn-small mouseChangeToHand">
+                                                            <i #imgTooltipToggle class="fa fa-picture-o mouseChangeToHand"></i>
+                                                        </label>
+                                                        <input class="image-file" [id]="'picFile-' + i" type="file" (change)="onPicChange(question, $event)" />
+                                                        <!--<input [id]="'picFile-' + i" type="file" (change)="pics[question.get('id').value] = '/images/emoji-thinking.png'" />-->
+                                                        <div class="btn-small" title="Remove image">
+                                                            <i class="delete-question fa fa-trash-o mouseChangeToHand" *ngIf="pics[question.get('id').value]" (click)="pics[question.get('id').value] = null" aria-hidden="true"></i>
+                                                        </div>
+                                                        <!-- <input type="hidden" formControlName="pic"/> -->
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <div *ngIf="isInvalid(question.get('body'))" class="invalid-feedback">
+                                                    Question body is required
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="display: inline-block; margin-left: 30px">
+                                            <div class="form-check form-control pl-0 border-0" style="display: inline-block;">
+                                                    <label class="form-check-label">
+                                                        <input
+                                                        type="checkbox"
+                                                        formControlName="required"
+                                                        class="form-check-input">
+                                                        Required
+                                                    </label>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="question.get('kind').value">
+                                                <div *ngIf="question.kindHasOptions()">
+                                                    <div class="form-group" formArrayName="options">
+                                                        <div class="question-option" *ngFor="let option of question.get('options').controls; let j = index" [formGroupName]="j">
+                                                            <input name="option" [type]="getInputType(question)" *ngIf="question.isOneOf(['Radio', 'Checkboxes'])"
+                                                            />
+                                                            <span *ngIf="question.isOneOf(['Drop-down', 'Rank'])">{{j+1}}. </span>
+                                                            <input 
+                                                                type="text"
+                                                                [focus]="j == focusedOption" 
+                                                                (click)="optionClicked(question, j)"
+                                                                [ngClass]="{'is-invalid': isInvalid(option.get('body')), 'option-input': true}"
+                                                                formControlName="body" />
+                                                            
+                                                            <span title="Remove option" class="btn-small btn-circle btn-subtract delete-option">
+                                                                <i class="fa fa-minus mouseChangeToHand" (click)="deleteOption(question, j)" aria-hidden="true"></i>
+                                                            </span>
+                                                            <span title="Add new option" *ngIf="j == question.get('options').controls.length - 1" class="btn-small btn-circle btn-add add-option">
+                                                                <i class="fa fa-plus mouseChangeToHand" (click)="addOption(question, true)" aria-hidden="true"></i>
+                                                            </span>
+                                                            <div *ngIf="isInvalid(option.get('body')) && option.get('body').hasError('required')" class="invalid-feedback">
+                                                                Option body is required
+                                                            </div>
+                                                            <div *ngIf="isInvalid(option.get('body')) && option.get('body').hasError('duplicateOption')" class="invalid-feedback">
+                                                                You can't have multiple options with the same value
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="activeQuestion !== question.get('id').value && question.hasError('noOptions')" class="invalid-feedback">
+                                                        Questions with options must have at least one option
+                                                    </div>
+                                                </div>
+                                                <input type="text" *ngIf="question.get('kind').value == 'Short answer'">
+                                                <textarea *ngIf="question.get('kind').value == 'Paragraph'"></textarea>
+                                                <div class="matrix" *ngIf="question.get('kind').value == 'Matrix'">
+                                                    <table #matrix class="table-responsive" (mousemove)="onMatrixDrag($event, matrix)" (touchmove)="onMatrixDrag($event, matrix)">
+                                                        <thead>
+                                                            <tr formArrayName="columns">
+                                                                <td></td>
+                                                                <td class="label" *ngFor="let column of question.get('columns').controls; let i = index">
+                                                                    <div class="contents">
+                                                                        <input type="text" (click)="fieldClicked(question, 'columns', i)" [formControlName]="i" [ngClass]="{'is-invalid': isInvalid(column), 'option-input': true}">
+                                                                        <span title="Remove column" *ngIf="i > 1" style="float:right;" class="btn-small btn-circle btn-subtract delete-question">
+                                                                            <i style="margin-left: 10px;" class="fa fa-minus mouseChangeToHand delete-question" (click)="question.get('columns').removeAt(i)" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    </div>                                                        
+                                                                </td>
+                                                                <td>
+                                                                    <div class="contents">
+                                                                        <span title="Add new column" class="btn-small btn-circle btn-add add-option">
+                                                                            <i class="fa fa-plus mouseChangeToHand" (click)="addOneTo(question, 'columns')" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody formArrayName="rows">
+                                                            <tr class="matrix-row" *ngFor="let row of question.get('rows').controls; let i = index">
+                                                                <td class="label">
+                                                                    <div class="contents">
+                                                                        <input (click)="fieldClicked(question, 'rows', i)" type="text" [formControlName]="i" [ngClass]="{'is-invalid': isInvalid(row), 'option-input': true}">
+                                                                        <span title="Remove row" *ngIf="i > 1" style="float:right;" class="btn-small btn-circle btn-subtract delete-question">
+                                                                            <i class="fa fa-minus mouseChangeToHand delete-question" (click)="question.get('rows').removeAt(i)" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="field" *ngFor="let column of question.get('columns').controls; let j = index">
+                                                                    <div class="contents">
+                                                                        <input type="radio" [name]="row"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <span title="Add new row" style="margin-top: 5px" class="btn-small btn-circle btn-add add-option">
+                                                                        <i class="fa fa-plus mouseChangeToHand" (click)="addOneTo(question, 'rows')" aria-hidden="true"></i>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <ul class="invalid-feedback-list">
+                                                        <li *ngIf="question.get('rows').controls.some(inputHasError('required'))" class="invalid-feedback">
+                                                            Row name is required
+                                                        </li>
+                                                        <li *ngIf="question.get('rows').controls.some(inputHasError('duplicateValue'))" class="invalid-feedback">
+                                                            Row name must be unique
+                                                        </li>
+                                                        <li *ngIf="question.get('columns').controls.some(inputHasError('required'))" class="invalid-feedback">
+                                                            Column name is required
+                                                        </li>
+                                                        <li *ngIf="question.get('columns').controls.some(inputHasError('duplicateValue'))" class="invalid-feedback">
+                                                            Column name must be unique
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <stars-question *ngIf="question.get('kind').value == 'Stars'"></stars-question>
+                                            </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="questionnaire.get('questions').controls[0].get('kind').value">
+                                <label class="btn btn-primary mouseChangeToHand" (click)="addQuestion()">
+                                    <i class="fa fa-plus-circle"></i>
+                                    Next Question
+                                </label>
+                                <button
+                                    style="float: right"
+                                    class="btn btn-outline-success mouseChangeToHand" 
+                                    (click)="checkSubmit()" 
+                                    [disabled]="questionnaire.invalid && questionnaire.wasChecked">Continue</button>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Share Page  -->
+                        <div *ngIf="step == 2" id="step-2">
+                            <div class="row">
+                                <div class="col-lg-10 p-0">
+                                    <div *ngIf="!typeevent" class="main-row form-group">
+                                        <label class="lead" id="create-survey-as">Share on Questionsly as
+                                            <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
+                                        </label>
+                                        <div class="row top-options">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input 
+                                                            type="radio" 
+                                                            class="form-check-input"
+                                                            aria-describedby="yourselfDesc" 
+                                                            formControlName="anonymous" 
+                                                            [value]="false">
+                                                        Yourself
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
+                                                    </label>
+                                                    <!--<small id="yourselfDesc" class="form-text">
+                                                        People tend to answer questions more when they know who’s posting it! Get a lot more responses
+                                                    </small>-->
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input 
+                                                            type="radio" 
+                                                            class="form-check-input" 
+                                                            aria-describedby="anonymousDesc" 
+                                                            formControlName="anonymous" 
+                                                            [value]="true">
+                                                        Anonymous
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
+                                                    </label>
+                                                    <!--<small id="anonymousDesc" class="form-text d-inline-block">
+                                                        Your survey will be show up on CrowdWorks anonymously. So, ask anything!!
+                                                    </small>-->
+                                                    <!--<i class="emoji emoji-wink small-size" aria-hidden="true"></i>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="main-row form-group">
+                                        <label class="lead" id="create-survey-as">Make the form public or private?
+                                            <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
+                                        </label>
+                                        <div class="row top-options">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input
+                                                                type="radio"
+                                                                class="form-check-input"
+                                                                formControlName="public"
+                                                                [value]="true">
+                                                        Public
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input
+                                                                type="radio"
+                                                                class="form-check-input"
+                                                                formControlName="public"
+                                                                [value]="false">
+                                                        Private
+                                                        <i title="description" class="fa fa-question-circle field-info"></i>                                                        
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="main-row form-group">
+                                        <label class="lead">Share with friends on Questionsly and outside
+                                            <!--</i class="emoji emoji-thinking" aria-hidden="true"></i>-->
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
+                                        </label>
+                                        <div class="tag-input-wrapper form-control">
+                                            <div [ngClass]="{'d-none': showPrivateShares || questionnaire.get('sharedWithUsers').value}"
+                                                    class="tag-placeholder text-muted"
+                                                    (click)="showPrivateShares = true; focusTagInput(sharedWith)">
+                                                Enter email or name if they are on Questionsly (@john)
+                                            </div>
+                                            <tag-input #sharedWith
+                                                        [ngClass]="{'d-none': !showPrivateShares && questionnaire.get('sharedWithUsers').value === null}"
+                                                        id="private-shares"
+                                                        [identifyBy]="'value'"
+                                                        [displayBy]="'display'"
+                                                        placeholder="Name"
+                                                        secondaryPlaceholder="Name"
+                                                        [onAdding]="transformName"
+                                                        [separatorKeyCodes]="[32, 13]"
+                                                        formControlName="sharedWithUsers"
+                                                        [onlyFromAutocomplete]="true">
+                                                <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceUser.bind(this)">
+                                                </tag-input-dropdown>
+                                            </tag-input>
+                                        </div>
+                                    </div>
+                                    <div class="main-row form-group">
+                                        <label class="lead">
+                                            {{typeevent ? "Invite people from a community on Questionsly" : "Share it with a Questionsly community"}}
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
+                                        </label>
+                                        <div class="tag-input-wrapper form-control">
+                                            <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}"
+                                                class="tag-placeholder text-muted"
+                                                (click)="showPublicShares = true; focusTagInput(sharedWith)">
+                                                Enter community name @ucla @hikers
+                                           </div>
+                                           <tag-input #sharedWith
+                                                      [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
+                                                      id="public-shares"
+                                                      placeholder="Name"
+                                                      secondaryPlaceholder="Name"
+                                                      [onAdding]="transformName"
+                                                      (onBlur)="showPublicShares = false"
+                                                      [separatorKeyCodes]="[32, 13]"
+                                                      formControlName="sharedWithCommunities"
+                                                      [onlyFromAutocomplete]="true">
+                                               <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceCom.bind(this)">
+                                               </tag-input-dropdown>
+                                           </tag-input>           
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!typeevent" class="main-row row form-group">
+                                        <label class="lead col-lg-3" style="margin-top: 6px">
+                                            Share it on:
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
+                                        </label>
+                                        <!-- DOCUMENTATION: https://murhafsousli.github.io/ngx-sharebuttons/#/ -->
+                                        <div class="col p-0">
+                                            <share-buttons [theme]="'default'" [url]="shareLink" [showText]="true" [include]="['facebook','linkedin', 'twitter']"></share-buttons>
+                                        </div>
+                                    </div>
+                                    <div id="share-link" *ngIf="!typeevent" class="main-row row form-group">
+                                        <label class="lead col-lg-3" style="margin-top: 6px">
+                                            Shareable link:
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
+                                        </label>
+                                        <input class="col form-control" style="max-height: 40px" [value]="shareLink"/>                                       
+                                        <share-button [theme]="'default'"
+                                            [button]="'copy'"
+                                            [showText]="true"
+                                            [size]="2"
+                                            [url]="shareLink"
+                                            style="margin-top:1px"
+                                        ></share-button>
+                                    </div>
+                                    <div *ngIf="!typeevent" class="main-row form-group">
+                                        <label style="margin-left: 30px" class="form-check-label">
+                                            <input 
+                                                type="checkbox" 
+                                                class="form-check-input"
+                                                formControlName="loginRequired">
+                                                Required login to answer the questions
+                                                <i title="description" class="fa fa-question-circle field-info"></i>
+                                        </label>
+                                    </div>
+                                    <div *ngIf="typeevent" class="row main-row form-group">
+                                        <label class="lead col-lg-5" style="margin-top: 10px">
+                                            Invite friends from Facebook:
+                                            <i title="description" class="fa fa-question-circle field-info"></i>                                            
+                                        </label>
+                                        <div class="col p-0">
+                                            <a class="btn btn-outline-success mouseChangeToHand">Link Facebook</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="col-12 tag-input-wrapper form-control">
+                                                <div [ngClass]="{'d-none': showFbShares || questionnaire.get('sharedWithFb').value}"
+                                                    class="tag-placeholder text-muted"
+                                                    (click)="showFbShares = true; focusTagInput(sharedWith)">
+                                                    @Matt @sara
+                                                </div>
+                                                <tag-input #sharedWith
+                                                        [ngClass]="{'d-none': !showFbShares && questionnaire.get('sharedWithFb').value === null}"
+                                                        id="fb-shares"
+                                                        placeholder="Name"
+                                                        secondaryPlaceholder="Name"
+                                                        [onAdding]="transformName"
+                                                        (onBlur)="showFbShares = false"
+                                                        [separatorKeyCodes]="[32, 13]"
+                                                        formControlName="sharedWithFb"
+                                                        [onlyFromAutocomplete]="true">
+                                                    <tag-input-dropdown [focusFirstElement]="true">
+                                                    </tag-input-dropdown>
+                                                </tag-input>           
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="published" class="row">
+                                <div  class="col text-center submitted-message">
+                                    <p class="alert alert-success">{{typeevent ? "Your event has been published" : "Your survey has been published"}}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="!published" class="row">
+                                <div class="col-10">
+                                    <button
+                                    class="btn btn-outline-success mouseChangeToHand" 
+                                    (click)="setAsUntouched(questionnaire); step = 1; updateform = true"
+                                    [disabled]="questionnaire.invalid && questionnaire.wasChecked">Previous</button>
+                                </div>
+                                <div class="col-2 text-center p-0">
+                                    <button
+                                    class="btn btn-outline-success mouseChangeToHand" 
+                                    (click)="checkPublish()" 
+                                    [disabled]="questionnaire.invalid && questionnaire.wasChecked">{{typeevent ? "Send Invite" : "Publish"}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-2" id="rightSideOfContainer">
+            </div>
+        </div>
+    
+    </div>
+    
