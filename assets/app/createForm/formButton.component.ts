@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validators} from "@angular/forms";
 
 
@@ -8,18 +8,17 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validators} from
     styleUrls: ['./formButton.component.scss'],
     providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: FormButtons }]
 })
-export class FormButtons implements ControlValueAccessor {
+export class FormButtons {
     @Input() qKind: string;
     @Input() active: string;
-    _onChange: (value: any) => void;
+    @Output() selected : EventEmitter<string> = new EventEmitter<string> ();
+    // _onChange: (value: any) => void;
 
     constructor() {
+
     }
 
-
-    writeValue(value: any) {
-        // this.qKind = value;
-    }
+    writeValue(value: any) {}
 
     registerOnChange(fn: (value:any) => void) {
         this._onChange = fn;
@@ -28,7 +27,7 @@ export class FormButtons implements ControlValueAccessor {
     registerOnTouched(){}
 
     toggle(newType: string) {
-        // this.qKind = newType;
+        this.selected.emit(this.qKind);        
         this._onChange(newType);
     }
 }

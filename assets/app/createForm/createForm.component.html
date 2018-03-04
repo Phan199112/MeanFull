@@ -5,39 +5,39 @@
             <div class="oContainer">
         <div class="qContainer">
             <ul *ngFor="let k of kinds; let kIndex = index">
-                <form-buttons formControlName="kind" [active]="questionnaire.get('kind').value" [qKind]="k"></form-buttons>
+                <form-buttons formControlName="kind" [active]="typeView" [qKind]="k" (selected)="toggleView($event)"></form-buttons>
                 <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>
             </ul>
         </div>
         <div class="lContainer">
-                <h1 *ngIf="questionnaire.get('kind').value === null" class="containerTitle">Select a Question Style to Begin</h1>
+                <h1 *ngIf="questionnaire.get('questions').length !== 0" class="containerTitle">Select a Question Style to Begin {{typeView}} {{questionnaire.get('questions').length}} </h1>
                 <div formArrayName="questions">
                 <div class="responseConfiguration">
                     <!-- -------option specific code------ -->
                     
                     <!-- //Multiple Choice -->
-                    <div *ngIf="questionnaire.get('kind').value === 'Radio'" class="multipleChoice">
+                    <div *ngIf="typeView === 'Radio'" class="multipleChoice">
                         <p>What is your question?</p>
                         <input class="niceTextInput" formControlName="question" />  
                         <p>q value{{questionnaire.value | json}}</p>
                     </div>
 
                     <!-- //Text Response -->
-                    <div *ngIf="questionnaire.get('kind').value === 'Short answer'" class="multipleChoice">
+                    <div *ngIf="typeView === 'Short answer'" class="multipleChoice">
                         <p>What is your question?</p>
                         <input class="niceTextInput" formControlName="question" />
                         <p>q value{{questionnaire.value | json}}</p>
                     </div>
 
                     <!-- //Rating -->
-                    <div *ngIf="questionnaire.get('kind').value === 'Stars'" class="multipleChoice">
+                    <div *ngIf="typeView === 'Stars'" class="multipleChoice">
                         <p>What is your question?</p>
                         <input class="niceTextInput" formControlName="question" />
                         <p>q value{{questionnaire.value | json}}</p>
                     </div>
 
                     <!-- //Number -->
-                    <div *ngIf="questionnaire.get('kind').value === 'Number'" class="multipleChoice">
+                    <div *ngIf="typeView === 'Number'" class="multipleChoice">
                         <p>What is your question?</p>
                         <input class="niceTextInput" formControlName="question" />
                         <p>q value{{questionnaire.value | json}}</p>

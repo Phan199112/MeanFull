@@ -50,7 +50,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         'Radio': 'Multiple Choice',
         'Short answer': 'Text question'
     };
-    qKind: string = null;
+    typeView: string = null;
+    kind: string = null;
     question: any = null;
     edit: boolean = false;
     activeQuestion: string;
@@ -89,6 +90,10 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         //     }
         //     this.activeQuestion = args[1].dataset.id;
         // });
+    }
+
+    toggleView(view: string) {
+        this.typeView = view;
     }
 
     ngOnInit() {
@@ -162,6 +167,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.questionnaire = this.fb.group({
             title: '',
             hashtags: null,
+            kind: null,
             anonymous: false,
             sharedWithCommunities: null,
             sharedWithUsers: null,
