@@ -1,35 +1,19 @@
 <div class="uContainer">
-    <!-- <a [routerLink]="authorlinkdisabled ? null : ['/profile', dbid]" class="userImage">
+    <div *ngIf="pictype" class="d-inline-block">
         <div *ngIf="pictype == 'fb'">
-            <img src="https://graph.facebook.com/{{pic}}/picture?width=50&height=50" height="50" width="50">
+            <img src="https://graph.facebook.com/{{pic}}/picture?width=30&height=30" height="30" width="30">
         </div>
         <div *ngIf="pictype == 'local'">
-            <img [src]="pic" width="50" height="50" />
-        </div>
-        <div *ngIf="pictype == 'default'">
-            <img *ngIf="gender == 'male'" src="/images/male.png" height="50" width="50" />
-            <img *ngIf="gender == 'female'" src="/images/female.png" height="50" width="50" />
-        </div>
-        <div *ngIf="pictype == 'anonymous'">
-            <img src="/images/question.jpg" height="50" width="50" />
-        </div>
-    </a> -->
-            <img src="/images/male.png" height="50" width="50" />
-
-    <!-- <div *ngIf="pictype">
-        <div *ngIf="pictype == 'fb'">
-            <img src="https://graph.facebook.com/{{pic}}/picture?width=50&height=50" height="50" width="50">
-        </div>
-        <div *ngIf="pictype == 'local'">
-            <img [src]="pic" height="50" width="50" />
+            <img [src]="pic" height="30" width="30"/>
         </div>
         <div *ngIf="pictype == 'default-male'">
-            <img src="/images/male.png" height="50" width="50" />
+            <img src="/images/male.png" height="30" width="30"/>
         </div>
         <div *ngIf="pictype == 'default-female'">
-            <img src="/images/female.png" height="50" width="50" />
+            <img src="/images/female.png" height="30" width="30"/>
         </div>
-    </div> -->
+    </div>
+
     <div class="content">
         <h3 class="userName">{{firstname}} {{lastname}}</h3>
         <br/>

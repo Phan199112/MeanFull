@@ -69,10 +69,6 @@ export class NavbarComponent implements OnInit {
                 this.picdata = userData.picdata;
                 this.gender = userData.gender;
 
-                this.userService.setData({
-                    dbid: this.dbid
-                });
-
                 // deal with events
                 this.getEventsList();
 
