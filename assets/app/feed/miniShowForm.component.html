@@ -28,8 +28,10 @@
                                 </div>
                                 <div *ngIf="question.kind == 'Checkboxes'" formGroupName="answer">
                                     <div *ngFor="let option of question.options" class="formChoices">
+                                        <label>
                                         <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox"/>
-                                        <label>{{option.body}}</label>
+                                        {{option.body}}
+                                        </label>
                                     </div>
                                 </div>
                                 <select class="formChoices" formControlName="answer" *ngIf="question.kind == 'Drop-down'">

@@ -44,8 +44,9 @@ export class MiniShowFormComponent implements OnInit {
         };
         //
         let questions = [];
-        let questionsx = this.data.questions.map(q => q.label = q.body);
-        for (let question of questionsx) {
+        //let questionsx = this.data.questions.map(q => q.label = q.body);
+        //for (let question of questionsx) {
+        for (let question of this.data.questions) {
             let groupObject = {
                 body: question.body,
                 label: question.label,

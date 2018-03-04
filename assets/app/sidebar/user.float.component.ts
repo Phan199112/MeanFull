@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import {UserService} from '../user.service';
 import { ShareService } from "../share.service";
+import {Http} from "@angular/http";
 
 @Component({
     selector: 'user-float',
@@ -19,7 +20,8 @@ export class UserFloat implements OnInit {
     picdata: Object;
     gender: string;
 
-    constructor(private userService: UserService, private shareService: ShareService
+    constructor(private userService: UserService,
+                private shareService: ShareService
  ) {
     this.checkLoggedin();
     }
@@ -38,13 +40,6 @@ export class UserFloat implements OnInit {
                 this.lastname = userData.lastname;
                 this.picdata = userData.picdata;
                 this.gender = userData.gender;
-
-                this.userService.setData({
-                    dbid: this.dbid
-                });
-
-                // deal with events
-                this.getEventsList();
 
                 // deal with picture
                 if (this.fbid != null) {
