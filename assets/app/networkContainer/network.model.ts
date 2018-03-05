@@ -7,7 +7,7 @@ export class NetworkModel {
         // general data
         this.name = object.name;
         this.pic = object.pic;
-        this.link = object.link;
+        this.link = object.link || "";
     }
 
 }

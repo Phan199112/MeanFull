@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 @Component({
     selector: 'network-item',
@@ -6,7 +7,12 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./network.component.scss'],
 })
 
-export class NetworkComponent {
-    @Input() data: [Object];
+export class NetworkComponent implements OnInit {
+    @Input() data: Object;
+    name: Array<string>;
 
+    ngOnInit() {
+        this.name  = this.data.name.split(' ');
+    }
+    
 }

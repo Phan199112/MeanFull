@@ -1,14 +1,24 @@
+<form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
+    <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search" formControlName="searchterm" [ngClass]="{'form-control': true}" >
+    <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [disabled]="searchbox.invalid && searchbox.wasChecked"
+        (click)="checkSubmit(searchbox)">Search</button> -->
+</form>
 <div class="sContainer">
-    <div class="sMenu">
-        <a title="Your Surveys" (click)="toggleView('surveys')"><i [ngClass]="{activeView: view === 'surveys'}" class="icons fa fa-wpforms"> </i></a>
-        <a title="Friends" (click)="toggleView('friends')"><i [ngClass]="{'activeView': view === 'friends'}" class="icons fa fa-users"> </i></a>
-        <a title="Communities" (click)="toggleView('communities')"><i [ngClass]="{activeView: view === 'communities'}" class="icons fa fa-tree"> </i></a>
-        <a title="Tags" (click)="toggleView('tags')"><i [ngClass]="{activeView: view === 'tags'}" class="icons fa fa-hashtag"> </i></a>
+    <h3>People</h3>
+    <div class="peopleContainer">
+        <div *ngFor="let p of users">
+            <network-item [data]="p"> </network-item>
+        </div>
     </div>
-    <br/>
-    <div class="line"></div><div>
-    <community-list *ngIf="view === 'friends' " [user]="null"></community-list>
-    <community-list *ngIf="view === 'communities' " [user]="null"></community-list>
-    <yourform-list *ngIf="loggedin && view === 'surveys' "></yourform-list>
-    <tag-list *ngIf="view === 'tags' " [user]="null" [comm]="null"></tag-list>
 </div>
+
+<div class="sContainer">
+    <community-list [user]="null"></community-list>
+</div>
+
+<div class="sContainer">
+<tag-list [user]="null" [comm]="null"></tag-list>
+</div>
+
+
+

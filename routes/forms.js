@@ -951,7 +951,12 @@ module.exports = function(app, passport, manager, hashids) {
                                 if (err) {
                                     reject(err);
                                 } else {
-                                    authorprofiles[x.formid] = {anonymous: false, facebookID: k.facebookID, pic: k.pic, name: k.name.first+" "+k.name.last, link: hashids.encodeHex(k._id), gender: k.gender};
+
+
+                                    authorprofiles[x.formid] = {anonymous: false, facebookID: k.facebookID, pic: k.pic, name: k.name.first+" "+k.name.last, link: hashids.encodeHex(k._id), gender: k.gender, location: k.location};
+                                                
+
+                                    
                                     resolve();
                                 }
                             });

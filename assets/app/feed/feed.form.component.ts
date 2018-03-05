@@ -23,6 +23,9 @@ export class FeedFormComponent implements OnInit {
     hide: boolean = false;
     loggedin: boolean = false;
     count: string = null;
+    nocreated :any;
+    notaken :any;
+    nodiscussion : any   
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
     @ViewChild('shareModal') shareModal;
 
@@ -67,6 +70,23 @@ export class FeedFormComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        // window.console.log("Count total is", this.form.object.author.link);
+
+        this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
+            .then(res => {
+                window.console.log("Hit here");                    
+
+                if (this.status == '1') {
+                    // counts
+                    window.console.log("Hit here");                    
+                    this.nocreated = res.json().nocreated;
+                    this.notaken = res.json().notaken;
+                    this.nodiscussion = res.json().nodiscussion;
+                    // window.console.log("Count total is", this.nocreated;
+
+                }
+            })
 
         if (this.form.questions != null) {
             // did the current user complete this form, if so answers can be shown

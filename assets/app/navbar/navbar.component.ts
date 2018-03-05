@@ -16,7 +16,6 @@ import {Router} from "@angular/router";
     }
 })
 export class NavbarComponent implements OnInit {
-    searchbox: FormGroup;
     loggedin = false;
     fbid = false;
     firstname = null;
@@ -49,10 +48,6 @@ export class NavbarComponent implements OnInit {
             this.getEventsList();
         });
 
-        // init search form
-        this.searchbox = this.fb.group({
-            searchterm: ['', Validators.required]
-        });
     }
 
     ngOnDestroy() {
@@ -232,34 +227,5 @@ export class NavbarComponent implements OnInit {
             this.navExpanded = false;
         }
     }
-
-
-    /// deal with search form
-    setAsTouched(group) {
-        group.markAsTouched();
-        for (let i in group.controls) {
-            if (group.controls[i] instanceof FormControl) {
-                group.controls[i].markAsTouched();
-            } else {
-                this.setAsTouched(group.controls[i]);
-            }
-        }
-    }
-
-
-    checkSubmit(form) {
-        this.setAsTouched(form);
-        if (form.invalid) {
-            form.wasChecked = true;
-        } else {
-            // submit
-            this.submitSearch();
-        }
-    }
-
-    submitSearch() {
-        this.router.navigate(['/searchresults', {'q': this.searchbox.value.searchterm}]);
-    }
-
 
 }

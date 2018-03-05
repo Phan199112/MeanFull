@@ -14,11 +14,10 @@ h3 {
   align-items: center;
   background: #FFF;
   border: solid 1px $borderColor;
-  // box-shadow: 0 0px 2px 0px rgba(65,117,5,0.3);
   border-radius: 8px;
   box-sizing: border-box;
-  margin-top: 20px;
-  min-height: 500px;
+  margin: 20px auto;
+  padding: 20px 12px;
 }
 
 .sMenu {
@@ -71,4 +70,33 @@ h3 {
 
 .stars {
   padding-bottom: 20px;
+}
+
+
+.peopleContainer {
+  padding: 12px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.imgName {
+  // display: absolute;
+  // bottom: 0px;
+  // left: 0px;
+  margin-top: 0;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px !important;
+}
+
+.searchbar {
+  width: 65%;
+  font-size: .7rem;
+  font-family: Karla;
+  text-align: center;
 }
