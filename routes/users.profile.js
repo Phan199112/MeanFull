@@ -232,18 +232,27 @@ module.exports = function(app, passport, manager, hashids) {
                             // conditional
                             if (me === true) {
                                 status = 1;
-                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic, facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false, pending: false};
+                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
+                                    facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
+                                    pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
+                                    nodiscussion: userinfo.nodiscussion};
                                 resolve();
 
                             } else if (userinfo.public === true) {
                                 status = 1;
-                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic, facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false, pending: false};
+                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
+                                    facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
+                                    pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
+                                    nodiscussion: userinfo.nodiscussion};
                                 resolve();
 
                             } else {
                                 // test whether or not you're a friend
                                 // we'll do this later, in the NetworkEdges function
-                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic, facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false, pending: false};
+                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
+                                    facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
+                                    pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
+                                    nodiscussion: userinfo.nodiscussion};
                                 status = 2;
                                 resolve();
                             }
@@ -359,62 +368,8 @@ module.exports = function(app, passport, manager, hashids) {
                 });
         };
 
-        // created surveys
-        var tempfunctionCreated = function() {
-            var promise = new Promise(function(resolve, reject){
-                FormModel.find({userid: userdbid}).cursor()
-                    .on('data', function(form){
-                        nocreated = nocreated + 1;
-                    })
-                    .on('error', function(err){
-                        reject(err);
-                    })
-                    .on('end', function(){
-                        resolve();
-                    });
-            });
-            return promise;
-        };
-
-        // completed surveys
-        var tempfunctionTaken = function() {
-            var promise = new Promise(function(resolve, reject){
-                AnswersModel.find({userid: userdbid}).cursor()
-                    .on('data', function(form){
-                        notaken = notaken + 1;
-                    })
-                    .on('error', function(err){
-                        reject(err);
-                    })
-                    .on('end', function(){
-                        resolve();
-                    });
-            });
-            return promise;
-        };
-
-        // discussion posts
-        var tempfunctionDiscussion = function() {
-            var promise = new Promise(function(resolve, reject){
-                DiscussionModel.find({userid: userdbid}).cursor()
-                    .on('data', function(form){
-                        nodiscussion = nodiscussion + 1;
-                    })
-                    .on('error', function(err){
-                        reject(err);
-                    })
-                    .on('end', function(){
-                        resolve();
-                    });
-            });
-            return promise;
-        };
-
         // push promises to array
         promiseslist.push(tempfunctionUser());
-        promiseslist.push(tempfunctionCreated());
-        promiseslist.push(tempfunctionTaken());
-        promiseslist.push(tempfunctionDiscussion());
         promiseslist.push(tempfunctionNetworkEdges());
 
         return Promise.all(promiseslist).then(function () {
@@ -432,7 +387,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // we need to do some checks first to see whether
                 if (innetworktemp.status === true) {
                     // send back
-                    res.json({status: 1, loggedin: loggedin, userprofile: userdata, network: networkdata, notaken: notaken, nocreated: nocreated, nodiscussion: nodiscussion});
+                    res.json({status: 1, loggedin: loggedin, userprofile: userdata, network: networkdata});
 
                 } else {
                     // so the visitor is not connected.
@@ -440,13 +395,13 @@ module.exports = function(app, passport, manager, hashids) {
                     // no feed
                     // no communities
                     // no friend list
-                    res.json({status: 2, loggedin: loggedin, userprofile: userdata, network: null, notaken: notaken, nocreated: nocreated, nodiscussion: nodiscussion});
+                    res.json({status: 2, loggedin: loggedin, userprofile: userdata, network: null});
 
                 }
 
             } else if (status === 1) {
                 // send back
-                res.json({status: status, loggedin: loggedin, userprofile: userdata, network: networkdata, notaken: notaken, nocreated: nocreated, nodiscussion: nodiscussion});
+                res.json({status: status, loggedin: loggedin, userprofile: userdata, network: networkdata});
 
             } else if (status === 0) {
                 res.json({status: 0});

@@ -167,6 +167,8 @@ module.exports = function(app, passport, manager, hashids) {
             } else {
                 // log
                 log.writeLog(req.session.userid, 'create form', req.ip);
+                // update user stats
+                usersfunctions.incrementNoCreated(req.session.userid);
                 // return
                 res.json({id: hashids.encodeHex(k._id), status: 1});
             }
@@ -272,7 +274,6 @@ module.exports = function(app, passport, manager, hashids) {
             });
         };
 
-
         // the execution of this function depends on whether the user is signed in
         if (req.isAuthenticated()) {
 
@@ -305,6 +306,9 @@ module.exports = function(app, passport, manager, hashids) {
                         return Promise.all(promises).then(function () {
                             // log
                             log.writeLog(req.session.userid, 'answered form');
+
+                            // update user stats
+                            usersfunctions.incrementNoTaken(req.session.userid);
 
                             // insite notification
                             notifications.createNotification(formauthorid, req.session.userid, "form-answer", "New answer", hashids.encodeHex(answerformid));

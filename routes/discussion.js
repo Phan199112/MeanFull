@@ -4,6 +4,7 @@ var UserModel = require('../db.models/user.model');
 var log = require("../functions/logs");
 var emailfunctions 	= require("../functions/email");
 var notifications = require("../functions/notifications");
+var usersfunctions = require('../functions/users');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -42,6 +43,9 @@ module.exports = function(app, passport, manager, hashids) {
                     .then(function() {
                         // log
                         log.writeLog(req.session.userid, 'discussion message created', req.ip);
+
+                        // update user stats
+                        usersfunctions.incrementNoDiscussion(req.session.userid);
 
                         // user found?
                         if (authorid !== null) {

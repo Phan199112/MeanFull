@@ -18,6 +18,35 @@ exports.profilePublic  = function profilePublic(x) {
     });
 };
 
+exports.incrementNoTaken = function incrementNoTaken(userid) {
+        UserModel.findByIdAndUpdate(userid, {$inc: {notaken:1}}, function (err, data) {
+            if (err) {
+                //
+            } else {
+                //
+            }
+        });
+};
+
+exports.incrementNoCreated = function incrementNoTaken(userid) {
+        UserModel.findByIdAndUpdate(userid, {$inc: {nocreated:1}}, function (err, data) {
+            if (err) {
+                //
+            } else {
+                //
+            }
+        });
+};
+
+exports.incrementNoDiscussion = function incrementNoTaken(userid) {
+        UserModel.findByIdAndUpdate(userid, {$inc: {nodiscussion:1}}, function (err, data) {
+            if (err) {
+                //
+            } else {
+                //
+            }
+        });
+};
 
 exports.updateUserTags  = function updateUserTags(userid) {
     // this function will be executed when a user signs in and will make certain that the tags list associated with a user profile is up to date
