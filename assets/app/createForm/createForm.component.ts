@@ -55,6 +55,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     question: any = null;
     edit: boolean = false;
     activeQuestion: string;
+    questionsSubmitted: number;
     autoScroll: any;
     pics: Object = {};
     timePickerConfig: FlatpickrOptions;
@@ -79,6 +80,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         // private dragulaService: DragulaService,
         private userService: UserService
     ) {
+        this.questionsSubmitted = 0;
+        this.typeView = null;
         // this.dragulaService.drop.subscribe(args => {
         //     this.questionnaire.get("questions").controls.forEach((q,i) => {
         //         q.patchValue({number: i + 1});
@@ -94,6 +97,23 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     toggleView(view: string) {
         this.typeView = view;
+
+        if (this.questionnaire.get("questions").length === 0) {
+            this.addQuestion(view);
+            // TODO: insert kind into question from this.typeView
+        }
+
+        if (this.questionnaire.get("questions").length === this.questionsSubmitted) {
+            //Handle change question type but not add new question
+            window.console.log(this.questionnaire.get('questions').value[this.questionnaire.get("questions").length - 1].kind);
+
+        }
+            //Log question Count-----------
+            // window.console.log(this.questionnaire.get('questions').length);
+    }
+
+    consoleTestCall(res: string) {
+        window.console.log("HERE: ",res)
     }
 
     ngOnInit() {
@@ -206,7 +226,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             }
 
         } else {
-           this.addQuestion();
+        //    this.addQuestion();
            this.forceOptionRequired(0);
         }
     }
@@ -230,52 +250,105 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.imgTooltipCtrls.toArray()[index].close();
     }
 
-    addQuestion() {
+    addQuestion(kind: string) {
         let questions = this.questionnaire.controls.questions;
 
         //Create form group for individual question
-        let question = this.fb.group({
-            body: ['', Validators.required],
-            kind: ['', Validators.required],
-            options: this.fb.array([]),
-            required: false,
-            number: questions.length + 1,
-            id: Math.random().toString().substring(2),
-        }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+        let question;
+
+        switch (kind) {
+            case "Radio":
+                question = this.fb.group({
+                    body: ['', Validators.required],
+                    kind: [kind, Validators.required],
+                    options: this.fb.array([]),
+                    required: false,
+                    canSelectMultiple: false,
+                    number: questions.length + 1,
+                    id: Math.random().toString().substring(2),
+                }, { validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)]) })
+                break;
+            case "Drop-down":
+                question = this.fb.group({
+                    body: ['', Validators.required],
+                    kind: [kind, Validators.required],
+                    options: this.fb.array([]),
+                    required: false,
+                    number: questions.length + 1,
+                    id: Math.random().toString().substring(2),
+                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+                break;
+            case "Short answer":
+                question = this.fb.group({
+                    body: ['', Validators.required],
+                    kind: [kind, Validators.required],
+                    options: this.fb.array([]),
+                    required: false,
+                    number: questions.length + 1,
+                    id: Math.random().toString().substring(2),
+                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+                break;
+            case "Stars":
+                question = this.fb.group({
+                    body: ['', Validators.required],
+                    kind: [kind, Validators.required],
+                    options: this.fb.array([]),
+                    upperLimit: 10,
+                    required: false,
+                    number: questions.length + 1,
+                    id: Math.random().toString().substring(2),
+                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+                break;
+            case "Number":
+                question = this.fb.group({
+                    body: ['', Validators.required],
+                    kind: [kind, Validators.required],
+                    options: this.fb.array([]),
+                    lowerLimit: 0,
+                    upperLimit: 100,
+                    required: false,
+                    number: questions.length + 1,
+                    id: Math.random().toString().substring(2),
+                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
+                break;
+            default:
+                return;
+        }
         
         questions.push(question);
+        this.questionsSubmitted++;
         this.questionnaire.wasChecked = false;
 
-        question.kindHasOptions = () => this.kindsWithOptions.includes(question.get('kind').value);
-        question.isOneOf = (kinds) => kinds.includes(question.get('kind').value);
+        // question.kindHasOptions = () => this.kindsWithOptions.includes(question.get('kind').value);
+        // question.isOneOf = (kinds) => kinds.includes(question.get('kind').value);
 
         //Observable for question kind. 
-        question.get('kind').valueChanges.subscribe(kind => {
+        // question.get('kind').valueChanges.subscribe(kind => {
 
-            //If kind of question has options, add an option. Only if coming from non option kind
-            if (this.kindsWithOptions.includes(kind)) {
-                if (question.controls.options.length === 0) {
-                    this.addOption(question);
-                }
-            } else {
-                while (question.controls.options.length > 0) {
-                    question.controls.options.removeAt(0);
-                }
-            }
+        //     //If kind of question has options, add an option. Only if coming from non option kind
+        //     if (this.kindsWithOptions.includes(kind)) {
+        //         if (question.controls.options.length === 0) {
+        //             this.addOption(question);
+        //         }
+        //     } else {
+        //         while (question.controls.options.length > 0) {
+        //             question.controls.options.removeAt(0);
+        //         }
+        //     }
 
-            if (kind === 'Matrix') {
-                question.addControl('columns', this.fb.array([]));
-                question.addControl('rows', this.fb.array([]));
-                this.addOneTo(question, 'columns');
-                this.addOneTo(question, 'columns');                
-                this.addOneTo(question, 'rows');
-                this.addOneTo(question, 'rows');                                               
-            } else {
-                question.removeControl('columns');
-                question.removeControl('rows');                              
-                this.focusedOption = 0;               
-            }
-        });
+        //     if (kind === 'Matrix') {
+        //         question.addControl('columns', this.fb.array([]));
+        //         question.addControl('rows', this.fb.array([]));
+        //         this.addOneTo(question, 'columns');
+        //         this.addOneTo(question, 'columns');                
+        //         this.addOneTo(question, 'rows');
+        //         this.addOneTo(question, 'rows');                                               
+        //     } else {
+        //         question.removeControl('columns');
+        //         question.removeControl('rows');                              
+        //         this.focusedOption = 0;               
+        //     }
+        // });
 
 
 
@@ -693,4 +766,21 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         };
         xhr.send();
     }
+
+
+
+    initMcOption() {
+        // initialize multiple choice option
+        // ImplementThis
+        return this._fb.group({ });
+    }
+
+    initDropDownOption() {
+        // initialize multiple choice option
+        // ImplementThis
+        return this._fb.group({});
+    }
+
+
 }
+

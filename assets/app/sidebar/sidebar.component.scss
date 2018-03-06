@@ -1,5 +1,5 @@
-$lightGreen: #8C9F76;
-$darkGreen: #417505;
+$primaryColor:  #28ab64;
+$lighterPrimary: #a2a2a2;
 $borderColor: rgb(226,226,226);
 
 h3 {
@@ -17,7 +17,7 @@ h3 {
   border-radius: 8px;
   box-sizing: border-box;
   margin: 20px auto;
-  padding: 20px 12px;
+  padding: 12px 10px 0px 10px;
 }
 
 .sMenu {
@@ -29,7 +29,7 @@ h3 {
 }
 
 .icons {
-  color: $darkGreen;
+  color: $primaryColor;
   display: block;
   font-size: 24px;
 
@@ -40,7 +40,7 @@ h3 {
 
 .line {
   height: 1px;
-  border-top: $darkGreen solid 1px;
+  border-top: $primaryColor solid 1px;
   width: 90%;
   margin: 4px auto;
 }
@@ -54,9 +54,9 @@ h3 {
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  border: 4px solid lighten($lightGreen,5);
+  border: 4px solid lighten($lighterPrimary,5);
   z-index: 3;
-  background-color: $lightGreen;
+  background-color: $lighterPrimary;
 }
 
 .content {
@@ -85,6 +85,7 @@ h3 {
   // display: absolute;
   // bottom: 0px;
   // left: 0px;
+  cursor: pointer;
   margin-top: 0;
 }
 
@@ -95,8 +96,17 @@ h3 {
 }
 
 .searchbar {
-  width: 65%;
-  font-size: .7rem;
+  width: 55%;
+  padding: 3px;
+  font-size: .9rem;
   font-family: Karla;
   text-align: center;
+}
+
+.primaryText {
+  color: $primaryColor;
+}
+
+.lpText {
+  color: $lighterPrimary;
 }

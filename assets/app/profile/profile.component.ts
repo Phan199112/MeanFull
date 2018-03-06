@@ -72,8 +72,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // load new data
         this.loading = true;
         this.loadProfile();
-        window.console.log("-----LOOK HERE------",this.network);
-
     }
 
     loadProfile() {
@@ -106,9 +104,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         this.network = res.json().network;
 
                         // counts
-                        this.nocreated = res.json().nocreated;
-                        this.notaken = res.json().notaken;
-                        this.nodiscussion = res.json().nodiscussion;
+                        this.nocreated = res.json().userprofile.nocreated;
+                        this.notaken = res.json().userprofile.notaken;
+                        this.nodiscussion = res.json().userprofile.nodiscussion;
 
                         //
                         this.me = this.userprofile.me;

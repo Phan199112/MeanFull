@@ -67,10 +67,11 @@ import {ResourceListComponent} from './resourceList/resourceList.component';
 import {LoginPopupComponent} from './loginPopup/loginPopup.component';
 import {ConfirmationPopupComponent} from './confirmationPopup/confirmationPopup.component';
 import {SearchPageComponent} from "./search/search.page.component";
-import { UserFloat } from "./sidebar/user.float.component";
 import { Sidebar } from "./sidebar/sidebar.component";
 import { FormButtons } from "./createForm/formButton.component";
-
+import { UserImageComponent } from "./sidebar/user.image.component";
+import { CommunityImageComponent } from "./sidebar/community.image.component";
+import { QuestionForm } from "./createForm/questionForm.component";
 
 
 import { ShareService } from "./share.service";
@@ -122,9 +123,11 @@ import { ShareService } from "./share.service";
         LoginPopupComponent,
         ConfirmationPopupComponent,
         SearchPageComponent,
-        UserFloat,
         Sidebar,
-        FormButtons
+        FormButtons,
+        CommunityImageComponent,
+        UserImageComponent,
+        QuestionForm
     ],
     imports: [
         // vendor //

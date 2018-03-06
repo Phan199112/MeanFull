@@ -22,10 +22,13 @@ export class FeedFormComponent implements OnInit {
     showdiscussion: boolean = false;
     hide: boolean = false;
     loggedin: boolean = false;
+    userData: any;
     count: string = null;
+    name : string;
     nocreated :any;
     notaken :any;
-    nodiscussion : any   
+    nodiscussion : any;
+    location: any;   
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
     @ViewChild('shareModal') shareModal;
 
@@ -66,25 +69,27 @@ export class FeedFormComponent implements OnInit {
 
 
     constructor(private http: Http, private modalService: NgbModal) {
-        //
+        this.userData = {};
+        this.nocreated = null;
+        this.name = "";
+        this.nodiscussion = null;
+        this.notaken = null;
+        this.location = {city: "", state: "", country:""};
     }
 
     ngOnInit() {
 
-        // window.console.log("Count total is", this.form.object.author.link);
-
         this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
             .then(res => {
-                window.console.log("Hit here");                    
 
-                if (this.status == '1') {
+                if (res) {
                     // counts
-                    window.console.log("Hit here");                    
-                    this.nocreated = res.json().nocreated;
-                    this.notaken = res.json().notaken;
-                    this.nodiscussion = res.json().nodiscussion;
-                    // window.console.log("Count total is", this.nocreated;
-
+                    this.userData = res.json();
+                    this.location = this.userData.userprofile.location;
+                    this.name = this.userData.userprofile.name;
+                    this.nocreated = this.userData.userprofile.nocreated || 0;
+                    this.nodiscussion = this.userData.userprofile.nodiscussion || 0;
+                    this.notaken = this.userData.userprofile.notaken || 0;
                 }
             })
 

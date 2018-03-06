@@ -1,0 +1,44 @@
+.iContainer {
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  flex-basis: 33%;
+  margin-bottom: 10px;
+
+  &:active {
+    outline-style: none;
+  }
+}
+
+a {
+    font-weight: 400;
+    font-family: Karla;
+    font-size: .75rem;
+    padding: auto 5px;
+    color: #2b2b2b;
+    display: block;
+
+   &:hover {
+    cursor: pointer;
+  }
+   
+}
+
+.img {
+  width: 70px;
+  width: 70px;
+  margin: 0px 5px;
+  border-radius: 6px;
+  // background: linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,.3) 100%);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+.title {
+    margin-top: 2px;
+    text-align: center;
+  }

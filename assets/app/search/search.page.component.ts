@@ -14,6 +14,7 @@ export class SearchPageComponent implements OnInit  {
     searchoutput: any = [];
     results: boolean = false;
     usersearchresultsList: any[] = [];
+    formsearchresultsList: any[] = [];
     communitysearchresultsList: any[] = [];
     tagsList: any[] = [];
 
@@ -36,6 +37,7 @@ export class SearchPageComponent implements OnInit  {
                     if (data.json().status == 1) {
                         this.usersearchresultsList = data.json().users;
                         this.communitysearchresultsList = data.json().communities;
+                        this.formsearchresultsList = data.json().forms;
                         this.tagsList = data.json().tags;
                         this.results = true;
                     } else {

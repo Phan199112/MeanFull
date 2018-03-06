@@ -23,7 +23,10 @@ var UserSchema = new Schema({
     education: Object,
     report: Object,
     tags: [{type: String}],
-    timestamp: String
+    timestamp: String,
+    notaken: Number,
+    nocreated: Number,
+    nodiscussion: Number
 });
 
 UserSchema.methods.generateHash = function(password) {

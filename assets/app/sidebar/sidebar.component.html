@@ -1,23 +1,27 @@
 <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
     <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search" formControlName="searchterm" [ngClass]="{'form-control': true}" >
-    <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [disabled]="searchbox.invalid && searchbox.wasChecked"
-        (click)="checkSubmit(searchbox)">Search</button> -->
 </form>
+
 <div class="sContainer">
-    <h3>People</h3>
+    <h3 class="lpText">People</h3>
     <div class="peopleContainer">
         <div *ngFor="let p of users">
-            <network-item [data]="p"> </network-item>
+            <user-image [data]="p"> </user-image>
         </div>
     </div>
 </div>
 
 <div class="sContainer">
-    <community-list [user]="null"></community-list>
+    <h3 class="lpText">Communities</h3>
+    <div class="peopleContainer">
+        <div *ngFor="let c of communities">
+            <community-image [data]="c"> </community-image>
+        </div>
+    </div>
 </div>
 
 <div class="sContainer">
-<tag-list [user]="null" [comm]="null"></tag-list>
+    <tag-list [user]="null" [comm]="null"></tag-list>
 </div>
 
 

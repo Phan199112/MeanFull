@@ -1,6 +1,7 @@
 var TagsModel = require('../db.models/tags.model');
 var UserModel = require('../db.models/user.model');
 var CommunityModel = require('../db.models/community.model');
+var FormModel = require('../db.models/form.model');
 var autocomplete = require('../modules/mongoose-in-memory-autocomplete-multiple/main');
 var cron = require('node-cron');
 
@@ -122,6 +123,7 @@ module.exports = function(app, passport, manager, hashids) {
         var usersdata = [];
         var communitiesdata = [];
         var tagsdata = [];
+        var formsdata = [];
 
         // promises
         var mainpromise = [];
@@ -133,21 +135,24 @@ module.exports = function(app, passport, manager, hashids) {
 
             return new Promise(function (resolve, reject) {
                 // do the search
-                UserAutoComplete.getResults(keyword, function (err, words) {
+                UserModel.find({'searchname': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
                     if (err) {
-                        if (err === "No Matches") {
-                            resolve();
-                        } else {
-                            reject();
-                        }
+                        reject();
 
                     } else {
-                        // loop the change format
-                        console.log(words);
-                        for (var i = 0; i < words.length; i++) {
-                            searchtempoutput.push(words[i].data[0]);
+                        if (words) {
+                            // loop the change format
+                            for (var i = 0; i < words.length; i++) {
+                                var current = words[i];
+                                console.log(current._id);
+                                searchtempoutput.push(current._id);
+                            }
+                            resolve();
+
+                        } else {
+                            resolve();
                         }
-                        resolve();
+
                     }
                 });
             })
@@ -157,6 +162,7 @@ module.exports = function(app, passport, manager, hashids) {
                         return new Promise(function (resolve, reject) {
                             UserModel.findById(x, function (err, user) {
                                 if (err) {
+                                    console.log(err);
                                     reject(err);
                                 } else {
                                     if (user) {
@@ -179,7 +185,7 @@ module.exports = function(app, passport, manager, hashids) {
                     });
 
                     return Promise.all(networkpromise).then(function () {
-
+                        console.log(usersdata);
                     });
                 });
         };
@@ -189,22 +195,25 @@ module.exports = function(app, passport, manager, hashids) {
             var commpromise = [];
 
             return new Promise(function (resolve, reject) {
-                // do the search
-                CommunityAutoComplete.getResults(keyword, function (err, words) {
+                //
+                CommunityModel.find({'title': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
                     if (err) {
-                        if (err === "No Matches") {
-                            resolve();
-                        } else {
-                            reject();
-                        }
+                        reject();
 
                     } else {
-                        // loop the change format
-                        console.log(words);
-                        for (var i = 0; i < words.length; i++) {
-                            searchtempoutput.push(words[i].data[0]);
+                        if (words) {
+                            // loop the change format
+                            for (var i = 0; i < words.length; i++) {
+                                var current = words[i];
+                                console.log(current._id);
+                                searchtempoutput.push(current._id);
+                            }
+                            resolve();
+
+                        } else {
+                            resolve();
                         }
-                        resolve();
+
                     }
                 });
             })
@@ -239,6 +248,63 @@ module.exports = function(app, passport, manager, hashids) {
                 });
         };
 
+        var tempFormSearch = function(keyword) {
+            var searchtempoutput = [];
+            var formpromise = [];
+
+            return new Promise(function (resolve, reject) {
+                //
+                FormModel.find({'public': true, 'shared': true, 'title': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
+                    if (err) {
+                        reject();
+
+                    } else {
+                        if (words) {
+                            // loop the change format
+                            for (var i = 0; i < words.length; i++) {
+                                var current = words[i];
+                                console.log(current._id);
+                                searchtempoutput.push(current._id);
+                            }
+                            resolve();
+
+                        } else {
+                            resolve();
+                        }
+
+                    }
+                });
+            })
+                .then(function () {
+                    // query username and link of the person's network
+                    var tempfunctionform = function (x) {
+                        return new Promise(function (resolve, reject) {
+                            FormModel.findById(x, function (err, form) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    if (form) {
+                                        formsdata.push({
+                                            title: form.title,
+                                            id: hashids.encodeHex(form._id)
+                                        });
+                                    }
+                                    resolve();
+                                }
+                            });
+                        });
+                    };
+
+                    searchtempoutput.forEach(function (id) {
+                        formpromise.push(tempfunctionform(id));
+                    });
+
+                    return Promise.all(formpromise).then(function () {
+
+                    });
+                });
+        };
+
         var tempTagSearch = function(keyword) {
             return new Promise(function (resolve, reject) {
                 TagsAutoComplete.getResults(keyword, function (err, words) {
@@ -263,6 +329,7 @@ module.exports = function(app, passport, manager, hashids) {
         // execute promises
         mainpromise.push(tempUserSearch(keyword));
         mainpromise.push(tempCommSearch(keyword));
+        mainpromise.push(tempFormSearch(keyword));
         mainpromise.push(tempTagSearch(keyword));
 
         return Promise.all(mainpromise).then(function () {
@@ -270,6 +337,7 @@ module.exports = function(app, passport, manager, hashids) {
                 status: 1,
                 users: usersdata,
                 communities: communitiesdata,
+                forms: formsdata,
                 tags: tagsdata
             });
         })

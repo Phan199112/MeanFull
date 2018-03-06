@@ -37,6 +37,8 @@ export class CommunityListComponent implements OnInit {
                             this.randomlist.push(new CommunityModel(obj));
                         }
                     }
+                    window.console.log(this.data);
+
                 }
 
             })

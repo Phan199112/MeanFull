@@ -1,0 +1,93 @@
+$color1: #28ab64;
+$borderColor: rgb(226,226,226);
+
+.title {
+    font-family: Karla;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #2b2b2b;
+    margin: 15px;
+    margin-top: 30px;
+}
+
+.subtleText {
+    color: #999;
+    font-family: Karla;
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+.titleWithButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    margin: 20px auto 15px auto;
+}
+
+.niceTextInput {
+    background: none;
+    outline-style: none;
+    border: solid 1px lighten($color1, 5);
+    border-radius: 4px;
+    padding: 2px;
+    // border-bottom: solid 2px $color1;
+    width: 95%;
+
+   &.bottom {
+        border: none;
+        border-bottom: solid 1px lighten($color1, 5);
+    }
+}
+
+.addButton {
+    background: #fff;
+    border: 1px solid $color1;
+    border-radius: 12px;
+    padding: 3px 6px;
+    line-height: 1.5rem;
+
+    font-size: .9rem;
+    font-family: Karla;
+    color: lighten($color1, 5) !important;
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($color1, 5);
+        border: none;
+        color: #fff !important;
+    }
+}
+
+.multipleChoice {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width:90%;
+    margin: 0 auto;
+}
+
+.responseContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width:90%;
+    height: auto;
+}
+
+.responseRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 5px auto;
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}

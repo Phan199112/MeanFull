@@ -64,9 +64,18 @@
                             </div>
 
                             <!-- //Questions -->
+                            <!-- Declared form array -->
                             <div formArrayName="questions" id="questions">
-                                <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls">
-                                    <div [ngClass]="{'question': true, 'row': true, 'active': activeQuestion == question.get('id').value}" [attr.data-i]="i" [attr.data-id]="question.get('id').value" *ngFor="let question of questionnaire.get('questions').controls; let i = index" [formGroupName]="i" (click)="activeQuestion = question.get('id').value">
+
+                                <!-- //Gets all the questions in that have been posted -->
+                                <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls"> 
+                                   
+                                    <!-- questions iteration -->
+                                    <div [ngClass]="{'question': true, 'row': true, 'active': activeQuestion == question.get('id').value}" 
+                                        [attr.data-i]="i" [attr.data-id]="question.get('id').value" 
+                                        *ngFor="let question of questionnaire.get('questions').controls; let i = index" [formGroupName]="i"
+                                         (click)="activeQuestion = question.get('id').value">
+
                                     <div class="col">
 
                                         <!-- //Type selection on FormArray questions-->
@@ -102,15 +111,18 @@
                                         </div>
 
 
-
+                                        <!-- Actual question form controls -->
                                         <div class="form-group">
                                             <!-- <label class="lead">Select A Question Type</label> -->
+                                            <!-- body -->
                                             <textarea style="width: 400px; margin-right: 10px;"
                                                 autosize
                                                 rows="1"
                                                 [ngClass]="{'form-control': true, 'underlined-input': true, 'question-body': true, 'is-invalid': isInvalid(question.get('body'))}"
                                                 formControlName="body"
-                                                placeholder="Enter Your Question"></textarea>                                               
+                                                placeholder="Enter Your Question"></textarea>     
+                                            
+                                            <!-- image  -->
                                             <span class="file-input button-right">
                                                 <div class="row">
                                                     <div class="col" *ngIf="pics[question.get('id').value]">
@@ -152,6 +164,8 @@
                                                     Question body is required
                                             </div>
                                         </div>
+
+                                        <!-- Required checkbox -->
                                         <div class="form-group" style="display: inline-block; margin-left: 30px">
                                             <div class="form-check form-control pl-0 border-0" style="display: inline-block;">
                                                     <label class="form-check-label">
@@ -163,6 +177,8 @@
                                                     </label>
                                             </div>
                                         </div>
+
+                                        <!-- Options -->
                                         <div *ngIf="question.get('kind').value">
                                                 <div *ngIf="question.kindHasOptions()">
                                                     <div class="form-group" formArrayName="options">
@@ -263,6 +279,9 @@
                                             </div>
                                     </div>
                                     </div>
+                                    <!-- ^Ends question of questions array iteration -->
+
+
                                 </div>
                             </div>
                             <div *ngIf="questionnaire.get('questions').controls[0].get('kind').value">
