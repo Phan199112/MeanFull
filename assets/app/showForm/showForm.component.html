@@ -11,7 +11,7 @@
                     <img [src]="question.pic"/>
                 </div>
                 <div *ngIf="question.options">
-                    <div *ngIf="question.kind == 'Radio'">
+                    <div *ngIf="question.kind == 'Multiple Choice'">
                         <div *ngFor="let option of question.options" class="form-control">
                             <label>
                                 <input formControlName="answer" [value]="option.label" type="radio" (click)="loginPopup.check(data.loginRequired)" />
@@ -68,7 +68,7 @@
                     </div>
                     <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>                            
                 </div>
-                <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short answer'"/>
+                <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short Answer'"/>
                 <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                 <div *ngIf="isInvalid(i)" class="invalid-feedback">
                     Option is required

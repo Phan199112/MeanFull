@@ -2,29 +2,73 @@
         <!-- Create Questions Container -->
         <h3 class="containerTitle">Create a Question</h3>
         <form [formGroup]="questionnaire" style="width: 100%">
-            <div class="oContainer">
-        <div class="qContainer">
-            <ul *ngFor="let k of kinds; let kIndex = index">
-                <form-buttons formControlName="kind" [active]="typeView" [qKind]="k" (selected)="toggleView($event)"></form-buttons>
-                <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>
-            </ul>
+            <div *ngIf="step === 1" class="oContainer">
+                <div class="qContainer">
+                    <ul *ngFor="let k of kinds; let kIndex = index">
+                        <form-buttons formControlName="kind" [active]="typeView" [qKind]="k" (selected)="toggleView($event)"></form-buttons>
+                        <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>
+                    </ul>
+                </div>
+                <div class="lContainer">
+                    <!-- <div *ngIf="!typeView"><h1 class="containerTitle">Select a Question Style to Begin {{typeView}} </h1></div> -->
+                    <div class="responseConfiguration">
+                        <mc-question-form *ngIf="questionnaire.get('kind').value == 'Multiple Choice'" (questionData)="pushQuestionToList($event)"></mc-question-form>
+                        <sa-question-form *ngIf="questionnaire.get('kind').value == 'Short Answer'" (questionData)="pushQuestionToList($event)"></sa-question-form>
+                        <rating-question-form *ngIf="questionnaire.get('kind').value == 'Rating'" (questionData)="pushQuestionToList($event)"></rating-question-form>
+                        <number-question-form *ngIf="questionnaire.get('kind').value == 'Number'" (questionData)="pushQuestionToList($event)"></number-question-form>
+                    </div>
+
+                    <!-- <a class="addButton">Add Question</a> -->
+                </div>
+
+                <!-- //Finished Questions Container -->
+                <div class="rContainer">
+                    
+                    <!-- <h3 *ngIf="!questionData.length" class="containerTitle">Your Completed Questions Will Appear Here</h3> -->
+                    <div *ngFor="let q of questionData; let i = index" class="qBlock">
+                        
+                        <!-- <div> -->
+                            <h4 class="qbType">Question {{i+1}}: {{q.kind}}</h4>
+                            <h2 class="qbBody">{{q.body}}</h2>
+                            
+                            <div *ngIf="q.kind === 'Multiple Choice'">
+                                <div class="qbOptions" *ngFor="let optionGroup of q.options">
+                                    <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                                    <h3 class="qbOption" style="">{{optionGroup.option}}</h3>
+                                </div>
+                            </div>
+
+
+                            <div *ngIf="q.kind === 'Rating'">
+                                <h4 class="qbOption qbRating">Rating out of <span class="qbSpan">{{q.scale}}</span></h4>
+                            </div>
+
+                            <div *ngIf="q.kind === 'Number'">
+                                <h4 class="qbOption" *ngIf="q.boundaries">A number between <span class="qbSpan">{{q.lowerBoundary}}</span> to <span class="qbSpan">{{q.upperBoundary}}</span></h4>
+                                <h4 *ngIf="!q.boundaries">No boundaries set for this question</h4>
+                            </div>
+
+                        <!-- </div> -->
+
+                    </div>
+
+                    <div id="sbContainer">
+                        <a class="submitButton" (click)="nextView()" >Next</a>
+                    </div>
+                </div>
         </div>
-        <div class="lContainer">
-            <!-- <div *ngIf="!typeView"><h1 class="containerTitle">Select a Question Style to Begin {{typeView}} </h1></div> -->
-            <div class="responseConfiguration">
-                <question-form (questionData)="consoleTestCall($event)"></question-form>
+        <div *ngIf="step === 2" class="oContainer">
+            <h3>Publish & Share</h3>
+            <div>
+                <h6 class="title">Allow User to Select Multiple Choices?</h6>
+                <div style="display:flex; justify-content: flex-start;">
+                    <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="false" [title]="'No'" (selected)="toggleMultiple($event)"
+                        formControlName="canSelectMultiple"></switch-buttons>
+                    <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="true" [title]="'Yes'" (selected)="toggleMultiple($event)"
+                        formControlName="canSelectMultiple"></switch-buttons>
+                </div>
             </div>
         </div>
-
-        <!-- //Finished Questions Container -->
-        <div class="rContainer">
-            <h3 class="containerTitle">Your Completed Questions Will Appear Here</h3>
-            <!-- <div *ngFor="let question of questionnaire.get('questions').controls; let i = index" >
-                //list questions posted
-                <p>{{question.get('body') | json }}</p>
-            </div> -->
-        </div>
-    </div>
 </form>
 
 </div>

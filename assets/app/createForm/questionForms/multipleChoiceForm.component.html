@@ -1,0 +1,87 @@
+<div style="width: 100%">
+    <form [formGroup]="question" novalidate >    
+        <div class="multipleChoice">
+            <h6 class="title">What is your question?</h6>
+            <div style="display: flex; align-items: center; width: 100%">
+                <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
+            </div>
+            <!-- <a formControlName="required">Required</a> -->
+
+
+            <!-- <div class="titleWithButton"> -->
+                <h6 class="title">Choices</h6>
+            <!-- </div> -->
+
+            <div class="responseContainer" formArrayName="options">
+                <div class="responseRow" *ngFor="let x of question.get('options').controls; let i = index">
+                    <div class="flex" [formGroupName]="i">
+                        <div style="margin-right: 2px"><label class="subtleText">- </label></div>
+                        <input placeholder="Enter response choice" class="niceTextInput" type="text" formControlName="option" #f (keyup.enter)="enterMcOption(f)" />
+                        <i *ngIf="question.get('options').length > 1" class="fa fa-times cross" (click)="removeOption(i)"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- <a class="addButton" (click)="addMcOption()">Add</a> -->
+
+            <div>
+                <h6 class="title">Allow User to Select Multiple Choices?</h6>
+                <div style="display:flex; justify-content: flex-start;">
+                    <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="false" [title]="'No'" (selected)="toggleMultiple($event)"
+                        formControlName="canSelectMultiple"></switch-buttons>
+                    <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="true" [title]="'Yes'" (selected)="toggleMultiple($event)"
+                        formControlName="canSelectMultiple"></switch-buttons>
+                </div>
+            </div>
+
+            <div class="imgContainer">
+                <h6 class="title">Add an image</h6>
+                <label for="picFile" class="submitButton not">Upload</label>
+                <input id="picFile" title="Hello"  style="visibility:hidden;" type="file" (change)="onPicChange(question, $event)" />
+            </div>
+
+            <!-- <span class="file-input button-right">
+                <div class="row">
+                    <div class="col" *ngIf="pics[question.get('id').value]">
+                        <img style="border:1px solid gray;width:100px;" id="preview" [src]="pics[question.get('id').value]">
+                    </div>
+                    <div class="col p-0">
+                        
+                        <ng-template #imgTooltip>
+                            <div class="input-group">
+                                <input type="text" #imgUrl class="form-control" placeholder="Enter an image URL">
+                                <div class="input-group-append">
+                                    <button (click)="setPicUrl(i, imgUrl.value)" class="btn btn-outline-secondary">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <span>OR</span>
+                            <label [for]="'picFile-' + i" class="btn btn-primary">Upload image</label>
+                        </ng-template>
+                       
+                        <label title="Add an image to the question" [ngbTooltip]="imgTooltip" #imgTooltipCtrl="ngbTooltip" placement="right" triggers="manual"
+                            (click)="imgTooltipCtrl.open()" class="btn-small mouseChangeToHand">
+                            <i #imgTooltipToggle class="fa fa-picture-o mouseChangeToHand"></i>
+                        </label>
+                        <input class="image-file" [id]="'picFile-' + i" type="file" (change)="onPicChange(question, $event)" />
+                        <input [id]="'picFile-' + i" type="file" (change)="pics[question.get('id').value] = '/images/emoji-thinking.png'" />
+                        <div class="btn-small" title="Remove image">
+                            <i class="delete-question fa fa-trash-o mouseChangeToHand" *ngIf="pics[question.get('id').value]" (click)="pics[question.get('id').value] = null"
+                                aria-hidden="true"></i>
+                        </div>
+                        <input type="hidden" formControlName="pic"/>
+                    </div>
+                </div>
+            </span> -->
+
+        </div>
+
+
+
+
+        <div id="sbContainer">
+            <a class="submitButton" (click)="submitQuestion()">Add Question</a>
+        </div>
+    </form>
+</div>

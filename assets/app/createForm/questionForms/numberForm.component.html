@@ -1,0 +1,43 @@
+<div style="width: 100%">
+    <form [formGroup]="question" novalidate (ngSubmit)=submitQuestion()>    
+        <div class="multipleChoice">
+            <h6 class="title">What is your question?</h6>
+            <div style="display: flex; align-items: center; width: 100%">
+                <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
+            </div>
+            <!-- <a formControlName="required">Required</a> -->
+
+            <div>
+                <h6 class="title" style="margin-bottom: 20px">Set a Boundary for the Number?</h6>    
+                <div style="display:flex; justify-content: flex-start; margin-bottom: 20px;">
+                    <switch-buttons [active]="question.get('boundaries').value" [option]="false" [title]="'No'" (selected)="toggleBoundaries($event)" formControlName="boundaries"></switch-buttons>
+                    <switch-buttons [active]="question.get('boundaries').value" [option]="true" [title]="'Yes'" (selected)="toggleBoundaries($event)" formControlName="boundaries"></switch-buttons>
+                </div>         
+            </div>
+
+            <div class="boundaries" *ngIf="question.get('boundaries').value">
+                <div class="boundary">
+                    <label class="bLabel">Minimum: </label>
+                    <input type="number" class="niceTextInput" formControlName="lowerBoundary" />
+                </div>
+
+                <div class="boundary">
+                    <label class="bLabel">Maximum: </label>
+                    <input type="number" class="niceTextInput" value="question.get('upperBoundary').value" formControlName="upperBoundary" />
+                </div>
+            </div>
+
+            <div class="imgContainer">
+                <h6 class="title">Add an image</h6>
+                <label for="picFile" class="submitButton not">Upload</label>
+                <input id="picFile" title="Hello" style="visibility:hidden;" type="file" (change)="onPicChange(question, $event)" />
+            </div>
+
+        </div>
+
+        <div id="sbContainer">
+            <a class="submitButton" (click)="submitQuestion()">Add Question</a>
+        </div>
+    </form>
+</div>

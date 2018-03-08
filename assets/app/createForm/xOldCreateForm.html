@@ -183,7 +183,7 @@
                                                 <div *ngIf="question.kindHasOptions()">
                                                     <div class="form-group" formArrayName="options">
                                                         <div class="question-option" *ngFor="let option of question.get('options').controls; let j = index" [formGroupName]="j">
-                                                            <input name="option" [type]="getInputType(question)" *ngIf="question.isOneOf(['Radio', 'Checkboxes'])"
+                                                            <input name="option" [type]="getInputType(question)" *ngIf="question.isOneOf(['Multiple Choice', 'Checkboxes'])"
                                                             />
                                                             <span *ngIf="question.isOneOf(['Drop-down', 'Rank'])">{{j+1}}. </span>
                                                             <input 
@@ -211,7 +211,7 @@
                                                         Questions with options must have at least one option
                                                     </div>
                                                 </div>
-                                                <input type="text" *ngIf="question.get('kind').value == 'Short answer'">
+                                                <input type="text" *ngIf="question.get('kind').value == 'Short Answer'">
                                                 <textarea *ngIf="question.get('kind').value == 'Paragraph'"></textarea>
                                                 <!-- <div class="matrix" *ngIf="question.get('kind').value == 'Matrix'">
                                                     <table #matrix class="table-responsive" (mousemove)="onMatrixDrag($event, matrix)" (touchmove)="onMatrixDrag($event, matrix)">

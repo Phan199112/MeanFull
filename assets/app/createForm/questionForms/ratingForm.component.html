@@ -1,0 +1,35 @@
+<div style="width: 100%">
+    <form [formGroup]="question" novalidate (ngSubmit)=submitQuestion()>    
+        <div class="multipleChoice">
+            <h6 class="title">What is your question?</h6>
+            <div style="display: flex; align-items: center; width: 100%">
+                <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
+            </div>
+            <!-- <a formControlName="required">Required</a> -->
+
+            <div>
+                <h6 class="title">Select a Rating Scale</h6>    
+                <div class='starArray'>
+                    <div *ngFor="let x of temp">
+                     <img src="/images/icons/stars.png" />
+                    </div>
+                </div>
+                <div style="display:flex">
+                    <switch-buttons [active]="question.get('scale').value" [option]="'5'" [title]="'5'" (selected)="toggleLimit($event)" formControlName="scale"></switch-buttons>
+                    <switch-buttons [active]="question.get('scale').value" [option]="'10'" [title]="'10'" (selected)="toggleLimit($event)" formControlName="scale"></switch-buttons>
+                </div>
+            </div>
+
+            <div class="imgContainer">
+                <h6 class="title">Add an image</h6>
+                <label for="picFile" class="submitButton not">Upload</label>
+                <input id="picFile" title="Hello" style="visibility:hidden;" type="file" (change)="onPicChange(question, $event)" />
+            </div>
+        </div>
+        
+        <div id="sbContainer">
+            <a class="submitButton" (click)="submitQuestion()">Add Question</a>
+        </div>
+    </form>
+</div>

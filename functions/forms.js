@@ -69,7 +69,7 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
     // loop through all questions
     for (var i = 0; i < noquestions; i++) {
         // test first of this question is of a suitable type:
-        if (types[i] !== "Short answer" && types[i] !== "Paragraph" && types[i] !== "Matrix") {
+        if (types[i] !== "Short Answer" && types[i] !== "Paragraph" && types[i] !== "Matrix") {
             // declare temp
             var temp = [];
 
@@ -164,7 +164,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
     // loop through all questions
     for (var i = 0; i < noquestions; i++) {
         // test first of this question is of a suitable type:
-        if (types[i] !== "Short answer" && types[i] !== "Paragraph" && types[i] !== "Matrix") {
+        if (types[i] !== "Short Answer" && types[i] !== "Paragraph" && types[i] !== "Matrix") {
             // declare temp
             var temp = [];
             var temp_male = [];

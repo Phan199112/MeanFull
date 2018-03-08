@@ -35,23 +35,24 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaire: FormGroup;
     cool: string;
-    kinds: string[] = ["Radio", "Checkboxes", "Drop-down", "Short answer", "Stars", "Number"]; //, "Rank", "Matrix"
-    kindsWithOptions: string[] = ["Radio", "Checkboxes", "Drop-down", "Rank"];
+    kinds: string[] = ["Multiple Choice", "Short Answer", "Rating", "Number"]; //, "Rank", "Matrix", "Checkbox", "Stars", "Drop-down"
+    kindsWithOptions: string[] = ["Multiple Choice", "Checkboxes", "Drop-down", "Rank"];
     kindIcons: any = {
-        'Radio': 'list.png',
+        'Multiple Choice': 'list.png',
         'Checkboxes': 'checkbox.png',
         'Drop-down': 'sort.png',
         'Rank': 'rank.png',
-        'Short answer': 'textbox.png',
+        'Short Answer': 'textbox.png',
         'Matrix': 'matrix.png',
         'Stars': 'stars.png'
     };
     kindAliases: any = {
-        'Radio': 'Multiple Choice',
-        'Short answer': 'Text question'
+        'Multiple Choice': 'Multiple Choice',
+        'Short Answer': 'Text question'
     };
     typeView: string = null;
     kind: string = null;
+    questionData: Object[] = [];
     question: any = null;
     edit: boolean = false;
     activeQuestion: string;
@@ -77,22 +78,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         private formService: FormService, 
         private router: Router,
         private route: ActivatedRoute,
-        // private dragulaService: DragulaService,
+        private dragulaService: DragulaService,
         private userService: UserService
     ) {
         this.questionsSubmitted = 0;
         this.typeView = null;
-        // this.dragulaService.drop.subscribe(args => {
-        //     this.questionnaire.get("questions").controls.forEach((q,i) => {
-        //         q.patchValue({number: i + 1});
-        //     });
-        // });
-        // this.dragulaService.drag.subscribe(args => {
-        //     if (!this.autoScroll) {
-        //         this.autoScroll = autoScroll([window, document.body], {margin: 50, autoScroll: () => this.dragulaService.bags[0].drake.dragging});
-        //     }
-        //     this.activeQuestion = args[1].dataset.id;
-        // });
     }
 
     toggleView(view: string) {
@@ -105,15 +95,15 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
         if (this.questionnaire.get("questions").length === this.questionsSubmitted) {
             //Handle change question type but not add new question
-            window.console.log(this.questionnaire.get('questions').value[this.questionnaire.get("questions").length - 1].kind);
-
+            // window.console.log(this.questionnaire.get('questions').value[this.questionnaire.get("questions").length - 1].kind);
         }
             //Log question Count-----------
             // window.console.log(this.questionnaire.get('questions').length);
     }
 
-    consoleTestCall(res: string) {
-        window.console.log("HERE: ",res)
+    pushQuestionToList(res: object) {
+        this.questionData.push(res);
+            window.console.log("qArray: ",this.questionData);
     }
 
     ngOnInit() {
@@ -254,102 +244,10 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         let questions = this.questionnaire.controls.questions;
 
         //Create form group for individual question
-        let question;
-
-        switch (kind) {
-            case "Radio":
-                question = this.fb.group({
-                    body: ['', Validators.required],
-                    kind: [kind, Validators.required],
-                    options: this.fb.array([]),
-                    required: false,
-                    canSelectMultiple: false,
-                    number: questions.length + 1,
-                    id: Math.random().toString().substring(2),
-                }, { validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)]) })
-                break;
-            case "Drop-down":
-                question = this.fb.group({
-                    body: ['', Validators.required],
-                    kind: [kind, Validators.required],
-                    options: this.fb.array([]),
-                    required: false,
-                    number: questions.length + 1,
-                    id: Math.random().toString().substring(2),
-                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
-                break;
-            case "Short answer":
-                question = this.fb.group({
-                    body: ['', Validators.required],
-                    kind: [kind, Validators.required],
-                    options: this.fb.array([]),
-                    required: false,
-                    number: questions.length + 1,
-                    id: Math.random().toString().substring(2),
-                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
-                break;
-            case "Stars":
-                question = this.fb.group({
-                    body: ['', Validators.required],
-                    kind: [kind, Validators.required],
-                    options: this.fb.array([]),
-                    upperLimit: 10,
-                    required: false,
-                    number: questions.length + 1,
-                    id: Math.random().toString().substring(2),
-                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
-                break;
-            case "Number":
-                question = this.fb.group({
-                    body: ['', Validators.required],
-                    kind: [kind, Validators.required],
-                    options: this.fb.array([]),
-                    lowerLimit: 0,
-                    upperLimit: 100,
-                    required: false,
-                    number: questions.length + 1,
-                    id: Math.random().toString().substring(2),
-                }, {validator: Validators.compose([this.optionsHaveErrors, this.hasNoOptions.bind(this)])});
-                break;
-            default:
-                return;
-        }
         
         questions.push(question);
         this.questionsSubmitted++;
         this.questionnaire.wasChecked = false;
-
-        // question.kindHasOptions = () => this.kindsWithOptions.includes(question.get('kind').value);
-        // question.isOneOf = (kinds) => kinds.includes(question.get('kind').value);
-
-        //Observable for question kind. 
-        // question.get('kind').valueChanges.subscribe(kind => {
-
-        //     //If kind of question has options, add an option. Only if coming from non option kind
-        //     if (this.kindsWithOptions.includes(kind)) {
-        //         if (question.controls.options.length === 0) {
-        //             this.addOption(question);
-        //         }
-        //     } else {
-        //         while (question.controls.options.length > 0) {
-        //             question.controls.options.removeAt(0);
-        //         }
-        //     }
-
-        //     if (kind === 'Matrix') {
-        //         question.addControl('columns', this.fb.array([]));
-        //         question.addControl('rows', this.fb.array([]));
-        //         this.addOneTo(question, 'columns');
-        //         this.addOneTo(question, 'columns');                
-        //         this.addOneTo(question, 'rows');
-        //         this.addOneTo(question, 'rows');                                               
-        //     } else {
-        //         question.removeControl('columns');
-        //         question.removeControl('rows');                              
-        //         this.focusedOption = 0;               
-        //     }
-        // });
-
 
 
         //enable first required control when adding second question
@@ -368,7 +266,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     getInputType(question) {
         switch(question.get("kind").value) {
-            case "Radio":
+            case "Multiple Choice":
                 return "radio";
             case "Checkboxes":
                 return "checkbox";
@@ -767,20 +665,9 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         xhr.send();
     }
 
-
-
-    initMcOption() {
-        // initialize multiple choice option
-        // ImplementThis
-        return this._fb.group({ });
+    nextView() {
+        this.step = 2;
     }
-
-    initDropDownOption() {
-        // initialize multiple choice option
-        // ImplementThis
-        return this._fb.group({});
-    }
-
 
 }
 

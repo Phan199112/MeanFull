@@ -14,14 +14,4 @@ export class CommunityImageComponent implements OnInit {
     ngOnInit() {
         this.title  = this.data.title;
     }
-
-    // prepareTitle() {
-    //     var split = this.data.title.split(" ");
-    //     var temp = [];
-
-
-
-    // }
-
-    
 }

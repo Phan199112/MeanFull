@@ -1,6 +1,10 @@
 $color1: #28ab64;
 $borderColor: rgb(226,226,226);
 
+h3 {
+    margin-bottom: 2px !important;
+}
+
 .centerxandy {
     display: flex;
     flex-direction: column;
@@ -30,7 +34,7 @@ $borderColor: rgb(226,226,226);
     font-weight: 300;
     font-size: 1.4rem;
     text-align: center;
-    margin: 12px auto;
+    margin: 20px auto;
     margin-bottom: 25px;
     color: #999;
 }
@@ -56,6 +60,10 @@ $borderColor: rgb(226,226,226);
     width: 100%;
 }
 
+.lContainer {
+    width: 70%;
+}
+
 .qContainer {
     width: auto;
     padding: 20px 10px;
@@ -76,14 +84,19 @@ $borderColor: rgb(226,226,226);
     background: #FFF;
     border-top: solid 1px $borderColor;
     border-bottom: solid 1px $borderColor;
+    position: relative;
 }
 
 .rContainer {
     background: #FFF;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     border-bottom-right-radius:  12px;   
     border-top-right-radius:  12px;  
     border: solid 1px $borderColor;
-    // border-left: none;
+    position: relative;
 }
 
 .iTitle {
@@ -116,4 +129,89 @@ $borderColor: rgb(226,226,226);
     border: none;
     border-bottom: solid 2px $color1;
     width: 100%;
+}
+
+.qBlock {
+    padding: 25px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    // border-bottom: solid 1px $borderColor;
+}
+
+.qbType {
+    color: #CCC;
+    font-size: .7rem;
+}
+
+.qbBody {
+    color: $color1;
+    font-size: 1.3rem;
+    font-family: Karla;
+}
+
+.qbOptions {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 20px;
+    margin-bottom: none;
+}
+
+.qbOption {
+    color: #999;
+    font-size: 1rem;
+    font-family: Karla;
+
+    &.qbOption {
+        padding-left: 20px;
+    }
+}
+
+
+.qbSpan {
+    color: $color1;
+    font-size: 1.2rem;
+    font-family: Karla; 
+    font-weight: 700; 
+}
+
+#sbContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: 100%;
+    padding-right: 20px;
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 10px;
+}
+
+.submitButton {
+    background: $color1;
+    border-radius: 8px;
+    padding: 3px 6px;
+    line-height: 1.5rem;
+    min-width: 20%;
+    width: auto;
+    text-align: center;
+    border: none;
+
+    font-size: .9rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin-top: 80px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($color1, 5);
+    }
 }

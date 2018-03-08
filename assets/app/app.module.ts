@@ -71,7 +71,11 @@ import { Sidebar } from "./sidebar/sidebar.component";
 import { FormButtons } from "./createForm/formButton.component";
 import { UserImageComponent } from "./sidebar/user.image.component";
 import { CommunityImageComponent } from "./sidebar/community.image.component";
-import { QuestionForm } from "./createForm/questionForm.component";
+import { SwitchButtons } from "./createForm/switchButtons.component";
+import { MultipleChoiceQuestionForm } from "./createForm/questionForms/multipleChoiceForm.component";
+import { ShortAnswerQuestionForm } from "./createForm/questionForms/shortAnswerForm.component";
+import { RatingQuestionForm } from "./createForm/questionForms/ratingForm.component";
+import { NumberQuestionForm } from "./createForm/questionForms/numberForm.component";
 
 
 import { ShareService } from "./share.service";
@@ -127,7 +131,11 @@ import { ShareService } from "./share.service";
         FormButtons,
         CommunityImageComponent,
         UserImageComponent,
-        QuestionForm
+        MultipleChoiceQuestionForm,
+        ShortAnswerQuestionForm,
+        RatingQuestionForm,
+        NumberQuestionForm,
+        SwitchButtons
     ],
     imports: [
         // vendor //
