@@ -8,6 +8,10 @@ $borderColor: rgb(226,226,226);
     text-align: left;
     color: #2b2b2b;
     margin: 30px 0px 5px 0px;
+
+    &.firstTitle {
+        margin-top: 5px;
+    }
 }
 
 .subtleText {
@@ -181,4 +185,36 @@ $borderColor: rgb(226,226,226);
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+
+    .inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 12px;
+    }
+}
+
+
+#uploadBtn {
+    margin-right: 20px;
+}
+
+#orText {
+    margin: 0px;
+    font-weight:700;
+    font-family: Karla;
+    color: #999; 
+}
+
+#urlImage {
+    margin: 0px 20px;
+}
+
+#preview {
+    border:1px solid $color1;
+    width:200px;
+    border-radius: 8px;
+    outline-style: none;
+    outline: none;
 }

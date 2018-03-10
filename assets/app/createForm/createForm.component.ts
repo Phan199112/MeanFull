@@ -17,9 +17,9 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
         './createForm.component.scss'
     ],
     providers: [FormService, UserService],
-    host: {
-        '(document:click)': 'onDocClick($event)',
-    }
+    // host: {
+    //     '(document:click)': 'onDocClick($event)',
+    // }
 })
 // @Component({
 //     selector: 'create-form',
@@ -50,15 +50,17 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         'Multiple Choice': 'Multiple Choice',
         'Short Answer': 'Text question'
     };
-    typeView: string = null;
+    typeView: string;
     kind: string = null;
-    questionData: Object[] = [];
+    questionData: Array<Object> = [];
+    sortedQuestions: Observable<Array<Object>>;
     question: any = null;
     edit: boolean = false;
     activeQuestion: string;
     questionsSubmitted: number;
     autoScroll: any;
     pics: Object = {};
+    temp: string[] = [];
     timePickerConfig: FlatpickrOptions;
     datePickerConfig: FlatpickrOptions;
     reject: any = null;
@@ -69,8 +71,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     published: boolean = false;
     shareLink: string = "";
     alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
-    @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
-    @ViewChildren("imgTooltipToggle") imgTooltipToggles;         
+     
 
     constructor(
         private fb: FormBuilder,
@@ -82,37 +83,34 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         private userService: UserService
     ) {
         this.questionsSubmitted = 0;
-        this.typeView = null;
+        this.typeView = "Multiple Choice";
     }
 
     toggleView(view: string) {
         this.typeView = view;
-
-        if (this.questionnaire.get("questions").length === 0) {
-            this.addQuestion(view);
-            // TODO: insert kind into question from this.typeView
-        }
-
-        if (this.questionnaire.get("questions").length === this.questionsSubmitted) {
-            //Handle change question type but not add new question
-            // window.console.log(this.questionnaire.get('questions').value[this.questionnaire.get("questions").length - 1].kind);
-        }
-            //Log question Count-----------
-            // window.console.log(this.questionnaire.get('questions').length);
     }
 
     pushQuestionToList(res: object) {
+        if (res.kind === "Rating") {
+            let size = Number(res.scale);
+            res.temp = Array(size);
+        }
+
+        if (res.kind === "Multiple Choice") {
+            const space = /^\s*$/;
+            res.options = res.options.filter(x => !space.test(x.option));
+        }
+
+        res.number = this.questionData.length;
+
         this.questionData.push(res);
-            window.console.log("qArray: ",this.questionData);
     }
 
     ngOnInit() {
         this.route.queryParams.subscribe(params => {
-            if (params.edit) {
-                this.edit = true;
-            }
+            if (params.edit) this.edit = true;
 
-            this.typeevent = !!params.event;
+            // this.typeevent = !!params.event;
 
             this.createForm();
         });       
@@ -125,6 +123,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.reject = true;
             }
         });
+
+        this.getSortedQuestions();
     }
 
     ngOnDestroy() {
@@ -133,17 +133,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    onDocClick(event) {
-        this.imgTooltipCtrls.forEach((ctrl, i) => {
-            if (
-                ctrl.isOpen() &&
-                !document.querySelector(`#${ctrl._ngbTooltipWindowId}`).contains(event.target) && 
-                event.target != this.imgTooltipToggles.toArray()[i].nativeElement
-            )  {
-                ctrl.close();
-            }
-        });
+    getSortedQuestions() {
+
+        let sArr = this.questionData.sort((a,b) => a.number > b.number));
+        return sArr;
     }
+
 
     createForm() {
         //set expire date
@@ -177,12 +172,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.questionnaire = this.fb.group({
             title: '',
             hashtags: null,
-            kind: null,
+            kind: "Multiple Choice",
             anonymous: false,
             sharedWithCommunities: null,
             sharedWithUsers: null,
             sharedWithFb: null,
-            public: !this.typeevent,
+            public: true,
             loginRequired: true,
             typeevent: this.typeevent,
             questions: this.fb.array([])
@@ -217,15 +212,15 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
         } else {
         //    this.addQuestion();
-           this.forceOptionRequired(0);
+        //    this.forceOptionRequired(0);
         }
     }
 
-    forceOptionRequired(index) {
-        let requiredControl = this.questionnaire.get('questions').get(index.toString()).get('required');
-        requiredControl.setValue(true);
-        requiredControl.disable();
-    }
+    // forceOptionRequired(index) {
+    //     let requiredControl = this.questionnaire.get('questions').get(index.toString()).get('required');
+    //     requiredControl.setValue(true);
+    //     requiredControl.disable();
+    // }
 
     onPicChange(question, $event) {
         const file = $event.target.files[0];
@@ -240,21 +235,21 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.imgTooltipCtrls.toArray()[index].close();
     }
 
-    addQuestion(kind: string) {
-        let questions = this.questionnaire.controls.questions;
+    // addQuestion(kind: string) {
+    //     let questions = this.questionnaire.controls.questions;
 
-        //Create form group for individual question
+    //     //Create form group for individual question
         
-        questions.push(question);
-        this.questionsSubmitted++;
-        this.questionnaire.wasChecked = false;
+    //     questions.push(question);
+    //     this.questionsSubmitted++;
+    //     this.questionnaire.wasChecked = false;
 
 
-        //enable first required control when adding second question
-        if (questions.controls.length === 2) {
-            this.questionnaire.get('questions').get('0').get('required').enable();
-        }
-    }
+    //     //enable first required control when adding second question
+    //     if (questions.controls.length === 2) {
+    //         this.questionnaire.get('questions').get('0').get('required').enable();
+    //     }
+    // }
 
     deleteQuestion(i) {
         let questions = this.questionnaire.get("questions");
@@ -559,26 +554,13 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     questionnaireData() {
         let data = this.questionnaire.getRawValue();
 
-        if (this.pics) {
-            for (let l=0; l < data.questions.length; l++) {
-                if (Object.keys(this.pics).indexOf(data.questions[l].id) != -1) {
-                    data.questions[l].pic = this.pics[data.questions[l].id];
-                } else {
-                    data.questions[l].pic = null;
-                }
-            }
-        }
+        data.questions = this.questionData;
+        
 
         for (let i=0; i < data.questions.length; i++) {
             if (this.kindsWithOptions.indexOf(data.questions[i].kind) !== -1) {
-                console.log(data.questions[i]);
                 for (let j=0; j < data.questions[i].options.length; j++) {
-
-                    // CHANGE HERE TO TAKE OUT PRECEEDING LETTER OPTION ****************
-                    
                     data.questions[i].options[j].label = this.alphabeth[j];
-                    // data.questions[i].options[j].label = data.questions[i].options[j].body;
-
                 }
             }
         }
@@ -620,6 +602,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                     this.step = 2;
                 } else {
                     this.published = true;
+                    window.setTimeout(() => { this.router.navigate(['/']);}, 2000 )
                 }
             })
             .catch(error => alert("Error updating form: " + error));
@@ -669,5 +652,62 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.step = 2;
     }
 
+    prevView() {
+        this.step = 1;
+    }
+
+    removeQuestion(i: number) {
+        this.questionData.splice(i, 1);
+        for (let j=i; j < this.questionData.length; j++) {
+            this.questionData[j].number = this.questionData[j].number -1;
+        }
+
+        if (this.questionData.length === 1) this.questionData[0].required = true;
+    }
+
+    toggleRequired(i: number) {
+        this.questionData[i].required = !this.questionData[i].required;
+    }
+
+    toggleAuthor(anonymous: string) {
+        this.questionnaire.get('anonymous').setValue(anonymous);
+    }
+
+    toggleAudience(audience: string) {
+        this.questionnaire.get('public').setValue(audience);
+    }
+
+    toggleLogin(required: string) {
+        this.questionnaire.get('loginRequired').setValue(required);
+    }
+
+    tester() {
+        window.console.log(this.questionnaireData());
+    }
+
+    moveUp(i: number) {
+        // Up meaning lowering the number, so higher up the list
+        if (i == 0) return;
+        let currentNum = this.questionData[i].number
+
+        this.questionData[i].number = currentNum - 1;
+        this.questionData[i-1].number = currentNum;
+
+
+
+    }
+
+    moveDown(i: number) {
+        // Down meaning raising the number, so lower down the list
+        let qdLength = this.questionData.length;
+        if (i === (qdLength -1)) return;
+
+        let currentNum = this.questionData[i].number
+
+        this.questionData[i].number = currentNum + 1;
+        this.questionData[i + 1].number = currentNum;
+    }
+
 }
+
 

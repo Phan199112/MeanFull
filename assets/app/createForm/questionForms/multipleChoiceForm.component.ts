@@ -10,6 +10,8 @@ import * as autoScroll from 'dom-autoscroller';
 import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 import { create } from 'domain';
 
+import * as $ from 'jquery';
+
 @Component({
     selector: 'mc-question-form',
     templateUrl: './multipleChoiceForm.component.html',
@@ -20,8 +22,12 @@ import { create } from 'domain';
 
 export class MultipleChoiceQuestionForm implements OnInit {
     @Input() questionType: string;
+    @Input() qLength: number;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    
     question: FormGroup;
+    @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
+    @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
     
     constructor(
         private fb: FormBuilder,
@@ -39,33 +45,15 @@ export class MultipleChoiceQuestionForm implements OnInit {
             body: ['', Validators.required],
             kind: ['Multiple Choice', Validators.required],
             options: this.fb.array([]),
-            required: false,
+            required: true,
+            number: this.qLength,
+            pic: "",
             canSelectMultiple: false,
             id: Math.random().toString().substring(2),
         })
 
         this.addMcOption();
     }
-
-    // simulateTabPress() {
-    //     var keyboardEvent = window.document.createEvent("KeyboardEvent");
-    //     var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-
-
-    //     keyboardEvent[initMethod](
-    //         "keydown", // event type : keydown, keyup, keypress
-    //         true, // bubbles
-    //         true, // cancelable
-    //         window, // viewArg: should be window
-    //         false, // ctrlKeyArg
-    //         false, // altKeyArg
-    //         false, // shiftKeyArg
-    //         false, // metaKeyArg
-    //         13, // keyCodeArg : unsigned long the virtual key code, else 0
-    //         0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-    //     );
-    //     document.dispatchEvent(keyboardEvent);
-    // }
 
 
 
@@ -75,17 +63,20 @@ export class MultipleChoiceQuestionForm implements OnInit {
     }
 
     enterMcOption(f: any) {
-        // add address to the list
-        // window.console.log("Maybe works: ", f);
+        if (f.value == "") return;
         const arrayControl = this.question.get('options') as FormArray;
         const lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
         const lastControl = lastGroup.get('option') as FormControl;
-        // window.console.log("pre add: ", arrayControl.length, " last item: ", lastControl);
         const control = this.question.get('options');
         control.push(this.createOption());
-        // this.simulateTabPress();
-
+        window.setTimeout(() => { $('#focusLastBtn').click();}, 90);
+        // $('#focusLastBtn').click();
     }
+
+    focusLast(f: any) {
+        f.focus();
+    }
+
 
     createOption(): FormGroup {
         return this.fb.group({
@@ -101,25 +92,57 @@ export class MultipleChoiceQuestionForm implements OnInit {
         }
     }
 
+    toggleRequried(isRequired: string) {
+        if (isRequired === "Yes") {
+            this.question.get('required').setValue(true);
+        } else {
+            this.question.get('required').setValue(false)
+        }
+    }
+
+    purgeForm() {
+        var arrayControl = this.question.get('options') as FormArray;
+        var lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
+        var lastControl = lastGroup.get('option') as FormControl;
+        var body = this.question.get('body') as FormControl;
+
+
+        this.question.markAsPristine();
+        this.question.markAsUntouched();
+        this.question.updateValueAndValidity();
+
+        while (1 !== arrayControl.length) {
+            arrayControl.removeAt(0);
+        }
+
+        lastControl.setValue('');
+        body.setValue('');
+        this.question.get('canSelectMultiple').setValue(false);
+        this.question.get('pic').setValue("");
+        this.question.get('id').setValue(Math.random().toString().substring(2));
+    }
+
     submitQuestion() {
         if (this.question.valid) {
-            this.questionData.emit(this.question.value);
-            this.question.reset();
-            this.createForm();
-            this.clearArray();
-            this.question.get('canSelectMultiple').setValue(false);
+            const empty = /^\s*$/;
+
+            var arrayControl = this.question.get('options') as FormArray;
+            var lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
+            var lastControl = lastGroup.get('option') as FormControl;
+
+            if (arrayControl.length === 1 && empty.test(lastControl.value)) return;
+
+            for(let i=0; i<  arrayControl.length; i++) {
+                let group = arrayControl.at(i) as FormGroup;
+                let control = group.get('option') as FormControl;
+                if (empty.test(control.value)) this.removeOption(i);
+            }
+            
+            this.questionData.emit(this.question.value);     
+            this.purgeForm();
         }
     }
 
-
-    clearArray() {
-        const control = <FormArray>this.question.controls['options'];
-        let i=0;
-        while (i<control.length) {
-            control.removeAt(i)
-            i++;
-        }
-    }
 
     autosizeTextarea(event: any, el: any) {
         if (event.keyCode == 13) {
@@ -136,21 +159,20 @@ export class MultipleChoiceQuestionForm implements OnInit {
 
     removeOption(i: number) : void {
         const arrayControl = this.question.get('options') as FormArray;
-        window.console.log("i: ", i, "item at i: ", arrayControl.at(i));
-
         const lastGroup = arrayControl.removeAt(i);
+        // window.console.log("i: ", i, "item at i: ", arrayControl.at(i));
     }
 
     /*
   Function to carry out the actual PUT request to S3 using the signed request from the app.
 */
-    uploadFile(file, signedRequest, url, question) {
+    uploadFile(file, signedRequest, url) {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', signedRequest);
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    this.pics[question.get("id").value] = url;
+                    this.question.get('pic').setValue(url);
                 }
                 else {
                     alert('Could not upload file.');
@@ -164,14 +186,14 @@ export class MultipleChoiceQuestionForm implements OnInit {
       If request successful, continue to upload the file using this signed
       request.
     */
-    getSignedRequest(file, question) {
+    getSignedRequest(file) {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
-                    this.uploadFile(file, response.signedRequest, response.url, question);
+                    this.uploadFile(file, response.signedRequest, response.url);
                 }
                 else {
                     alert('Could not get signed URL.');
@@ -179,6 +201,19 @@ export class MultipleChoiceQuestionForm implements OnInit {
             }
         };
         xhr.send();
+    }
+
+
+    onPicChange($event) {
+        const file = $event.target.files[0];
+        if (file == null) {
+            return alert('No file selected.');
+        }
+        this.getSignedRequest(file);
+    }
+
+    setPicUrl(url) {
+        this.question.get('pic').setValue(url);
     }
 
 }

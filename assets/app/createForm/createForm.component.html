@@ -1,74 +1,204 @@
 <div class="centerxandy">
+    <div class="container main-container title" *ngIf="reject">
+        <h2>You must be logged in to create a new form. Please login first!</h2>
+    </div>
         <!-- Create Questions Container -->
-        <h3 class="containerTitle">Create a Question</h3>
-        <form [formGroup]="questionnaire" style="width: 100%">
+        <form *ngIf="!reject" [formGroup]="questionnaire" class="mtClear" style="width: 100%">
             <div *ngIf="step === 1" class="oContainer">
                 <div class="qContainer">
-                    <ul *ngFor="let k of kinds; let kIndex = index">
-                        <form-buttons formControlName="kind" [active]="typeView" [qKind]="k" (selected)="toggleView($event)"></form-buttons>
-                        <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>
+                    <h3 class="containerTitle green">Options</h3>
+                    <ul>
+                        <li *ngFor="let k of kinds; let kIndex = index">
+                            <form-buttons formControlName="kind" [active]="typeView" [qKind]="k" (selected)="toggleView($event)"></form-buttons>
+                            <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>
+                        </li>
                     </ul>
                 </div>
-                <div class="lContainer">
-                    <!-- <div *ngIf="!typeView"><h1 class="containerTitle">Select a Question Style to Begin {{typeView}} </h1></div> -->
-                    <div class="responseConfiguration">
-                        <mc-question-form *ngIf="questionnaire.get('kind').value == 'Multiple Choice'" (questionData)="pushQuestionToList($event)"></mc-question-form>
-                        <sa-question-form *ngIf="questionnaire.get('kind').value == 'Short Answer'" (questionData)="pushQuestionToList($event)"></sa-question-form>
-                        <rating-question-form *ngIf="questionnaire.get('kind').value == 'Rating'" (questionData)="pushQuestionToList($event)"></rating-question-form>
-                        <number-question-form *ngIf="questionnaire.get('kind').value == 'Number'" (questionData)="pushQuestionToList($event)"></number-question-form>
+                <div class="lContainer">              
+                    <div class="qDataScroll">
+                        <h3 class="containerTitle green">Create Your Question</h3>
+                        <!-- <div *ngIf="!typeView"><h1 class="containerTitle">Select a Question Style to Begin</h1></div> -->
+                        <div class="responseConfiguration">
+                            <mc-question-form *ngIf="questionnaire.get('kind').value == 'Multiple Choice'" (questionData)="pushQuestionToList($event)"></mc-question-form>
+                            <sa-question-form *ngIf="questionnaire.get('kind').value == 'Short Answer'" (questionData)="pushQuestionToList($event)"></sa-question-form>
+                            <rating-question-form *ngIf="questionnaire.get('kind').value == 'Rating'" (questionData)="pushQuestionToList($event)"></rating-question-form>
+                            <number-question-form *ngIf="questionnaire.get('kind').value == 'Number'" (questionData)="pushQuestionToList($event)"></number-question-form>
+                        </div>
                     </div>
-
-                    <!-- <a class="addButton">Add Question</a> -->
                 </div>
 
                 <!-- //Finished Questions Container -->
-                <div class="rContainer">
-                    
-                    <!-- <h3 *ngIf="!questionData.length" class="containerTitle">Your Completed Questions Will Appear Here</h3> -->
-                    <div *ngFor="let q of questionData; let i = index" class="qBlock">
-                        
-                        <!-- <div> -->
-                            <h4 class="qbType">Question {{i+1}}: {{q.kind}}</h4>
-                            <h2 class="qbBody">{{q.body}}</h2>
+                <div class="rContainer" [ngClass]="{centered: questionData.length === 0}">
+                    <div class="qDataScroll">
+                        <h3 class="containerTitle abs green">Overview</h3>
+                        <h3 *ngIf="!questionData.length" class="containerTitle" style="margin-top:200px">Your Completed Questions Will Appear Here</h3>
+                        <div *ngFor="let q of getSortedQuestions(); let i = index" class="qBlock">
+                            <i class="fa fa-times redCross" (click)="removeQuestion(i)"></i>
                             
-                            <div *ngIf="q.kind === 'Multiple Choice'">
-                                <div class="qbOptions" *ngFor="let optionGroup of q.options">
-                                    <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
-                                    <h3 class="qbOption" style="">{{optionGroup.option}}</h3>
+                            <div *ngIf="questionData.length > 0" class="sortArrowBlock">
+                                <div *ngIf="i !== 0"><i class="fa fa-caret-up arrows" (click)="moveUp(i)"></i></div>
+                                <div *ngIf="i !== questionData.length - 1"><i class="fa fa-caret-down arrows" (click)="moveDown(i)"></i></div>
+                            </div>
+                        
+                            <div class="qLeftBlock" [ngClass]="{wImg: q.pic !== ''}">
+                                <h4 class="qbType" [ngClass]="{mtClear: i == 0}">Question {{i+1}}: {{q.kind}} <span><a class="required" [ngClass]="{req: q.required, not: !q.required, hide: questionData.length == 1}" (click)="toggleRequired(i)">{{q.required ? 'Required' : 'Optional'}}</a></span> </h4>
+                                <h2 class="qbBody">{{q.body}}</h2>
+                                <!-- <h2 class="qbBody">{{q.number}}</h2> -->
+                            
+                                <div *ngIf="q.kind === 'Multiple Choice'">
+                                    <div class="qbOptions" *ngFor="let optionGroup of q.options">
+                                        <label style="color: #CCC; margin-bottom: 0px;">-</label>
+                                        <h3 class="qbOption" style="">{{optionGroup.option}}</h3>
+                                    </div>
+                                </div>
+                            
+                            
+                                <div *ngIf="q.kind === 'Rating'">
+                                    <div class='starArray'>
+                                        <div *ngFor="let x of q.temp">
+                                            <img src="/images/icons/star.svg" width="28px" />
+                                        </div>
+                                    </div>
+                                    <h4 class="qbOption qbRating">Rating out of
+                                        <span class="qbSpan">{{q.scale}}</span>
+                                    </h4>
+                                </div>
+                            
+                                <div *ngIf="q.kind === 'Number'">
+                                    <h4 class="qbOption" *ngIf="q.boundaries">A number between
+                                        <span class="qbSpan">{{q.lowerBoundary}}</span> and
+                                        <span class="qbSpan">{{q.upperBoundary}}</span>
+                                    </h4>
+                                    <h4 class="qbOption" *ngIf="!q.boundaries">Response can be any number</h4>
                                 </div>
                             </div>
 
-
-                            <div *ngIf="q.kind === 'Rating'">
-                                <h4 class="qbOption qbRating">Rating out of <span class="qbSpan">{{q.scale}}</span></h4>
+                            <div *ngIf="q.pic !== ''" class="qRightBlock">
+                                <img class="image" *ngIf="q.pic !== ''" id="preview" [src]="q.pic">
                             </div>
-
-                            <div *ngIf="q.kind === 'Number'">
-                                <h4 class="qbOption" *ngIf="q.boundaries">A number between <span class="qbSpan">{{q.lowerBoundary}}</span> to <span class="qbSpan">{{q.upperBoundary}}</span></h4>
-                                <h4 *ngIf="!q.boundaries">No boundaries set for this question</h4>
-                            </div>
-
-                        <!-- </div> -->
-
+                        
+                        </div>
                     </div>
 
-                    <div id="sbContainer">
-                        <a class="submitButton" (click)="nextView()" >Next</a>
-                    </div>
+                    <!-- <div id="sbContainer"> -->
+                        <a *ngIf="questionData.length > 0" id="publishBtn" class="submitButton" (click)="postForm()" >Next</a>
+                    <!-- </div> -->
                 </div>
         </div>
-        <div *ngIf="step === 2" class="oContainer">
-            <h3>Publish & Share</h3>
-            <div>
-                <h6 class="title">Allow User to Select Multiple Choices?</h6>
-                <div style="display:flex; justify-content: flex-start;">
-                    <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="false" [title]="'No'" (selected)="toggleMultiple($event)"
-                        formControlName="canSelectMultiple"></switch-buttons>
-                    <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="true" [title]="'Yes'" (selected)="toggleMultiple($event)"
-                        formControlName="canSelectMultiple"></switch-buttons>
+
+
+        <!-- ************Publish and Share*****************  -->
+
+        <div *ngIf="step === 2" class="oContainer l2">
+            <a id="previewBtn" class="submitButton inverse" (click)="prevView()">Preview</a>
+
+            <div class="lContainer l2">
+                <h3 class="containerTitle green">Settings</h3>
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="settingTitle">Post as</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <desc-switch-buttons [active]="questionnaire.get('anonymous').value" [option]="false" [title]="'Myself'" [description]="'You will be shown as the poster of this question'"
+                            (selected)="toggleAuthor($event)" formControlName="anonymous"></desc-switch-buttons>
+                        <desc-switch-buttons [active]="questionnaire.get('anonymous').value" [option]="true" [title]="'Anonymous'" [description]="'No one will know who asked the question'"
+                            (selected)="toggleAuthor($event)" formControlName="anonymous"></desc-switch-buttons>
+                    </div>
+                </div>
+                
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="settingTitle">Audience</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <desc-switch-buttons [active]="questionnaire.get('public').value" [option]="true" [title]="'Public'" [description]="'Everyone can see view your post'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
+                        <desc-switch-buttons [active]="questionnaire.get('public').value" [option]="false" [title]="'Friends'" [description]="'Only your friends can see your post'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
+                        <desc-switch-buttons [active]="questionnaire.get('public').value" [option]="false" [title]="'Private'" [description]="'Only people with a link can see your post'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
+                    </div>
+                </div>
+
+                <div class="flexContainer fdColumn faStart" style="margin-bottom: 80px">
+                    <h6 class="settingTitle">Require Login?</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <switch-buttons [active]="questionnaire.get('loginRequired').value" [option]="false" [title]="'No'" (selected)="toggleLogin($event)" formControlName="loginRequired"></switch-buttons>
+                        <switch-buttons [active]="questionnaire.get('loginRequired').value" [option]="true" [title]="'Yes'" (selected)="toggleLogin($event)" formControlName="loginRequired"></switch-buttons>
+                    </div>
                 </div>
             </div>
+
+            
+
+
+            <div class="rContainer">
+                <h3 class="containerTitle green">Get More Responses</h3>
+
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="settingTitle">Share with your friends</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <div class="tag-input-wrapper form-control" style="margin-left: 10px;">
+                            <div [ngClass]="{'d-none': showPrivateShares || questionnaire.get('sharedWithUsers').value}" class="tag-placeholder text-muted"
+                                (click)="showPrivateShares = true; focusTagInput(sharedWith)">
+                                Enter their name (@john) or email
+                            </div>
+                            <tag-input #sharedWith [ngClass]="{'d-none': !showPrivateShares && questionnaire.get('sharedWithUsers').value === null}"
+                                id="private-shares" [identifyBy]="'value'" [displayBy]="'display'" placeholder="Name" secondaryPlaceholder="Name"
+                                [onAdding]="transformName" [separatorKeyCodes]="[32, 13]" formControlName="sharedWithUsers" [onlyFromAutocomplete]="true">
+                                <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceUser.bind(this)">
+                                </tag-input-dropdown>
+                            </tag-input>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="settingTitle">Share with a community</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <div class="tag-input-wrapper form-control" style="margin-left: 10px;">
+                            <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}" class="tag-placeholder text-muted"
+                                (click)="showPublicShares = true; focusTagInput(sharedWith)">
+                                Enter community name @ucla @hikers
+                            </div>
+                            <tag-input #sharedWith [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
+                                id="public-shares" placeholder="Name" secondaryPlaceholder="Name" [onAdding]="transformName" (onBlur)="showPublicShares = false"
+                                [separatorKeyCodes]="[32, 13]" formControlName="sharedWithCommunities" [onlyFromAutocomplete]="true">
+                                <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceCom.bind(this)">
+                                </tag-input-dropdown>
+                            </tag-input>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="settingTitle">Share it With the World</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <share-buttons [theme]="'default'" [url]="shareLink" [include]="['facebook','linkedin', 'twitter']"></share-buttons>
+                        <div style="display:flex; justify-content: flex-start; align-items: center;">
+                            <input class="col form-control" style="max-height: 30px" [value]="shareLink" />
+                            <share-button [theme]="'default'" [button]="'copy'" [showText]="false" [size]="1" [url]="shareLink" style="margin-top:1px"></share-button>
+                        </div>
+                    </div>
+                </div>
+                
+            <div *ngIf="this.published" class="flexContainer fjCenter" style="margin-top:30px">
+                <h1 class="publishedLine">Your Post has Been Published!</h1>
+            </div>
+
+
+                 <a id="publishBtn" class="submitButton" (click)="updateForm()">Publish</a>
+
+            </div>
+
+
+            <!-- <div id="sb2Container"> -->
+                <a id="previousBtn" class="submitButton" (click)="prevView()">Previous</a>
+            <!-- </div> -->
+
+            <!-- <div id="sbContainer"> -->
+                <!-- <a id="publishBtn" class="submitButton" (click)="submitForm()">Publish</a> -->
+            <!-- </div> -->
+            
+            
         </div>
+
 </form>
 
 </div>

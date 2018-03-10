@@ -146,13 +146,11 @@ module.exports = function(app, passport, manager, hashids) {
         // input
         var receivedData =  req.body;
 
-        console.log(receivedData);
-
         // mongodb create
         FormModel.create({userid: req.session.userid,
-            title: receivedData.title,
+            // title: receivedData.title,
+            // description: receivedData.description,
             questions: receivedData.questions,
-            description: receivedData.description,
             anonymous: receivedData.anonymous,
             hashtags: receivedData.hashtags,
             public: false,

@@ -1,0 +1,53 @@
+$color1: #28ab64;
+$borderColor: rgb(226,226,226);
+
+
+.box {
+    width: 150px;
+    min-height: 115px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 5px 10px;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 12px;
+    border: solid 1px $borderColor;
+
+
+    &:hover, &:hover .text, .selectedText {
+        cursor: pointer;
+        color: #FFF;
+        background: lighten($color1, 14);
+    }
+}
+
+.selectedBox {
+    background: lighten($color1, 14);
+
+}
+
+.text {
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: Karla;
+    color: #777;
+
+}
+
+.selectedText {
+    color: #FFF;
+}
+
+.title {
+    color: #444;
+    font-weight: 700;
+    margin: 12px auto;
+    font-size: 1.1rem;
+}
+
+.description {
+    font-size: .8rem;
+}

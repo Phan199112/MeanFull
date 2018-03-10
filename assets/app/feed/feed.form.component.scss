@@ -2,6 +2,7 @@ $primaryColor: #28ab64;
 $primaryFont: Dosis;
 $borderColor: rgb(226,226,226);
 
+
 // Dosis, Quicksand, Raleway
 
 .bg {
@@ -36,6 +37,7 @@ $borderColor: rgb(226,226,226);
   margin-bottom: 65px;
   margin-top: 110px;
   z-index: 1;
+  // background: linear-gradient( ($primaryColor) 0%, (lighten($primaryColor, 55)) 100%);
   // background-image: url("/images/nature.jpeg");
   background-size: cover;
   padding-top: 0;

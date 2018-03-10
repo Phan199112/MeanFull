@@ -12,7 +12,7 @@ export class NetworkComponent implements OnInit {
     name: Array<string>;
 
     ngOnInit() {
-        this.name  = this.data.name.split(' ');
+        // this.name  = this.data.name.split(' ');
     }
     
 }
