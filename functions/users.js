@@ -29,7 +29,17 @@ exports.incrementNoTaken = function incrementNoTaken(userid) {
 };
 
 exports.incrementNoCreated = function incrementNoTaken(userid) {
-        UserModel.findByIdAndUpdate(userid, {$inc: {nocreated:1}}, function (err, data) {
+    UserModel.findByIdAndUpdate(userid, {$inc: {nocreated:1}}, function (err, data) {
+        if (err) {
+            //
+        } else {
+            //
+        }
+    });
+};
+
+exports.decrementNoCreated = function decrementNoTaken(userid) {
+        UserModel.findByIdAndUpdate(userid, {$inc: {nocreated:-1}}, function (err, data) {
             if (err) {
                 //
             } else {
