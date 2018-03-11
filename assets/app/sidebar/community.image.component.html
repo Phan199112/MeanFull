@@ -2,6 +2,6 @@
     <img class="img" *ngIf="data.pic" [src]="data.pic" />
     <img class="img" *ngIf="!data.pic" src="/images/community.png" />
     <div class="title">
-        <div style="width:70px"><a [routerLink]="['/community', data.id]">{{title}}</a></div>
+        <div style="width:70px"><a [routerLink]="['/profile', data.id]">{{title}}</a></div>
     </div>
 </div>
