@@ -465,7 +465,11 @@ module.exports = function(app, passport, manager, hashids) {
         FormModel.remove({_id: formid, userid: req.session.userid}, function(err) {
             if (!err) {
                 console.log("Deleted form");
+                // log
                 log.writeLog(req.session.userid, 'form deleted', req.ip);
+                // user stats
+                usersfunctions.decrementNoCreated(req.session.userid);
+                // return
                 res.json({status: 1});
             }
             else {
