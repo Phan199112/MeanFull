@@ -3,5 +3,5 @@
     <img class="img" *ngIf="(data.pic !== null && data.pic !== undefined)" [src]="data.pic" />
     <img class="img" *ngIf="(data.pic === null || data.pic === undefined) && data.fb === null && data.gender === 'male'" src="/images/male.png" />
     <img class="img" *ngIf="(data.pic === null || data.pic === undefined) && data.fb === null && data.gender === 'female'" src="/images/female.png" />
-    <div><a [routerLink]="['/community', data.link]">{{name[0]}}<br/>{{name[1]}}</a></div>
+    <div><a [routerLink]="['/profile', data.link]">{{name[0]}}<br/>{{name[1]}}</a></div>
 </div>
