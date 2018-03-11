@@ -1,4 +1,9 @@
-<div style="width: 1300px; margin: 0px auto">
+<div style="width: 1100px; margin: 0px auto">
+
+<div class="row">
+    <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">Ask a Question</button>
+</div>
+
 <div class="row">
     <div class="col-md-3" id="leftSideOfContainer">
         <!-- <div class="container" *ngIf="0 === 0" style="margin: 20px auto;">
@@ -18,9 +23,6 @@
         <div class="card" *ngIf="completedform">
             <div class="card-body btn-success">Many thanks for completing a form on Questionsly!</div>
         </div>
-        <!-- <div class="card"> -->
-            <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">Ask a Question</button>
-        <!-- </div> -->
         <feed-list [user]="null"></feed-list>
     </div>
     <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">

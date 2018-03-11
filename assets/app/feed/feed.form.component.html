@@ -1,32 +1,30 @@
 <div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
     <div class="bg">
-    <div class="userImagePos">
-        <div style="display: flex; z-index: 2; align-items: center">
-
-        <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
-            <div *ngIf="form.pictype == 'fb'">
-                <img src="https://graph.facebook.com/{{form.pic}}/picture?width=70&height=70" height="70" width="70" class="userImage" />
+    <!-- <div class="userImagePos"> -->
+        <div class="imageContainer">
+            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
+                <div *ngIf="form.pictype == 'fb'">
+                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=70&height=70" height="70" width="70" class="userImage" />
+                </div>
+                <div *ngIf="form.pictype == 'local'">
+                    <img [src]="form.pic" width="70" height="70"  class="userImage" />
+                </div>
+                <div *ngIf="form.pictype == 'default'">
+                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="70" width="70"  class="userImage"/>
+                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="70" width="70"  class="userImage"  />
+                </div>
+                <div *ngIf="form.pictype == 'anonymous'">
+                    <img src="/images/question.jpg" height="70" width="70" class="userImage"/>
+                </div>
+            </a>
+            <div class="userInfoBox">
+                <p class="nameTitle" style="margin-bottom:3px"><b>{{name.first}} {{name.last}}</b></p>
+                <p class="locationTitle" style="margin-bottom:3px">{{location.city}}, {{location.state}}, {{location.country}}</p>
+                <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated}}</span></i>
+                <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken}}</span></i>
+                <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i>
             </div>
-            <div *ngIf="form.pictype == 'local'">
-                <img [src]="form.pic" width="70" height="70"  class="userImage" />
-            </div>
-            <div *ngIf="form.pictype == 'default'">
-                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="70" width="70"  class="userImage"/>
-                <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="70" width="70"  class="userImage"  />
-            </div>
-            <div *ngIf="form.pictype == 'anonymous'">
-                <img src="/images/question.jpg" height="70" width="70" class="userImage"/>
-            </div>
-        </a>
-        <div class="userInfoBox">
-            <p class="nameTitle" style="margin-bottom:3px"><b>{{name.first}} {{name.last}}</b></p>
-            <p class="locationTitle" style="margin-bottom:3px">{{location.city}}, {{location.state}}, {{location.country}}</p>
-            <span>{{nocreated}} Created</span>
-            <span>{{notaken}} Taken</span>
-            <span>{{nodiscussion}} Comments</span>
-        </div>
-    </div>
-    </div>
+     </div>
 
     <div class="share">
         <div class="col p-0" *ngIf="loggedin">
@@ -45,6 +43,8 @@
             </div>
         </div>
     </div>
+    <!-- </div> -->
+
     <div class="flex" style="margin-top:0; padding-top: 0;">
         <h3 *ngIf="form.questions.length === 1" class="userTitle">{{form.questions[0].body}}</h3>
         <h3 *ngIf="form.questions.length !== 1" class="userTitle">{{form.title}}</h3>
@@ -55,8 +55,8 @@
                 [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
         </div>
     </div>
-        <div class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
-            <div class="container" id="analysisContainer">
+        <div id="analysisContainer" class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
+            <div class="container">
                 <form [formGroup]="dataselectionform">
                     <p class="filterCategory">Age Group</p>
                     <div class="filterOptions">

@@ -7,6 +7,9 @@
                 </span>
             </button>
             <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
+            <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
+                <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
+            </form>
             <div class="navbar-collapse collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ml-auto">
                     <div *ngIf="loggedin; then fullbar else login"></div>
@@ -24,16 +27,16 @@
                         <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                             <div *ngIf="pictype" class="d-inline-block">
                                 <div *ngIf="pictype == 'fb'">
-                                    <img src="https://graph.facebook.com/{{pic}}/picture?width=30&height=30" height="30" width="30">
+                                    <img src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40" height="40" width="40">
                                 </div>
                                 <div *ngIf="pictype == 'local'">
-                                    <img [src]="pic" height="30" width="30"/>
+                                    <img [src]="pic" height="40" width="40"/>
                                 </div>
                                 <div *ngIf="pictype == 'default-male'">
-                                    <img src="/images/male.png" height="30" width="30"/>
+                                    <img src="/images/male.png" height="40" width="40"/>
                                 </div>
                                 <div *ngIf="pictype == 'default-female'">
-                                    <img src="/images/female.png" height="30" width="30"/>
+                                    <img src="/images/female.png" height="40" width="40"/>
                                 </div>
                             </div>
                             <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>

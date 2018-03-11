@@ -17,7 +17,7 @@
                 <div class="responseRow" *ngFor="let x of question.get('options').controls; let i = index">
                     <div class="flex" [formGroupName]="i">
                         <div style="margin-right: 2px"><label class="subtleText">- </label></div>
-                        <input placeholder="Enter response choice" class="niceTextInput" type="text" formControlName="option" #f (keyup.enter)="enterMcOption(f);" />
+                        <input placeholder="Enter response choice" class="niceTextInput" type="text" formControlName="body" #f (keyup.enter)="enterMcOption(f);" />
                         <button *ngIf="question.get('options').length === i +1" id="focusLastBtn" style="display:none" (click)="focusLast(f)"></button>
                         <i *ngIf="question.get('options').length > 1" class="fa fa-times cross" (click)="removeOption(i)"></i>
                     </div>

@@ -1,0 +1,16 @@
+$color1: #28ab64;
+
+.starArray {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    width: 100%;
+}
+
+.star {
+    margin: 0px 10px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}

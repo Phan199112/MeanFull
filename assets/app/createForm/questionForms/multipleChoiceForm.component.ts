@@ -80,7 +80,7 @@ export class MultipleChoiceQuestionForm implements OnInit {
 
     createOption(): FormGroup {
         return this.fb.group({
-            option: ''
+            body: ''
         });
     }
 
@@ -103,7 +103,7 @@ export class MultipleChoiceQuestionForm implements OnInit {
     purgeForm() {
         var arrayControl = this.question.get('options') as FormArray;
         var lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
-        var lastControl = lastGroup.get('option') as FormControl;
+        var lastControl = lastGroup.get('body') as FormControl;
         var body = this.question.get('body') as FormControl;
 
 
@@ -128,13 +128,13 @@ export class MultipleChoiceQuestionForm implements OnInit {
 
             var arrayControl = this.question.get('options') as FormArray;
             var lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
-            var lastControl = lastGroup.get('option') as FormControl;
+            var lastControl = lastGroup.get('body') as FormControl;
 
             if (arrayControl.length === 1 && empty.test(lastControl.value)) return;
 
             for(let i=0; i<  arrayControl.length; i++) {
                 let group = arrayControl.at(i) as FormGroup;
-                let control = group.get('option') as FormControl;
+                let control = group.get('body') as FormControl;
                 if (empty.test(control.value)) this.removeOption(i);
             }
             

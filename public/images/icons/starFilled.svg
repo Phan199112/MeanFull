@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="48px" viewBox="0 0 50 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>starFilled</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="0.0%" y="0.0%" width="100.0%" height="100.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowOffsetOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="starFilled" filter="url(#filter-1)" fill-rule="nonzero" fill="#28AB64">
+            <path d="M48.856,21.731 C49.839,20.773 50.186,19.367 49.762,18.06 C49.337,16.753 48.23,15.82 46.87,15.622 L34.778,13.865 C34.263,13.79 33.818,13.467 33.588,13 L28.182,2.043 C27.575,0.812 26.343,0.047 24.97,0.047 C23.598,0.047 22.366,0.812 21.759,2.043 L16.352,13 C16.122,13.467 15.676,13.79 15.161,13.865 L3.069,15.623 C1.71,15.82 0.603,16.753 0.178,18.06 C-0.246,19.367 0.101,20.773 1.084,21.731 L9.833,30.259 C10.206,30.623 10.377,31.147 10.289,31.659 L8.224,43.702 C7.992,45.055 8.537,46.396 9.648,47.204 C10.758,48.013 12.203,48.118 13.42,47.477 L24.234,41.791 C24.695,41.549 25.245,41.549 25.706,41.791 L36.521,47.477 C37.049,47.755 37.621,47.892 38.19,47.892 C38.929,47.892 39.665,47.661 40.293,47.204 C41.404,46.396 41.949,45.055 41.717,43.702 L39.651,31.66 C39.563,31.147 39.734,30.624 40.107,30.26 L48.856,21.731 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

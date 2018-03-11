@@ -43,8 +43,7 @@ export class MiniShowFormComponent implements OnInit {
         };
         //
         let questions = [];
-        //let questionsx = this.data.questions.map(q => q.label = q.body);
-        //for (let question of questionsx) {
+
         for (let question of this.data.questions) {
             let groupObject = {
                 body: question.body,
@@ -52,19 +51,25 @@ export class MiniShowFormComponent implements OnInit {
                 kind: question.kind,
                 number: question.number
             };
-            if (question.kind === 'Checkboxes') {
-                groupObject.answer = {};
-                for (let option of question.options) {
-                    groupObject.answer[option.label] = false;
-                }
-                if (question.required) {
-                    groupObject.answer = this.fb.group(groupObject.answer, {validator: this.checkboxesRequired});
-                } else {
-                    groupObject.answer = this.fb.group(groupObject.answer);
-                }
+            if (question.kind === 'Multiple Choice' && question.canSelectMultiple) {
+                    groupObject.answer = {};
+                    for (let option of question.options) {
+                        groupObject.answer[option.label] = false;
+                    }
+                    if (question.required) {
+                        groupObject.answer = this.fb.group(groupObject.answer, {validator: this.checkboxesRequired});
+                    } else {
+                        groupObject.answer = this.fb.group(groupObject.answer);
+                    } 
+
             } else if (question.kind === 'Rank') {
                 groupObject.answer = question.options.map(option => tempf(option));
                 groupObject.answer = this.fb.array(groupObject.answer);                
+            } else if (question.kind === 'Rating') {
+                groupObject.answer = 0;
+                if (question.required) {
+                    groupObject.answer = [groupObject.answer, Validators.required];
+                }
             } else if (question.kind === 'Matrix') {
                 groupObject.answer = {};
                 for (let row of question.rows) {
@@ -136,4 +141,11 @@ export class MiniShowFormComponent implements OnInit {
         }
         this.submitForm.emit(value);
     }
+
+    setRating(rating: number, i: number) {
+        this.questionnaire.get('questions').controls[i].get('answer').setValue(rating);
+        window.console.log("Rating in form is: ", rating, "index is: ", this.questionnaire.get('questions').controls[i].value);
+
+    }
+
 }

@@ -98,7 +98,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
         if (res.kind === "Multiple Choice") {
             const space = /^\s*$/;
-            res.options = res.options.filter(x => !space.test(x.option));
+            res.options = res.options.filter(x => !space.test(x.body));
         }
 
         res.number = this.questionData.length;
@@ -666,7 +666,19 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     toggleRequired(i: number) {
-        this.questionData[i].required = !this.questionData[i].required;
+        let last: number = 0;
+        for (let j=0; j<this.getSortedQuestions()[j]; j++) {
+            window.console.log("value", this.questionData[j].required);
+            if (this.getSortedQuestions[j].required) {last++};
+        }
+        if (last === 1 && this.getSortedQuestions()[i].required) {
+            // window.console.log("worked",last, this.questionData);
+            return;
+        } else {
+            // window.console.log("failed", last, this.questionData);
+            this.questionData[i].required = !this.questionData[i].required;
+        }
+        
     }
 
     toggleAuthor(anonymous: string) {

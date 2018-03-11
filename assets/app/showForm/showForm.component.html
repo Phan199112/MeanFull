@@ -66,8 +66,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <stars-question *ngIf="question.kind == 'Stars'" [control]="questionnaire.get('questions').controls[i].get('answer')"></stars-question>                            
-                </div>
+                <star-array *ngIf="question.kind == 'Rating'" (selected)="setRating($event, i)" formGroupName="answer" [scale]="question.scale"></star-array>
+                
+            </div>
                 <input type="text" class="form-control" formControlName="answer" *ngIf="question.kind == 'Short Answer'"/>
                 <textarea class="form-control" formControlName="answer" *ngIf="question.kind == 'Paragraph'"></textarea>
                 <div *ngIf="isInvalid(i)" class="invalid-feedback">

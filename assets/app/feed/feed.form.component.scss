@@ -1,64 +1,70 @@
 $primaryColor: #28ab64;
 $primaryFont: Dosis;
 $borderColor: rgb(226,226,226);
+$backgroundColor: #FFF;
 
 
 // Dosis, Quicksand, Raleway
 
-.bg {
-  background: rgba(255, 255, 255, 0.6);
-  padding: 0;
-  margin: 0;
-  border-radius: 12px;
+// .bg {
+//   background: rgba(255, 255, 255, 0.6);
+//   padding: 0;
+//   margin: 0;
+//   border-radius: 12px;
 
-  &::after {
-    content: "";
-    padding: 0px;
-    display: table;
-    clear: both;
-  }
+//   &::after {
+//     content: "";
+//     padding: 0px;
+//     display: table;
+//     clear: both;
+//   }
 
-  &::before {
-    content: "";
-    padding: 0px;
-    display: table;
-    clear: both;
-  }
-}
+//   &::before {
+//     content: "";
+//     padding: 0px;
+//     display: table;
+//     clear: both;
+//   }
+// }
 
 .fBody {
   height: auto;
-  border-radius: 12px;
+  border-radius: 5px;
   border: solid 1px $borderColor;
-  // box-shadow: 0 2px 10px 4px rgba(65,117,5,0.3);
   position: relative;
+  background: $backgroundColor;
   box-sizing: border-box;
   margin: auto auto;
-  margin-bottom: 65px;
-  margin-top: 110px;
+  margin-bottom: 10px;
   z-index: 1;
-  // background: linear-gradient( ($primaryColor) 0%, (lighten($primaryColor, 55)) 100%);
-  // background-image: url("/images/nature.jpeg");
   background-size: cover;
   padding-top: 0;
   padding-bottom: 0;
-  width: 90%;
+  width: 99%;
 }
 
 
 .userImagePos {
   position: absolute;
-  left: 0px;
-  top: -75px;
+  left: 20px;
+  top: -80px;
+}
+
+.imageContainer {
+  display: flex;
+  z-index: 2;
+  align-items: center;
+  padding: 20px;
 }
 
 .userImage {
-  width: 70px;
-  height: 70px;
-  border-radius: 50px;
-  border: 2px solid $primaryColor;
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  // padding: 10px;
+  // border: 5px solid $backgroundColor;
   z-index: 3;
-  background-color: $primaryColor;
+  background-color: $borderColor;
 }
 
 .userInfoBox {
@@ -69,14 +75,15 @@ $borderColor: rgb(226,226,226);
 }
 
 .share {
-  margin-right: 10px;
-  padding-top: 10px;
+  right: 20px;
+  top: 20px;
+  position: absolute;
 }
 
 .flex {
   display: flex;
   justify-content: center;
-  padding: 10px 55px;
+  padding: 10px 20px;
 }
 
 .userTitle {
@@ -84,8 +91,10 @@ $borderColor: rgb(226,226,226);
   font-size: 1.4rem;
   font-weight: normal;
   font-family: Karla;
-  text-align: center;
+  text-align: left;
   margin-top: 20px;
+  width: 100%;
+  
 }
 
 .responseBox {
@@ -146,19 +155,17 @@ $navBarColor:  #0088cc;
 .formContainer {
   border: 1px solid $navBarColor;
   border-radius: 5px;
-  padding-top: 10px;
+  padding-top: 8px;
   margin-bottom: 20px;
   box-shadow: 1px 1px 1px #0077b3;
 }
 
 #analysisContainer {
   border: 1px solid $primaryColor;
-  padding-top: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
+  padding: 8px 0px;
+  margin: 8px;
   border-radius: 5px;
+  max-width: 100%;
 }
 
 .filterCategory {

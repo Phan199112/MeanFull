@@ -16,6 +16,7 @@ import {Router} from "@angular/router";
     }
 })
 export class NavbarComponent implements OnInit {
+    searchbox: FormGroup;
     loggedin = false;
     fbid = false;
     firstname = null;
@@ -27,6 +28,7 @@ export class NavbarComponent implements OnInit {
     unreadNotifications: number = 0;
     events: any;
     gender: string;
+
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler;
     private obs: any;
@@ -41,6 +43,10 @@ export class NavbarComponent implements OnInit {
 
 
     ngOnInit() {
+        this.searchbox = this.fb.group({
+            searchterm: ['', Validators.required]
+        });
+
         this.checkLoggedin();
 
         // update the list every 30 seconds
@@ -227,5 +233,21 @@ export class NavbarComponent implements OnInit {
             this.navExpanded = false;
         }
     }
+
+
+    checkSubmit(form) {
+        this.setAsTouched(form);
+        if (form.invalid) {
+            form.wasChecked = true;
+        } else {
+            // submit
+            this.submitSearch();
+        }
+    }
+
+    submitSearch() {
+        this.router.navigate(['/searchresults', { 'q': this.searchbox.value.searchterm }]);
+    }
+
 
 }

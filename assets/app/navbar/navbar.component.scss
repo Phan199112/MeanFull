@@ -104,7 +104,7 @@ $navBarColor:  #FFF;
 }
 
 img {
-  width: 30px;
+  width: 40px;
 }
 
 .navbar-toggler {
@@ -122,3 +122,16 @@ img {
   margin-top: -1px;
 }
 
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  width: 25%;
+}
+
+.searchbar {
+  width: 100%;
+  padding: 2px;
+  font-size: .85rem;
+  font-family: Karla;
+  text-align: center;
+}

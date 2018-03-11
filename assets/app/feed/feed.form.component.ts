@@ -85,8 +85,8 @@ export class FeedFormComponent implements OnInit {
                 if (res) {
                     // counts
                     this.userData = res.json();
-                    this.location = this.userData.userprofile.location;
-                    this.name = this.userData.userprofile.name;
+                    this.location = this.userData.userprofile.location || { city: "NA", state: "NA", country: "NA" };
+                    this.name = this.userData.userprofile.name || "";
                     this.nocreated = this.userData.userprofile.nocreated || 0;
                     this.nodiscussion = this.userData.userprofile.nodiscussion || 0;
                     this.notaken = this.userData.userprofile.notaken || 0;

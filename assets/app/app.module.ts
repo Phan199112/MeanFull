@@ -77,6 +77,7 @@ import { MultipleChoiceQuestionForm } from "./createForm/questionForms/multipleC
 import { ShortAnswerQuestionForm } from "./createForm/questionForms/shortAnswerForm.component";
 import { RatingQuestionForm } from "./createForm/questionForms/ratingForm.component";
 import { NumberQuestionForm } from "./createForm/questionForms/numberForm.component";
+import { StarsArray } from "./feed/starArray.component";
 
 
 import { ShareService } from "./share.service";
@@ -137,7 +138,8 @@ import { ShareService } from "./share.service";
         RatingQuestionForm,
         NumberQuestionForm,
         SwitchButtons,
-        DescriptionSwitchButtons
+        DescriptionSwitchButtons,
+        StarsArray
     ],
     imports: [
         // vendor //

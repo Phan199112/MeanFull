@@ -14,7 +14,6 @@ import { CommunityListComponent } from "../communityContainer/community.list.com
 export class Sidebar implements OnInit {
     @Input() loggedin: boolean;
     communities: Object[];
-    searchbox: FormGroup;
     users : Object[];
     
 
@@ -23,11 +22,6 @@ export class Sidebar implements OnInit {
      }
 
     ngOnInit() {
-
-        this.searchbox = this.fb.group({
-            searchterm: ['', Validators.required]
-        });
-
 
         this.http.get('/users/feedlist')
             .toPromise()
@@ -59,21 +53,6 @@ export class Sidebar implements OnInit {
                 this.setAsTouched(group.controls[i]);
             }
         }
-    }
-
-
-    checkSubmit(form) {
-        this.setAsTouched(form);
-        if (form.invalid) {
-            form.wasChecked = true;
-        } else {
-            // submit
-            this.submitSearch();
-        }
-    }
-
-    submitSearch() {
-        this.router.navigate(['/searchresults', { 'q': this.searchbox.value.searchterm }]);
     }
 
 
