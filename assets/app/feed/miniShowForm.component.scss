@@ -6,7 +6,7 @@ $navBarColor:  #0088cc;
 
 .formChoices {
   font-weight: 500;
-  width: 80%;
+  width: 95%;
 
   & label {
     font-size: 1rem;
@@ -57,10 +57,6 @@ $navBarColor:  #0088cc;
   color: $navBarColor;
   background-color: $whiteColor;
   border:none;
-}
-
-#buttonText {
-
 }
 
 #addOptionBtn{

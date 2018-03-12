@@ -1,0 +1,21 @@
+<div class="sContainer">
+    <h3 class="lpText">Top Posts</h3>
+        <div class="emoContainer">
+            <div class="emoAndText" (click)="chooseReaction('great')">
+                <img class="emoticon" src="/images/emoticons/thumbsup.gif" />
+                <span class="emoText" [ngClass]="{emoSelected: currentEmo === 'great'}">Great Question!</span>
+            </div>
+            <div class="emoAndText" (click)="chooseReaction('wtf')">
+                <img class="emoticon" src="/images/emoticons/wtf.gif" />
+                <span class="emoText" [ngClass]="{emoSelected: currentEmo === 'wtf'}">WTF..</span>
+            </div>
+            <div class="emoAndText" (click)="chooseReaction('angry')">
+                <img class="emoticon" src="/images/emoticons/angry.gif" />
+                <span class="emoText" [ngClass]="{emoSelected: currentEmo === 'angry'}">Really?!</span>
+            </div>
+        </div>
+        <ul>
+            <li class="title" *ngFor="let post of [1,2,3,4,5]; let i = index">Example Title {{i + 1}}</li>
+        </ul>
+</div>
+

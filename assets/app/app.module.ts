@@ -68,6 +68,7 @@ import {LoginPopupComponent} from './loginPopup/loginPopup.component';
 import {ConfirmationPopupComponent} from './confirmationPopup/confirmationPopup.component';
 import {SearchPageComponent} from "./search/search.page.component";
 import { Sidebar } from "./sidebar/sidebar.component";
+import { RightPanel } from "./sidebar/rightPanel.component";
 import { FormButtons } from "./createForm/formButton.component";
 import { UserImageComponent } from "./sidebar/user.image.component";
 import { CommunityImageComponent } from "./sidebar/community.image.component";
@@ -130,6 +131,7 @@ import { ShareService } from "./share.service";
         ConfirmationPopupComponent,
         SearchPageComponent,
         Sidebar,
+        RightPanel,
         FormButtons,
         CommunityImageComponent,
         UserImageComponent,

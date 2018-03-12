@@ -40,7 +40,7 @@ $backgroundColor: #FFF;
   background-size: cover;
   padding-top: 0;
   padding-bottom: 0;
-  width: 95%;
+  width: 100%;
 }
 
 
@@ -84,7 +84,8 @@ $backgroundColor: #FFF;
 .flex {
   display: flex;
   justify-content: center;
-  padding: 10px 20px;
+  padding: 10px;
+  width: 100%;
 }
 
 .userTitle {
@@ -254,7 +255,7 @@ hr {
   align-items: flex-start;
   width: 100%;
   margin-top: 20px;
-  margin-left: 10px;
+  padding-left: 10px;
   margin-bottom: -25px;
 
   .emoAndText {

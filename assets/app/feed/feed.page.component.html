@@ -1,18 +1,16 @@
-<div style="width: 1100px; margin: 0px auto">
+<div style="width: 1220px; margin: 0px auto">
 
 <div class="row">
     <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">Ask a Question</button>
 </div>
 
 <div class="row">
+  
     <div class="col-md-3" id="leftSideOfContainer">
-        <!-- <div class="container" *ngIf="0 === 0" style="margin: 20px auto;">
-            <p style="font-size: 18px;">Join your first community of interest today!</p>
-        </div> -->
-        <!-- <user-float></user-float> -->
         <sidebar [loggedin]="loggedin"></sidebar>
     </div>
-    <div id="" class="col-md-7">
+  
+    <div class="col-md-6">
         <br>
         <div class="card" *ngIf="emailconfirmfailed">
             <div class="card-body btn-danger">Validation of your email address failed. Please try again later.</div>
@@ -25,8 +23,10 @@
         </div>
         <feed-list [user]="null"></feed-list>
     </div>
-    <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
-        <!-- <feedback-form *ngIf="loggedin"></feedback-form> -->
+  
+    <div class="col-md-3" id="rightSideOfContainer">
+        <right-panel [loggedin]="loggedin"></right-panel>
     </div>
+
 </div>
 </div>

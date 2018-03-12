@@ -1,5 +1,5 @@
 <div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
-    <div class="bg">
+    <!-- <div class="bg"> -->
     <!-- <div class="userImagePos"> -->
         <div class="imageContainer">
             <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
@@ -122,13 +122,15 @@
         
             </div>
         </div>
-    <div class="row" *ngIf="form.contracted">
-        <div class="col text-center">
+
+
+    <div class="flex" *ngIf="form.contracted">
             <button (click)="expand()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
                 Expand to see more!
             </button>
-        </div>
     </div>
+
+
     <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
         <h4>Oops this form could not be found!</h4>
     </div>
@@ -138,8 +140,12 @@
         <tag-banner-list [data]="form.hashtags"></tag-banner-list>
         <!-- </div> -->
     </div>
-    </div>
+    <!-- </div> -->
 </div>
+
+
+
+
 <confirmation-popup></confirmation-popup>
 <ng-template #shareModal let-c="close" let-d="dismiss">
     <!--<div class="modal-header" [formGroup]="inviteForm">
