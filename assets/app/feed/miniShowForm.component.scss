@@ -6,13 +6,16 @@ $navBarColor:  #0088cc;
 
 .formChoices {
   font-weight: 500;
-  margin-left: 10%;
   width: 80%;
 
   & label {
     font-size: 1rem;
     font-family: Karla;
     padding-left: 8px;
+  }
+
+  &.sa, &.num {
+    margin-left: 10px;
   }
 }
 

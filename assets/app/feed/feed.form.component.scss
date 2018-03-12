@@ -34,13 +34,13 @@ $backgroundColor: #FFF;
   position: relative;
   background: $backgroundColor;
   box-sizing: border-box;
-  margin: auto auto;
+  margin: auto 0px;
   margin-bottom: 10px;
   z-index: 1;
   background-size: cover;
   padding-top: 0;
   padding-bottom: 0;
-  width: 99%;
+  width: 95%;
 }
 
 
@@ -55,6 +55,7 @@ $backgroundColor: #FFF;
   z-index: 2;
   align-items: center;
   padding: 20px;
+  padding-bottom: 0px;
 }
 
 .userImage {
@@ -246,4 +247,37 @@ hr {
   #form-menu {
     font-size: 25px;
   }
+}
+
+.emoContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: -25px;
+
+  .emoAndText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 50px;
+    margin: 2px 8px;
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
+.emoticon {
+  height: 32px;
+}
+
+.emoText {
+  font-family: Karla;
+  font-size: .6rem;
+  text-align: center;
+  width: 50px;
 }

@@ -43,12 +43,29 @@
             </div>
         </div>
     </div>
+
+    <div class="emoContainer">
+        <div class="emoAndText">
+            <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
+            <span class="emoText">Great Question!</span>
+        </div>
+        <div class="emoAndText">
+            <img class="emoticon" src="/images/emoticons/wtf.gif" />
+            <span class="emoText">WTF..</span>
+        </div>
+        <div class="emoAndText">
+            <img class="emoticon" src="/images/emoticons/angry.gif" />
+            <span class="emoText">Really?!</span>
+        </div>
+    </div>
+
+
     <!-- </div> -->
 
-    <div class="flex" style="margin-top:0; padding-top: 0;">
+    <!-- <div class="flex" style="margin-top:0; padding-top: 0;">
         <h3 *ngIf="form.questions.length === 1" class="userTitle">{{form.questions[0].body}}</h3>
         <h3 *ngIf="form.questions.length !== 1" class="userTitle">{{form.title}}</h3>
-    </div>
+    </div> -->
     <div class="responseBox">
         <div class="row">
             <mini-show-form class="maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
