@@ -29,6 +29,13 @@ export class FeedFormComponent implements OnInit {
     notaken :any;
     nodiscussion : any;
     location: any;   
+
+
+    //  ------ Emoticon properties to change/check against
+    hasReacted: boolean = false;
+    reaction: string = null;
+    reactionData: Object;
+
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
     @ViewChild('shareModal') shareModal;
 
@@ -75,6 +82,7 @@ export class FeedFormComponent implements OnInit {
         this.nodiscussion = null;
         this.notaken = null;
         this.location = {city: "", state: "", country:""};
+        this.reactionData = {great: 20, wtf: 60, angry: 20};
     }
 
     ngOnInit() {
@@ -490,6 +498,20 @@ export class FeedFormComponent implements OnInit {
             .catch(error => {
                 this.form.setAnswered(false);
             });
+    }
+
+
+
+    //Emoticon functions
+    chooseReaction(reaction: string) : void {
+        if (this.hasReacted) return;
+
+        // TO-DO: Need to submit reaction to back-end and update percentages and return
+        // reactionData object. Exp: {great: 22, wtf: 48, angry: 30}
+        // this.reactionData = 
+
+        this.hasReacted = true;
+        this.reaction = reaction;
     }
 
 }

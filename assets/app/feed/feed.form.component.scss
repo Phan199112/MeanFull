@@ -275,9 +275,30 @@ hr {
   height: 32px;
 }
 
+
 .emoText {
   font-family: Karla;
   font-size: .6rem;
   text-align: center;
   width: 50px;
+}
+
+.emoPercent {
+  background: #FFF;
+  color: $primaryColor;
+  border-radius: 100px;
+  border: 1px solid $primaryColor;
+  padding: 1px 3px;
+  width: 40px;
+  margin: 2px auto;
+}
+
+.selectedPercent {
+  background: $primaryColor;
+  color: #fff;
+  border-radius: 100px;
+  border: 1px solid $primaryColor;
+  padding: 1px 3px;
+  width: 40px;
+  margin: 2px auto;
 }
