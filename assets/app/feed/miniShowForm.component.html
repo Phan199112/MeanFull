@@ -10,7 +10,7 @@
                         <!-- LHS -->
                         <div class="col-md-6">
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span><span *ngIf="question.kind === 'Number' && question.boundaries">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span></label>    
+                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span><span *ngIf="question.kind === 'Number' && question.boundaries" style="color: #999; font-size: .8rem">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span></label>    
                                 <!-- Not showing image anymore right? -->
                                 <div *ngIf="question.pic" class="form-group question-pic">
                                     <img [src]="question.pic"/>
@@ -70,7 +70,7 @@
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
                                 <label class="lead">{{question.number + 1}}. {{question.body}}
                                     <span *ngIf="question.required">*</span>
-                                    <span *ngIf="question.kind === 'Number' && question.boundaries">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span>
+                                    <span *ngIf="question.kind === 'Number' && question.boundaries" style="color: #999; font-size: .8rem">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span>
                                 </label>
                                 <div *ngIf="question.pic" class="form-group question-pic">
                                     <img [src]="question.pic"/>

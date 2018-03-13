@@ -47,6 +47,7 @@
     "hbs": "~4.0.1",
     "heroku-ssl-redirect": "0.0.4",
     "jquery": "^3.3.1",
+    "js-autocomplete": "^1.0.4",
     "mjml": "^3.3.5",
     "mongoose": "^4.13.4",
     "mongoose-in-memory-autocomplete": "^1.2.3",

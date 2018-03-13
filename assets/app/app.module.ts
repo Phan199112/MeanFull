@@ -14,7 +14,7 @@ import {NgForageModule} from "ngforage";
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareButtonModule } from '@ngx-share/button';
 import { ImageCropperModule } from 'ngx-image-cropper';
-
+import { Autocomplete } from 'js-autocomplete';
 import {AppComponent } from "./app.component";
 import {routing} from "./app.routing";
 
@@ -141,7 +141,7 @@ import { ShareService } from "./share.service";
         NumberQuestionForm,
         SwitchButtons,
         DescriptionSwitchButtons,
-        StarsArray
+        StarsArray,
     ],
     imports: [
         // vendor //

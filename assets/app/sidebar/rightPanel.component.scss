@@ -56,6 +56,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding-bottom: 12px;
 }
 
 .catContainer {
@@ -108,26 +109,50 @@ h3 {
   }
 }
 
+.hoverGrow {
+    &:hover{
+    cursor: pointer;
+
+    .emoticon {
+      height: 42px;
+    }
+
+    .emoText {
+      font-size: .75rem;
+    }
+
+  }
+}
+
+.vCenter {
+  align-items: center;
+}
+
 .emoticon {
   height: 32px;
 
   &.emoSelected {
-    height: 50px;
+    height: 60px;
+  }
+
+  &.blurred {
+    opacity: .25;
   }
 }
 
 
 .emoText {
   font-family: Karla;
-  color: $lightGrey;
+  color: $primaryColor;
   font-size: .65rem;
+  font-weight: 700;
   text-align: center;
   width: 50px;
 }
 
 .emoSelected {
   font-weight: 700;
-  font-size: .75rem;
+  font-size: .85rem;
   color: $primaryColor;
 }
 

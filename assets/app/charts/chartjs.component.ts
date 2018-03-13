@@ -25,7 +25,7 @@ export class ChartJSComponent implements OnInit {
             // set the type
             // if (this.dataValues.length == 1) {
             this.dataValues.splice(1, this.dataValues.length -1);
-                this.ChartType = "doughnut";
+                this.ChartType = "pie";
                 this.ChartLegend = true;
 
             // } 
@@ -94,7 +94,7 @@ export class ChartJSComponent implements OnInit {
 
             } else if (this.ChartType == "pie" {
                 this.ChartOptions = {
-                    cutoutPercentage: 45,
+                    // cutoutPercentage: 45,
                     animation {
                         animateScale: true
                     }

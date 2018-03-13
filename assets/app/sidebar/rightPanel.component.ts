@@ -16,7 +16,7 @@ export class RightPanel implements OnInit {
     communities: Object[];
     users : Object[];
     postResults: Array<Object>;
-    currentEmo: string = 'great';
+    currentEmo: string = null;
     categories: Array<string> = ["Education", "Health", "Business", "Technology", "Cooking", "Home Improvement", "Fitness", "Fashion", "Automotive"]
     
 

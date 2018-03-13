@@ -268,7 +268,16 @@ hr {
 
     &:hover{
       cursor: pointer;
+
+      .emoticon {
+        height: 40px;
+      }
+
+      .emoText {
+        font-size: .7rem;
+      }
     }
+  
   }
 }
 
