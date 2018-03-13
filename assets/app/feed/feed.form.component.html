@@ -1,6 +1,7 @@
 <div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
     <!-- <div class="bg"> -->
     <!-- <div class="userImagePos"> -->
+        <div class="topContainer">
         <div class="imageContainer">
             <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
                 <div *ngIf="form.pictype == 'fb'">
@@ -24,8 +25,13 @@
                 <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken}}</span></i>
                 <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i>
             </div>
-     </div>
 
+        </div>
+        <div class="cTagContainer">
+            <span class="cTag" *ngFor="let tag of ['Tech', 'AI', 'Blockchain', 'UX/UI', 'Robotics']; let i = index">{{tag}}</span>
+        </div>
+    </div>
+    
     <div class="share">
         <div class="col p-0" *ngIf="loggedin">
             <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
@@ -45,23 +51,27 @@
     </div>
 
 
-    <!-- Emoticons -->
-    <div class="emoContainer">
-        <div class="emoAndText"  (click)="chooseReaction('great')">
-            <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
-            <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'great'}">{{reactionData.great}}%</span>
-            <span class="emoText">Great Question!</span>
+    <div class="topContainer">
+            <!-- Emoticons -->
+        <div class="emoContainer">
+            <div class="emoAndText"  (click)="chooseReaction('great')">
+                <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
+                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'great'}">{{reactionData.great}}%</span>
+                <span class="emoText">Great Question!</span>
+            </div>
+            <div class="emoAndText" (click)="chooseReaction('wtf')">
+                <img class="emoticon" src="/images/emoticons/wtf.gif" />
+                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'wtf'}">{{reactionData.wtf}}%</span>
+                <span class="emoText">WTF..</span>
+            </div>
+            <div class="emoAndText" (click)="chooseReaction('angry')">
+                <img class="emoticon" src="/images/emoticons/angry.gif" />
+                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'angry'}">{{reactionData.angry}}%</span>
+                <span class="emoText">Really?!</span>
+            </div>
         </div>
-        <div class="emoAndText" (click)="chooseReaction('wtf')">
-            <img class="emoticon" src="/images/emoticons/wtf.gif" />
-            <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'wtf'}">{{reactionData.wtf}}%</span>
-            <span class="emoText">WTF..</span>
-        </div>
-        <div class="emoAndText" (click)="chooseReaction('angry')">
-            <img class="emoticon" src="/images/emoticons/angry.gif" />
-            <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'angry'}">{{reactionData.angry}}%</span>
-            <span class="emoText">Really?!</span>
-        </div>
+        
+        <span *ngIf="submitted" id="qCompleted">Completed</span>
     </div>
 
 
@@ -72,10 +82,10 @@
         <h3 *ngIf="form.questions.length !== 1" class="userTitle">{{form.title}}</h3>
     </div> -->
     <div class="responseBox">
-        <div class="row">
+        <!-- <div class="row"> -->
             <mini-show-form class="maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
                 [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
-        </div>
+        <!-- </div> -->
     </div>
         <div id="analysisContainer" class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
             <div class="container">

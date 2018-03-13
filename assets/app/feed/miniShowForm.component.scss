@@ -19,15 +19,14 @@ $navBarColor:  #0088cc;
   }
 }
 
-#miniFormQuestionBox {
-  margin-bottom: 30px;
+.miniFormQuestionBox {
+  margin-bottom: 20px;
 }
 
+.noBotMargin {
+  margin-bottom: 0px;
+}
 
-
-#formSubmitButton {
-  //text-align:center;
- }
 
 #createFormContainer {
   background-color: $whiteColor;

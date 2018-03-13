@@ -50,6 +50,13 @@ $backgroundColor: #FFF;
   top: -80px;
 }
 
+.topContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .imageContainer {
   display: flex;
   z-index: 2;
@@ -79,6 +86,33 @@ $backgroundColor: #FFF;
   right: 20px;
   top: 20px;
   position: absolute;
+}
+
+.cTagContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  margin: 30px 60px 0px 0px;
+  max-width: 200px
+}
+
+.cTag {
+  display: block;
+  padding: 2px 8px;
+  background: #FFF;
+  color: #AAA;
+  border: solid 1px #AAA;
+  border-radius: 4px;
+  margin: 4px;
+  font-family: Karla;
+  font-size: .8rem;
+
+  &:hover {
+    cursor: pointer;
+    background: #F3F3F3;
+    color: #666;
+    border: solid 1px #666;
+  }
 }
 
 .flex {
@@ -314,4 +348,16 @@ hr {
   padding: 1px 3px;
   width: 40px;
   margin: 2px auto;
+}
+
+#qCompleted {
+  display: block;
+  font-family: Karla;
+  font-size: 1.2rem;
+  color: $primaryColor;
+  padding: 3px 9px;
+  border: 1px solid $primaryColor;
+  border-radius: 4px;
+  margin-right: 60px;
+  margin-top: 20px;
 }
