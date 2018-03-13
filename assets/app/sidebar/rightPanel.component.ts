@@ -17,6 +17,7 @@ export class RightPanel implements OnInit {
     users : Object[];
     postResults: Array<Object>;
     currentEmo: string = 'great';
+    categories: Array<string> = ["Education", "Health", "Business", "Technology", "Cooking", "Home Improvement", "Fitness", "Fashion", "Automotive"]
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router) {  
@@ -32,15 +33,12 @@ export class RightPanel implements OnInit {
             .toPromise()
             .then(response => {
                 this.users = this.users.concat(response.json().data);
-                window.console.log(this.users);
             }
 
         this.http.post(`/community/list`, { user: this.user }).toPromise()
         .then(res => {
             if (res.json().status == 1) {
                 this.communities = res.json().data;
-                window.console.log(this.communities);
-
             }
         }).catch(error => alert("Error retrieving form: " + error));
 
@@ -62,6 +60,10 @@ export class RightPanel implements OnInit {
 
 
     chooseReaction(reaction: string) : void {
+        if (this.currentEmo === reaction) {
+            this.currentEmo = null;
+            return;
+        }
         this.currentEmo = reaction;
     }
 

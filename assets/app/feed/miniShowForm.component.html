@@ -10,7 +10,7 @@
                         <!-- LHS -->
                         <div class="col-md-6">
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>    
+                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span><span *ngIf="question.kind === 'Number' && question.boundaries">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span></label>    
                                 <!-- Not showing image anymore right? -->
                                 <div *ngIf="question.pic" class="form-group question-pic">
                                     <img [src]="question.pic"/>
@@ -68,7 +68,10 @@
                     <ng-template #formonly>
                         <div class="col-md-12">
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                                <label class="lead">{{question.number + 1}}. {{question.body}}
+                                    <span *ngIf="question.required">*</span>
+                                    <span *ngIf="question.kind === 'Number' && question.boundaries">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span>
+                                </label>
                                 <div *ngIf="question.pic" class="form-group question-pic">
                                     <img [src]="question.pic"/>
                                 </div>
@@ -103,11 +106,11 @@
 
                                 <star-array *ngIf="question.kind == 'Rating'" (selected)="setRating($event, i)" formGroupName="answer" [scale]="question.scale"></star-array>
 
-                                <!-- <stars-question *ngIf="question.kind == 'Rating'" [scale]="question.temp" (rating)="setRating(i)"></stars-question>                                                             -->
+                                <input (click)="loginPopup.check(data.loginRequired)" type="number" min="question.lowerBoundary" max="question.upperBoundary"
+                                    class="formChoices num" formControlName="answer" *ngIf="question.kind == 'Number'" />
 
                                 <!-- <input (click)="loginPopup.check(data.loginRequired)" type="text" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short Answer'"/> -->
                                 <textarea class="formChoices sa" formControlName="answer" *ngIf="question.kind == 'Short Answer'"></textarea>
-                                <input (click)="loginPopup.check(data.loginRequired)" type="number" min="question.lowerBoundary" max="question.upperBoundary" class="formChoices num" formControlName="answer" *ngIf="question.kind == 'Number'"/>
                                 <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                     Option is required
                                 </div>
