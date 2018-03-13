@@ -119,8 +119,7 @@
 
                 </div>
         </div>
-    <div class="row" *ngIf="!data.contracted && !submitted">
-        <div class="col-md-4"></div>
+    <!-- <div class="row" *ngIf="!data.contracted && !submitted">
         <div class="col-md-4">
             <button 
                 id="formSubmitButton" 
@@ -134,16 +133,11 @@
         </div>
         <div class="col-md-4"></div>
     </div>
-    <!-- <div class="row" *ngIf="submitted">
-        <div class="col text-center submitted-message">
-            <p class="alert alert-success">The survey has already been completed!</p>
-        </div>
-    </div> -->
     <div class="row" *ngIf="expired">
         <div class="col text-center submitted-message">
             <p class="alert alert-success">The survey has expired, no further answers are allowed!</p>
         </div>
-    </div>
+    </div> -->
 </form>
 <!-- </div> -->
 <login-popup #loginPopup></login-popup>

@@ -87,6 +87,9 @@
                 [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
         <!-- </div> -->
     </div>
+        
+    
+        <!-- Graph Filters -->
         <div id="analysisContainer" class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
             <div class="container">
                 <form [formGroup]="dataselectionform">
@@ -144,14 +147,54 @@
     <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
         <h4>Oops this form could not be found!</h4>
     </div>
-    <div *ngIf="form.hashtags" class="line"></div>
-    <div class="hashtag">
-        <!-- <div class="row mx-auto"> -->
-        <tag-banner-list [data]="form.hashtags"></tag-banner-list>
-        <!-- </div> -->
-    </div>
-    <!-- </div> -->
+
+    <!-- <div *ngIf="form.hashtags" class="line"></div> -->
 </div>
+
+
+
+<!-- Comment Section -->
+<div class="cBody" *ngIf="!hide && form.found">
+    <div class="comSort">
+        <span class="comSwitch">Top Comments</span> <span id="divider"> | </span> <span class="comSwitch">Most Recent</span>
+    </div>
+    <div class="userComCont">
+        <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
+            <div *ngIf="form.pictype == 'fb'">
+                <img src="https://graph.facebook.com/{{form.pic}}/picture?width=32&height=32" class="comUserImage" />
+            </div>
+            <div *ngIf="form.pictype == 'local'">
+                <img [src]="form.pic" class="comUserImage" />
+            </div>
+            <div *ngIf="form.pictype == 'default'">
+                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="comUserImage" />
+                <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="comUserImage" />
+            </div>
+            <div *ngIf="form.pictype == 'anonymous'">
+                <img src="/images/question.jpg" class="comUserImage" />
+            </div>
+        </a>
+
+        <textarea #ci placeholder="Leave a comment.." class="niceTextInput" rows="1"></textarea>
+    </div>
+    <div *ngIf="ci.value !== ''" class="comSort" style="padding-top: 0">
+        <a (click)="submitComment(ci.value)" class="submitButton">Comment</a>
+    </div>
+    <div class="comments">
+        <div *ngFor="let com of [0,1,2,3,4]; let i = index">
+            <div class="indComment" [ngClass]="{reverse: i%2 === 0}" *ngIf="commentsExpanded || i < 2">
+                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="comUserImage" [ngClass]="{reverse: i%2 === 0}" />
+                <p class="commentText">This is a test comment. I want to see how amazing this test comment looks on the post. Checking for everything possible. Including margin, padding, color, size, flow, wrap...everything! Hope this is long enough.</p>
+            </div>
+        </div>
+    </div>
+    <div class="flex" style="padding-top: 0px">
+        <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
+    </div>
+
+</div>
+
+
 
 
 

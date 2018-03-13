@@ -36,6 +36,9 @@ export class FeedFormComponent implements OnInit {
     reaction: string = null;
     reactionData: Object;
 
+    // ------- Comment properties
+    commentsExpanded: boolean = false;
+
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
     @ViewChild('shareModal') shareModal;
 
@@ -512,6 +515,11 @@ export class FeedFormComponent implements OnInit {
 
         this.hasReacted = true;
         this.reaction = reaction;
+    }
+
+    //Comment functions 
+    expandComment() : void {
+        this.commentsExpanded = !this.commentsExpanded;
     }
 
 }
