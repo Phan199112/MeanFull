@@ -154,7 +154,7 @@
 
 
 <!-- Comment Section -->
-<div class="cBody" *ngIf="!hide && form.found">
+<!-- <div class="cBody" *ngIf="!hide && form.found">
     <div class="comSort">
         <span class="comSwitch">Top Comments</span> <span id="divider"> | </span> <span class="comSwitch">Most Recent</span>
     </div>
@@ -192,7 +192,10 @@
         <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
     </div>
 
-</div>
+</div> -->
+
+<!-- Comments -->
+<discussion-list [form]='form' [id]="form.id"></discussion-list>
 
 
 

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { DiscussionModel } from "./discussion.model";
 import { Http } from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { FeedForm } from "../feed/feed.form.model";
 
 
 @Component({
@@ -15,7 +16,10 @@ export class DiscussionListComponent implements OnInit {
     newmessage: FormGroup;
     submissionfailed: boolean = false;
     hide: boolean = false;
+    commentsExpanded: boolean = false;
+    commentSort: string = "top";
 
+    @Input() form: FeedForm;
     @Input() id: String;
 
     constructor(private fb: FormBuilder, private http: Http) {
@@ -26,8 +30,7 @@ export class DiscussionListComponent implements OnInit {
             message: ['', Validators.compose([Validators.minLength(1), Validators.required])]
         });
 
-        // retrieve
-        this.retrieveMessages( true);
+        this.retrieveMessages(true);
     }
 
     // retrieve message list for this form
@@ -101,6 +104,27 @@ export class DiscussionListComponent implements OnInit {
                 this.setAsTouched(group.controls[i]);
             }
         }
+    }
+
+    expandComment(): void {
+        this.commentsExpanded = !this.commentsExpanded;
+    }
+
+    autosizeTextarea(event: any, el: any) {
+        if (event.keyCode == 13) {
+            el.blur()
+        } else {
+            setTimeout(function () {
+                el.style.cssText = 'height:auto; padding:0; min-height: 23px';
+                // for box-sizing other than "content-box" use:
+                // el.style.cssText = '-moz-box-sizing:content-box';
+                el.style.cssText = 'height:' + (el.scrollHeight) + 'px';
+            }, 0);
+        }
+    }
+
+    toggleSort(view: string) : void {
+        this.commentSort = view;
     }
 
 }

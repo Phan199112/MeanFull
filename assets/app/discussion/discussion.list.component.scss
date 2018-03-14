@@ -1,12 +1,134 @@
-#tagsListComponent {
-  margin-right: 5px;
-  margin-left: 5px;
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 5px;
+$primaryColor: #28ab64;
+$primaryFont: Dosis;
+$borderColor: rgb(226,226,226);
+$backgroundColor: #FFF;
+$commentBackground: #f0f6f0;
+
+.cBody {
+  height: auto;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: solid 1px $borderColor;
+  // border: none;
+  border-top: none;
+  position: relative;
+  background: transparent;
+  box-sizing: border-box;
+  margin: auto 0px;
+  margin-bottom: 10px;
+  z-index: 1;
+  background-size: cover;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
 }
 
-#entrybox {
-  width: 95%;
+.flex {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  width: 100%;
+}
+
+
+.comSort {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+}
+
+.comSwitch {
+  display: block;
+  color: darken($primaryColor, 14);
+  font-family: Karla;
+  font-size: .8rem;
+  margin: auto 4px;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: 700;
+  }
+}
+
+#divider {
+  color: #c0e0ce;
+}
+
+.userComCont {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px;
+  padding-bottom: 0px;
+  width: 100%;
+}
+
+.comUserImage {
+  width: 32px !important;
+  // height: 32px;
+  border-radius: 8px;
+  z-index: 3;
+  margin-right: 10px;
+  background-color: $borderColor;
+
+  &.reverse {
+    margin-right: 0px !important;
+    margin-left: 10px !important;
+  }
+}
+
+.comments {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  padding-top: 0px;
+}
+
+.reverse {
+  flex-direction: row-reverse;
+}
+
+.niceTextInput {
+    background: none;
+    outline-style: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: solid 1px $primaryColor;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.submitButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 3px 6px;
+    line-height: 1.5rem;
+    min-width: 100px;
+    max-width: 150px;
+    width: auto;
+    text-align: center;
+    border: none;
+
+    font-size: .9rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+}
+
+.heavy {
+  font-weight: 700;
+  font-size: .9rem;
 }

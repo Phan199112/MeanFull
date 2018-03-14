@@ -1,9 +1,19 @@
-<div id="chatbox" *ngIf="!hide">
-    {{data.timestamp | date}} - 
+<div class="indComment" [ngClass]="{reverse: ind%2 === 0}" *ngIf="!hide">
     <a routerLink="/profile/{{data.author.id}}">
-        <img *ngIf="data.author.fb" src="https://graph.facebook.com/{{data.author.fb}}/picture?width=30&height=30" height="30" width="30">
-        <img *ngIf="!data.author.fb" class="profile-pic" src="{{data.author.pic ? data.author.pic : '/images/' + data.author.gender + '.png'}}" height="30" width="30">
-        {{data.author.name}}
+        <img *ngIf="data.author.fb" class="comUserImage" [ngClass]="{reverse: ind%2 === 0}" src="https://graph.facebook.com/{{data.author.fb}}/picture?width=30&height=30" height="30" width="30">
+        <img *ngIf="!data.author.fb" class="comUserImage" [ngClass]="{reverse: ind%2 === 0}" src="{{data.author.pic ? data.author.pic : '/images/' + data.author.gender + '.png'}}" height="30" width="30"> 
     </a>
-    : {{data.message}} <a (click)="deleteMessage()" *ngIf="data.admin">(delete)</a>
+    <div class="textAndDate" [ngClass]="{reverseAlign: ind%2 === 0}">
+    <p class="commentText"><span class="heavy">{{data.author.name}}:</span> {{data.message}}</p>
+    <span class="date">{{data.timestamp | date}}</span>
+    </div>
 </div>
+
+
+
+<!-- <a (click)="deleteMessage()" *ngIf="data.admin">(delete)</a> -->
+
+<!-- This is a test comment. I want to see how amazing this test comment looks on the post. Checking for everything possible.
+Including margin, padding, color, size, flow, wrap...everything! Hope this is long enough. -->
+
+<!-- {{data.timestamp | date}} -->

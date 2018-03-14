@@ -10,6 +10,7 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class DiscussionComponent {
     @Input() data: DiscussionModel;
+    @Input() ind: number;
     hide: boolean;
 
     constructor(

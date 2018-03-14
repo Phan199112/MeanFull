@@ -369,10 +369,11 @@ hr {
   height: auto;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-  border: solid 1px $borderColor;
+  // border: solid 1px $borderColor;
+  border: none;
   border-top: none;
   position: relative;
-  background: $commentBackground;
+  background: transparent;
   box-sizing: border-box;
   margin: auto 0px;
   margin-bottom: 10px;
@@ -417,8 +418,8 @@ hr {
 }
 
 .comUserImage {
-  width: 32px;
-  height: 32px;
+  width: 32px !important;
+  // height: 32px;
   border-radius: 8px;
   z-index: 3;
   margin-right: 10px;

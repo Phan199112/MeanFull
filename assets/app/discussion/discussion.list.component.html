@@ -1,45 +1,47 @@
-<div id="tagsListComponent">
-    <div class="row" *ngIf="!hide">
-        <div class="col-md-1">
-
-        </div>
-        <div class="col-md-10">
-            <discussion-item [data]="message" *ngFor="let message of chatlist"> </discussion-item>
-        </div>
-        <div class="col-md-1">
-
-        </div>
+<div class="cBody" *ngIf="!hide && form.found">
+    <div class="comSort">
+        <span class="comSwitch" [ngClass]="{heavy: commentSort === 'top'}" (click)="toggleSort('top')">Top Comments</span>
+        <span id="divider"> | </span>
+        <span class="comSwitch" [ngClass]="{heavy: commentSort === 'recent'}" (click)="toggleSort('recent')">Most Recent</span>
     </div>
-    <hr>
     <form [formGroup]="newmessage">
-        <div class="row">
-            <div class="col-md-1">
-
-            </div>
-            <div class="col-md-9">
-                <textarea rows="2" class="form-control text-comment" placeholder="Comments?" id="entrybox"
-                          formControlName="message" [ngClass]="{'form-control': true, 'is-invalid': newmessage.get('message').invalid && newmessage.get('message').dirty}">
-                </textarea>
-                <div *ngIf="newmessage.get('message').invalid && newmessage.get('message').dirty" class="invalid-message">
-                    Please provide a longer message!
-                </div>
-
-            </div>
-            <div class="col-md-1">
-                <button id="formSubmitButton"
-                        class="d-flex justify-content-left btn btn-outline-primary mouseChangeToHand"
-                        [disabled]="newmessage.invalid"
-                        (click)="checkSubmit()">
-                    Send
-                </button>
-
-            </div>
-            <div class="col-md-1">
-
-            </div>
-
+        <div class="userComCont">
+                <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
+                    <div *ngIf="form.pictype == 'fb'">
+                        <img src="https://graph.facebook.com/{{form.pic}}/picture?width=32&height=32" class="comUserImage" />
+                    </div>
+                    <div *ngIf="form.pictype == 'local'">
+                        <img [src]="form.pic" class="comUserImage" />
+                    </div>
+                    <div *ngIf="form.pictype == 'default'">
+                        <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="comUserImage" />
+                        <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="comUserImage" />
+                    </div>
+                    <div *ngIf="form.pictype == 'anonymous'">
+                        <img src="/images/question.jpg" class="comUserImage" />
+                    </div>
+                </a>
+                <textarea #entrybox placeholder="Leave a comment.." class="niceTextInput" rows="1" formControlName="message" (keydown)="autosizeTextarea($event, entrybox)" style="min-height: 23px !important;"></textarea>
         </div>
-
+        <div *ngIf="entrybox.value !== ''" class="comSort" style="padding-top: 0">
+            <a (click)="checkSubmit()" class="submitButton">Comment</a>
+        </div>
         <div *ngIf="submissionfailed">Submission failed.</div>
+        <!-- <div *ngIf="newmessage.get('message').invalid && newmessage.get('message').dirty" class="invalid-message">
+            Please provide a longer message!
+        </div> -->
     </form>
+    <div class="comments">
+        <div *ngFor="let com of chatlist; let i = index">
+            <discussion-item [data]="com" *ngIf="commentsExpanded || i < 2" [ind]="i"></discussion-item>
+        </div>      
+    </div>
+    <div class="flex" style="padding-top: 0px">
+        <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
+    </div>
+        
 </div>
+    
+
+
+    <!-- <textarea #entrybox placeholder="Leave a comment.." class="niceTextInput" rows="1" formControlName="message" [ngClass]="{'form-control': true, 'is-invalid': newmessage.get('message').invalid && newmessage.get('message').dirty}"></textarea>  -->

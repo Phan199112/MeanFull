@@ -1,22 +1,62 @@
-#chatbox {
-  border-radius: 25px;
-  padding-left: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 20px;
-  margin-bottom: 5px;
+$primaryColor: #28ab64;
+$primaryFont: Dosis;
+$borderColor: rgb(226,226,226);
+$backgroundColor: #FFF;
+$commentBackground: #f0f6f0;
 
-  a {
-    color: blue;
-  }
+.comUserImage {
+  width: 32px !important;
+  // height: 32px;
+  border-radius: 8px;
+  z-index: 3;
+  margin-right: 10px;
+  background-color: $borderColor;
 
-  a:hover {
-    cursor: pointer;
+  &.reverse {
+    margin-right: 0px !important;
+    margin-left: 10px !important;
   }
+}
 
-  .profile-pic {
-    width: 40px;
-    height: 40px;
-    margin-right: 5px;
-  }
+.indComment {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.commentText {
+  font-family: Karla;
+  font-size: .9rem;
+  color: darken($primaryColor, 20);
+  background: lighten($commentBackground, 5);
+  border-radius: 8px;
+  padding: 4px 6px;
+  margin-bottom: 0px;
+}
+
+.reverse {
+  flex-direction: row-reverse;
+}
+
+.heavy {
+  font-weight: 700;
+}
+
+.textAndDate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.date {
+  font-size:.7rem; 
+  color:#999;
+  padding: 3px;
+  padding-bottom: 0px;
+}
+
+.reverseAlign {
+  align-items: flex-end;
 }
