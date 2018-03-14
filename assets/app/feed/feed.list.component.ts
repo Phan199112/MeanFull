@@ -14,6 +14,8 @@ export class FeedListComponent implements OnInit {
 
     @Input() user: String;
     @Input() comm: String;
+    @Input() pic: string;
+    @Input() pictype: string;
     userinfo: String = null;
     comminfo: String = null;
 
@@ -46,5 +48,6 @@ export class FeedListComponent implements OnInit {
                 })
                 .catch(error => alert("Error retrieving form: " + error));
         });
+        
     }
 }

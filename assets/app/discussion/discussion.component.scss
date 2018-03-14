@@ -21,7 +21,7 @@ $commentBackground: #f0f6f0;
 .indComment {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   margin-bottom: 10px;
 }
@@ -34,6 +34,7 @@ $commentBackground: #f0f6f0;
   border-radius: 8px;
   padding: 4px 6px;
   margin-bottom: 0px;
+  border: solid 1px $borderColor;
 }
 
 .reverse {
@@ -70,6 +71,8 @@ $commentBackground: #f0f6f0;
   padding: 3px;
   margin: auto 10px;
   padding-bottom: 0px;
+  color:#AAA;
+  font-weight: 700;
 
   &:hover {
     cursor: pointer;

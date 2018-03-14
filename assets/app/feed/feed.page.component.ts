@@ -11,6 +11,12 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class FeedPageComponent implements OnInit  {
     loggedin: boolean = false;
+    fbid = false;
+    firstname = null;
+    dbid = null;
+    pic: string;
+    pictype: string;
+    picdata: Object;
     emailconfirmfailed: boolean = false;
     emailconfirmok: boolean = false;
     completedform: boolean = false;
@@ -19,9 +25,41 @@ export class FeedPageComponent implements OnInit  {
     }
 
     ngOnInit() {
-        this.userService.afterLoginCheck().then(data => {
-            if (data != 0) {
+        this.userService.afterLoginCheck().then(userData => {
+            if (userData != 0) {
                 this.loggedin = true;
+                this.fbid = userData.fbid;
+                this.dbid = userData.dbid;
+                this.firstname = userData.firstname;
+                this.picdata = userData.picdata;
+                this.gender = userData.gender;
+
+
+                // deal with picture
+                if (this.fbid != null) {
+                    this.pic = this.fbid;
+                    this.pictype = "fb";
+                } else {
+                    if (this.picdata != null) {
+                        this.pictype = "local";
+                        this.pic = this.picdata;
+                    } else {
+                        if (this.gender) {
+                            if (this.gender == 'male') {
+                                this.pictype = "default-male";
+                            } else {
+                                this.pictype = "default-female";
+                            }
+                        }
+                    }
+                }
+                //if local pic is uploaded in settings
+                this.shareService.get("profilePic").subscribe(pic => {
+                    this.pictype = "local";
+                    this.pic = pic;
+                });
+            } else {
+                this.loggedin = false;
             }
         });
 

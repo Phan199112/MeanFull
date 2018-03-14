@@ -16,6 +16,8 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
+    @Input() pic: string;
+    @Input() pictype: string;
     submitted: boolean = false;
     showsubmit: boolean = false;
     submissionfailed: boolean = false;

@@ -138,14 +138,19 @@
 
 
     <div class="flex" *ngIf="form.contracted">
-            <button (click)="expand()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
-                Expand to see more!
+            <button (click)="expand()" style="margin-bottom: 10px" class="submitButton">
+                See More
             </button>
     </div>
 
 
     <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
         <h4>Oops this form could not be found!</h4>
+    </div>
+
+    <!-- Divider -->
+    <div class="flex">
+        <div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div>
     </div>
 
     <!-- <div *ngIf="form.hashtags" class="line"></div> -->
@@ -195,6 +200,8 @@
 </div> -->
 
 <!-- Comments -->
+
+
 <discussion-list [form]='form' [id]="form.id"></discussion-list>
 
 

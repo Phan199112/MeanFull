@@ -113,8 +113,8 @@ export class DiscussionListComponent implements OnInit {
     autosizeTextarea(event: any, el: any) {
         if (event.keyCode == 13) {
             el.blur();
-            if(this.chatlist.length >=2) this.commentsExpanded = true;
             this.checkSubmit();
+            this.commentsExpanded = true;
         } else {
             setTimeout(function () {
                 el.style.cssText = 'height:auto; padding:0; min-height: 23px';
