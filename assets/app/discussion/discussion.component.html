@@ -4,8 +4,11 @@
         <img *ngIf="!data.author.fb" class="comUserImage" [ngClass]="{reverse: ind%2 === 0}" src="{{data.author.pic ? data.author.pic : '/images/' + data.author.gender + '.png'}}" height="30" width="30"> 
     </a>
     <div class="textAndDate" [ngClass]="{reverseAlign: ind%2 === 0}">
-    <p class="commentText"><span class="heavy">{{data.author.name}}:</span> {{data.message}}</p>
-    <span class="date">{{data.timestamp | date}}</span>
+        <p class="commentText"><span class="heavy">{{data.author.name}}:</span> {{data.message}}</p>
+        <div class="subText" [ngClass]="{reverse: ind%2 !== 0}" >
+            <span *ngIf="data.admin" class="remove" (click)="deleteMessage()">Remove</span>
+            <span class="date">{{data.timestamp | date}}</span>
+        </div>
     </div>
 </div>
 

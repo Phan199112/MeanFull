@@ -37,7 +37,7 @@ $commentBackground: #f0f6f0;
 }
 
 .reverse {
-  flex-direction: row-reverse;
+  flex-direction: row-reverse !important;
 }
 
 .heavy {
@@ -50,11 +50,30 @@ $commentBackground: #f0f6f0;
   align-items: flex-start;
 }
 
+.subText {
+  display: flex;
+  flex-direction: row;
+}
+
 .date {
+  display: block;
   font-size:.7rem; 
   color:#999;
   padding: 3px;
   padding-bottom: 0px;
+}
+
+.remove {
+  display: block;
+  font-size:.7rem; 
+  color:rgb(231, 78, 78);
+  padding: 3px;
+  margin: auto 10px;
+  padding-bottom: 0px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .reverseAlign {

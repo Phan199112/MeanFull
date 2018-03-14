@@ -36,7 +36,7 @@
             <discussion-item [data]="com" *ngIf="commentsExpanded || i < 2" [ind]="i"></discussion-item>
         </div>      
     </div>
-    <div class="flex" style="padding-top: 0px">
+    <div *ngIf="chatlist.length > 2" class="flex" style="padding-top: 0px">
         <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
     </div>
         
