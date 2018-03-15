@@ -20,6 +20,7 @@ import {routing} from "./app.routing";
 
 
 
+
 import {CreateFormComponent} from "./createForm/createForm.component";
 
 
@@ -52,6 +53,7 @@ import {TagBannerListComponent} from "./tagsBanner/tagbanner.list.component";
 import {DiscussionComponent} from "./discussion/discussion.component";
 import {DiscussionListComponent} from "./discussion/discussion.list.component";
 import {ChartJSComponent} from "./charts/chartjs.component";
+import { PieChart } from "./charts/pieChart"
 import {ChartsModule} from 'ng2-charts';
 import {NetworkComponent} from "./networkContainer/network.component";
 import {NetworkListComponent} from "./networkContainer/network.list.component";
@@ -79,6 +81,7 @@ import { ShortAnswerQuestionForm } from "./createForm/questionForms/shortAnswerF
 import { RatingQuestionForm } from "./createForm/questionForms/ratingForm.component";
 import { NumberQuestionForm } from "./createForm/questionForms/numberForm.component";
 import { StarsArray } from "./feed/starArray.component";
+import { NgxEchartsModule } from 'ngx-echarts';
 
 
 import { ShareService } from "./share.service";
@@ -142,6 +145,7 @@ import { ShareService } from "./share.service";
         SwitchButtons,
         DescriptionSwitchButtons,
         StarsArray,
+        PieChart
     ],
     imports: [
         // vendor //
@@ -161,7 +165,8 @@ import { ShareService } from "./share.service";
         ChartsModule,
         ToolTipModule,
         NguiAutoCompleteModule,
-        ImageCropperModule
+        ImageCropperModule,
+        NgxEchartsModule
     ],
     providers: [ShareService],
     bootstrap: [AppComponent]

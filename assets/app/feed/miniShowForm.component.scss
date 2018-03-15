@@ -3,6 +3,9 @@ $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
 
+$primaryColor: #28ab64;
+
+
 
 .formChoices {
   font-weight: 500;
@@ -134,4 +137,53 @@ $warningColor: rgb(234, 122, 133);
           text-align: center;
       }
   }
+}
+
+.flex {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.submitBox {
+  margin-top: 15px;
+}
+
+.submitButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 3px 6px;
+    line-height: 1.5rem;
+    min-width: 100px;
+    max-width: 150px;
+    width: auto;
+    text-align: center;
+    border: none;
+
+    font-size: .9rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+}
+
+.errorText {
+  color: lighten($primaryColor, 14);
+  font-size: 1rem;
+  font-family: Karla;
+}
+
+.wAnswerOpts {
+  color: #999; 
+  font-size: .8rem;
 }

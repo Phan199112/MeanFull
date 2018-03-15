@@ -4,23 +4,21 @@
         <span id="divider"> | </span>
         <span class="comSwitch" [ngClass]="{heavy: commentSort === 'recent'}" (click)="toggleSort('recent')">Most Recent</span>
     </div>
+    
     <form [formGroup]="newmessage">
         <div class="userComCont">
-                <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
-                    <div *ngIf="form.pictype == 'fb'">
-                        <img src="https://graph.facebook.com/{{form.pic}}/picture?width=32&height=32" class="comUserImage" />
+                <!-- <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]"> -->
+                    <div *ngIf="pictype == 'fb'">
+                        <img src="https://graph.facebook.com/{{pic}}/picture?width=32&height=32" class="comUserImage" />
                     </div>
-                    <div *ngIf="form.pictype == 'local'">
-                        <img [src]="form.pic" class="comUserImage" />
+                    <div *ngIf="pictype == 'local'">
+                        <img [src]="pic" class="comUserImage" />
                     </div>
-                    <div *ngIf="form.pictype == 'default'">
-                        <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="comUserImage" />
-                        <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="comUserImage" />
+                    <div *ngIf="form.pictype !== 'local'">
+                        <img *ngIf="pictype == 'default-male'"  src="/images/male.png" class="comUserImage" />
+                        <img *ngIf="pictype == 'default-female'" src="/images/female.png" class="comUserImage" />
                     </div>
-                    <div *ngIf="form.pictype == 'anonymous'">
-                        <img src="/images/question.jpg" class="comUserImage" />
-                    </div>
-                </a>
+                <!-- </a> -->
                 <textarea #entrybox placeholder="Leave a comment.." class="niceTextInput" rows="1" formControlName="message" (keydown)="autosizeTextarea($event, entrybox)" style="min-height: 23px !important;"></textarea>
         </div>
         <div *ngIf="entrybox.value !== ''" class="comSort" style="padding-top: 0">
@@ -31,11 +29,13 @@
             Please provide a longer message!
         </div> -->
     </form>
+
     <div class="comments">
         <div *ngFor="let com of chatlist; let i = index">
             <discussion-item [data]="com" *ngIf="commentsExpanded || i < 2" [ind]="i"></discussion-item>
-        </div>      
+        </div>
     </div>
+
     <div *ngIf="chatlist.length > 2" class="flex" style="padding-top: 0px">
         <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
     </div>

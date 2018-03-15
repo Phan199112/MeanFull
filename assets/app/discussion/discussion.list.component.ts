@@ -20,7 +20,9 @@ export class DiscussionListComponent implements OnInit {
     commentSort: string = "top";
 
     @Input() form: FeedForm;
-    @Input() id: String;
+    @Input() id: string;
+    @Input() pic: string;
+    @Input() pictype: string;
 
     constructor(private fb: FormBuilder, private http: Http) {
     }
@@ -31,6 +33,7 @@ export class DiscussionListComponent implements OnInit {
         });
 
         this.retrieveMessages(true);
+        // window.console.log("pic: ", this.pic, "pictype:", this.pictype);
     }
 
     // retrieve message list for this form

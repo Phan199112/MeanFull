@@ -7,59 +7,56 @@
                     <ng-template #withanswer>
 
                         <!-- LHS -->
-                        <div class="col-md-6">
+                        <div *ngIf="question.kind === 'Short Answer'" class="col-md-12">
+                            <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                            <div *ngIf="question.pic" class="form-group question-pic"><img [src]="question.pic" /></div>
+                            <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label>
+                        </div>
+
+                        <div *ngIf="question.kind !== 'Short Answer'" class="col-md-6">
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span><span *ngIf="question.kind === 'Number' && question.boundaries" style="color: #999; font-size: .8rem">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span></label>    
+                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>    
                                 <!-- Not showing image anymore right? -->
                                 <div *ngIf="question.pic" class="form-group question-pic">
                                     <img [src]="question.pic"/>
                                 </div>
 
-                                <div  *ngIf="question.options">
+                                <!-- <div  *ngIf="question.options"> -->
                                     <div *ngIf="question.kind == 'Multiple Choice'">
                                         <div *ngIf="!question.canSelectMultiple">
                                             <div *ngFor="let option of question.options" class="formChoices">
-                                                <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio" />
-                                                <label>{{option.body}}</label>
-                                            </div>
-                                        </div>
-                                        <div *ngIf="question.canSelectMultiple" formGroupName="answer">
-                                            <div *ngFor="let option of question.options" class="formChoices">
-                                                <label>
-                                                    <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox" /> {{option.body}}
-                                                </label>
+                                                <label class="wAnswerOpts">{{option.label}}. {{option.body}}</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <select class="formChoices" formControlName="answer" *ngIf="question.kind == 'Drop-down'">
-                                        <option *ngFor="let option of question.options" [value]="option.label">{{option.body}}</option>
-                                    </select> -->
-                                    <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
-                                        <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
-                                            <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="formChoices">
-                                                <span class="rank">{{j + 1}}</span>
-                                                <label>{{option.body}}</label>
-                                            </div>
-                                        </div>
+                                <!-- </div> -->
+
+                                    <div *ngIf="question.kind == 'Rating'" class="formChoices">
+                                        <label class="wAnswerOpts">Out of scale of {{question.scale}}</label>
                                     </div>
-                                </div>
 
-                                <star-array *ngIf="question.kind == 'Rating'" (selected)="setRating($event, i)" formGroupName="answer" [scale]="question.scale"></star-array>
 
-                                <!-- <input (click)="loginPopup.check(data.loginRequired)" type="text" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short Answer'"/> -->
-                                <textarea (click)="loginPopup.check(data.loginRequired)" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short Answer'"></textarea>
-                                <div *ngIf="isInvalid(i)" class="invalid-feedback">
-                                    Option is required
-                                </div>
+                                    <div *ngIf="question.kind == 'Number'" class="formChoices">
+                                        <label class="wAnswerOpts" *ngIf="!question.boundaries">Answer could have been any number</label>
+                                        <label class="wAnswerOpts" *ngIf="question.boundaries">Answer was a number between {{question.lowerBoundary}} and {{question.upperBoundary}}</label>
+                                    </div>
 
 
                             </div>
                         </div>
 
                         <!-- RHS -->
-                        <div class="col-md-6">
-                            <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [questionkind]="question.kind" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-chartjs>
+                        <div *ngIf="question.kind !== 'Short Answer'" class="col-md-6">
+                            <!-- <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [questionkind]="question.kind" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-chartjs> -->
                             <!-- <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.viewTablesbool"></miniresults-table-component> -->
+                                
+                            
+                            
+                            <!-- ********** Chart ************ -->
+                            <pie-chart *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]"></pie-chart>
+                       
+                       
+                       
                         </div>
                     </ng-template>
 
@@ -119,25 +116,16 @@
 
                 </div>
         </div>
-    <!-- <div class="row" *ngIf="!data.contracted && !submitted">
-        <div class="col-md-4">
-            <button 
-                id="formSubmitButton" 
-                *ngIf="showSubmit" 
-                class="d-flex justify-content-center btn btn-outline-primary mouseChangeToHand"
-                [disabled]="questionnaire.invalid && questionnaire.wasChecked"
-                (click)="checkSubmit($event)">
-                Submit Survey!
+
+        <div class="flex submitBox" *ngIf="!data.contracted && !submitted">
+            <button *ngIf="showSubmit" class="submitButton"
+                [disabled]="questionnaire.invalid && questionnaire.wasChecked" (click)="checkSubmit($event)">
+                Finish
             </button>
-            <div *ngIf="submissionfailed">Submission failed!</div>
+            <p *ngIf="submissionfailed errorText">Submission failed!</p>
+            <p *ngIf="expired" class="errorText">The survey has expired, no further answers are allowed!</p>
         </div>
-        <div class="col-md-4"></div>
-    </div>
-    <div class="row" *ngIf="expired">
-        <div class="col text-center submitted-message">
-            <p class="alert alert-success">The survey has expired, no further answers are allowed!</p>
-        </div>
-    </div> -->
+
 </form>
 <!-- </div> -->
 <login-popup #loginPopup></login-popup>

@@ -30,7 +30,7 @@ export class FeedFormComponent implements OnInit {
     nocreated :any;
     notaken :any;
     nodiscussion : any;
-    location: any;   
+    location: any;  
 
 
     //  ------ Emoticon properties to change/check against
@@ -166,6 +166,11 @@ export class FeedFormComponent implements OnInit {
                     // make sure the plot is given the data
                     this.form.plotdata = [];
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
+
+
+                    // window.console.log(this.form.plotdata);
+
+                    
                     this.submitted = true;
                     this.showsubmit = false;
                     this.showdiscussion = true;
@@ -224,6 +229,7 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.form.id;
+        window.console.log("Presubmit: ", data.questions)
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
               if (response.json().status == 1) {

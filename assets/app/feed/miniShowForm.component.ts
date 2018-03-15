@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { GoogleCharts } from 'google-charts';
 import { FeedForm } from "./feed.form.model";
 
 @Component({
@@ -29,6 +30,8 @@ export class MiniShowFormComponent implements OnInit {
 
     @Output()
     submitForm: EventEmitter<Object> = new EventEmitter<Object>();
+
+
 
     constructor(private fb: FormBuilder) {}
 

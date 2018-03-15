@@ -54,10 +54,10 @@ export class FeedPageComponent implements OnInit  {
                     }
                 }
                 //if local pic is uploaded in settings
-                this.shareService.get("profilePic").subscribe(pic => {
-                    this.pictype = "local";
-                    this.pic = pic;
-                });
+                // this.shareService.get("profilePic").subscribe(pic => {
+                //     this.pictype = "local";
+                //     this.pic = pic;
+                // });
             } else {
                 this.loggedin = false;
             }

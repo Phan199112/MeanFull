@@ -12,6 +12,7 @@ export class DiscussionComponent {
     @Input() data: DiscussionModel;
     @Input() ind: number;
     hide: boolean;
+    firstName: string;
 
     constructor(
         private http: Http,
@@ -28,6 +29,8 @@ export class DiscussionComponent {
                 }, 500);
             }
         }); 
+
+        this.firstName = this.data.author.name.split(' ')[0];
     }
 
     deleteMessage() {

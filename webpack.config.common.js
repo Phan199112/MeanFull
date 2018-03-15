@@ -35,6 +35,9 @@ module.exports = {
     },
 
     plugins : [
+        new webpack.ProvidePlugin({
+            echarts: "echarts"
+        }),
         new webpack.ContextReplacementPlugin(
             /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
             './chart'

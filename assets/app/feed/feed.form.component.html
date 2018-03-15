@@ -74,18 +74,11 @@
         <span *ngIf="submitted" id="qCompleted">Completed</span>
     </div>
 
-
-    <!-- </div> -->
-
-    <!-- <div class="flex" style="margin-top:0; padding-top: 0;">
-        <h3 *ngIf="form.questions.length === 1" class="userTitle">{{form.questions[0].body}}</h3>
-        <h3 *ngIf="form.questions.length !== 1" class="userTitle">{{form.title}}</h3>
-    </div> -->
+    
+    <!-- QUESTIONS CONTAINER -->
     <div class="responseBox">
-        <!-- <div class="row"> -->
-            <mini-show-form class="maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
-                [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
-        <!-- </div> -->
+        <mini-show-form class="maxWidthOfParent" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
+            [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
     </div>
         
     
@@ -138,7 +131,7 @@
 
 
     <div class="flex" *ngIf="form.contracted">
-            <button (click)="expand()" style="margin-bottom: 10px" class="submitButton">
+            <button (click)="expand()" class="submitButton">
                 See More
             </button>
     </div>
@@ -158,51 +151,7 @@
 
 
 
-<!-- Comment Section -->
-<!-- <div class="cBody" *ngIf="!hide && form.found">
-    <div class="comSort">
-        <span class="comSwitch">Top Comments</span> <span id="divider"> | </span> <span class="comSwitch">Most Recent</span>
-    </div>
-    <div class="userComCont">
-        <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
-            <div *ngIf="form.pictype == 'fb'">
-                <img src="https://graph.facebook.com/{{form.pic}}/picture?width=32&height=32" class="comUserImage" />
-            </div>
-            <div *ngIf="form.pictype == 'local'">
-                <img [src]="form.pic" class="comUserImage" />
-            </div>
-            <div *ngIf="form.pictype == 'default'">
-                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="comUserImage" />
-                <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="comUserImage" />
-            </div>
-            <div *ngIf="form.pictype == 'anonymous'">
-                <img src="/images/question.jpg" class="comUserImage" />
-            </div>
-        </a>
-
-        <textarea #ci placeholder="Leave a comment.." class="niceTextInput" rows="1"></textarea>
-    </div>
-    <div *ngIf="ci.value !== ''" class="comSort" style="padding-top: 0">
-        <a (click)="submitComment(ci.value)" class="submitButton">Comment</a>
-    </div>
-    <div class="comments">
-        <div *ngFor="let com of [0,1,2,3,4]; let i = index">
-            <div class="indComment" [ngClass]="{reverse: i%2 === 0}" *ngIf="commentsExpanded || i < 2">
-                <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="comUserImage" [ngClass]="{reverse: i%2 === 0}" />
-                <p class="commentText">This is a test comment. I want to see how amazing this test comment looks on the post. Checking for everything possible. Including margin, padding, color, size, flow, wrap...everything! Hope this is long enough.</p>
-            </div>
-        </div>
-    </div>
-    <div class="flex" style="padding-top: 0px">
-        <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
-    </div>
-
-</div> -->
-
-<!-- Comments -->
-
-
-<discussion-list [form]='form' [id]="form.id"></discussion-list>
+<discussion-list [pic]="pic" [pictype]="pictype" [form]='form' [id]="form.id"></discussion-list>
 
 
 
