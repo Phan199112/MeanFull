@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PieChart implements OnInit {
     // inputs
-    @Input() private questionkind: string;
+    @Input() private qKind: string;
     // @Input() private question: string;
     @Input() private dataLabels: Array<any>;
     @Input() private dataValues: Array<any>;
@@ -16,6 +16,8 @@ export class PieChart implements OnInit {
     newData: Array<Object> = [];
 
     sampleOption: Object;
+
+    alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
 
 
     constructor () {
@@ -39,7 +41,7 @@ export class PieChart implements OnInit {
                     type: 'pie',
                     radius: '55%',
                     data: this.newData,
-                    // roseType: 'radius',
+                    roseType: 'angle',
                     label: {
                         normal: {
                             textStyle: {
@@ -67,17 +69,37 @@ export class PieChart implements OnInit {
             ]
         }
 
+        if(this.qKind === 'Multiple Choice') window.console.log("DL: ",this.dataLabels);
+
     }
 
     parseChartData() : void {
         const items: number = this.dataLabels.length;
         // window.console.log("New Chart Data: ", this.data.plotdata);
+        const isMC : boolean = this.qKind === "Multiple Choice";
+
 
         for (let i=0; i< items; i++) {
-            let temp = {name: this.dataLabels[i] , value: this.dataValues[0].data[i]};
+            let temp = {};
+            // if (isMC) {
+            //     temp = { name: this.alphabeth[i], value: this.dataValues[0].data[i] };
+            // } else {
+                temp = {name: this.dataLabels[i] , value: this.dataValues[0].data[i]};
+            // }
             this.newData.push(temp);
         }
         // window.console.log("New Chart Data: ", this.newData);
     }
 
 }
+
+
+
+
+        // for (let i=0; i < data.questions.length; i++) {
+        //     if (this.kindsWithOptions.indexOf(data.questions[i].kind) !== -1) {
+        //         for (let j=0; j < data.questions[i].options.length; j++) {
+        //             data.questions[i].options[j].label = this.alphabeth[j];
+        //         }
+        //     }
+        // }

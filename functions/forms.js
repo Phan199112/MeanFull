@@ -74,19 +74,32 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
             var temp = [];
 
             // loop through all forms and look at data for this question
-            if (types[i] === 'Checkboxes') {
+            if (types[i] === 'Multiple Choice') {
                 // if multiple selected split.
                 for (var j = 0; j < x.length; j++) {
-                    if (x[j].answers[i].answer.constructor === Array) {
-                        for (var r = 0; r < x[j].answers[i].answer.length; r++) {
-                            temp.push(x[j].answers[i].answer[r]);
+
+                    if (typeof x[j].answers[i].answer === "object") {
+                        for (var key in x[j].answers[i].answer) {
+                            if (x[j].answers[i].answer[key]) {
+                                temp.push(key);
+                            }
                         }
+                        
+                        // Old code.... In MongoDB, the answers are getting stored as Objects
+    
+                        // if (x[j].answers[i].answer.constructor === Array) { 
+                        //     for (var r = 0; r < x[j].answers[i].answer.length; r++) {
+                        //         temp.push(x[j].answers[i].answer[r]);
+                        //     }
+
 
                     } else {
                         temp.push(x[j].answers[i].answer);
                     }
-
                 }
+                
+                console.log('Temp1: ', temp);
+
 
             } else if (types[i] === 'Stars') {
                 // add the word star(s) to the numerical value
@@ -119,6 +132,13 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
             // make a summary
             var counts = {};
             var total = 0;
+            // console.log('Temp1: ', temp);
+
+            //WORKED BELOW HERE IN CASE I FUCK UP
+            // if (temp.length === 1 &&)
+
+            // WORKED UP ABOVE HERE IN CASE I FUCK UP
+
             for (k = 0; k < temp.length; k++) {
                 counts[temp[k]] = (counts[temp[k]] + 1) || 1;
                 total += 1;

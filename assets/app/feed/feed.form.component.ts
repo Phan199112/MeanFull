@@ -168,7 +168,7 @@ export class FeedFormComponent implements OnInit {
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
 
 
-                    // window.console.log(this.form.plotdata);
+                    // window.console.log("Raw plot data: ", this.form.plotdata);
 
                     
                     this.submitted = true;
