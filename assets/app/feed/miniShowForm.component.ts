@@ -17,6 +17,9 @@ export class MiniShowFormComponent implements OnInit {
     data: FeedForm;
 
     @Input()
+    count: number;
+
+    @Input()
     showSubmit: boolean;
 
     @Input()

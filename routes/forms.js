@@ -1188,11 +1188,11 @@ module.exports = function(app, passport, manager, hashids) {
                                         var exportdata = formfunctions.analyzeAll(allanswers, questiontypes);
                                         var answercount;
 
-                                        if (allanswers.length > 5) {
+                                        // if (allanswers.length > 5) {
                                             answercount = allanswers.length;
-                                        } else {
-                                            answercount = null;
-                                        }
+                                        // } else {
+                                        //     answercount = null;
+                                        // }
 
                                         //
                                         res.json({

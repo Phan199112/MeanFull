@@ -9,9 +9,11 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PieChart implements OnInit {
     // inputs
     @Input() private qKind: string;
-    // @Input() private question: string;
+    @Input() private count: number;
     @Input() private dataLabels: Array<any>;
     @Input() private dataValues: Array<any>;
+    @Input() private dataCounts: Array<any>;
+
 
     newData: Array<Object> = [];
 
@@ -51,7 +53,8 @@ export class PieChart implements OnInit {
                             textStyle: {
                                 color: '#999'
                             }
-                        }
+                        },
+                        align: "center"
                     },
                     labelLine: {
                         normal: {
@@ -60,7 +63,7 @@ export class PieChart implements OnInit {
                             },
                             smooth: 0.2,
                             length: 5,
-                            length2: 10
+                            length2: 5
                         }
                     },
                     // itemStyle: {
@@ -80,6 +83,7 @@ export class PieChart implements OnInit {
     parseChartData() : void {
         const items: number = this.dataLabels.length;
         const isMC : boolean = this.qKind === "Multiple Choice";
+        window.console.log("Data counts: ", this.dataCounts);
 
 
         for (let i=0; i< items; i++) {
@@ -94,9 +98,18 @@ export class PieChart implements OnInit {
                 label: { 
                     show: true, 
                     position: "outside", 
-                    formatter: '{b}: {d}%', 
-                    color: "#2b2b2b", 
-                    fontFamily: "Karla" }, 
+                    formatter: `{b}: ${this.dataCounts[i]}\n({d}%)`, 
+                    align: "center",
+                    verticalAlign: "bottom",
+                    rich: {
+                        a: {
+                            align: "center"
+                        },
+                        align: "center"
+                    },
+                    color: "#666", 
+                    fontFamily: "Karla",
+                    fontWeight: 700 }, 
                 itemStyle: {
                     color: this.colorArray[j],
                     shadowBlur: 5,

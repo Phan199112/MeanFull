@@ -98,7 +98,7 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
                     }
                 }
                 
-                console.log('Temp1: ', temp);
+                // console.log('Temp1: ', temp);
 
 
             } else if (types[i] === 'Stars') {
@@ -132,26 +132,23 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
             // make a summary
             var counts = {};
             var total = 0;
-            // console.log('Temp1: ', temp);
-
-            //WORKED BELOW HERE IN CASE I FUCK UP
-            // if (temp.length === 1 &&)
-
-            // WORKED UP ABOVE HERE IN CASE I FUCK UP
 
             for (k = 0; k < temp.length; k++) {
                 counts[temp[k]] = (counts[temp[k]] + 1) || 1;
                 total += 1;
             }
 
+
             // reformat
             var summaryLabels = [];
             var summaryValues = [];
+            var summaryCounts = [];
             if (percent) {
                 // and make percentage
                 for (var keys in counts) {
                     summaryLabels.push(keys);
                     summaryValues.push(Math.round(((100/total)*counts[keys])*100)/100);
+                    summaryCounts.push(counts[keys]);
                 }
 
             } else {
@@ -163,7 +160,7 @@ exports.analyzeAll = function analyzeAll(x, types, percent) {
             }
 
             //
-            exportdataAll.push([summaryLabels, [{data: summaryValues, label: "all"}]]);
+            exportdataAll.push([summaryLabels, [{ data: summaryValues, label: "all" }], summaryCounts]);
         } else {
             // return a blank for this question
             exportdataAll.push([[], [{data: [], label: ""}]]);

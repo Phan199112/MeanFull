@@ -7,7 +7,6 @@
                     <ng-template #withanswer>
 
                         <!-- LHS -->
-                        <p>{{data.count}}</p>
                         <div *ngIf="question.kind === 'Short Answer'" class="col-md-12">
                             <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>
                             <div *ngIf="question.pic" class="form-group question-pic"><img style="border-radius: 8px;" [src]="question.pic" /></div>
@@ -55,7 +54,7 @@
                             
                             
                             <!-- ********** Chart ************ -->
-                            <pie-chart *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]"></pie-chart>
+                            <pie-chart *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
                        
                        
                        
