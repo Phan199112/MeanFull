@@ -27,7 +27,7 @@ export class PieChart implements OnInit {
 
     ngOnInit() {
         this.parseChartData();
-        // this.newData.sort(function (a, b) { return a.value - b.value; })
+        this.newData.sort(function (a, b) { return a.value - b.value; })
         this.sampleOption = {
             // visualMap: {
             //     show: false,
@@ -45,7 +45,7 @@ export class PieChart implements OnInit {
                     radius: '55%',
                     // minAngle: 180,
                     data: this.newData,
-                    // roseType: 'area',
+                    roseType: 'area',
                     label: {
                         normal: {
                             textStyle: {
