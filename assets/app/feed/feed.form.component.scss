@@ -351,17 +351,6 @@ hr {
   margin: 2px auto;
 }
 
-#qCompleted {
-  display: block;
-  font-family: Karla;
-  font-size: 1.2rem;
-  color: $primaryColor;
-  padding: 3px 9px;
-  border: 1px solid $primaryColor;
-  border-radius: 4px;
-  margin-right: 60px;
-  margin-top: 20px;
-}
 
 
 // Comment Section 
@@ -501,4 +490,33 @@ hr {
 
 .demo-chart {
   height: 300px;
+}
+
+#completedBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin-right: 60px;
+  margin-top: 20px;
+  width: 100%
+}
+
+#answerCount {
+  display: block;
+  font-family: Karla;
+  font-size: 1rem;
+  color: #999;
+  padding: 0px;
+  margin-top: 8px;
+}
+
+#qCompleted {
+  display: block;
+  font-family: Karla;
+  font-size: 1.2rem;
+  color: $primaryColor;
+  padding: 3px 9px;
+  border: 1px solid $primaryColor;
+  border-radius: 4px;
 }
