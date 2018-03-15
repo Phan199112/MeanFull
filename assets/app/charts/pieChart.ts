@@ -17,7 +17,9 @@ export class PieChart implements OnInit {
 
     sampleOption: Object;
 
-    alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
+    // colorArray: Array<string> = ["#18663B", "#1C7745", "#20884F", "#249959", "#28AB63", "#28AB63", "#3DB372", "#53BB82", "#68C491", "#7ECCA1", "#93D5B1", "#A9DDC0", "#BEE5D0", "#D4EEDF", "#E9F6EF", "	#145531"]
+
+    colorArray: Array<string> = ["#18663B", "#20884F", "#28AB63", "#53BB82", "#7ECCA1", "#A9DDC0", "#D4EEDF", "#145531", "#1C7745", "#249959", "#28AB63", "#3DB372", "#68C491", "#93D5B1", "#BEE5D0", "#E9F6EF"]
 
 
     constructor () {
@@ -25,10 +27,11 @@ export class PieChart implements OnInit {
 
     ngOnInit() {
         this.parseChartData();
+        // this.newData.sort(function (a, b) { return a.value - b.value; })
         this.sampleOption = {
             // visualMap: {
             //     show: false,
-            //     min: 0,
+            //     min:    10,
             //     max: 100,
             //     inRange: {
             //         colorLightness: [0, 1]
@@ -40,8 +43,9 @@ export class PieChart implements OnInit {
                     center: ['50%', '50%'],
                     type: 'pie',
                     radius: '55%',
+                    // minAngle: 180,
                     data: this.newData,
-                    roseType: 'angle',
+                    // roseType: 'area',
                     label: {
                         normal: {
                             textStyle: {
@@ -55,16 +59,16 @@ export class PieChart implements OnInit {
                                 color: '#999'
                             },
                             smooth: 0.2,
-                            length: 10,
-                            length2: 15
+                            length: 5,
+                            length2: 10
                         }
                     },
-                    itemStyle: {
-                        normal: {
-                            // color: '#28ab64',
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    },
+                    // itemStyle: {
+                    //     normal: {
+                    //         // color: '#28ab64',
+                    //         shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    //     }
+                    // },
                 }
             ]
         }
@@ -75,31 +79,33 @@ export class PieChart implements OnInit {
 
     parseChartData() : void {
         const items: number = this.dataLabels.length;
-        // window.console.log("New Chart Data: ", this.data.plotdata);
         const isMC : boolean = this.qKind === "Multiple Choice";
 
 
         for (let i=0; i< items; i++) {
             let temp = {};
-            // if (isMC) {
-            //     temp = { name: this.alphabeth[i], value: this.dataValues[0].data[i] };
-            // } else {
-                temp = {name: this.dataLabels[i] , value: this.dataValues[0].data[i]};
-            // }
+
+            // Color array has length 16
+            let j= i%16;
+
+            temp = {
+                name: this.dataLabels[i], 
+                value: this.dataValues[0].data[i], 
+                label: { 
+                    show: true, 
+                    position: "outside", 
+                    formatter: '{b}: {d}%', 
+                    color: "#2b2b2b", 
+                    fontFamily: "Karla" }, 
+                itemStyle: {
+                    color: this.colorArray[j],
+                    shadowBlur: 5,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                } 
+            };
+            
             this.newData.push(temp);
         }
-        // window.console.log("New Chart Data: ", this.newData);
     }
 
 }
-
-
-
-
-        // for (let i=0; i < data.questions.length; i++) {
-        //     if (this.kindsWithOptions.indexOf(data.questions[i].kind) !== -1) {
-        //         for (let j=0; j < data.questions[i].options.length; j++) {
-        //             data.questions[i].options[j].label = this.alphabeth[j];
-        //         }
-        //     }
-        // }
