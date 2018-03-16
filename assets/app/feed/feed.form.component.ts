@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { Http } from "@angular/http";
 import { FeedForm } from "./feed.form.model";
-import { FormArray, FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, FormBuilder, NgModel } from "@angular/forms";
 import { AppComponent } from '../app.component';
 import { PopupShareComponent } from '../popup/popup.share.component';
 import { PopupService } from "../popup.service";
@@ -18,6 +18,7 @@ export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
     @Input() pic: string;
     @Input() pictype: string;
+    dataselectionform : FormGroup;
     submitted: boolean = false;
     showsubmit: boolean = false;
     submissionfailed: boolean = false;
@@ -38,6 +39,19 @@ export class FeedFormComponent implements OnInit {
     reaction: string = null;
     reactionData: Object;
 
+    // ------ Filter variables
+    ageList = [];
+    ageSelected = [];
+    ageSettings = {};
+
+    locationList = [];
+    locationSelected = [];
+    locationSettings = {};
+
+    genderList = [];
+    genderSelected = [];
+    genderSettings = {};
+
 
     @ViewChild(ConfirmationPopupComponent) confirmationPopup;
     @ViewChild('shareModal') shareModal;
@@ -48,24 +62,13 @@ export class FeedFormComponent implements OnInit {
     otherloc: boolean = true;
     locations: Object[] = [];
     otherlocations: string[] = [];
+    
     alllocationsarray: FormArray = new FormArray([]);
 
 
-    dataselectionform = new FormGroup({
-        //set them to true to have filters true from the start
-        agesmin17: new FormControl(true),
-        ages17to23: new FormControl(true),
-        ages24to29: new FormControl(true),
-        ages30to39: new FormControl(true),
-        ages40to49: new FormControl(true),
-        ages50to59: new FormControl(true),
-        plus60: new FormControl(true),
-        otherlocbox: new FormControl(true),
-        alllocations: this.alllocationsarray
-    });
-
 
     defaultages: string[] = [];
+    // NEW: THIS IS THE DATA FED INTO THE FILTERS
     plotselection: Object = {age: this.defaultages, location: []};
 
     //ages
@@ -78,7 +81,7 @@ export class FeedFormComponent implements OnInit {
     valuesplus60: string[] = [];
 
 
-    constructor(private http: Http, private modalService: NgbModal) {
+    constructor(private http: Http, private modalService: NgbModal, private fb: FormBuilder) {
         this.userData = {};
         this.nocreated = null;
         this.name = "";
@@ -86,6 +89,18 @@ export class FeedFormComponent implements OnInit {
         this.notaken = null;
         this.location = {city: "", state: "", country:""};
         this.reactionData = {great: 20, wtf: 60, angry: 20};
+
+
+        this.dataselectionform = new FormGroup({
+            //set them to true to have filters true from the start
+            age: new FormControl([]),
+            otherlocbox: new FormControl(true),
+            alllocations: this.alllocationsarray,
+            locations: new FormControl([]),
+            gender: new FormControl([])
+        });
+
+
     }
 
     ngOnInit() {
@@ -144,8 +159,86 @@ export class FeedFormComponent implements OnInit {
                 this.valuesplus60.push(i);
             }
         }
+
+
+        this.ageList = [
+            { "id": 1, "itemName": "< 17", "input": "age", "min": 0 , "max": 16 },
+            { "id": 2, "itemName": "17 - 23", "input": "age", "min":17 , "max":23  },
+            { "id": 3, "itemName": "24 - 29", "input": "age", "min":24 , "max":29  },
+            { "id": 4, "itemName": "31-39", "input": "age", "min":30 , "max":39  },
+            { "id": 5, "itemName": "40 - 49", "input": "age", "min":40 , "max": 49  },
+            { "id": 6, "itemName": "50 - 59", "input": "age", "min":50 , "max": 59 },
+            { "id": 7, "itemName": "60+", "input": "age", "min":60 , "max": 119  },
+        ];
+
+        this.genderList = [
+            { "id": 1, "itemName": "Male" },
+            { "id": 2, "itemName": "Female" },
+        ];
+
+        this.locationList = [];
+
+        this.ageSelected = [
+            { "id": 1, "itemName": "< 17", "input": "age", "min": 0, "max": 16 },
+            { "id": 2, "itemName": "17 - 23", "input": "age", "min": 17, "max": 23 },
+            { "id": 3, "itemName": "24 - 29", "input": "age", "min": 24, "max": 29 },
+            { "id": 4, "itemName": "31-39", "input": "age", "min": 30, "max": 39 },
+            { "id": 5, "itemName": "40 - 49", "input": "age", "min": 40, "max": 49 },
+            { "id": 6, "itemName": "50 - 59", "input": "age", "min": 50, "max": 59 },
+            { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 },
+        ]
+
+        this.genderSelected = [
+            { "id": 1, "itemName": "Male" },
+            { "id": 2, "itemName": "Female" },
+        ]
+
+        this.ageSettings = {
+            singleSelection: false,
+            text: "Age",
+            selectAllText: 'Select All',
+            unSelectAllText: 'Unselect All',
+            classes: "myclass custom-class"
+        };    
+
+        this.locationSettings = {
+            singleSelection: false,
+            text: "Location",
+            selectAllText: 'Select All',
+            unSelectAllText: 'Unselect All',
+            classes: "myclass custom-class"
+        };    
+
+        this.genderSettings = {
+            singleSelection: false,
+            text: "Gender",
+            selectAllText: 'Select All',
+            unSelectAllText: 'Unselect All',
+            classes: "myclass custom-class"
+        };    
+
+
     }
 
+    onItemSelect(item: any) {
+        item.status = true;
+        console.log(item);
+        this.doDataSelectionUpdate(item);
+    }
+    OnItemDeSelect(item: any) {
+        item.status = false;
+        console.log(item);
+        this.doDataSelectionUpdate(item);
+    }
+    onSelectAll(items: any) {
+        console.log(items);
+    }
+    onDeSelectAll(items: any) {
+        console.log(items);
+    }
+
+
+    // NEW: ONLY THING I CARE ABOUT HERE IS THE INITIAL PLOT INFORMATION RECEIVED ON LINE 271
     isFilledIn() {
         this.form.viewGraphs(false);
 
@@ -165,6 +258,8 @@ export class FeedFormComponent implements OnInit {
                     this.form.setAnswered(true);
                     // make sure the plot is given the data
                     this.form.plotdata = [];
+
+                    // iniital data to give plot
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
 
 
@@ -252,8 +347,13 @@ export class FeedFormComponent implements OnInit {
         this.http.post('/forms/requestTopLocations', {id: this.form.id}).toPromise()
             .then(response => {
                 var all = response.json().data;
+                let tempLocation = [];
+
                 for (let a of all) {
                     this.locations.push({name: a[0], count: a[1]});
+
+                    // Push to list for dropdown
+                    tempLocation.push({itemName: a[0]});
 
                     //comment out to add all locations to initial plot selection
                     this.plotselection.location.push(a[0]);
@@ -263,6 +363,16 @@ export class FeedFormComponent implements OnInit {
                     fg.addControl(a[0], new FormControl(true));
                     this.alllocationsarray.push(fg);
                 }
+
+                tempLocation.map((loc,ind) => {
+                    this.locationList.push({id: ind + 1, itemName: loc.itemName});
+                    this.locationSelected.push({ id: ind + 1, itemName: loc.itemName });
+                });
+
+
+                window.console.log("locations: ", this.locationList);
+
+
 
                 // deal with the possibility of more than 5 locations
                 var other = response.json().otherlocations;
@@ -278,27 +388,33 @@ export class FeedFormComponent implements OnInit {
             });
     }
 
-
+// NEW: THIS IS THE FUNCTION THATS CALLED WHEN THE FORM CONTROL IS CHANGED
     doDataSelectionUpdate(x) {
         this.form.viewGraphs(false);
+
+        window.console.log("HERERRERERE: ", x)
+        
+        
+        // NEW: INPUT CHANGE WAS FOR AGE
         if (x.input == 'age') {
 
+            // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
             if (x.status == false) {
                 // remove entries from the array
                 var tempremoval = [];
-                if (x.value == "agesmin17") {
+                if (x.min === 0) {
                     tempremoval = this.valuesagesmin17;
-                }  else if (x.value == "ages17to23") {
+                }  else if (x.min === 17) {
                     tempremoval = this.valuesages17to23;
-                } else if (x.value == "ages24to29") {
+                } else if (x.min === 24) {
                     tempremoval = this.valuesages24to29;
-                } else if (x.value == "ages30to39") {
+                } else if (x.min === 30) {
                     tempremoval = this.valuesages30to39;
-                } else if (x.value == "ages40to49") {
+                } else if (x.min === 40) {
                     tempremoval = this.valuesages40to49;
-                } else if (x.value == "ages50to59") {
+                } else if (x.min === 50) {
                     tempremoval = this.valuesages50to59;
-                } else if (x.value == "plus60") {
+                } else if (x.min === 60) {
                     tempremoval = this.valuesplus60;
                 }
 
@@ -306,20 +422,21 @@ export class FeedFormComponent implements OnInit {
 
             } else {
 
+                // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
                 var tempadd = [];
-                if (x.value == "agesmin17") {
+                if (x.min === 0) {
                     tempadd = this.valuesagesmin17;
-                } else if (x.value == "ages17to23") {
+                } else if (x.min === 17) {
                     tempadd = this.valuesages17to23;
-                } else if (x.value == "ages24to29") {
+                } else if (x.min === 24) {
                     tempadd = this.valuesages24to29;
-                } else if (x.value == "ages30to39") {
+                } else if (x.min === 30) {
                     tempadd = this.valuesages30to39;
-                } else if (x.value == "ages40to49") {
+                } else if (x.min === 40) {
                     tempadd = this.valuesages40to49;
-                } else if (x.value == "ages50to59") {
+                } else if (x.min === 50) {
                     tempadd = this.valuesages50to59;
-                } else if (x.value == "plus60") {
+                } else if (x.min === 60) {
                     tempadd = this.valuesplus60;
                 }
 
@@ -331,7 +448,7 @@ export class FeedFormComponent implements OnInit {
 
             if (x.status == false) {
                 if (x.value != 'other') {
-                    this.plotselection.location = this.plotselection.location.filter(function(e) {return x.value.indexOf(e) == -1});
+                    this.plotselection.location = this.plotselection.location.filter(function(e) {return x.itemName.indexOf(e) == -1});
 
                 } else {
                     var remove = this.otherlocations;
@@ -342,7 +459,7 @@ export class FeedFormComponent implements OnInit {
 
             } else {
                 if (x.value != 'other') {
-                    this.plotselection.location = this.plotselection.location.concat(x.value);
+                    this.plotselection.location = this.plotselection.location.concat(x.itemName);
 
                 } else {
                     this.plotselection.location = this.plotselection.location.concat(this.otherlocations);
@@ -352,13 +469,25 @@ export class FeedFormComponent implements OnInit {
 
             }
 
+        } else if (x.input == 'gender') {
+
+            if (x.itemName == "Male") {
+                // Something to filter it
+            }
+
+            if (x.itemName == "Female") {
+                // Something to filter it
+            }
+
         }
 
-        this.executePlotDataRetrieval();
+        // this.executePlotDataRetrieval();
     }
 
     executePlotDataRetrieval() {
         // post and get response
+
+        // window.console.log("New Plotselection: ", this.plotselection)
         this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
             .then(response => {
@@ -369,6 +498,8 @@ export class FeedFormComponent implements OnInit {
                 if (responsestatus == 2) {
                     // make sure the plot is given the data
                     this.form.setAnswered(true);
+
+                    window.console.log("New Plot Data", responsedata);
                     this.form.setPlotData(responsedata);
                     this.submitted = true;
                     this.showsubmit = false;

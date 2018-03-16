@@ -47,7 +47,7 @@ export class PieChart implements OnInit {
                     radius: '55%',
                     // minAngle: 180,
                     data: this.newData,
-                    roseType: 'area',
+                    // roseType: 'area',
                     label: {
                         normal: {
                             textStyle: {
@@ -83,8 +83,6 @@ export class PieChart implements OnInit {
     parseChartData() : void {
         const items: number = this.dataLabels.length;
         const isMC : boolean = this.qKind === "Multiple Choice";
-        window.console.log("Data counts: ", this.dataCounts);
-
 
         for (let i=0; i< items; i++) {
             let temp = {};

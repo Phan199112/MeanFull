@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import {DragulaModule} from "ng2-dragula";
 import {TagInputModule } from 'ngx-chips';
 import {Ng2FlatpickrComponent} from 'ng2-flatpickr/ng2-flatpickr';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {Autosize} from 'ng-autosize';
 import {NgForageModule} from "ngforage";
@@ -166,7 +167,8 @@ import { ShareService } from "./share.service";
         ToolTipModule,
         NguiAutoCompleteModule,
         ImageCropperModule,
-        NgxEchartsModule
+        NgxEchartsModule,
+        AngularMultiSelectModule
     ],
     providers: [ShareService],
     bootstrap: [AppComponent]

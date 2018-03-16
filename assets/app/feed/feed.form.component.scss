@@ -58,6 +58,7 @@ $commentBackground: #f0f6f0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 10px;
 }
 
 .imageContainer {
@@ -198,18 +199,28 @@ $navBarColor:  #0088cc;
 }
 
 #analysisContainer {
-  border: 1px solid $primaryColor;
-  padding: 8px 0px;
-  margin: 8px;
-  border-radius: 5px;
-  max-width: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  max-width: 95%;
+  margin: 0px auto;
+}
+
+.filterBox {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 .filterCategory {
-  font-family: Raleway;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: $primaryColor;
+  font-family: Karla;
+  font-size: .9rem;
+  font-weight: 300;
+  color: #999;
+  // flex: 0 0 25%;
+  text-align: center;
+  margin-bottom: 4px;
 }
 
 .filterOptions {
@@ -488,6 +499,29 @@ hr {
     }
 }
 
+.resetButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 4px 8px;
+    border: none;
+    // line-height: 1.5rem;
+    text-align: center;
+    font-size: .8rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin: 0px 6px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+}
+
 .demo-chart {
   height: 300px;
 }
@@ -520,3 +554,4 @@ hr {
   border: 1px solid $primaryColor;
   border-radius: 4px;
 }
+
