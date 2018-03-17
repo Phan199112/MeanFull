@@ -245,6 +245,17 @@ export class NavbarComponent implements OnInit {
         }
     }
 
+    setAsTouched(group) {
+        group.markAsTouched();
+        for (let i in group.controls) {
+            if (group.controls[i] instanceof FormControl) {
+                group.controls[i].markAsTouched();
+            } else {
+                this.setAsTouched(group.controls[i]);
+            }
+        }
+    }
+
     submitSearch() {
         this.router.navigate(['/searchresults', { 'q': this.searchbox.value.searchterm }]);
     }

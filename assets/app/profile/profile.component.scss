@@ -4,14 +4,10 @@ $insideColor: #e6f7ff;
 $navBarColor:  #0088cc;
 
 #profileContainer {
-  background-color: $whiteColor;
   min-height: 100%;
-  padding-top: 20px;
   overflow:auto;
   overflow-x: hidden;
-  border-radius: 1%;
-  margin-top: 30px;
-
+  margin-top: 8px;
   @media (max-width: 1140px){
     min-height: 0;
     overflow: hidden;

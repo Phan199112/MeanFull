@@ -4,7 +4,12 @@
 
 <div class="sContainer">
     <h3 class="lpText">People</h3>
-    <div class="peopleContainer">
+    <div *ngIf="networklist.length != 0" class="peopleContainer">
+        <div *ngFor="let p of networklist">
+            <user-image [data]="p"> </user-image>
+        </div>
+    </div>
+    <div *ngIf="networklist.length == 0" class="peopleContainer">
         <div *ngFor="let p of users">
             <user-image [data]="p"> </user-image>
         </div>
@@ -13,7 +18,12 @@
 
 <div class="sContainer">
     <h3 class="lpText">Communities</h3>
-    <div class="peopleContainer">
+    <div *ngIf="communitylist.length != 0" class="peopleContainer">
+        <div *ngFor="let c of communitylist">
+            <community-image [data]="c"> </community-image>
+        </div>
+    </div>
+    <div *ngIf="communitylist.length == 0" class="peopleContainer">
         <div *ngFor="let c of communities">
             <community-image [data]="c"> </community-image>
         </div>

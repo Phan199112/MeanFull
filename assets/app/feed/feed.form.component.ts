@@ -481,7 +481,8 @@ export class FeedFormComponent implements OnInit {
 
         }
 
-        // this.executePlotDataRetrieval();
+        // -----------BREAKS HERE -------
+        this.executePlotDataRetrieval();
     }
 
     executePlotDataRetrieval() {

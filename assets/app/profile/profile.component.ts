@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     pictype: string;
     me: boolean;
     form: FormGroup;
+    // friends: Array<any> = [];
     innetwork: boolean;
     loading: boolean = true;
     addfailed: boolean = false;
@@ -102,6 +103,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         //
                         this.userprofile = res.json().userprofile;
                         this.network = res.json().network;
+                        // this.friends = res.json().network;
 
                         // counts
                         this.nocreated = res.json().userprofile.nocreated;

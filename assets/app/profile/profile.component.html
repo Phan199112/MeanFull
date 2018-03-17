@@ -1,22 +1,33 @@
 <!--<div class="container" id="profilePage">-->
-    <div class="row">
-        <div class="col-md-3 order-2 order-sm-1" id="leftSideOfContainer">
-            <div class="row">
-                <community-list class="col-12 order-2 order-sm-2" [user]="id" *ngIf="!hidetags"></community-list>                
-                <network-list class="col-12 order-1 order-sm-1" [data]="network" [user]="id" *ngIf="!hidetags && network.length != 0"></network-list>
-                <div class="col-12 d-md-none order-3">
-                    <div class="container">
-                        <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
-                        <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
-                    </div>
-                </div>   
-                <tag-list class="col-12 order-4 order-sm-3" [user]="id" [comm]="null" *ngIf="!hidetags"></tag-list>
+    <div style="width: 1220px; margin: 10px auto 0px auto">
+         <div class="row" >
+           
+            <div class="col-md-3">
+                <sidebar [friends] ="network" [loggedin]="loggedin" [user]="id"></sidebar>
             </div>
-        </div>
+        
+        
+<!--            
+            <div class="col-md-3 order-2 order-sm-1" id="leftSideOfContainer">
+                <div class="row">
+                    <community-list class="col-12 order-2 order-sm-2" [user]="id" *ngIf="!hidetags"></community-list>                
+                    <network-list class="col-12 order-1 order-sm-1" [data]="network" [user]="id" *ngIf="!hidetags && network.length != 0"></network-list>
+                    <div class="col-12 d-md-none order-3">
+                        <div class="container">
+                            <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
+                            <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
+                        </div>
+                    </div>   
+                    <tag-list class="col-12 order-4 order-sm-3" [user]="id" [comm]="null" *ngIf="!hidetags"></tag-list>
+                </div>
+            </div> -->
+
+
+
 
         <div class="col-md-7 order-1 order-sm-2">
             <div class="container" id="profileContainer" *ngIf="loadsuccessful">
-                <div class="row">
+                <div class="row" style="background: white">
                     <div class="col-3 col-sm-4 col-md-4 col-lg-4 col-xl-2.5" id="ProfilePicture">
                         <div id="Profile">
                             <div *ngIf="pictype == 'fb'">
@@ -100,8 +111,10 @@
             </div>
         </div>
 
-        <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3 order-3 order-sm-3" id="rightSideOfContainer">
+        <!-- <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3 order-3 order-sm-3" id="rightSideOfContainer">
             <feedback-form *ngIf="loggedin"></feedback-form>
-        </div>
+        </div> -->
+
+
     </div>
-<!--</div>-->
+</div>

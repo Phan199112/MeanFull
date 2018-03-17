@@ -10,9 +10,19 @@ import { RouterModule, Routes } from '@angular/router';
 export class UserImageComponent implements OnInit {
     @Input() data: Object;
     name: Array<string>;
+    type: string;
 
     ngOnInit() {
-        this.name  = this.data.name.split(' ');
+
+        if (typeof this.data.name === "object") {
+            this.type = 'network';
+            this.name = this.data.name; 
+        } else {
+            this.type = 'users';
+            this.name  = this.data.name.split(' ');
+        }
     }
+
+
     
 }

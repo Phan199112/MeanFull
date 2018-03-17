@@ -18,7 +18,9 @@ export class NetworkListComponent implements OnInit {
     constructor(private http: Http, private route: ActivatedRoute) {
     }
 
+    
     ngOnInit() {
+        // window.console.log("Network list: ", this.data);
         for (let obj of this.data) {
             this.networklist.push(new NetworkModel(obj));
         }
