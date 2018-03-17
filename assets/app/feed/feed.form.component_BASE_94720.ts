@@ -65,9 +65,11 @@ export class FeedFormComponent implements OnInit {
     
     alllocationsarray: FormArray = new FormArray([]);
 
+
+
     defaultages: string[] = [];
     // NEW: THIS IS THE DATA FED INTO THE FILTERS
-    plotselection: Object = {age: this.defaultages, location: [], gender: ['male', 'female']};
+    plotselection: Object = {age: this.defaultages, location: []};
 
     //ages
     valuesagesmin17: string[] = [];
@@ -115,7 +117,7 @@ export class FeedFormComponent implements OnInit {
                     this.nodiscussion = this.userData.userprofile.nodiscussion || 0;
                     this.notaken = this.userData.userprofile.notaken || 0;
                 }
-            });
+            })
 
         if (this.form.questions != null) {
             // did the current user complete this form, if so answers can be shown
@@ -170,8 +172,8 @@ export class FeedFormComponent implements OnInit {
         ];
 
         this.genderList = [
-            { "id": 1, "input": "gender", "itemName": "Male" },
-            { "id": 2, "input": "gender", "itemName": "Female" },
+            { "id": 1, "itemName": "Male" },
+            { "id": 2, "itemName": "Female" },
         ];
 
         this.locationList = [];
@@ -184,12 +186,12 @@ export class FeedFormComponent implements OnInit {
             { "id": 5, "itemName": "40 - 49", "input": "age", "min": 40, "max": 49 },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min": 50, "max": 59 },
             { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 },
-        ];
+        ]
 
         this.genderSelected = [
-            { "id": 1, "input": "gender", "itemName": "Male" },
-            { "id": 2, "input": "gender", "itemName": "Female" },
-        ];
+            { "id": 1, "itemName": "Male" },
+            { "id": 2, "itemName": "Female" },
+        ]
 
         this.ageSettings = {
             singleSelection: false,
@@ -322,7 +324,7 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.form.id;
-        window.console.log("Presubmit: ", data.questions);
+        window.console.log("Presubmit: ", data.questions)
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
               if (response.json().status == 1) {
@@ -351,7 +353,7 @@ export class FeedFormComponent implements OnInit {
                     this.locations.push({name: a[0], count: a[1]});
 
                     // Push to list for dropdown
-                    tempLocation.push({itemName: a[0], input: "location"});
+                    tempLocation.push({itemName: a[0]});
 
                     //comment out to add all locations to initial plot selection
                     this.plotselection.location.push(a[0]);
@@ -363,9 +365,14 @@ export class FeedFormComponent implements OnInit {
                 }
 
                 tempLocation.map((loc,ind) => {
-                    this.locationList.push({id: ind + 1, itemName: loc.itemName, input: "location"});
-                    this.locationSelected.push({ id: ind + 1, itemName: loc.itemName, input: "location"});
+                    this.locationList.push({id: ind + 1, itemName: loc.itemName});
+                    this.locationSelected.push({ id: ind + 1, itemName: loc.itemName });
                 });
+
+
+                window.console.log("locations: ", this.locationList);
+
+
 
                 // deal with the possibility of more than 5 locations
                 var other = response.json().otherlocations;
@@ -384,6 +391,9 @@ export class FeedFormComponent implements OnInit {
 // NEW: THIS IS THE FUNCTION THATS CALLED WHEN THE FORM CONTROL IS CHANGED
     doDataSelectionUpdate(x) {
         this.form.viewGraphs(false);
+
+        window.console.log("HERERRERERE: ", x)
+        
         
         // NEW: INPUT CHANGE WAS FOR AGE
         if (x.input == 'age') {
@@ -460,23 +470,24 @@ export class FeedFormComponent implements OnInit {
             }
 
         } else if (x.input == 'gender') {
-            // Something to filter it
-            var tempgenderstring = [x.itemName.toLowerCase()];
 
-            if (x.status == false) {
-                this.plotselection.gender = this.plotselection.gender.filter(function(e) {return tempgenderstring.indexOf(e) == -1});
-            } else {
-                this.plotselection.gender = this.plotselection.gender.concat(tempgenderstring);
+            if (x.itemName == "Male") {
+                // Something to filter it
+            }
+
+            if (x.itemName == "Female") {
+                // Something to filter it
             }
 
         }
 
-        // -----------BREAKS HERE -------
-        this.executePlotDataRetrieval();
+        // this.executePlotDataRetrieval();
     }
 
     executePlotDataRetrieval() {
         // post and get response
+
+        // window.console.log("New Plotselection: ", this.plotselection)
         this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
             .then(response => {

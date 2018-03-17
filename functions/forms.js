@@ -184,15 +184,13 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
         if (types[i] !== "Short Answer" && types[i] !== "Paragraph" && types[i] !== "Matrix") {
             // declare temp
             var temp = [];
-            var temp_male = [];
-            var temp_female = [];
-            var temp_undisclosed = [];
 
             // loop through all forms and look at data for this question
             for (var j = 0; j < x.length; j++) {
                 var current = x[j];
                 var currentq = current.answers[i];
                 var templocation;
+                var tempgender;
                 var age;
 
                 if (users[current.userid] != null) {
@@ -223,7 +221,13 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                             age = 0;
                         }
 
-                        if (all === true || (param.age.indexOf(age) !== -1) && (param.location.indexOf(templocation) !== -1)) {
+                        if (users[current.userid].gender != null) {
+                            tempgender = users[current.userid].gender;
+                        } else {
+                            tempgender = '';
+                        }
+
+                        if (all === true || (param.age.indexOf(age) !== -1) && (param.location.indexOf(templocation) !== -1) && (param.gender.indexOf(tempgender) !== -1)) {
                             proceed = true;
                         }
 
@@ -236,86 +240,29 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                     }
 
                     if (proceed) {
-
                         // New code
                         if (types[i] === 'Multiple Choice') {
-                            if (typeof currentq.answer === "object") {
+                            // if multiple selected split.
+                            for (var j = 0; j < x.length; j++) {
 
-                                let mcTemp = Object.keys(current.answer);
-
-                                // for (let x of currentq.answer) {
-                                //     mcTemp.push(x);
-                                // }
-
-
-                                for (var r = 0; r < mcTemp.length; r++) {
-                                    temp.push(mcTemp[r]);
-
-                                    // by gender
-                                    if (users[current.userid].gender === "male") {
-                                        temp_male.push(mcTemp[r]);
-                                    } else if (users[current.userid].gender === "female") {
-                                        temp_female.push(mcTemp[r]);
-                                    } else {
-                                        temp_undisclosed.push(mcTemp[r]);
+                                if (typeof x[j].answers[i].answer === "object") {
+                                    for (var key in x[j].answers[i].answer) {
+                                        if (x[j].answers[i].answer[key]) {
+                                            temp.push(key);
+                                        }
                                     }
+
+                                } else {
+                                    temp.push(x[j].answers[i].answer);
                                 }
-
                             }
-
-
-
-                            // Old Code Below
-
-                        // if (types[i] === 'Checkboxes') {
-                        //     if (currentq.answer.constructor === Array) {
-                        //         for (var r = 0; r < currentq.answer.length; r++) {
-                        //             temp.push(currentq.answer[r]);
-
-                        //             // by gender
-                        //             if (users[current.userid].gender === "male") {
-                        //                 temp_male.push(currentq.answer[r]);
-                        //             } else if (users[current.userid].gender === "female") {
-                        //                 temp_female.push(currentq.answer[r]);
-                        //             } else {
-                        //                 temp_undisclosed.push(currentq.answer[r]);
-                        //             }
-                        //         }
-
-                        //     } else {
-                        //         temp.push(currentq.answer);
-                        //         // by gender
-                        //         if (users[current.userid].gender === "male") {
-                        //             temp_male.push(currentq.answer);
-                        //         } else if (users[current.userid].gender === "female") {
-                        //             temp_female.push(currentq.answer);
-                        //         } else {
-                        //             temp_undisclosed.push(currentq.answer);
-                        //         }
-                        //     }
 
                         } else if (types[i] === 'Rating') {
                             if (currentq.answer > 1) {
                                 temp.push(currentq.answer+" stars");
-                                // by gender
-                                if (users[current.userid].gender === "male") {
-                                    temp_male.push(currentq.answer+" stars");
-                                } else if (users[current.userid].gender === "female") {
-                                    temp_female.push(currentq.answer+" stars");
-                                } else {
-                                    temp_undisclosed.push(currentq.answer+" stars");
-                                }
 
                             } else {
                                 temp.push(currentq.answer+" star");
-                                // by gender
-                                if (users[current.userid].gender === "male") {
-                                    temp_male.push(currentq.answer+" star");
-                                } else if (users[current.userid].gender === "female") {
-                                    temp_female.push(currentq.answer+" star");
-                                } else {
-                                    temp_undisclosed.push(currentq.answer+" star");
-                                }
                             }
 
                         } else if (types[i] === "Rank") {
@@ -324,36 +271,9 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                             for (var a = 0; a < currentq.answer.length; a++) {
                                 temp.push(a+1+"."+currentq.answer[a].label);
                             }
-                            // by gender
-                            if (users[current.userid].gender === "male") {
-                                // loop through the rank array
-                                for (var a = 0; a < currentq.answer.length; a++) {
-                                    temp_male.push(a+1+"."+currentq.answer[a].label);
-                                }
-                            } else if (users[current.userid].gender === "female") {
-                                // loop through the rank array
-                                for (var a = 0; a < currentq.answer.length; a++) {
-                                    temp_female.push(a+1+"."+currentq.answer[a].label);
-                                }
-                            } else {
-                                // loop through the rank array
-                                for (var a = 0; a < currentq.answer.length; a++) {
-                                    temp_undisclosed.push(a+1+"."+currentq.answer[a].label);
-                                }
-                            }
-
-
 
                         } else {
                             temp.push(currentq.answer);
-                            // by gender
-                            if (users[current.userid].gender === "male") {
-                                temp_male.push(currentq.answer);
-                            } else if (users[current.userid].gender === "female") {
-                                temp_female.push(currentq.answer);
-                            } else {
-                                temp_undisclosed.push(currentq.answer);
-                            }
 
                         }
                     }
@@ -364,62 +284,22 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
 
             // make a summary
             var counts = {};
-            var counts_male = {};
-            var counts_female = {};
-            var counts_undisclosed = {};
             var total = 0;
-            var total_male = 0;
-            var total_female = 0;
-            var total_undisclosed = 0;
 
             for (k = 0; k < temp.length; k++) {
                 counts[temp[k]] = (counts[temp[k]] + 1) || 1;
                 total += 1;
-            }
-            for (k = 0; k < temp_male.length; k++) {
-                counts_male[temp_male[k]] = (counts_male[temp_male[k]] + 1) || 1;
-                total_male += 1;
-            }
-            for (k = 0; k < temp_female.length; k++) {
-                counts_female[temp_female[k]] = (counts_female[temp_female[k]] + 1) || 1;
-                total_female += 1;
-            }
-            for (k = 0; k < temp_undisclosed.length; k++) {
-                counts_undisclosed[temp_undisclosed[k]] = (counts_undisclosed[temp_undisclosed[k]] + 1) || 1;
-                total_undisclosed += 1;
             }
 
             // reformat
             // and make percentage
             var summaryLabels = [];
             var summaryValues = [];
-            var summaryValues_male = [];
-            var summaryValues_female = [];
-            var summaryValues_undisclosed = [];
-
-
 
             for (var key in counts) {
                 // Trace labels --------
                 summaryLabels.push(key);
                 summaryValues.push(Math.round(((100/total)*counts[key])*100)/100);
-
-                if (counts_male.hasOwnProperty(key)) {
-                    summaryValues_male.push(Math.round(((100/total_male)*counts_male[key])*100)/100);
-                } else {
-                    summaryValues_male.push(Math.round(0));
-                }
-                if (counts_female.hasOwnProperty(key)) {
-                    summaryValues_female.push(Math.round(((100/total_female)*counts_female[key])*100)/100);
-                } else {
-                    summaryValues_female.push(Math.round(0));
-                }
-                if (counts_undisclosed.hasOwnProperty(key)) {
-                    summaryValues_undisclosed.push(Math.round(((100/total_undisclosed)*counts_undisclosed[key])*100)/100);
-                } else {
-                    summaryValues_undisclosed.push(Math.round(0));
-                }
-
             }
 
             var summaryCounts = counts;
@@ -427,7 +307,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
             // CHECK THIS
             // exportdata.push([summaryLabels, [{ data: summaryValues_male, label: "male" }, { data: summaryValues_female, label: "female" }, { data: summaryValues_undisclosed, label: "undisclosed" }]]);
             // exportdata.push([summaryLabels, [{ data: summaryValues, label: "all" }, { data: summaryValues_male, label: "male" }, { data: summaryValues_female, label: "female" }, { data: summaryValues_undisclosed, label: "undisclosed" }]]);
-            exportdata.push([summaryLabels, summaryValues, summaryCounts]);
+            exportdata.push([summaryLabels, [{ data: summaryValues, label: "all" }], summaryCounts]);
 
         } else {
             // return a blank for this question
