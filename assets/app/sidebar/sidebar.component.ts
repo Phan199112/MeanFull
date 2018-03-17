@@ -18,7 +18,10 @@ export class Sidebar implements OnInit {
     @Input() loggedin: boolean;
     @Input() user: String;
     @Input() friends: any;
+    @Input() context: string;
+    @Input() name: string;
 
+    userName: string = "  ";
     communities: Object[];
     users : Object[];
     networklist: NetworkModel[];
@@ -26,6 +29,7 @@ export class Sidebar implements OnInit {
     randomlist: CommunityModel[] = [];
     data: Object[];
     randomlistdata: Object[];
+    ownProfile: boolean = false;
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {  
@@ -36,13 +40,13 @@ export class Sidebar implements OnInit {
      }
 
     ngOnInit() {
-        
         window.setTimeout(() => { 
+            this.userName = this.name.split(' ')[0];
             if(this.friends) {
                 for (let obj of this.friends) {
                     this.networklist.push(new NetworkModel(obj));
                 }
-                window.console.log("Friend data:", this.networklist);
+                // window.console.log("Friend data:", this.networklist);
             } 
         }, 1000);
 

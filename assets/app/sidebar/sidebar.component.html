@@ -1,34 +1,76 @@
 <!-- <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
     <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search" formControlName="searchterm" [ngClass]="{'form-control': true}" >
 </form> -->
-
-<div class="sContainer">
-    <h3 class="lpText">People</h3>
-    <div *ngIf="networklist.length != 0" class="peopleContainer">
-        <div *ngFor="let p of networklist">
-            <user-image [data]="p"> </user-image>
+<div *ngIf="context === 'profile'">
+    <div class="sContainer">
+        <h6 *ngIf="networklist.length == 0" class="lpText">{{userName}}'s network is empty.<br/>Discover other cool members below!</h6>
+        <h6 *ngIf="networklist.length !== 0" class="lpText">{{userName}}'s Network</h6>
+        <div *ngIf="networklist.length != 0" class="peopleContainer">
+            <div *ngFor="let p of networklist">
+                <user-image [data]="p"> </user-image>
+            </div>
+        </div>
+        <div *ngIf="networklist.length == 0" class="peopleContainer">
+            <div *ngFor="let p of users">
+                <user-image [data]="p"> </user-image>
+            </div>
         </div>
     </div>
-    <div *ngIf="networklist.length == 0" class="peopleContainer">
-        <div *ngFor="let p of users">
-            <user-image [data]="p"> </user-image>
+
+    <div class="sContainer">
+        <h6 *ngIf="communitylist.length == 0" class="lpText">{{userName}} has not joined a community yet.<br/>Discover some communities below!</h6>
+        <h6 *ngIf="communitylist.length !== 0" class="lpText">{{userName}}'s Communities</h6>
+        <h6 *ngIf="ownProfile" class="lpText">Ohhh shit</h6>
+
+        <div *ngIf="communitylist.length != 0" class="peopleContainer">
+            <div *ngFor="let c of communitylist">
+                <community-image [data]="c"> </community-image>
+            </div>
+        </div>
+        <div *ngIf="communitylist.length == 0" class="peopleContainer">
+            <div *ngFor="let c of randomlist">
+                <community-image [data]="c"> </community-image>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="sContainer">
-    <h3 class="lpText">Communities</h3>
-    <div *ngIf="communitylist.length != 0" class="peopleContainer">
-        <div *ngFor="let c of communitylist">
-            <community-image [data]="c"> </community-image>
+
+<div *ngIf="context === 'feed'">
+    <div class="sContainer">
+        <h3 class="lpText">People</h3>
+        <div *ngIf="networklist.length != 0" class="peopleContainer">
+            <div *ngFor="let p of networklist">
+                <user-image [data]="p"> </user-image>
+            </div>
+        </div>
+        <div *ngIf="networklist.length == 0" class="peopleContainer">
+            <div *ngFor="let p of users">
+                <user-image [data]="p"> </user-image>
+            </div>
         </div>
     </div>
-    <div *ngIf="communitylist.length == 0" class="peopleContainer">
-        <div *ngFor="let c of communities">
-            <community-image [data]="c"> </community-image>
+
+    <div class="sContainer">
+        <h3 class="lpText">Communities</h3>
+
+        <div *ngIf="communitylist.length != 0" class="peopleContainer">
+            <div *ngFor="let c of communitylist">
+                <community-image [data]="c"> </community-image>
+            </div>
+        </div>
+        <div *ngIf="communitylist.length == 0" class="peopleContainer">
+            <div *ngFor="let c of data">
+                <community-image [data]="c"> </community-image>
+            </div>
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <!-- <div class="sContainer">
     <tag-list [user]="null" [comm]="null"></tag-list>

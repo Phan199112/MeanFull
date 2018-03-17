@@ -632,7 +632,7 @@ export class FeedFormComponent implements OnInit {
 
 
     //Emoticon functions
-    chooseReaction(reaction: string) : void {
+    chooseReaction(reaction: string) : void {   
         if (this.hasReacted) return;
 
         // TO-DO: Need to submit reaction to back-end and update percentages and return
