@@ -3,8 +3,8 @@
 </form> -->
 <div *ngIf="context === 'profile'">
     <div class="sContainer">
-        <h6 *ngIf="networklist.length == 0" class="lpText">{{userName}}'s network is empty.<br/>Discover other cool members below!</h6>
-        <h6 *ngIf="networklist.length !== 0" class="lpText">{{userName}}'s Network</h6>
+        <h6 *ngIf="networklist.length == 0" class="lpText small">{{userName}}'s network is empty.<br/>Discover other members!</h6>
+        <h6 *ngIf="networklist.length !== 0" class="lpText small">{{userName}}'s Network</h6>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
             <div *ngFor="let p of networklist">
                 <user-image [data]="p"> </user-image>
@@ -18,9 +18,8 @@
     </div>
 
     <div class="sContainer">
-        <h6 *ngIf="communitylist.length == 0" class="lpText">{{userName}} has not joined a community yet.<br/>Discover some communities below!</h6>
-        <h6 *ngIf="communitylist.length !== 0" class="lpText">{{userName}}'s Communities</h6>
-        <h6 *ngIf="ownProfile" class="lpText">Ohhh shit</h6>
+        <h6 *ngIf="communitylist.length == 0" class="lpText small">{{userName}} has not joined a community yet.<br/>Discover other communities!</h6>
+        <h6 *ngIf="communitylist.length !== 0" class="lpText small">{{userName}}'s Communities</h6>
 
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist">
@@ -38,7 +37,7 @@
 
 <div *ngIf="context === 'feed'">
     <div class="sContainer">
-        <h3 class="lpText">People</h3>
+        <h3 class="lpText">Discover People</h3>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
             <div *ngFor="let p of networklist">
                 <user-image [data]="p"> </user-image>
@@ -52,7 +51,7 @@
     </div>
 
     <div class="sContainer">
-        <h3 class="lpText">Communities</h3>
+        <h3 class="lpText">Discover Communities</h3>
 
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist">
