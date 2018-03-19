@@ -1,5 +1,6 @@
 var FormModel = require('../db.models/form.model');
 var AnswersModel = require('../db.models/answers.model');
+var ReactionsModel = require('../db.models/reactions.model');
 var UserModel = require('../db.models/user.model');
 var log = require("../functions/logs");
 var notifications = require("../functions/notifications");
@@ -245,7 +246,8 @@ module.exports = function(app, passport, manager, hashids) {
                 AnswersModel.create({
                     userid: a,
                     formid: x,
-                    answers: y
+                    answers: y,
+                    timestamp: Date.now()
                 }, function (err, k) {
                     if (err) {
                         reject();
@@ -442,6 +444,127 @@ module.exports = function(app, passport, manager, hashids) {
 
 
         }
+    });
+
+    app.post('/forms/react', manager.ensureLoggedIn('/users/login'), function(req, res) {
+        console.log(req.body);
+        // add new answer
+        var receivedData = req.body;
+        var answerformid = hashids.decodeHex(receivedData.id);
+        var formauthorid = null;
+        // double check to see whether this user has already submitted an answer:
+        var checkedfordouble = true; // true means do not add again
+        var proceed = false;
+        // promises
+        var promises = [];
+        var promiseschecks = [];
+
+        // functions
+        var fcheckedfordouble = function () {
+            return new Promise(function (resolve, reject) {
+                ReactionsModel.findOne({userid: req.session.userid, formid: answerformid}, function (err, obj) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        if (obj == null) {
+                            checkedfordouble = false;
+                            resolve();
+                        } else {
+                            // don't add any data
+                            checkedfordouble = true;
+                            resolve();
+                        }
+                    }
+                });
+            });
+        };
+
+        var writeanswerfunction = function (x, y, a) {
+            return new Promise(function (resolve, reject) {
+                ReactionsModel.create({
+                    userid: a,
+                    formid: x,
+                    reaction: y,
+                    timestamp: Date.now()
+                }, function (err, k) {
+                    if (err) {
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var updateformfunction = function (x, y) {
+            console.log('update form reactions');
+            //
+            // create your update skeleton first
+            var ud = { $inc: {} };
+
+            // fill it in
+            ud.$inc['reactions.' + y] = 1;
+
+            //
+            return new Promise(function (resolve, reject) {
+                FormModel.findByIdAndUpdate(x, ud, function(err, k) {
+                    if (err) {
+                        console.log('update form reactions fail');
+                        console.log(err);
+                        reject();
+
+                    } else {
+                        console.log('update form reactions ok');
+                        resolve();
+                    }
+                });
+            });
+        };
+
+
+        new Promise(function(resolve, reject) {
+
+            promiseschecks.push(fcheckedfordouble());
+
+            return Promise.all(promiseschecks).then(function () {
+                if (checkedfordouble === false) {
+                    proceed = true;
+                } else {
+                    proceed = false;
+                }
+                resolve();
+
+            }).catch(function() {
+                proceed = false;
+                reject();
+            });
+
+        })
+            .then(function () {
+                if (proceed === true) {
+                    // add the answer
+                    promises.push(writeanswerfunction(answerformid, receivedData.reaction, req.session.userid));
+                    promises.push(updateformfunction(answerformid, receivedData.reaction));
+
+                    return Promise.all(promises).then(function () {
+                        // log
+                        log.writeLog(req.session.userid, 'reacted to form');
+
+                        // return
+                        res.json({status: 1});
+                    })
+                        .catch(function () {
+                            res.json({status: 0});
+                        });
+
+                } else {
+                    res.json({status: 0});
+                }
+
+            })
+            .catch(function () {
+                res.json({status: 0});
+            });
     });
 
     app.post('/forms/expire', manager.ensureLoggedIn('/users/login'), function(req,res) {
@@ -676,8 +799,10 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/forms/feed',function (req, res, next) {
         // this function retrieved the feed
-        // limits to 10 posts
+        // limits to x posts
         // only public posts
+
+        var postlimit = 10;
 
         // enable different types of queries
         // query a tag
@@ -811,8 +936,12 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         }
                                         // prepare the data
-                                        var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, loginRequired: form.loginRequired,
-                                            timestamp: form.timestamp, description: form.description, title: form.title, admin: adminrights, public: form.public, typeevent: form.typeevent};
+                                        var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
+                                            shared: form.shared, loginRequired: form.loginRequired,
+                                            timestamp: form.timestamp, description: form.description,
+                                            title: form.title, admin: adminrights, public: form.public,
+                                            typeevent: form.typeevent};
+                                        formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                         firstform = {formdata: formdata, id: hashids.encodeHex(form._id)};
                                         authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
                                         resolve();
@@ -835,7 +964,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // retrieve forms by compley queries
                 var tempfunctionByQuery = function() {
                     return new Promise(function(resolve, reject){
-                        FormModel.find(queryobj).sort({'timestamp': 'desc'}).limit(10).cursor()
+                        FormModel.find(queryobj).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
                             .on('data', function(form){
                                 // was the form generated by the current user?
                                 var adminrights = false;
@@ -846,9 +975,12 @@ module.exports = function(app, passport, manager, hashids) {
                                     }
                                 }
                                 // prepare the data
-                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, loginRequired: form.loginRequired,
+                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
+                                    shared: form.shared, loginRequired: form.loginRequired,
                                     timestamp: form.timestamp, description: form.description,
-                                    title: form.title, admin: adminrights, public: form.public, typeevent: form.typeevent};
+                                    title: form.title, admin: adminrights, public: form.public,
+                                    typeevent: form.typeevent};
+                                formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
                                 authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
                             })
@@ -893,9 +1025,12 @@ module.exports = function(app, passport, manager, hashids) {
                                                     }
                                                 }
                                                 // prepare the data
-                                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired, shared: form.shared, loginRequired: form.loginRequired,
+                                                var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
+                                                    shared: form.shared, loginRequired: form.loginRequired,
                                                     timestamp: form.timestamp, description: form.description,
-                                                    title: form.title, admin: adminrights, public: form.public, typeevent: form.typeevent};
+                                                    title: form.title, admin: adminrights, public: form.public,
+                                                    typeevent: form.typeevent};
+                                                formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
                                                 authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
                                                 resolve();
@@ -1138,19 +1273,122 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/data', function(req, res) {
         // this function queries the answers of the form. Answers will only be displayed if the user is logged in
         // and has answered the question.
+        // this route will also query whether the loggedin user has reacted to this form
 
         var formid = hashids.decodeHex(req.body.link); // unhash
         var resultsPublic = false;
         var questiontypes = []; // array of the question types in the survey
         var loggedin = req.isAuthenticated();
+        // promises array
+        var promises = [];
+        // output variables
+        var exportdata;
+        var answercount;
+        var formcompleted = false;
+        var formreacted = false;
+        var userreaction = null;
+        var tempallanswers;
 
-        if (req.isAuthenticated()) {
+
+        /// temporary function declaration
+        // temp functions
+        var testformanswered  = function(formid, userid) {
+            return new Promise(function(resolve, reject){
+                AnswersModel.findOne({formid: formid, userid: userid}, function (err, answer) {
+                    if (err) {
+                        console.log('error testformanswered');
+                        reject();
+                    } else {
+                        // the current user has completed the survey
+                        if (answer != null) {
+                            formcompleted = true;
+                            console.log('completed testformanswered');
+                            resolve();
+                        } else {
+                            formcompleted = false;
+                            console.log('completed testformanswered null');
+                            resolve();
+                        }
+                    }
+                });
+            });
+        };
+
+        var getformanswers = function(formid) {
+            console.log('getformanswers');
+            return new Promise(function (resolve, reject) {
+                // query all answers and prepare data for plot
+                AnswersModel.find({formid: formid}, function (err, allanswers) {
+                    if (err) {
+                        console.log('error getformanswers');
+                        reject();
+                    } else {
+                        if (allanswers != null) {
+                            console.log('completed getformanswers');
+                            // retrieved an array with all answers
+                            tempallanswers = allanswers;
+                            answercount = allanswers.length;
+                            //
+                            resolve();
+
+                        } else {
+                            console.log('completed getformanswers null');
+                            tempallanswers = null;
+                            answercount = 0;
+                            resolve();
+                        }
+                    }
+                });
+            });
+        };
+
+        var testformreacted  = function(formid, userid) {
+            return new Promise(function(resolve, reject){
+                ReactionsModel.findOne({formid: formid, userid: userid}, function (err, reaction) {
+                    if (err) {
+                        console.log('error testformreacted');
+                        reject();
+                    } else {
+                        // the current user has completed the survey
+                        if (reaction != null) {
+                            console.log('completed testformreacted');
+                            // query current users reaction
+                            formreacted = true;
+                            userreaction = reaction.reaction;
+                            resolve();
+                        } else {
+                            console.log('completed testformreacted null');
+                            formreacted = false;
+                            userreaction = null;
+                            resolve();
+                        }
+                    }
+                });
+            });
+        };
+
+        // start the data gathering
+        if (!req.isAuthenticated()) {
+            //Feed request from forms not auth
+            res.json({
+                data: '',
+                status: 1,
+                count: null,
+                reaction: {reacted: false, userreaction: null},
+                error: 'not auth',
+                loggedin: loggedin
+            });
+
+        } else {
+            //
+            console.log('start data gathering');
+
             // handle the multiple async steps with a promise
             new Promise(function(resolve, reject) {
                 // first confirm that the results are public and what the question types are
                 FormModel.findById(formid, function (err, form) {
                     if (err) {
-                        reject(err);
+                        reject();
                     } else {
                         if (form) {
                             // are the results public?
@@ -1174,50 +1412,83 @@ module.exports = function(app, passport, manager, hashids) {
             })
                 .then(function() {
                     if (resultsPublic == true) {
-                        // mongoDB find answer for current user.
-                        AnswersModel.findOne({formid: formid, userid: req.session.userid}, function (err, answer) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                // the current user has completed the survey
-                                if (answer != null) {
-                                    // query all answers and prepare data for plot
-                                    AnswersModel.find({formid: formid}, function (err, allanswers) {
-                                        // retrieved an array with all answers
-                                        // compute
-                                        var exportdata = formfunctions.analyzeAll(allanswers, questiontypes);
-                                        var answercount;
 
-                                        // if (allanswers.length > 5) {
-                                            answercount = allanswers.length;
-                                        // } else {
-                                        //     answercount = null;
-                                        // }
+                        console.log('results are public');
 
-                                        //
+                        // execute promises
+                        promises.push(testformanswered(formid, req.session.userid));
+                        promises.push(testformreacted(formid, req.session.userid));
+
+                        return Promise.all(promises).then(function () {
+
+                            // did the current user answer the form?
+                            if (formcompleted) {
+
+                                console.log('user completed form');
+
+                                // get all data and analyze
+                                getformanswers(formid).then(function () {
+                                    console.log('getformanswers proceeded');
+                                    //export
+                                    if (answercount > 0) {
+                                        console.log('crunching numbers');
+                                        exportdata = formfunctions.analyzeAll(tempallanswers, questiontypes);
+                                    } else {
+                                        exportdata = null;
+                                    }
+
+                                    //
+                                    res.json({
+                                        data: exportdata,
+                                        count: answercount,
+                                        reaction: {reacted: formreacted, userreaction: userreaction},
+                                        status: 2,
+                                        loggedin: loggedin
+                                    });
+
+                                })
+                                    .catch(function() {
+                                        // error
                                         res.json({
-                                            data: exportdata,
-                                            count: answercount,
-                                            status: 2,
+                                            data: null,
+                                            status: 1,
+                                            count: null,
+                                            reaction: {reacted: false, userreaction: null},
+                                            error: 'error retrieve data',
                                             loggedin: loggedin
                                         });
                                     });
 
-                                } else {
-                                    // user did not complete this form
-                                    res.json({
-                                        data: '',
-                                        status: 0,
-                                        count: null,
-                                        error: 'not completed',
-                                        loggedin: loggedin
-                                    });
-                                }
+                            } else {
+                                // user did not complete this form
+                                res.json({
+                                    data: '',
+                                    status: 0,
+                                    count: null,
+                                    reaction: {reacted: formreacted, userreaction: userreaction},
+                                    error: 'not completed',
+                                    loggedin: loggedin
+                                });
+
                             }
+
+                        })
+                            .catch(function() {
+                            // error
+                            res.json({
+                                data: '',
+                                status: 1,
+                                count: null,
+                                reaction: {reacted: false, userreaction: null},
+                                error: 'error',
+                                loggedin: loggedin
+                            });
                         });
+
                     } else {
                         res.json({
                             data: '',
+                            reaction: {reacted: false, userreaction: null},
                             status: 3,
                             count: null,
                             error: 'not public',
@@ -1231,20 +1502,12 @@ module.exports = function(app, passport, manager, hashids) {
                         data: '',
                         status: 1,
                         count: null,
+                        reaction: {reacted: false, userreaction: null},
                         error: 'error DB',
                         loggedin: loggedin
                     });
                 });
 
-        } else {
-            //Feed request from forms not auth
-            res.json({
-                data: '',
-                status: 1,
-                count: null,
-                error: 'not auth',
-                loggedin: loggedin
-            });
         }
     });
 

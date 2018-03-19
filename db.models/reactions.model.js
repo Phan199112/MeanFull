@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var AnswersSchema = new Schema({
+var ReactionsSchema = new Schema({
     userid: String,
     formid: String,
-    answers: Object,
+    reaction: String,
     timestamp: String
 });
 
 // Compile model from schema
-module.exports = mongoose.model('AnswersModel', AnswersSchema );
-
+module.exports = mongoose.model('ReactionsModel', ReactionsSchema );

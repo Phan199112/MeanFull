@@ -29,6 +29,7 @@ export class FeedForm {
     loginRequired: boolean;
     eventdatatotals: any[];
     eventplot: boolean = false;
+    reactions: any;
 
     constructor(private object: Object) {
         this.found = object.found;
@@ -41,6 +42,7 @@ export class FeedForm {
             this.questions = object.formdata.questions;
             this.hashtags = object.formdata.hashtags;
             this.timestamp = object.formdata.timestamp;
+            this.reactions = object.formdata.reactions;
             this.admin = object.formdata.admin;
             this.expired = object.formdata.expired;
             this.shared = object.formdata.shared;

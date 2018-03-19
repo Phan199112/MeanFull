@@ -5,6 +5,7 @@ var FormSchema = new Schema({
     userid: String,
     title: String,
     questions: Object,
+    reactions: Object,
     hashtags: [{type: String}],
     anonymous: Boolean,
     public: Boolean,

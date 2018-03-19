@@ -56,17 +56,20 @@
         <div class="emoContainer">
             <div class="emoAndText"  (click)="chooseReaction('great')">
                 <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
-                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'great'}">{{reactionData.great}}%</span>
+                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'great'}">{{reactionData.great || 0}}%</span>
+                <span *ngIf="!hasReacted" class="emoText emoPercent">{{reactionData.great || 0}}%</span>
                 <span class="emoText">Great Question!</span>
             </div>
             <div class="emoAndText" (click)="chooseReaction('wtf')">
                 <img class="emoticon" src="/images/emoticons/wtf.gif" />
-                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'wtf'}">{{reactionData.wtf}}%</span>
+                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'wtf'}">{{reactionData.wtf || 0}}%</span>
+                <span *ngIf="!hasReacted" class="emoText emoPercent">{{reactionData.wtf || 0}}%</span>
                 <span class="emoText">WTF..</span>
             </div>
             <div class="emoAndText" (click)="chooseReaction('angry')">
                 <img class="emoticon" src="/images/emoticons/angry.gif" />
-                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'angry'}">{{reactionData.angry}}%</span>
+                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'angry'}">{{reactionData.angry || 0}}%</span>
+                <span *ngIf="!hasReacted" class="emoText emoPercent">{{reactionData.angry || 0}}%</span>
                 <span class="emoText">Really?!</span>
             </div>
         </div>
