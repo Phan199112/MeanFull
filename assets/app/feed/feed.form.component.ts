@@ -195,28 +195,25 @@ export class FeedFormComponent implements OnInit {
         this.ageSettings = {
             singleSelection: false,
             text: "Age",
-            selectAllText: 'Select All',
-            unSelectAllText: 'Unselect All',
             classes: "filterDropdownText",
-            badgeShowLimit: 0
+            badgeShowLimit: 0,
+            enableCheckAll: false
         };    
 
         this.locationSettings = {
             singleSelection: false,
             text: "Location",
-            selectAllText: 'Select All',
-            unSelectAllText: 'Unselect All',
             classes: "filterDropdownText",
-            badgeShowLimit: 0
+            badgeShowLimit: 0,
+            enableCheckAll: false
         };    
 
         this.genderSettings = {
             singleSelection: false,
             text: "Gender",
-            selectAllText: 'Select All',
-            unSelectAllText: 'Unselect All',
             classes: "filterDropdownText",
-            badgeShowLimit: 0
+            badgeShowLimit: 0,
+            enableCheckAll: false
         };    
 
 
@@ -224,19 +221,17 @@ export class FeedFormComponent implements OnInit {
 
     onItemSelect(item: any) {
         item.status = true;
-        console.log(item);
         this.doDataSelectionUpdate(item);
     }
     OnItemDeSelect(item: any) {
         item.status = false;
-        console.log(item);
         this.doDataSelectionUpdate(item);
     }
     onSelectAll(items: any) {
-        console.log(items);
+        // console.log(items);
     }
     onDeSelectAll(items: any) {
-        console.log(items);
+        // console.log(items);
     }
 
 
