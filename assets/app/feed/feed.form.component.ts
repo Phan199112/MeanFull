@@ -8,34 +8,6 @@ import { PopupService } from "../popup.service";
 import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
-
-
-
-function reactionssummary(reactions) {
-    // make a summary
-    var counts = {};
-    var total = 0;
-    var summary = {};
-
-    if (reactions != null) {
-        for (var k in reactions) {
-            counts[k] = (counts[reactions[k]] + 1) || 1;
-            total += 1;
-        }
-
-        // reformat
-        // and make percentage
-        for (var k in reactions) {
-            summary[k] = (Math.round(((100 / total) * counts[k]) * 100) / 100);
-        }
-    }
-
-    return summary;
-};
-
-
-
-
 @Component({
     selector: 'feed-form-component',
     templateUrl: './feed.form.component.html',
@@ -131,7 +103,7 @@ export class FeedFormComponent implements OnInit {
     ngOnInit() {
         // update reactions
         this.intReactionData = this.form.reactions;
-        this.reactionData = reactionssummary(this.intReactionData);
+        this.reactionData = this.reactionssummary(this.intReactionData);
 
 
         // get profile info
@@ -675,20 +647,38 @@ export class FeedFormComponent implements OnInit {
             .toPromise()
             .then(response => {
                 if (this.intReactionData) {
+                    if (!this.intReactionData[reaction]) this.intReactionData[reaction] = 0;
                     this.intReactionData[reaction] = this.intReactionData[reaction] + 1;
                 } else {
                     this.intReactionData = {};
                     this.intReactionData[reaction] = 1;
                 }
-                // window.console.log("before: ", this.intReactionData);
-                this.reactionData = reactionssummary(this.intReactionData);
-                // window.console.log("before: ", this.reactionData);
-
+                this.reactionData = this.reactionssummary(this.intReactionData);
                 this.hasReacted = true;
                 this.reaction = reaction;
-                //this.isFilledIn();
             });
 
     }
+
+    reactionssummary(reactions) {
+    // make a summary
+    var counts = {};
+    var total = 0;
+    var summary = {};
+
+    if (reactions != null) {
+        for (var k in reactions) {
+            total += reactions[k];
+        }
+
+        // reformat
+        // and make percentage
+        for (var k in reactions) {
+            summary[k] = (Math.round( ( (reactions[k]/total) * 100 ) * 100 ) / 100   );
+        }
+    }
+
+    return summary;
+};
 
 }
