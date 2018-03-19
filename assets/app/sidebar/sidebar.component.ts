@@ -20,6 +20,8 @@ export class Sidebar implements OnInit {
     @Input() friends: any;
     @Input() context: string;
     @Input() name: string;
+    @Input() me: boolean;
+
 
     userName: string = "  ";
     communities: Object[];

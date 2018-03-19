@@ -3,8 +3,8 @@
 </form> -->
 <div *ngIf="context === 'profile'">
     <div class="sContainer">
-        <h6 *ngIf="networklist.length == 0" class="lpText small">{{userName}}'s network is empty.<br/>Discover other members!</h6>
-        <h6 *ngIf="networklist.length !== 0" class="lpText small">{{userName}}'s Network</h6>
+        <h6 *ngIf="networklist.length == 0" class="lpText small">{{me ? 'Your' : userName + "'s"}} network is empty.<br/>Discover other members!</h6>
+        <h6 *ngIf="networklist.length !== 0" class="lpText small">{{me ? 'My' : userName + "'s"}} Network</h6>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
             <div *ngFor="let p of networklist">
                 <user-image [data]="p"> </user-image>
@@ -18,8 +18,8 @@
     </div>
 
     <div class="sContainer">
-        <h6 *ngIf="communitylist.length == 0" class="lpText small">{{userName}} has not joined a community yet.<br/>Discover other communities!</h6>
-        <h6 *ngIf="communitylist.length !== 0" class="lpText small">{{userName}}'s Communities</h6>
+        <h6 *ngIf="communitylist.length == 0" class="lpText small">{{me ? "You haven't" : userName + " hasn't"}} joined a community yet.<br/>Discover other communities!</h6>
+        <h6 *ngIf="communitylist.length !== 0" class="lpText small">{{me ? 'My' : userName + "'s"}} Communities</h6>
 
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist">

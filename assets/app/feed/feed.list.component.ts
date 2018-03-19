@@ -15,6 +15,7 @@ export class FeedListComponent implements OnInit {
     @Input() user: String;
     @Input() comm: String;
     @Input() pic: string;
+    @Input() emptyMessage: string = "Retrieving Data...";
     @Input() pictype: string;
     userinfo: String = null;
     comminfo: String = null;
