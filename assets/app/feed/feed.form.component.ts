@@ -86,8 +86,6 @@ export class FeedFormComponent implements OnInit {
         this.nodiscussion = null;
         this.notaken = null;
         this.location = {city: "", state: "", country:""};
-        this.reactionData = {great: 20, wtf: 60, angry: 20};
-
 
         this.dataselectionform = new FormGroup({
             //set them to true to have filters true from the start
@@ -102,7 +100,10 @@ export class FeedFormComponent implements OnInit {
     }
 
     ngOnInit() {
+        // update reactions
+        this.reactionData = this.form.reactions;
 
+        // get profile info
         this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
             .then(res => {
 
@@ -249,7 +250,14 @@ export class FeedFormComponent implements OnInit {
             .then(response => {
                 let responsedata = response.json().data;
                 let responsestatus = response.json().status;
+                let responsereaction = response.json().reaction;
                 this.loggedin = response.json().loggedin;
+
+                //deal with reaction
+                if (responsereaction.reacted) {
+                    this.hasReacted = true;
+                    this.reaction = responsereaction.userreaction;
+                }
 
                 // set parameters for visualising the results
                 if (responsestatus == 2) {
@@ -260,15 +268,11 @@ export class FeedFormComponent implements OnInit {
                     // iniital data to give plot
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
 
-
-                    // window.console.log("Raw plot data: ", this.form.plotdata);
-
                     
                     this.submitted = true;
                     this.showsubmit = false;
                     this.showdiscussion = true;
                     this.count = response.json().count;
-
 
                     if (this.form.typeevent) {
                         this.retrieveEventData();
@@ -635,12 +639,14 @@ export class FeedFormComponent implements OnInit {
     chooseReaction(reaction: string) : void {   
         if (this.hasReacted) return;
 
-        // TO-DO: Need to submit reaction to back-end and update percentages and return
-        // reactionData object. Exp: {great: 22, wtf: 48, angry: 30}
-        // this.reactionData = 
+        this.http.post('/forms/react', {id: this.form.id, reaction: reaction})
+            .toPromise()
+            .then(response => {
+                this.hasReacted = true;
+                this.reaction = reaction;
+                //this.isFilledIn();
+            });
 
-        this.hasReacted = true;
-        this.reaction = reaction;
     }
 
 }
