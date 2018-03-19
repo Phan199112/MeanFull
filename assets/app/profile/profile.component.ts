@@ -68,6 +68,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             interests: null
         });
 
+
     }
 
     ngOnInit() {
@@ -99,13 +100,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
             }
             this.http.get(`/users/profile/${this.id}`).toPromise()
                 .then(res => {
+
                     this.status = res.json().status;
                     if (this.status == '1') {
                         this.hidefeed = true;
                         //
                         this.userprofile = res.json().userprofile;
                         this.network = res.json().network;
-                        // this.friends = res.json().network;
 
                         // counts
                         this.nocreated = res.json().userprofile.nocreated;

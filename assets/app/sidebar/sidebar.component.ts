@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, OnChanges } from "@angular/core";
 import { Http } from "@angular/http";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import {Router, Routes, ActivatedRoute} from "@angular/router";
@@ -14,7 +14,7 @@ import { NetworkModel } from "../networkContainer/network.model";
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss']
 })
-export class Sidebar implements OnInit {
+export class Sidebar implements OnInit, OnChanges {
     @Input() loggedin: boolean;
     @Input() user: String;
     @Input() friends: any;
@@ -23,7 +23,7 @@ export class Sidebar implements OnInit {
     @Input() me: boolean;
 
 
-    userName: string = "  ";
+    userName: string = "";
     communities: Object[];
     users : Object[];
     networklist: NetworkModel[];
@@ -31,7 +31,6 @@ export class Sidebar implements OnInit {
     randomlist: CommunityModel[] = [];
     data: Object[];
     randomlistdata: Object[];
-    ownProfile: boolean = false;
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {  
@@ -42,38 +41,35 @@ export class Sidebar implements OnInit {
      }
 
     ngOnInit() {
-        window.setTimeout(() => { 
-            this.userName = this.name.split(' ')[0];
-            if(this.friends) {
-                for (let obj of this.friends) {
-                    this.networklist.push(new NetworkModel(obj));
-                }
-                // window.console.log("Friend data:", this.networklist);
-            } 
-        }, 1000);
-
-
+        this.communitylist = [];
         this.http.get('/users/feedlist')
             .toPromise()
             .then(response => {
                 this.users = this.users.concat(response.json().data);
             });
 
+    }
+
+    ngOnChanges() {
+
+        if (this.name) this.userName = this.name.split(' ')[0];
+
+        this.networklist = [];
+            if (this.friends) {
+                for (let obj of this.friends) {
+                    this.networklist.push(new NetworkModel(obj));
+                }
+            }
 
 
-        // this.http.post(`/community/list`, { user: this.user }).toPromise()
-        // .then(res => {
-        //     if (res.json().status == 1) {
-        //         this.communities = res.json().data;
-        //     }
-        // }).catch(error => alert("Error retrieving form: " + error));
 
-
-            this.http.post(`/community/list`, { user: this.user }).toPromise()
+        this.http.post(`/community/list`, { user: this.user }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     this.data = res.json().data;
                     this.randomlistdata = res.json().random;
+
+                    this.communitylist = [];
 
                     for (let obj of this.data) {
                         this.communitylist.push(new CommunityModel(obj));
@@ -89,9 +85,6 @@ export class Sidebar implements OnInit {
             })
             .catch(error => alert("Error retrieving form: " + error));
 
-
-        this.route.params.subscribe(params => {
-            this.id = params.id;
-        }); 
+    }
 
 }
