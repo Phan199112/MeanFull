@@ -374,24 +374,24 @@ exports.exportTable = function exportTable(x, users) {
 };
 
 
-exports.reactionssummary = function reactionssummary(reactions) {
-    // make a summary
-    var counts = {};
-    var total = 0;
-    var summary = {};
+// exports.reactionssummary = function reactionssummary(reactions) {
+//     // make a summary
+//     var counts = {};
+//     var total = 0;
+//     var summary = {};
 
-    if (reactions != null) {
-        for (var k in reactions) {
-            counts[k] = (counts[reactions[k]] + 1) || 1;
-            total += 1;
-        }
+//     if (reactions != null) {
+//         for (var k in reactions) {
+//             counts[k] = (counts[reactions[k]] + 1) || 1;
+//             total += 1;
+//         }
 
-        // reformat
-        // and make percentage
-        for (var k in reactions) {
-            summary[k] = (Math.round(((100/total)*counts[k])*100)/100);
-        }
-    }
+//         // reformat
+//         // and make percentage
+//         for (var k in reactions) {
+//             summary[k] = (Math.round(((100/total)*counts[k])*100)/100);
+//         }
+//     }
 
-    return summary;
-};
+//     return summary;
+// };

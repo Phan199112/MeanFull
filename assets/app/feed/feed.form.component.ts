@@ -8,6 +8,34 @@ import { PopupService } from "../popup.service";
 import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
+
+
+
+function reactionssummary(reactions) {
+    // make a summary
+    var counts = {};
+    var total = 0;
+    var summary = {};
+
+    if (reactions != null) {
+        for (var k in reactions) {
+            counts[k] = (counts[reactions[k]] + 1) || 1;
+            total += 1;
+        }
+
+        // reformat
+        // and make percentage
+        for (var k in reactions) {
+            summary[k] = (Math.round(((100 / total) * counts[k]) * 100) / 100);
+        }
+    }
+
+    return summary;
+};
+
+
+
+
 @Component({
     selector: 'feed-form-component',
     templateUrl: './feed.form.component.html',
@@ -38,6 +66,7 @@ export class FeedFormComponent implements OnInit {
     hasReacted: boolean = false;
     reaction: string = null;
     reactionData: Object;
+    intReactionData: Object;
 
     // ------ Filter variables
     ageList = [];
@@ -101,7 +130,9 @@ export class FeedFormComponent implements OnInit {
 
     ngOnInit() {
         // update reactions
-        this.reactionData = this.form.reactions;
+        this.intReactionData = this.form.reactions;
+        this.reactionData = reactionssummary(this.intReactionData);
+
 
         // get profile info
         this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
@@ -640,6 +671,16 @@ export class FeedFormComponent implements OnInit {
         this.http.post('/forms/react', {id: this.form.id, reaction: reaction})
             .toPromise()
             .then(response => {
+                if (this.intReactionData) {
+                    this.intReactionData[reaction] = this.intReactionData[reaction] + 1;
+                } else {
+                    this.intReactionData = {};
+                    this.intReactionData[reaction] = 1;
+                }
+                // window.console.log("before: ", this.intReactionData);
+                this.reactionData = reactionssummary(this.intReactionData);
+                // window.console.log("before: ", this.reactionData);
+
                 this.hasReacted = true;
                 this.reaction = reaction;
                 //this.isFilledIn();

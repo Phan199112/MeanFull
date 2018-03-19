@@ -36,8 +36,6 @@ export class Sidebar implements OnInit, OnChanges {
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {  
         this.users = [];
         this.networklist = [];
-
-        // window.console.log("Official NEtwork list: ", this.friends, "its type is:", typeof this.friends);
      }
 
     ngOnInit() {

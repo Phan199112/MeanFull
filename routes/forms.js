@@ -941,7 +941,8 @@ module.exports = function(app, passport, manager, hashids) {
                                             timestamp: form.timestamp, description: form.description,
                                             title: form.title, admin: adminrights, public: form.public,
                                             typeevent: form.typeevent};
-                                        formdata.reactions = formfunctions.reactionssummary(form.reactions);
+                                        // formdata.reactions = formfunctions.reactionssummary(form.reactions);
+                                        formdata.reactions = form.reactions;
                                         firstform = {formdata: formdata, id: hashids.encodeHex(form._id)};
                                         authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
                                         resolve();
@@ -980,7 +981,8 @@ module.exports = function(app, passport, manager, hashids) {
                                     timestamp: form.timestamp, description: form.description,
                                     title: form.title, admin: adminrights, public: form.public,
                                     typeevent: form.typeevent};
-                                formdata.reactions = formfunctions.reactionssummary(form.reactions);
+                                // formdata.reactions = formfunctions.reactionssummary(form.reactions);
+                                formdata.reactions = form.reactions;
                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
                                 authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
                             })
@@ -1030,7 +1032,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                     timestamp: form.timestamp, description: form.description,
                                                     title: form.title, admin: adminrights, public: form.public,
                                                     typeevent: form.typeevent};
-                                                formdata.reactions = formfunctions.reactionssummary(form.reactions);
+                                                // formdata.reactions = formfunctions.reactionssummary(form.reactions);
+                                                formdata.reactions = form.reactions;
                                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
                                                 authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
                                                 resolve();
