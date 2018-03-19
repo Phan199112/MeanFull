@@ -17,6 +17,7 @@ export class FeedForm {
     viewGraphsbool: boolean = false;
     viewTablesbool: boolean = false;
     hashtags: string[];
+    categories: string[];
     showdata: boolean;
     expired: boolean;
     admin: boolean;
@@ -49,6 +50,7 @@ export class FeedForm {
             this.public = object.formdata.public;
             this.typeevent = object.formdata.typeevent;
             this.loginRequired = object.formdata.loginRequired;
+            this.categories = object.formdata.categories;
             this.answered = false;
             this.plotdata = null;
             this.viewGraphsbool = false;

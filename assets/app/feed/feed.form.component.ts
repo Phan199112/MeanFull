@@ -228,7 +228,8 @@ export class FeedFormComponent implements OnInit {
             text: "Age",
             classes: "filterDropdownText",
             badgeShowLimit: 0,
-            enableCheckAll: false
+            enableCheckAll: false,
+            maxHeight: 350
         };    
 
         this.locationSettings = {
@@ -236,7 +237,9 @@ export class FeedFormComponent implements OnInit {
             text: "Location",
             classes: "filterDropdownText",
             badgeShowLimit: 0,
-            enableCheckAll: false
+            enableCheckAll: false,
+            maxHeight: 350
+
         };    
 
         this.genderSettings = {
@@ -244,10 +247,10 @@ export class FeedFormComponent implements OnInit {
             text: "Gender",
             classes: "filterDropdownText",
             badgeShowLimit: 0,
-            enableCheckAll: false
+            enableCheckAll: false,
+            maxHeight: 350
+
         };    
-
-
     }
 
     onItemSelect(item: any) {

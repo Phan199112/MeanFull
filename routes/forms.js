@@ -24,6 +24,7 @@ module.exports = function(app, passport, manager, hashids) {
         // outputs
         var unhashedCommunities = [];
         var unhashedUsers = [];
+        var categories = [];
 
         if (receivedData.sharedWithCommunities != null) {
             for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {
@@ -38,9 +39,15 @@ module.exports = function(app, passport, manager, hashids) {
             }
         }
 
+        for (let z=0; z<receivedData.categories.length; z++) {
+            categories.push(receivedData.categories[z].itemName);
+        }
+
+
+
         // momgoDB update
         FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
-            {$set: {questions: receivedData.questions, title: receivedData.title,
+            {$set: {questions: receivedData.questions, title: receivedData.title, categories: categories,
             description: receivedData.description, anonymous: receivedData.anonymous,
                     hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
                 public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers,
@@ -146,7 +153,7 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/create', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // input
         var receivedData =  req.body;
-
+        console.log("HEHRHRHERHEHRHER", receivedData);
         // mongodb create
         FormModel.create({userid: req.session.userid,
             // title: receivedData.title,
@@ -154,6 +161,7 @@ module.exports = function(app, passport, manager, hashids) {
             questions: receivedData.questions,
             anonymous: receivedData.anonymous,
             hashtags: receivedData.hashtags,
+            categories: receivedData.categories,
             public: false,
             shared: false,
             resultsPublic: true,
@@ -850,6 +858,7 @@ module.exports = function(app, passport, manager, hashids) {
         var selectedforms = [];
         var authors = [];
         var authorprofiles = [];
+        var categories = [];
         var authorprofilespromise = [];
         var outputformsdata = [];
         var outputformsdatatemp = [];
@@ -940,7 +949,7 @@ module.exports = function(app, passport, manager, hashids) {
                                             shared: form.shared, loginRequired: form.loginRequired,
                                             timestamp: form.timestamp, description: form.description,
                                             title: form.title, admin: adminrights, public: form.public,
-                                            typeevent: form.typeevent};
+                                            typeevent: form.typeevent, categories: form.categories};
                                         // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                         formdata.reactions = form.reactions;
                                         firstform = {formdata: formdata, id: hashids.encodeHex(form._id)};
@@ -980,7 +989,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     shared: form.shared, loginRequired: form.loginRequired,
                                     timestamp: form.timestamp, description: form.description,
                                     title: form.title, admin: adminrights, public: form.public,
-                                    typeevent: form.typeevent};
+                                    typeevent: form.typeevent, categories: form.categories};
                                 // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                 formdata.reactions = form.reactions;
                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});
@@ -1031,7 +1040,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                     shared: form.shared, loginRequired: form.loginRequired,
                                                     timestamp: form.timestamp, description: form.description,
                                                     title: form.title, admin: adminrights, public: form.public,
-                                                    typeevent: form.typeevent};
+                                                    typeevent: form.typeevent, categories: form.categories};
                                                 // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                                 formdata.reactions = form.reactions;
                                                 selectedforms.push({formdata: formdata, id: hashids.encodeHex(form._id)});

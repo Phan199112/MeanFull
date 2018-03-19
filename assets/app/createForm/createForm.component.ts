@@ -71,6 +71,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     published: boolean = false;
     shareLink: string = "";
     alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
+    categoryList: Array<Object>;
+    categorySettings: Object;
+
+
+    
      
 
     constructor(
@@ -125,12 +130,41 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         });
 
         this.getSortedQuestions();
+
+        this.categoryList = [
+            { "id": 1, "itemName": "Automotive" },
+            { "id": 2, "itemName": "Business" },
+            { "id": 3, "itemName": "Cooking" },
+            { "id": 4, "itemName": "Education" },
+            { "id": 5, "itemName": "Fashion" },
+            { "id": 6, "itemName": "Fitness" },
+            { "id": 7, "itemName": "Health" },
+            { "id": 8, "itemName": "Home Improvement" },
+            { "id": 9, "itemName": "Technology" },
+        ];
+
+        this.categorySettings = {
+            singleSelection: false,
+            text: "Select up to 4 Categories",
+            classes: "custom-class",
+            badgeShowLimit: 4,
+            limitSelection: 4,
+            enableSearchFilter: true,
+            enableCheckAll: false
+        };    
+
     }
 
     ngOnDestroy() {
         if (this.autoScroll) {
             this.autoScroll.destroy();
         }
+    }
+
+    onItemSelect(item: any) {
+        item = item.itemName;
+    }
+    OnItemDeSelect(item: any) {
     }
 
     getSortedQuestions() {
@@ -173,6 +207,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             title: '',
             hashtags: null,
             kind: "Multiple Choice",
+            categories: [],
             anonymous: false,
             sharedWithCommunities: null,
             sharedWithUsers: null,

@@ -377,11 +377,11 @@ hr {
   box-sizing: border-box;
   margin: auto 0px;
   margin-bottom: 10px;
-  z-index: 1;
   background-size: cover;
   padding-top: 0;
   padding-bottom: 0;
   width: 100%;
+  z-index: 0 !important;
 }
 
 .comSort {

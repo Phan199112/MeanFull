@@ -7,6 +7,7 @@ var FormSchema = new Schema({
     questions: Object,
     reactions: Object,
     hashtags: [{type: String}],
+    categories: [{type: String}],
     anonymous: Boolean,
     public: Boolean,
     shared: Boolean,

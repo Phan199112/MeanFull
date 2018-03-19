@@ -95,23 +95,7 @@
             <div class="lContainer l2">
                 <h3 class="containerTitle green">Settings</h3>
 
-                                <div class="flexContainer fdColumn faStart">
-                                    <h6 class="settingTitle">Add up to 4 Topics</h6>
-                                    <div style="display:flex; justify-content: flex-start;">
-                                        <div class="tag-input-wrapper form-control" style="margin-left: 10px;">
-                                            <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}" class="tag-placeholder text-muted"
-                                                (click)="showPublicShares = true; focusTagInput(cat)">
-                                                Find a category
-                                            </div>
-                                            <tag-input #cat [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
-                                                id="public-shares" placeholder="Name" secondaryPlaceholder="Name" [onAdding]="transformName" (onBlur)="showPublicShares = false"
-                                                [separatorKeyCodes]="[32, 13]" formControlName="sharedWithCommunities" [onlyFromAutocomplete]="true">
-                                                <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceCom.bind(this)">
-                                                </tag-input-dropdown>
-                                            </tag-input>
-                                        </div>
-                                    </div>
-                                </div>
+                <angular2-multiselect class="custom-class" style="width: 95%" [data]="categoryList" [settings]="categorySettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" formControlName="categories"></angular2-multiselect>
 
 
 
