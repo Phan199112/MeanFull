@@ -1,4 +1,5 @@
 <div id="FeedContainer">
     <feed-form-component [pic]="pic" [pictype]="pictype" [form]="form" *ngFor="let form of feedlist"> </feed-form-component>
+    <div *ngIf="feedlist.length === 0" class="aboutContainer"><h4 class="tempText">{{emptyMessage}}</h4></div>
 </div>
 

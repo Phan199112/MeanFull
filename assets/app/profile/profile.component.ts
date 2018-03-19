@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     nocreated: string;
     nodiscussion: string;
     pending: boolean = false;
+    noPostsMessage: string;
     status: string = 0;
     subsection: any = null;
     subsectionList: any[] = [];
@@ -73,6 +74,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // load new data
         this.loading = true;
         this.loadProfile();
+
     }
 
     loadProfile() {
@@ -117,6 +119,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         this.name = this.userprofile.name.first+" "+this.userprofile.name.last;
                         this.firstname = this.userprofile.name.first;
                         this.gender = this.userprofile.gender;
+
+                        if (this.me) {
+                            this.noPostsMessage = "Your profile content will begin to populate once you post a question or when you begin answering other questions."
+                        } else {
+                            this.noPostsMessage = `${this.firstname} has not posted nor answered a question yet.`
+                        }
+
 
                         if (this.gender == "male") {
                             this.pronoun = "his";

@@ -76,8 +76,6 @@ export class PieChart implements OnInit {
             ]
         }
 
-        if(this.qKind === 'Multiple Choice') window.console.log("DL: ",this.dataLabels);
-
     }
 
     parseChartData() : void {

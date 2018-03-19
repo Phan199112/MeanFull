@@ -2,8 +2,8 @@
     <div style="width: 1220px; margin: 10px auto 0px auto">
          <div class="row" >
            
-            <div class="col-md-3">
-                <sidebar [friends] ="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name"></sidebar>
+            <div class="col-md-3 order-2 order-sm-1">
+                <sidebar [friends] ="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
             </div>
         
         
@@ -25,64 +25,70 @@
 
 
 
-        <div class="col-md-7 order-1 order-sm-2">
-            <div class="container" id="profileContainer" *ngIf="loadsuccessful">
-                <div class="row" style="background: white">
-                    <div class="col-3 col-sm-4 col-md-4 col-lg-4 col-xl-2.5" id="ProfilePicture">
-                        <div id="Profile">
-                            <div *ngIf="pictype == 'fb'">
-                                <img src="https://graph.facebook.com/{{pic}}/picture?width=120&height=120">
-                            </div>
-                            <div *ngIf="pictype == 'local'">
-                                <img [src]="pic" height="120" width="120"/>
-                            </div>
-                            <div *ngIf="pictype == 'default'">
-                                <img *ngIf="gender == 'male'" src="/images/male.png" height="120" width="120"/>
-                                <img *ngIf="gender == 'female'" src="/images/female.png" height="120" width="120"/>
-                            </div>
+        <div class="col-md-6 order-1 order-sm-2">
+            <div id="profileContainer" *ngIf="loadsuccessful">
+
+                <!-- Header container with user info -->
+                <div class="aboutContainer">
+
+                    <div>
+                        <div *ngIf="pictype == 'fb'">
+                            <img src="https://graph.facebook.com/{{pic}}/picture?width=120&height=120" class="profilePicture">
+                        </div>
+                        <div *ngIf="pictype == 'local'">
+                            <img [src]="pic" class="profilePicture"/>
+                        </div>
+                        <div *ngIf="pictype == 'default'">
+                            <img *ngIf="gender == 'male'" src="/images/male.png" class="profilePicture"/>
+                            <img *ngIf="gender == 'female'" src="/images/female.png" class="profilePicture"/>
                         </div>
                     </div>
-                    <div class="col-9 col-sm-8 col-md-8 col-lg-8 col-xl-9.5 p-0" id="ProfileName">
-                        <div class="row">
-                            <div class="col-9 col-sm-9 col-md-9 col-lg-10 col-xl-11">
-                                <h3>{{name}}</h3>
-                            </div>
+
+                    <div class="profileInfo">
+                        <h3 class="name">{{name}}</h3>
+                        <h5 class="location">{{location}}</h5>
+                        <div style="display: flex;">
+                            <i class="stats fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated ? nocreated : '0'}}</span></i>
+                            <i class="stats fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken ? notaken : '0'}}</span></i>
+                            <i class="stats fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion ? nodiscussion : '0'}}</span></i>
                         </div>
-                        <h5>{{location}}</h5>
-                        <h6><i class="fa fa-pencil-square-o" aria-hidden="true">&nbsp;{{nocreated}}</i>  <i class="fa fa-pencil" aria-hidden="true">&nbsp;{{notaken}}</i>  <i class="fa fa-comments" aria-hidden="true">&nbsp;{{nodiscussion}}</i></h6>
                     </div>
-                    <button type="button"
-                            class="btn btn-success btn-sm addToNetwork"
-                            (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network
-                    </button>
-                    <button type="button"
-                            class="btn btn-success btn-sm addToNetwork" *ngIf="pending" >Network request is pending
-                    </button>
-                    <div id="ProfileName">
-                        <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="profile-menu-wrapper" *ngIf="loggedin && !me">
-                            <a
-                                    class="navlinks nav-link custom-dropdown-toggle"
-                                    id="profile-menu"
-                                    ngbDropdownToggle
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                <i class="fa fa-bars" aria-hidden="true"></i>
-                            </a>
-                            <div ngbDropdownMenu aria-labelledby="profile-menu">
-                                <!--<a class="dropdown-item" (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending && !me" >Add to my network</a>-->
-                                <!--<div *ngIf="pending">Network request is pending</div>-->
-                                <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork && !me" >Remove from my network</a>
-                                <a class="dropdown-item" (click)="reportUser(id)" *ngIf="!me" >Report user</a>
+
+                    <div class="profileMenu">
+
+                        <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network</a>
+                        <a class="submitButton" *ngIf="pending">Request Pending</a>
+
+                        <div>
+                            <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" *ngIf="loggedin && !me">
+                                <a
+                                        class="navlinks nav-link custom-dropdown-toggle"
+                                        id="profile-menu"
+                                        ngbDropdownToggle
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </a>
+                                <div ngbDropdownMenu aria-labelledby="profile-menu">
+                                    <!--<a class="dropdown-item" (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending && !me" >Add to my network</a>-->
+                                    <!--<div *ngIf="pending">Network request is pending</div>-->
+                                    <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork && !me" >Remove from my network</a>
+                                    <a class="dropdown-item" (click)="reportUser(id)" *ngIf="!me" >Report user</a>
+                                </div>
                             </div>
+                            <div *ngIf="addfailed">failed..</div>
                         </div>
-                        <div *ngIf="addfailed">failed..</div>
                     </div>
+                    
                 </div>
-                <!-- <hr class="d-none d-sm-block"> -->
-                <div class="d-none d-sm-block" style="margin-top: 20px">
-                    <div *ngIf="!subsection">
-                        <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
-                        <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
+
+
+
+                <!-- Feed content and other -->
+                <div class="d-none d-sm-block">
+                    <div *ngIf="!subsection"  style="margin-top:20px">
+                        <div *ngIf="status == '2'" class="aboutContainer"><h6 class="location" style="text-align: center; width: 100%;">{{name}} has a private profile.<br/>Only individuals in {{pronoun}} network can see further details.</h6></div>
+                        <feed-list [emptyMessage]="noPostsMessage" [user]="id" *ngIf="!hidefeed"></feed-list>
                     </div>
                     <div *ngIf="subsection" class="container">
                         <div class="row">
@@ -97,16 +103,14 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
-            <div class="container" id="profileContainer" *ngIf="!loadsuccessful && !loading">
-                <div id="profileContainer" class="container">
-                    <div id="topJumbo" class="jumbotron">
-                        <h2 style="overflow: auto" class="display-4">This profile could not be found!</h2>
-                        <p class="lead">Connect with a community of people to get all your questions answered!</p>
-                    </div>
-
-
+            <div class="aboutContainer" id="profileContainer" *ngIf="!loadsuccessful && !loading">
+                <div id="topJumbo" class="aboutContainer">
+                    <h2 style="overflow: auto" class="location">This profile could not be found!</h2>
+                    <p class="location">Connect with a community of people to get all your questions answered!</p>
                 </div>
             </div>
         </div>
