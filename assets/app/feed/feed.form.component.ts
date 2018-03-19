@@ -197,7 +197,8 @@ export class FeedFormComponent implements OnInit {
             text: "Age",
             selectAllText: 'Select All',
             unSelectAllText: 'Unselect All',
-            classes: "myclass custom-class"
+            classes: "filterDropdownText",
+            badgeShowLimit: 0
         };    
 
         this.locationSettings = {
@@ -205,7 +206,8 @@ export class FeedFormComponent implements OnInit {
             text: "Location",
             selectAllText: 'Select All',
             unSelectAllText: 'Unselect All',
-            classes: "myclass custom-class"
+            classes: "filterDropdownText",
+            badgeShowLimit: 0
         };    
 
         this.genderSettings = {
@@ -213,7 +215,8 @@ export class FeedFormComponent implements OnInit {
             text: "Gender",
             selectAllText: 'Select All',
             unSelectAllText: 'Unselect All',
-            classes: "myclass custom-class"
+            classes: "filterDropdownText",
+            badgeShowLimit: 0
         };    
 
 
