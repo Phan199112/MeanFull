@@ -1,7 +1,7 @@
 <!-- <div class="container"> -->
     <form [formGroup]="questionnaire">
         <div formArrayName="questions" style="margin-bottom: -20px">
-                <div class="row miniFormQuestionBox" [ngClass]="{noBotMargin: i == 0 && data.contracted}" *ngFor="let question of data.questions; let i = index">
+                <div class="row miniFormQuestionBox" [ngClass]="{noBotMargin: i == 0 && data.contracted}" style="display:flex; align-items: center;" *ngFor="let question of data.questions; let i = index">
                     <div *ngIf="(data.answered && data.showdata);then withanswer else formonly"></div>
 
                     <ng-template #withanswer>
@@ -13,10 +13,13 @@
                             <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label>
                         </div>
 
+                        <!-- Make the question full width -->
+                        <div *ngIf="question.kind !== 'Short Answer' && (i == 0 || !data.contracted)" class="col-md-12">
+                            <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                        </div>
+
                         <div *ngIf="question.kind !== 'Short Answer'" class="col-md-6">
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
-                                <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>    
-                                <!-- Not showing image anymore right? -->
                                 <div *ngIf="question.pic" class="form-group question-pic">
                                     <img style="border-radius: 8px;" [src]="question.pic"/>
                                 </div>
@@ -27,7 +30,7 @@
                                             <div *ngFor="let option of question.options" class="formChoices">
                                                 <label class="wAnswerOpts">{{option.label}}. {{option.body}}</label>
                                             </div>
-                                            <label *ngIf="question.canSelectMultiple" class="wAnswerOpts">(User could select multiple responses)</label>
+                                            <label *ngIf="question.canSelectMultiple" class="wAnswerOpts" style="font-size: .6rem; margin-left: 8px;">*Multiple Selection</label>
                                         </div>
                                     </div>
                                 <!-- </div> -->
@@ -82,7 +85,7 @@
                                         </div>
                                         <div *ngIf="question.canSelectMultiple" formGroupName="answer">
                                             <div *ngFor="let option of question.options" class="formChoices">
-                                                <label class="questionBody">
+                                                <label>
                                                     <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox" /> {{option.body}}
                                                 </label>
                                             </div>
