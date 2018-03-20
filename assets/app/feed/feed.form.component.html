@@ -5,30 +5,31 @@
         <div class="imageContainer">
             <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
                 <div *ngIf="form.pictype == 'fb'">
-                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=70&height=70" height="70" width="70" class="userImage" />
+                    <img src="https://graph.facebook.com/{{form.pic}}/picture?width=30&height=30" class="userImage" />
                 </div>
                 <div *ngIf="form.pictype == 'local'">
-                    <img [src]="form.pic" width="70" height="70"  class="userImage" />
+                    <img [src]="form.pic" class="userImage" />
                 </div>
                 <div *ngIf="form.pictype == 'default'">
-                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" height="70" width="70"  class="userImage"/>
-                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" height="70" width="70"  class="userImage"  />
+                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="userImage"/>
+                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="userImage"  />
                 </div>
                 <div *ngIf="form.pictype == 'anonymous'">
-                    <img src="/images/question.jpg" height="70" width="70" class="userImage"/>
+                    <img src="/images/question.jpg" class="userImage"/>
                 </div>
             </a>
             <div class="userInfoBox">
                 <p class="nameTitle" style="margin-bottom:3px"><b>{{name.first}} {{name.last}}</b></p>
-                <p class="locationTitle" style="margin-bottom:3px">{{location.city}}, {{location.state}}, {{location.country}}</p>
+                <p class="locationTitle" style="margin-bottom:0px">{{location.city}}, {{location.state}}, {{location.country}}</p>
                 <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated}}</span></i>
                 <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken}}</span></i>
                 <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i>
             </div>
 
         </div>
+
+        <!-- Categories -->
         <div *ngIf="form.categories" class="cTagContainer">
-            <!-- <span class="cTag" *ngFor="let tag of ['Tech', 'AI', 'Blockchain', 'UX/UI', 'Robotics']; let i = index">{{tag}}</span> -->
             <span class="cTag" *ngFor="let tag of form.categories; let i = index">{{tag}}</span>
         </div>
     </div>
@@ -52,28 +53,25 @@
     </div>
 
 
-    <div class="topContainer">
+    <div *ngIf="false" class="topContainer">
             <!-- Emoticons -->
-        <div class="emoContainer">
+        <!-- <div class="emoContainer">
             <div class="emoAndText"  (click)="chooseReaction('great')">
                 <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
                 <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'great'}">{{reactionData.great || 0}}%</span>
-                <!-- <span *ngIf="!hasReacted" class="emoText emoPercent">{{reactionData.great || 0}}%</span> -->
                 <span class="emoText">Great Question!</span>
             </div>
             <div class="emoAndText" (click)="chooseReaction('wtf')">
                 <img class="emoticon" src="/images/emoticons/wtf.gif" />
                 <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'wtf'}">{{reactionData.wtf || 0}}%</span>
-                <!-- <span *ngIf="!hasReacted" class="emoText emoPercent">{{reactionData.wtf || 0}}%</span> -->
                 <span class="emoText">WTF..</span>
             </div>
             <div class="emoAndText" (click)="chooseReaction('angry')">
                 <img class="emoticon" src="/images/emoticons/angry.gif" />
                 <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'angry'}">{{reactionData.angry || 0}}%</span>
-                <!-- <span *ngIf="!hasReacted" class="emoText emoPercent">{{reactionData.angry || 0}}%</span> -->
                 <span class="emoText">Really?!</span>
             </div>
-        </div>
+        </div> -->
         
         <div id="completedBlock" *ngIf="submitted">
             <!-- <span id="qCompleted">Completed</span> -->
@@ -82,74 +80,9 @@
     </div>
 
     <!-- Divider -->
-    <div class="flex" style="margin-top: 25px;">
+    <!-- <div class="flex" style="margin-top: 25px;">
         <div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div>
-    </div>
-
-    <!-- Graph Filters -->
-    <form [formGroup]="dataselectionform" style="margin-bottom:0px">
-            <div id="analysisContainer" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
-                <div class="filterBox"> 
-                    <p class="filterCategory">Age Group</p>
-                    <angular2-multiselect style="width: 95%" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
-                        (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" formControlName="age">
-                    </angular2-multiselect>
-                </div>
-                <!-- <div class="filterOptions">
-                    <label>
-                        <input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})">
-                        <17 &nbsp;</label>
-                            <label>
-                                <input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
-                            <label>
-                                <input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
-                            <label>
-                                <input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
-                            <label>
-                                <input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
-                            <label>
-                                <input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
-                            <label>
-                                <input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label>
-                </div> -->
-                
-                <div class="filterBox">
-                <p class="filterCategory">Location</p>
-                    <angular2-multiselect style="width: 95%" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
-                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" formControlName="locations">
-                    </angular2-multiselect>
-                </div>
-                <!-- <div formArrayName="alllocations" class="filterOptions">
-                    <div *ngFor="let loc of locations; let i = index">
-                        <label>
-                            <span formGroupName="{{i}}">
-                                <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
-                            </span>
-                        </label>
-                    </div>
-                </div>
-    
-                <div *ngIf="otherloc" class="filterOptions">
-                    <label>
-                        <input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
-                </div> -->
-
-                <div class="filterBox">
-                    <p class="filterCategory">Gender</p>
-                    <angular2-multiselect style="width: 95%" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected"
-                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" formControlName="gender">
-                    </angular2-multiselect>
-                </div>
-
-                <!--<a class="resetButton filterCategory">Reset</a>-->
-
-            </div>
-    </form>
-    
-            <!-- <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
-                Reset graphs
-            </button> -->
-    
+    </div> -->
 
 
     
@@ -160,53 +93,41 @@
     </div>
         
     
-        <!-- Graph Filters -->
-        <!-- <div id="analysisContainer" class="row" *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent">
-            <div class="container">
-                <form [formGroup]="dataselectionform">
-                    <p class="filterCategory">Age Group</p>
-                    <div class="filterOptions">
-                    <label>
-                        <input type="checkbox" value="agesmin17" name="age" formControlName="agesmin17" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'agesmin17', status: $event})"> <17 &nbsp;</label>
-                    <label>
-                        <input type="checkbox" value="ages17to23" name="age" formControlName="ages17to23" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages17to23', status: $event})"> 17 to 23 &nbsp;</label>
-                    <label>
-                        <input type="checkbox" value="ages24to29" name="age" formControlName="ages24to29" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages24to29', status: $event})"> 24 to 29 &nbsp;</label>
-                    <label>
-                        <input type="checkbox" value="ages30to39" name="age" formControlName="ages30to39" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages30to39', status: $event})"> 30 to 39 &nbsp;</label>
-                    <label>
-                        <input type="checkbox" value="ages40to49" name="age" formControlName="ages40to49" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages40to49', status: $event})"> 40 to 49 &nbsp;</label>
-                    <label>
-                        <input type="checkbox" value="ages50to59" name="age" formControlName="ages50to59" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'ages50to59', status: $event})"> 50 to 59 &nbsp;</label>
-                    <label>
-                        <input type="checkbox" value="plus60" name="age" formControlName="plus60" (ngModelChange)="doDataSelectionUpdate({input: 'age', value: 'plus60', status: $event})"> 60+ </label>
-                    </div>
-     
-                    <p class="filterCategory">Location</p>
-                    <div formArrayName="alllocations" class="filterOptions">
-                        <div *ngFor="let loc of locations; let i = index">
-                            <label>
-                                <span formGroupName="{{i}}">
-                                    <input type="checkbox" formControlName="{{loc.name}}" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: loc.name, status: $event})"> {{loc.name}} ({{loc.count}} &#37;)
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div *ngIf="otherloc" class="filterOptions">
-                        <label>
-                            <input type="checkbox" value="otherlocbox" name="loc" formControlName="otherlocbox" (ngModelChange)="doDataSelectionUpdate({input: 'location', value: 'other', status: $event})"> + Other</label>
-                    </div>
-                </form>
-        
-                <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">
-                    Reset graphs
-                </button>
-        
+    <!-- Graph Filters -->
+    <form *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent" [formGroup]="dataselectionform" style="margin-bottom:0px">
+        <h4 id="filterTitle">Graph Filters</h4>
+        <div id="analysisContainer">
+            <div class="filterBox">
+                <p class="filterCategory">Age Group</p>
+                <angular2-multiselect style="width: 95%" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
+                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                    formControlName="age">
+                </angular2-multiselect>
             </div>
-        </div> -->
+    
+            <div class="filterBox">
+                <p class="filterCategory">Location</p>
+                <angular2-multiselect style="width: 95%" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
+                    (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                    formControlName="locations">
+                </angular2-multiselect>
+            </div>
 
-        <!-- End Graph Filters -->
+            <div class="filterBox">
+                <p class="filterCategory">Gender</p>
+                <angular2-multiselect style="width: 95%" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                    formControlName="gender">
+                </angular2-multiselect>
+            </div>
+    
+            <!--<a class="resetButton filterCategory">Reset</a>-->
+            <!-- <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">Reset graphs</button> -->
+        </div>
+    </form>
+    
+
+    <!-- End Graph Filters -->
 
 
 

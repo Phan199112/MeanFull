@@ -70,8 +70,8 @@ $commentBackground: #f0f6f0;
 }
 
 .userImage {
-  width: 90px;
-  height: 90px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   z-index: 3;
   background-color: $borderColor;
@@ -94,7 +94,7 @@ $commentBackground: #f0f6f0;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
-  margin: 30px 60px 0px 0px;
+  margin: 20px 60px 0px 0px;
   max-width: 200px
 }
 
@@ -107,7 +107,7 @@ $commentBackground: #f0f6f0;
   border-radius: 4px;
   margin: 4px;
   font-family: Karla;
-  font-size: .8rem;
+  font-size: .7rem;
 
   &:hover {
     cursor: pointer;
@@ -155,32 +155,32 @@ $commentBackground: #f0f6f0;
 .nameTitle {
   font-family: Karla;
   color: #2b2b2b;
-  font-size: 1.2rem;
+  font-size: .85rem;
   font-weight: 400;
 }
 
 .locationTitle {
   font-family: Karla;
   color: #AAA;
-  font-size: .9rem;
+  font-size: .7rem;
   font-weight: 400;
 }
 
 .partTitle {
   color: #777;
-  font-size: .8rem;
+  font-size: .6rem;
   font-weight: 400;
 
   &::before {
     margin-left: 4px;
 
     &:first-of-type {
-      margin-left: 0;
+      margin-left: 20px;
     }
   }
 
   span {
-    font-weight: 600;
+    font-weight: 300;
     font-family: Karla;
   }
 }
@@ -204,6 +204,15 @@ $navBarColor:  #0088cc;
   padding: 8px;
   max-width: 95%;
   margin: 0px auto;
+}
+
+#filterTitle {
+    padding-left: 20px;
+    font-weight: 300;
+    color: #999;
+    font-size: 1rem;
+    width: 100%;
+    text-align: left;
 }
 
 .filterBox {
