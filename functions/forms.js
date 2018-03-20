@@ -194,7 +194,6 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                 var age;
 
                 if (users[current.userid] != null) {
-
                     var proceed = false;
 
                     if (users[current.userid].type === true) {
@@ -243,18 +242,15 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                         // New code
                         if (types[i] === 'Multiple Choice') {
                             // if multiple selected split.
-                            for (var j = 0; j < x.length; j++) {
-
-                                if (typeof x[j].answers[i].answer === "object") {
-                                    for (var key in x[j].answers[i].answer) {
-                                        if (x[j].answers[i].answer[key]) {
-                                            temp.push(key);
-                                        }
+                            if (typeof currentq.answer === "object") {
+                                for (var key in currentq.answer) {
+                                    if (currentq.answer[key]) {
+                                        temp.push(key);
                                     }
-
-                                } else {
-                                    temp.push(x[j].answers[i].answer);
                                 }
+
+                            } else {
+                                temp.push(currentq.answer);
                             }
 
                         } else if (types[i] === 'Rating') {
@@ -295,18 +291,16 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
             // and make percentage
             var summaryLabels = [];
             var summaryValues = [];
+            var summaryCounts = [];
 
             for (var key in counts) {
                 // Trace labels --------
                 summaryLabels.push(key);
                 summaryValues.push(Math.round(((100/total)*counts[key])*100)/100);
+                summaryCounts.push(counts[key]);
             }
 
-            var summaryCounts = counts;
-
             // CHECK THIS
-            // exportdata.push([summaryLabels, [{ data: summaryValues_male, label: "male" }, { data: summaryValues_female, label: "female" }, { data: summaryValues_undisclosed, label: "undisclosed" }]]);
-            // exportdata.push([summaryLabels, [{ data: summaryValues, label: "all" }, { data: summaryValues_male, label: "male" }, { data: summaryValues_female, label: "female" }, { data: summaryValues_undisclosed, label: "undisclosed" }]]);
             exportdata.push([summaryLabels, [{ data: summaryValues, label: "all" }], summaryCounts]);
 
         } else {

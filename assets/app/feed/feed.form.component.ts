@@ -478,12 +478,12 @@ export class FeedFormComponent implements OnInit {
             }
 
         }
-
         // -----------BREAKS HERE -------
         this.executePlotDataRetrieval();
     }
 
     executePlotDataRetrieval() {
+        console.log('update plotselection: ',this.plotselection);
         // post and get response
         this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
