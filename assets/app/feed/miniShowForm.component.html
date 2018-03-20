@@ -82,7 +82,7 @@
                                         </div>
                                         <div *ngIf="question.canSelectMultiple" formGroupName="answer">
                                             <div *ngFor="let option of question.options" class="formChoices">
-                                                <label>
+                                                <label class="questionBody">
                                                     <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox" /> {{option.body}}
                                                 </label>
                                             </div>

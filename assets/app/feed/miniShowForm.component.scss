@@ -150,20 +150,49 @@ $warningColor: rgb(234, 122, 133);
   margin-top: 15px;
 }
 
+// .submitButton {
+//     background: #999;
+//     border-radius: 8px;
+//     padding: 3px 6px;
+//     line-height: 1.5rem;
+//     min-width: 100px;
+//     max-width: 150px;
+//     width: auto;
+//     text-align: center;
+//     border: none;
+
+//     font-size: .9rem;
+//     font-family: Karla;
+//     color: #FFF !important;
+//     outline-style: none;
+//     margin-top: 0px;
+
+//     &:active {
+//         outline-style: none;
+//     }
+
+//     &:hover {
+//         cursor: pointer;
+//         background: lighten(#999, 5);
+//     }
+// }
+
 .submitButton {
-    background: $primaryColor;
+    background: #FFF;
     border-radius: 8px;
-    padding: 3px 6px;
+    padding: 2px 4px;
     line-height: 1.5rem;
     min-width: 100px;
     max-width: 150px;
     width: auto;
     text-align: center;
     border: none;
+    border: solid 1px #999;
 
     font-size: .9rem;
     font-family: Karla;
-    color: #FFF !important;
+    // color: #FFF !important;
+    color: #999 !important;
     outline-style: none;
     margin-top: 0px;
 
@@ -173,7 +202,8 @@ $warningColor: rgb(234, 122, 133);
 
     &:hover {
         cursor: pointer;
-        background: lighten($primaryColor, 5);
+        background: lighten(#CCC, 5);
+        color: #FFF !important;
     }
 }
 
@@ -186,4 +216,9 @@ $warningColor: rgb(234, 122, 133);
 .wAnswerOpts {
   color: #999; 
   font-size: .8rem;
+}
+
+.lead {
+  font-weight: 700;
+  color: #333;
 }
