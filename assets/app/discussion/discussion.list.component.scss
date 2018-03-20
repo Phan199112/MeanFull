@@ -41,7 +41,8 @@ $commentBackground: #f0f6f0;
 
 .comSwitch {
   display: block;
-  color: darken($primaryColor, 14);
+  // color: darken($primaryColor, 14);
+  color: #999;
   font-family: Karla;
   font-size: .8rem;
   margin: auto 4px;
@@ -53,7 +54,8 @@ $commentBackground: #f0f6f0;
 }
 
 #divider {
-  color: #c0e0ce;
+  // color: #c0e0ce;
+  color: #CCC;
 }
 
 .userComCont {
