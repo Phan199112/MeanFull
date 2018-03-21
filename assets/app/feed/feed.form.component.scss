@@ -75,7 +75,7 @@ $commentBackground: #f0f6f0;
   border-radius: 8px;
   z-index: 3;
   // background-color: $borderColor;
-  filter: grayscale(50%);
+  opacity: .5;;
 }
 
 .userInfoBox {
@@ -140,6 +140,8 @@ $commentBackground: #f0f6f0;
   margin: 20px 30px;
   margin-top: 35px;
   font-family: Quicksand;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
 }
 
 .line {
@@ -201,8 +203,9 @@ $navBarColor:  #0088cc;
 
 #analysisContainer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   padding: 8px;
+  padding-top: 0px;
   max-width: 95%;
   margin: 0px auto;
 }
@@ -218,9 +221,13 @@ $navBarColor:  #0088cc;
 
 .filterBox {
   display: flex;
-  width: 100%;
-  flex-direction: column;
+  // width: 100%;
   align-items: center;
+  padding-right: 10px;
+
+  &:last-of-type {
+    padding-right: 0px;
+  }
 }
 
 .filterCategory {
@@ -231,6 +238,7 @@ $navBarColor:  #0088cc;
   // flex: 0 0 25%;
   text-align: center;
   margin-bottom: 4px;
+  padding-right: 6px;
 }
 
 .filterOptions {
@@ -485,16 +493,14 @@ hr {
 .submitButton {
     background: #FFF;
     border-radius: 8px;
-    padding: 2px 4px;
-    line-height: 1.5rem;
-    min-width: 100px;
-    max-width: 150px;
+    padding: 1px 8px;
+    line-height: 1rem;
     width: auto;
     text-align: center;
     border: none;
     border: solid 1px #999;
 
-    font-size: .9rem;
+    font-size: .7rem;
     font-family: Karla;
     // color: #FFF !important;
     color: #999 !important;
@@ -507,8 +513,8 @@ hr {
 
     &:hover {
         cursor: pointer;
-        background: lighten(#CCC, 5);
-        color: #FFF !important;
+        color: #2b2b2b !important;
+        border: solid 1px #2b2b2b;
     }
 }
 
@@ -572,5 +578,9 @@ hr {
   font-family: Karla;
   font-weight: 400;
   // color: #999;
-  background-color: $primaryColor;
+  // background-color: $primaryColor;
+}
+
+.filterDropdownText .cuppa-dropdown {
+  background: $primaryColor !important;
 }

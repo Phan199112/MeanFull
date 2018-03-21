@@ -39,3 +39,20 @@ div, p, span, li, label, input, textarea, select, option, button, a {
 /* .col-md-2 {
   padding: 0px;
 } */
+
+.filterDropdownText {
+  font-family: Karla;
+  font-weight: 400;
+  color: white;
+}
+
+.filterDropdownText .c-token{
+background: #28ab64 !important;
+}
+.filterDropdownText .pure-checkbox label::before {
+border-color: #28ab64 !important;
+background: #28ab64 !important;
+}
+.filterDropdownText .pure-checkbox input[type="checkbox"]:checked + label[_ngcontent-c1]:before {
+background: #28ab64 !important;
+}

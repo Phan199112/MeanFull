@@ -1,6 +1,6 @@
 <!-- <div class="container"> -->
     <form [formGroup]="questionnaire">
-        <div formArrayName="questions" style="margin-bottom: -20px">
+        <div formArrayName="questions">
                 <div class="row miniFormQuestionBox" [ngClass]="{noBotMargin: i == 0 && data.contracted}" style="display:flex; align-items: center;" *ngFor="let question of data.questions; let i = index">
                     <div *ngIf="(data.answered && data.showdata);then withanswer else formonly"></div>
 
@@ -57,10 +57,10 @@
                             
                             
                             <!-- ********** Chart ************ -->
-                            <div>
-                                <pie-chart *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
+                            <div *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool">
+                                <pie-chart [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
                             </div>
-                            <div style="display: flex; width: 100%; justify-content: center; margin-bottom:10px;">
+                            <div *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" style="display: flex; width: 100%; justify-content: center">
                                 <a class="submitButton" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Apply Filters'}}</a>
                             </div>
                        
@@ -123,12 +123,12 @@
                 </div>
         </div>
 
-        <div class="flex submitBox" *ngIf="!data.contracted && !submitted">
+        <div class="flex submitBox"  *ngIf="!data.contracted && !submitted">
             <button *ngIf="showSubmit" class="submitButton"
                 [disabled]="questionnaire.invalid && questionnaire.wasChecked" (click)="checkSubmit($event)">
                 Finish
             </button>
-            <p *ngIf="submissionfailed errorText">Submission failed!</p>
+            <p *ngIf="errorText">Submission failed!</p>
             <p *ngIf="expired" class="errorText">The survey has expired, no further answers are allowed!</p>
         </div>
 

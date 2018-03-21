@@ -24,6 +24,10 @@ $primaryColor: #28ab64;
 
 .miniFormQuestionBox {
   margin-bottom: 20px;
+
+  &:last-of-type {
+    margin-bottom: 0px;
+  }
 }
 
 .noBotMargin {

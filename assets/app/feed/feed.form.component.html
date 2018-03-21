@@ -94,12 +94,12 @@
         
     
     <!-- Graph Filters -->
-    <form *ngIf="showFilter && form.answered && !form.contracted && showdiscussion && !form.typeevent" [formGroup]="dataselectionform" style="margin-bottom:0px">
+    <form *ngIf="showFilter && form.answered && !form.contracted && showdiscussion && !form.typeevent" [formGroup]="dataselectionform" style="margin-bottom: 0px; padding-bottom: 10px;">
         <!-- <h4 id="filterTitle">Graph Filters</h4> -->
         <div id="analysisContainer">
             <div class="filterBox">
-                <p class="filterCategory">Age Group</p>
-                <angular2-multiselect style="width: 95%" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
+                <p class="filterCategory">Age</p>
+                <angular2-multiselect style="width: 120px" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="age">
                 </angular2-multiselect>
@@ -107,7 +107,7 @@
     
             <div class="filterBox">
                 <p class="filterCategory">Location</p>
-                <angular2-multiselect style="width: 95%" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
+                <angular2-multiselect style="width: 120px" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
                     (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="locations">
                 </angular2-multiselect>
@@ -115,7 +115,7 @@
 
             <div class="filterBox">
                 <p class="filterCategory">Gender</p>
-                <angular2-multiselect style="width: 95%" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
+                <angular2-multiselect style="width: 120px" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="gender">
                 </angular2-multiselect>
@@ -131,7 +131,7 @@
 
 
 
-    <div class="flex" *ngIf="form.contracted">
+    <div class="flex" *ngIf="form.contracted" style="padding-top: 0px">
             <button (click)="expand()" class="submitButton">
                 See More
             </button>
