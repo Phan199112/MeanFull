@@ -683,6 +683,7 @@ export class FeedFormComponent implements OnInit {
     };
 
     toggleFilters(e: boolean) {
+        this.form.contracted = false;
         this.showFilter = e;
     }
 

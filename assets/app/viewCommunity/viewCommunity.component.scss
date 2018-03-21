@@ -1,15 +1,14 @@
 $formContainerColor: #fff;
 $whiteColor: #fff;
-//$insideColor: #e6f7ff;
-$insideColor: #F6F6F6;
+$insideColor: #e6f7ff;
 $navBarColor:  #0088cc;
+$primaryColor: #28ab64;
+$borderColor: rgb(226,226,226);
+
 
 #viewCommunityContainer {
-  background-color: $whiteColor;
-  padding-top: 20px;
   overflow:none;
-  border-radius: 1%;
-  margin-top: 30px;
+  margin-top: 8px;
 }
 
 #topJumbo {
@@ -89,3 +88,106 @@ feed-list {
 .lead {
   font-family: Dosis;
 }
+
+// New
+.aboutContainer {
+  width: 100%;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  background: #FFF;
+  margin: 0px;
+  border-radius: 4px;
+  border: 1px solid $borderColor;
+  position: relative;
+}
+
+.profilePicture {
+  // margin-bottom: 20px;
+  width: 120px;
+  border-radius: 60px;
+  margin-right: 25px;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  margin-bottom: 2px;
+  font-family: Karla;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2b2b2b;
+}
+
+.location {
+  margin-bottom: 6px;
+  font-family: Karla;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: #AAA;
+}
+
+.stats {
+  color: #777;
+  font-size: .8rem;
+  font-weight: 400;
+  display: block;
+
+  &::before {
+    margin-left: 4px;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+
+  span {
+    font-weight: 700;
+    font-family: Karla;
+  }
+}
+
+.addToNetwork {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+
+.submitButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 3px 6px;
+    line-height: 1.5rem;
+    min-width: 100px;
+    max-width: 150px;
+    width: auto;
+    text-align: center;
+    border: none;
+
+    font-size: .9rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+}
+
+.profileMenu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+}
+
