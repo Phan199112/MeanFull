@@ -1,27 +1,32 @@
-#page-title {
-  text-transform: capitalize;
+#gallery {
+  display: flex;
+  width: 100%;
+  flex-flow: row wrap;
+  padding: 10px 0px;
 }
 
 .item {
-  border: 1px solid #e9ebee;
-  width: calc(33% - 10px);
-  display: inline-block;
+  // border: 1px solid #e9ebee;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   margin: 5px;
+  width: 100px;
 
-  img {
+  .image {
     width: 80px;
     height: 80px;
-    margin-right: 10px;
+    border-radius: 8px;
   }
+  
   .name {
-    vertical-align: middle;
-    font-weight: bold;
-    color: #365899;
-    display: inline-block;
-    max-width: calc(100% - 100px);
+    font-family: Karla;
+    color: #999;
+    font-size: .8rem;
     overflow: hidden;
-    white-space: nowrap;
+    margin-top: 2px;
     text-overflow: ellipsis;
+    text-align: center;
   }
 
 }

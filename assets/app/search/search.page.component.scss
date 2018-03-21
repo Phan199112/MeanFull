@@ -1,12 +1,49 @@
 $formContainerColor: #fff;
 $whiteColor: #fff;
-$insideColor: #F6F6F6;
+$insideColor: #e6f7ff;
 $navBarColor:  #0088cc;
+$primaryColor: #28ab64;
+$borderColor: rgb(226,226,226);
 
-#SearchPageContainer {
-  background-color: $whiteColor;
-  padding-top: 20px;
-  overflow:auto;
-  border-radius: 1%;
-  margin-top: 30px;
+
+
+.aboutContainer {
+  width: 100%;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  background: #FFF;
+  margin: 0px;
+  margin-top: 8px;
+  border-radius: 4px;
+  border: 1px solid $borderColor;
+  position: relative;
 }
+
+.titles {
+  margin-bottom: 6px;
+  font-family: Karla;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: #AAA;
+  margin-top: 10px;
+}
+
+.mainTitle {
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 0px;
+}
+
+.noResults {
+  margin-bottom: 6px;
+  font-family: Karla;
+  font-weight: 300;
+  color: #CCC;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+}
+

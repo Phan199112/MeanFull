@@ -1,51 +1,37 @@
-<div class="row">
-    <div class="col-md-3" id="leftSideOfContainer">
-        <community-list [user]="null"></community-list>
-        <yourform-list *ngIf="loggedin"></yourform-list>
-        <tag-list [user]="null" [comm]="null"></tag-list>
-    </div>
-    <div id="SearchPageContainer" class="col-md-7">
-        <br>
-        <div *ngIf="results">
-            <div class="row">
-                <div class="col">
-                    <h3 style="text-transform: capitalize">Users</h3>
-                </div>
-            </div>
-            <div class="row">
-                <resource-list [resource]="'user'" [list]="usersearchresultsList"></resource-list>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col">
-                    <h3 style="text-transform: capitalize">Communities</h3>
-                </div>
-            </div>
-            <div class="row">
-                <resource-list [resource]="'community'" [list]="communitysearchresultsList"></resource-list>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col">
-                    <h3 style="text-transform: capitalize">Forms</h3>
-                </div>
-            </div>
-            <div class="row">
-                <resource-list [resource]="'form'" [list]="formsearchresultsList"></resource-list>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col">
-                    <h3 style="text-transform: capitalize">Tags</h3>
-                </div>
-            </div>
-            <div class="row">
-                <tag-banner-list [data]="tagsList"></tag-banner-list>
-            </div>
+<div style="width: 1220px; margin: 10px auto 0px auto">
+    <div class="row">
+
+        <div class="col-md-3 order-2 order-sm-1">
+            <sidebar [context]="'feed'"></sidebar>
         </div>
 
-    </div>
-    <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
-        <feedback-form *ngIf="loggedin"></feedback-form>
+
+        <div class="col-md-6 order-1 order-sm-2">
+            <div class="aboutContainer">
+                <h3 class="titles mainTitle">Search Results</h3>    
+                <div *ngIf="results">
+
+                    <h3 class="titles">Users</h3>
+                    <resource-list *ngIf="usersearchresultsList && usersearchresultsList.length !== 0" [resource]="'user'" [list]="usersearchresultsList"></resource-list>
+                    <h3 *ngIf="!usersearchresultsList || usersearchresultsList.length === 0" class="noResults">No users found matching this search</h3>
+
+                    <h3 class="titles">Communities</h3>
+                    <resource-list *ngIf="communitysearchresultsList && communitysearchresultsList.length !== 0" [resource]="'community'" [list]="communitysearchresultsList"></resource-list>
+                    <h3 *ngIf="!communitysearchresultsList || communitysearchresultsList.length === 0" class="noResults">No communities found matching this search</h3>
+
+                    <h3 class="titles">Questions</h3>
+                    <resource-list *ngIf="formsearchresultsList && formsearchresultsList.length !== 0" [resource]="'form'" [list]="formsearchresultsList"></resource-list>
+                    <h3 *ngIf="!formsearchresultsList || formsearchresultsList.length === 0" class="noResults">No questions found matching this search</h3>
+
+                    <!-- <h3 class="titles">Tags</h3>
+                    <tag-banner-list [data]="tagsList"></tag-banner-list>
+                    <h3 *ngIf="!usersearchresultsList || usersearchresultsList.length === 0">No tags found matching this search.</h3> -->
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+            <feedback-form *ngIf="loggedin"></feedback-form>
+        </div> -->
     </div>
 </div>
