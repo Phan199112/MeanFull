@@ -12,27 +12,22 @@ import { FeedForm } from "./feed.form.model";
 export class MiniShowFormComponent implements OnInit {
     questionnaire: FormGroup;
     contracted: boolean = false;
+    showFilters: boolean = false;
 
-    @Input()
-    data: FeedForm;
+    @Input() data: FeedForm;
 
-    @Input()
-    count: number;
+    @Input() count: number;
 
-    @Input()
-    showSubmit: boolean;
+    @Input() showSubmit: boolean;
 
-    @Input()
-    submissionfailed: boolean;
+    @Input() submissionfailed: boolean;
 
-    @Input()
-    submitted: boolean = false;
+    @Input() submitted: boolean = false;
 
-    @Input()
-    expired: boolean = false;
+    @Input() expired: boolean = false;
 
-    @Output()
-    submitForm: EventEmitter<Object> = new EventEmitter<Object>();
+    @Output() submitForm: EventEmitter<Object> = new EventEmitter<Object>();
+    @Output() toggleFilters: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
 
@@ -152,6 +147,11 @@ export class MiniShowFormComponent implements OnInit {
         this.questionnaire.get('questions').controls[i].get('answer').setValue(rating);
         window.console.log("Rating in form is: ", rating, "index is: ", this.questionnaire.get('questions').controls[i].value);
 
+    }
+
+    toggleFilter() {
+        this.showFilters = !this.showFilters;
+        this.toggleFilters.emit(this.showFilters);
     }
 
 }

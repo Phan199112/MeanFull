@@ -57,8 +57,12 @@
                             
                             
                             <!-- ********** Chart ************ -->
-                            <pie-chart *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
-                       
+                            <div>
+                                <pie-chart *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
+                            </div>
+                            <div style="display: flex; width: 100%; justify-content: center; margin-bottom:10px;">
+                                <a class="submitButton" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Apply Filters'}}</a>
+                            </div>
                        
                        
                         </div>

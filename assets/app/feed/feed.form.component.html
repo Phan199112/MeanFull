@@ -89,13 +89,13 @@
     <!-- QUESTIONS CONTAINER -->
     <div class="responseBox">
         <mini-show-form class="maxWidthOfParent" [count]="count" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
-            [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" *ngIf="form.questions != null"></mini-show-form>
+            [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" (toggleFilters)="toggleFilters($event)" *ngIf="form.questions != null"></mini-show-form>
     </div>
         
     
     <!-- Graph Filters -->
-    <form *ngIf="form.answered && !form.contracted && showdiscussion && !form.typeevent" [formGroup]="dataselectionform" style="margin-bottom:0px">
-        <h4 id="filterTitle">Graph Filters</h4>
+    <form *ngIf="showFilter && form.answered && !form.contracted && showdiscussion && !form.typeevent" [formGroup]="dataselectionform" style="margin-bottom:0px">
+        <!-- <h4 id="filterTitle">Graph Filters</h4> -->
         <div id="analysisContainer">
             <div class="filterBox">
                 <p class="filterCategory">Age Group</p>
@@ -143,9 +143,7 @@
     </div>
 
     <!-- Divider -->
-    <div class="flex">
-        <div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div>
-    </div>
+    <!-- <div class="flex"><div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div></div> -->
 
     <!-- <div *ngIf="form.hashtags" class="line"></div> -->
 </div>

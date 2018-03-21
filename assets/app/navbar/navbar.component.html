@@ -27,16 +27,16 @@
                         <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                             <div *ngIf="pictype" class="d-inline-block">
                                 <div *ngIf="pictype == 'fb'">
-                                    <img src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40" height="40" width="40">
+                                    <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
                                 </div>
                                 <div *ngIf="pictype == 'local'">
-                                    <img [src]="pic" height="40" width="40"/>
+                                    <img class="userImage" [src]="pic"/>
                                 </div>
                                 <div *ngIf="pictype == 'default-male'">
-                                    <img src="/images/male.png" height="40" width="40"/>
+                                    <img class="userImage" src="/images/male.png"/>
                                 </div>
                                 <div *ngIf="pictype == 'default-female'">
-                                    <img src="/images/female.png" height="40" width="40"/>
+                                    <img class="userImage" src="/images/female.png"/>
                                 </div>
                             </div>
                             <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>

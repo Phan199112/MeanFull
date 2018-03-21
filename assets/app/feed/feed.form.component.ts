@@ -32,6 +32,7 @@ export class FeedFormComponent implements OnInit {
     notaken :any;
     nodiscussion : any;
     location: any;  
+    showFilter: boolean = false;
 
 
     //  ------ Emoticon properties to change/check against
@@ -662,23 +663,28 @@ export class FeedFormComponent implements OnInit {
 
     reactionssummary(reactions) {
     // make a summary
-    var counts = {};
-    var total = 0;
-    var summary = {};
+        var counts = {};
+        var total = 0;
+        var summary = {};
 
-    if (reactions != null) {
-        for (var k in reactions) {
-            total += reactions[k];
+        if (reactions != null) {
+            for (var k in reactions) {
+                total += reactions[k];
+            }
+
+            // reformat
+            // and make percentage
+            for (var k in reactions) {
+                summary[k] = (Math.round( ( (reactions[k]/total) * 100 ) * 100 ) / 100   );
+            }
         }
 
-        // reformat
-        // and make percentage
-        for (var k in reactions) {
-            summary[k] = (Math.round( ( (reactions[k]/total) * 100 ) * 100 ) / 100   );
-        }
+        return summary;
+    };
+
+    toggleFilters(e: boolean) {
+        this.showFilter = e;
     }
 
-    return summary;
-};
 
 }
