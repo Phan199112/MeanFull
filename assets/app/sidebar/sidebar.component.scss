@@ -116,3 +116,32 @@ h3 {
 .small {
   font-size: .8rem;
 }
+
+.submitButton {
+    background: #FFF;
+    border-radius: 8px;
+    padding: 2px 8px;
+    line-height: 1rem;
+    width: auto;
+    text-align: center;
+    border: none;
+    border: solid 1px #999;
+
+    font-size: .8rem;
+    font-family: Karla;
+    // color: #FFF !important;
+    color: #999 !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        color: #2b2b2b !important;
+        border: solid 1px #2b2b2b;
+        text-decoration: none;
+    }
+}

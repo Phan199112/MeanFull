@@ -1,54 +1,52 @@
-<div class="container main-container" *ngIf="reject">
+<div style="width: 1220px; margin: 10px auto 0px auto" *ngIf="reject">
     <h2>You are not authorised to create a new community. Please login first!</h2>
 </div>
-<div id="createCommunityPage" *ngIf="reject == false">
+
+
+<div style="width: 1220px; margin: 10px auto 0px auto" *ngIf="reject == false">
     <div class="row">
-        <div class="col-md-2" id="leftSideOfContainer">
-        </div>
-        <div class="col-lg-8">
-            <div id="createCommunityContainer" class="container">
-                <div class="row">
-                    <div class="col-10">
-                        <h3 id="page-title">
-                            Create Community
-                        </h3>
-                    </div>
-                </div>
-                <div class="row">
+        
+        
+        <div class="col-md-3" id="leftSideOfContainer"></div>
+        
+        
+        <div class="col-lg-6">
+            <div class="aboutContainer">
+                <h3 class="name" style="margin-bottom: 25px">Create Community</h3>
+                    
+                    
                     <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div id="comm-title" class="form-group">
-                                    <textarea autosize rows="1" formControlName="title" class="form-control underlined-input" placeholder="Title"></textarea>
-                                </div>
-                                <!--<div id="comm-title" class="form-group">
-                                    <input type="text" style="width: 400px" formControlName="title" class="form-control" placeholder="Enter Your Community Title" />
-                                </div>-->
-                                <div class="form-group">
-                                    <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}">
-                                        <div 
-                                            [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
-                                            class="tag-placeholder text-muted" 
-                                            (click)="showHashtags = true; focusTagInput(hashtags)">
-                                            hashtag #coffee #ucla #stanford
-                                        </div>
-                                        <tag-input
-                                            #hashtags
-                                            [ngClass]="{'d-none': !showHashtags && fgCreateCommunity.get('hashtags').value === null}"
-                                            [onAdding]="transformHashtag"
-                                            placeholder="#hashtag"
-                                            secondaryPlaceholder="#hashtag"
-                                            (onBlur)="showHashtags = false"
-                                            [separatorKeyCodes]="[32, 13, 188]"
-                                            formControlName="hashtags"
-                                            id="tags">
-                                            <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceTag.bind(this)">
-                                            </tag-input-dropdown>
-                                        </tag-input>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="comm-title" class="form-group">
+                            <textarea autosize rows="1" formControlName="title" class="form-control underlined-input" placeholder="Title"></textarea>
                         </div>
+                        <!--<div id="comm-title" class="form-group">
+                            <input type="text" style="width: 400px" formControlName="title" class="form-control" placeholder="Enter Your Community Title" />
+                        </div>-->
+
+                        <!-- <div class="form-group">
+                            <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}">
+                                <div 
+                                    [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
+                                    class="tag-placeholder text-muted" 
+                                    (click)="showHashtags = true; focusTagInput(hashtags)">
+                                    hashtag #coffee #ucla #stanford
+                                </div>
+                                <tag-input
+                                    #hashtags
+                                    [ngClass]="{'d-none': !showHashtags && fgCreateCommunity.get('hashtags').value === null}"
+                                    [onAdding]="transformHashtag"
+                                    placeholder="#hashtag"
+                                    secondaryPlaceholder="#hashtag"
+                                    (onBlur)="showHashtags = false"
+                                    [separatorKeyCodes]="[32, 13, 188]"
+                                    formControlName="hashtags"
+                                    id="tags">
+                                    <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceTag.bind(this)">
+                                    </tag-input-dropdown>
+                                </tag-input>
+                            </div>
+                        </div> -->
+
                         <!--<div class="row form-group form-control">-->
                             <!--<div class="tag-input-wrapper form-control" style="margin-bottom: 16px">
                                 <div
@@ -196,9 +194,12 @@
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="col-md-2" id="rightSideOfContainer">
-        </div>
+        <div class="col-md-6" id="rightSideOfContainer"></div>
     </div>
 </div>
+
+
+
+
+
 <image-editor #imgEditor [imgChangedEvent]="imgChangedEvent" (done)="getSignedRequest($event)"></image-editor>

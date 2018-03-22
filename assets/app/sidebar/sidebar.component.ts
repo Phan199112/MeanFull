@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges } from "@angular/core";
 import { Http } from "@angular/http";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-import {Router, Routes, ActivatedRoute} from "@angular/router";
+import { RouterModule, Router, Routes, ActivatedRoute} from "@angular/router";
 import { CommunityListComponent } from "../communityContainer/community.list.component";
 import { CommunityModel } from "../communityContainer/community.model";
 import { NetworkModel } from "../networkContainer/network.model";
