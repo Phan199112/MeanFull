@@ -229,6 +229,10 @@ export class FeedFormComponent implements OnInit {
     onItemSelect(item: any) {
         item.status = true;
         this.doDataSelectionUpdate(item);
+
+        // if(item.input === "location" && item.itemName === "Other") {
+        //     this.question
+        // }
     }
     OnItemDeSelect(item: any) {
         item.status = false;
@@ -331,7 +335,7 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.form.id;
-        window.console.log("Presubmit: ", data.questions);
+        // window.console.log("Presubmit: ", data.questions);
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
               if (response.json().status == 1) {
@@ -376,10 +380,21 @@ export class FeedFormComponent implements OnInit {
                     this.locationSelected.push({ id: ind + 1, itemName: loc.itemName, input: "location"});
                 });
 
+                // this.locationList.push({ id: tempLocation.length + 1, itemName: "other", input: "location" });
+                // this.locationSelected.push({ id: tempLocation.length + 1, itemName: "other", input: "location" });
+
+
                 // deal with the possibility of more than 5 locations
                 var other = response.json().otherlocations;
                 if (other != null) {
                     this.otherloc = true;
+
+                    other.map((loc, ind) => {
+                        this.locationList.push({ id: tempLocation.length + ind+ 1, itemName: loc[0], input: "location" });
+                        this.locationSelected.push({ id:tempLocation.length + ind + 1, itemName: loc[0], input: "location" });
+                    });
+
+
                     for (let o of other) {
                         this.otherlocations.push(o[0]);
                         this.plotselection.location.push(o[0]);
@@ -486,6 +501,8 @@ export class FeedFormComponent implements OnInit {
     executePlotDataRetrieval() {
         console.log('update plotselection: ',this.plotselection);
         // post and get response
+
+        window.console.log("Other check: ", this.plotselection);
         this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
             .then(response => {
@@ -497,7 +514,7 @@ export class FeedFormComponent implements OnInit {
                     // make sure the plot is given the data
                     this.form.setAnswered(true);
 
-                    window.console.log("New Plot Data", responsedata);
+                    // window.console.log("New Plot Data", responsedata);
                     this.form.setPlotData(responsedata);
                     this.submitted = true;
                     this.showsubmit = false;

@@ -36,11 +36,8 @@ div, p, span, li, label, input, textarea, select, option, button, a {
   max-width: 100%;
 }
 
-/* .col-md-2 {
-  padding: 0px;
-} */
 
-.filterDropdownText {
+/* .filterDropdownText {
   font-family: Karla;
   font-weight: 400;
   color: white;
@@ -53,6 +50,30 @@ background: #28ab64 !important;
 border-color: #28ab64 !important;
 background: #28ab64 !important;
 }
+
+.filterDropdownText .pure-checkbox input[type="checkbox"] + label[_ngcontent-c1]:before {
+background: #FFF !important;
+}
+
 .filterDropdownText .pure-checkbox input[type="checkbox"]:checked + label[_ngcontent-c1]:before {
 background: #28ab64 !important;
+}
+ */
+
+
+.filterDropdownText {
+color: #ccc;
+}
+.filterDropdownText .c-token{
+background: #38d574 !important;
+}
+
+
+.filterDropdownText .pure-checkbox label::before {
+border-color: #38d574 !important;
+/* background: #FFF !important; */
+}
+
+.pure-checkbox[_ngcontent-c10] input[type="checkbox"][_ngcontent-c10]:checked + label[_ngcontent-c10]:before {
+background: #38d574 !important;
 }

@@ -146,7 +146,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.categorySettings = {
             singleSelection: false,
             text: "Select up to 4 Categories",
-            classes: "custom-class",
+            classes: "filterDropdownText",
             badgeShowLimit: 4,
             limitSelection: 4,
             enableSearchFilter: true,
