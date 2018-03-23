@@ -17,7 +17,7 @@
                     <img *ngIf="data.pic" id="community-image" [src]="data.pic" />
                     <div style="margin-left: 15px">
                         <h3 class="name">{{data.title}}</h3>
-                        <h5 class="description">{{data.description ? data.description : "This community's description will go here"}}</h5>
+                        <h5 class="description">{{data.description ? data.description : "No Description."}}</h5>
                         <h5 class="description">{{data.members.length}} {{data.members.length > 1 ? "Members" : "Member"}}</h5>
                     </div>
                     
@@ -57,7 +57,7 @@
                     </div>
                     
                     
-                    <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
+                    <form id="main-form" [formGroup]="fgCreateCommunity">
                     
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Community Title</h6>
@@ -90,7 +90,7 @@
                         <!-- IMAGE START -->
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Image</h6>
-                            <div class="flex" style="align-items: center">
+                            <div class="flex" style="align-items: center; width: 100%">
                     
                                 <div id="uploadBtn">
                                     <label for="picFile" class="submitButton not">Upload</label>
@@ -110,11 +110,11 @@
                                     </div>
                                 </div>
                     
+                                <div style="margin-left: 12px">
+                                    <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
+                                </div>
                             </div>
                     
-                            <div class="flex" style="margin-top: 15px;">
-                                <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
-                            </div>
                     
                         </div>
                         <!-- IMAGE END -->
@@ -137,8 +137,8 @@
                     
 
                         <div class="flexContainer" style="justify-content: center">
-                            <button class="submitButton grey" (click)="toggleEdit()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted" style="margin-right: 20px;">Cancel</button>
-                            <button class="submitButton" (click)="toggleEdit()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Update</button>
+                            <button type="button" class="submitButton grey" (click)="toggleEdit()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted" style="margin-right: 20px;">Cancel</button>
+                            <button type="button"  class="submitButton" (click)="updateCommunity()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Update</button>
                         </div>
 
                     </form>

@@ -51,6 +51,52 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
+
+    app.put('/community/update', manager.ensureLoggedIn('/users/login'), function (req, res) {
+        var receivedData = req.body;
+        console.log("Received:", receivedData);
+        var unhashedAdmins = [];
+        var decrypted = hashids.decodeHex(receivedData.commid);
+        console.log("Decrypted id:", decrypted);
+
+
+        var newtitle = receivedData.title | "";
+        var newpublic = receivedData.public;
+        var newpic = receivedData.pic;
+        var newdescription = receivedData.description;
+        
+        if (receivedData.admins != null) {
+            for (var i = 0; i < receivedData.admins.length; i++) {
+                // save value
+                unhashedAdmins.push(hashids.decodeHex(receivedData.admins[i]));
+            }
+        }
+
+
+        CommunityModel.findOneAndUpdate({_id: decrypted}, {$set: {title: newtitle, description: newdescription, public: newpublic, pic: newpic}}, {new: true}, function (err, doc) {
+            if (err) {
+                console.log("Error updating community: ", err);
+                res.json({ status: 0 });
+            } else {
+                
+                // new admin notifictions
+                if (unhashedAdmins != null  && unhashedAdmins.length != 0) {
+                    for (var i = 0; i < unhashedAdmins.length; i++) {
+                        notifications.createNotification(unhashedAdmins[i], req.session.userid, "comm-admin", "Community invitation", hashids.encodeHex(doc._id));
+                    }
+                }
+
+                // log
+                log.writeLog(req.session.userid, 'update community', req.ip);
+
+                // return
+                res.json({ status: 1, id: hashids.encodeHex(doc._id) });
+            }
+        });
+
+    });
+
+
     app.post('/community/invite', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
 

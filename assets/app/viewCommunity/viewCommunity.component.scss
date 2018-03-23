@@ -246,7 +246,7 @@ feed-list {
     align-items: center;
     justify-content: flex-start;
     padding: 15px 25px;
-    width: 95%;
+    width: 100%;
 }
 
 .fdColumn {
@@ -301,7 +301,8 @@ feed-list {
 
 #preview {
     border:1px solid $primaryColor;
-    width:200px;
+    width: 80px;
+    height: 80px;
     border-radius: 8px;
     outline-style: none;
     outline: none;
