@@ -60,7 +60,7 @@ module.exports = function(app, passport, manager, hashids) {
         console.log("Decrypted id:", decrypted);
 
 
-        var newtitle = receivedData.title | "";
+        var newtitle = receivedData.title;
         var newpublic = receivedData.public;
         var newpic = receivedData.pic;
         var newdescription = receivedData.description;
