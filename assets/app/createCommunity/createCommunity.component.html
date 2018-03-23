@@ -30,7 +30,7 @@
                         <h6 class="title firstTitle">Description</h6>
                         <div style="display: flex; align-items: center; width: 100%">
                             <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
-                            <textarea class="niceTextAreaInput" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
+                            <textarea placeholder="Enter a short description.." class="niceTextAreaInput" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
                         </div>
                     </div>
 
@@ -71,7 +71,7 @@
                 
                     </div>
                 
-                    <div class="flex">
+                    <div class="flex" style="margin-top: 15px;">
                         <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
                     </div>
                 

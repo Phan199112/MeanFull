@@ -21,7 +21,10 @@ export class ViewCommunityComponent implements OnInit {
     addfailed: boolean = false;
     status: string;
     inviteForm: FormGroup;
+    fgCreateCommunity: FormGroup;
+
     friends: any[] = [];    
+    showEdit: boolean = false;
     @ViewChild('invitationModal') invitationModal;    
 
     constructor(private http: Http,
@@ -60,8 +63,15 @@ export class ViewCommunityComponent implements OnInit {
 
                     } else {
                         this.loadsuccessful = false;
-
                     }
+                  
+                    this.fgCreateCommunity = this.fb.group({
+                        title: this.data.title,
+                        description: this.data.description,
+                        public: this.data.public,
+                        admins: this.data.admins,
+                        pic: this.data.pic
+                    });
                 })
                 .catch(function() {
                     this.loading = false;
@@ -191,6 +201,75 @@ export class ViewCommunityComponent implements OnInit {
         setTimeout(() => {
             tagInput.inputForm.input.nativeElement.focus();
         });
+    }
+
+    toggleEdit() {
+        this.showEdit = !this.showEdit;
+    }
+
+    uploadFile(file, signedRequest, url) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', signedRequest);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    this.fgCreateCommunity.get('pic').setValue(url);
+                }
+                else {
+                    alert('Could not upload file.');
+                }
+            }
+        };
+        xhr.send(file);
+    }
+
+
+    getSignedRequest(file) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    this.uploadFile(file, response.signedRequest, response.url);
+                }
+                else {
+                    alert('Could not get signed URL.');
+                }
+            }
+        };
+        xhr.send();
+    }
+
+
+    onPicChange($event) {
+        const file = $event.target.files[0];
+        if (file == null) {
+            return alert('No file selected.');
+        }
+        this.getSignedRequest(file);
+    }
+
+    setPicUrl(url) {
+        this.fgCreateCommunity.get('pic').setValue(url);
+    }
+
+
+    toggleAudience(audience: string) {
+        this.fgCreateCommunity.get('public').setValue(audience);
+    }
+
+    autosizeTextarea(event: any, el: any) {
+        if (event.keyCode == 13) {
+            el.blur()
+        } else {
+            setTimeout(function () {
+                el.style.cssText = 'height:auto; padding:0';
+                // for box-sizing other than "content-box" use:
+                el.style.cssText = '-moz-box-sizing:content-box';
+                el.style.cssText = 'height:' + el.scrollHeight + 'px';
+            }, 0);
+        }
     }
 
 }

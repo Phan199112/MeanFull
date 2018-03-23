@@ -154,10 +154,8 @@ feed-list {
 .submitButton {
     background: $primaryColor;
     border-radius: 8px;
-    padding: 3px 6px;
+    padding: 3px 12px;
     line-height: 1.5rem;
-    min-width: 100px;
-    max-width: 150px;
     width: auto;
     text-align: center;
     border: none;
@@ -178,6 +176,20 @@ feed-list {
     }
 }
 
+.grey {
+  background: none;
+  border: 1px solid #999;
+  color: #999 !important;
+
+  &:hover {
+    background: none;
+    color: #2b2b2b !important;
+    border: 1px solid #2b2b2b;
+  }
+}
+
+
+
 .categoryMenu {
   position: absolute;
   top: 20px;
@@ -189,4 +201,108 @@ feed-list {
   height: 70px;
   width: 70px;
   border-radius: 8px;
+}
+
+.profileMenu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+}
+
+
+// Edit
+
+.niceTextInput {
+    background: none;
+    outline-style: none;
+    font-family: Helvetica Neue, sans-serif;
+    border: none;
+    font-weight: 300;
+    // border-bottom: solid 1px $borderColor;
+    padding: 2px;
+    width: 100%;
+    font-size: 1rem;
+    color: #666;
+}
+
+
+.niceTextAreaInput {
+    background: none;
+    outline-style: none;
+    border: none;
+    padding: 2px;
+    width: 100%;
+    font-family: Helvetica Neue, sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    overflow: hidden;
+}
+
+
+.flexContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 15px 25px;
+    width: 95%;
+}
+
+.fdColumn {
+    flex-direction: column;
+}
+
+.faStart {
+    align-items: flex-start;
+}
+
+.fjCenter {
+    justify-content: center;
+}
+
+.imgContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 12px;
+    }
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+#uploadBtn {
+    margin-right: 20px;
+}
+
+#orText {
+    margin: 0px;
+    font-weight:700;
+    font-family: Karla;
+    color: #999; 
+}
+
+#urlImage {
+    margin: 0px 20px;
+}
+
+#preview {
+    border:1px solid $primaryColor;
+    width:200px;
+    border-radius: 8px;
+    outline-style: none;
+    outline: none;
 }

@@ -22,17 +22,6 @@ export class CreateCommunityComponent  {
     visitbutton: boolean = false;
     commurl: String;
     reject: any = null;
-    privacyOptions = [{
-        label: "Public Community",
-        icon: "globe",
-        description: "Everyone can see the community members and surveys",
-        value: true
-    }, {
-        label: "Private Community",
-        icon: "lock",
-        description: "Only members can see the community members and surveys",
-        value: false
-    }];
     privacyOption = 0;
     friends: any[] = [];
 
@@ -99,10 +88,7 @@ export class CreateCommunityComponent  {
 
     postForm() {
         let date = new Date();
-        let meta = {
-            pic: this.commPicURL
-        };
-        let data = Object.assign(this.createcommunityData(), meta);
+        let data = this.createcommunityData();
         console.log("posted", data);
 
         this.http.post('/community/save', data).toPromise()
@@ -110,7 +96,7 @@ export class CreateCommunityComponent  {
                 if (response.json().status == 1) {
                     this.commurl = response.json().id;
                     this.visitbutton = true;
-                    this.router.navigate(['/', this.commurl]);
+                    this.router.navigate(['/community', this.commurl]);
 
                 } else {
                     this.submissionfailed = true;
@@ -125,6 +111,7 @@ export class CreateCommunityComponent  {
 
     createcommunityData() {
         let data = this.fgCreateCommunity.value;
+        
 
         for (let tagField of ['hashtags', 'admins']) {
             if (data[tagField]) {
@@ -283,8 +270,18 @@ export class CreateCommunityComponent  {
         this.fgCreateCommunity.get('public').setValue(audience);
     }
 
-
-
+    autosizeTextarea(event: any, el: any) {
+        if (event.keyCode == 13) {
+            el.blur()
+        } else {
+            setTimeout(function () {
+                el.style.cssText = 'height:auto; padding:0';
+                // for box-sizing other than "content-box" use:
+                el.style.cssText = '-moz-box-sizing:content-box';
+                el.style.cssText = 'height:' + el.scrollHeight + 'px';
+            }, 0);
+        }
+    }
 
 
 
