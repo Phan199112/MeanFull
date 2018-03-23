@@ -3,7 +3,8 @@
 </div>
 
 
-<div style="width: 1220px; margin: 10px auto 0px auto" *ngIf="reject == false">
+<!-- FLIP THE PERMISSIONS WHEN DONE DEVELOPING -->
+<div style="width: 1220px; margin: 10px auto 0px auto" *ngIf="!reject">
     <div class="row">
         
         
@@ -14,16 +15,143 @@
             <div class="aboutContainer">
                 <h3 class="name" style="margin-bottom: 25px">Create Community</h3>
                     
-                    
-                    <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
-                        <div id="comm-title" class="form-group">
-                            <textarea autosize rows="1" formControlName="title" class="form-control underlined-input" placeholder="Title"></textarea>
+                
+                <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
+
+                    <div class="flexContainer fdColumn faStart">  
+                        <h6 class="title firstTitle">Community Title</h6>
+                        <div style="display: flex; align-items: center; width: 100%">
+                            <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                            <input class="niceTextInput" formControlName="title" autofocus />
                         </div>
-                        <!--<div id="comm-title" class="form-group">
+                    </div>
+
+                    <div class="flexContainer fdColumn faStart">
+                        <h6 class="title firstTitle">Description</h6>
+                        <div style="display: flex; align-items: center; width: 100%">
+                            <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                            <textarea class="niceTextAreaInput" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
+                        </div>
+                    </div>
+
+
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="title firstTitle">Privacy</h6>
+                    <div style="display:flex; justify-content: flex-start;">
+                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this community'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
+                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this community'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
+                    </div>
+                </div>
+
+
+                <!-- IMAGE START -->
+                <div class="flexContainer fdColumn faStart">
+                    <h6 class="title firstTitle">Add an image</h6>
+                    <div class="flex" style="align-items: center">
+                
+                        <div id="uploadBtn">
+                            <label for="picFile" class="submitButton not">Upload</label>
+                            <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
+                        </div>
+                
+                        <div>
+                            <p id="orText">or</p>
+                        </div>
+                
+                        <div id="urlImage" class="input-group" style="width: 100%">
+                            <input type="text" formControlName="pic" #imgUrl class="form-control" placeholder="Enter an image URL">
+                            <div class="input-group-append">
+                                <button (click)="setPicUrl(imgUrl.value)" class="btn btn-outline-secondary">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                
+                    </div>
+                
+                    <div class="flex">
+                        <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
+                    </div>
+                
+                </div>
+                <!-- IMAGE END -->
+
+
+
+
+
+
+                <div class="flexContainer faStart fdColumn">
+                    <h6 class="title firstTitle">Add Other Community Admins</h6>
+                    <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
+                        <div 
+                            [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}"
+                            class="tag-placeholder text-muted" 
+                            (click)="showAdmins = true; focusTagInput(admins)">
+                            Add your friends as admins
+                        </div>
+                        <tag-input
+                            #admins
+                            [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}"
+                            [onAdding]="transformName"
+                            [identifyBy]="'value'"
+                            [displayBy]="'display'"
+                            placeholder="@name"
+                            secondaryPlaceholder="@name"
+                            (onBlur)="showAdmins = false"
+                            [separatorKeyCodes]="[32, 13, 188]"
+                            formControlName="admins"
+                            [onlyFromAutocomplete]="true"
+                            id="admins">
+                            <tag-input-dropdown 
+                                identifyBy="id" 
+                                displayBy="name" 
+                                [matchingFn]="nameMatching" 
+                                [focusFirstElement]="true" 
+                                [autocompleteItems]="friends">
+                            </tag-input-dropdown>
+                        </tag-input>
+                    </div>
+                </div>
+
+
+                <div id="buttons" *ngIf="!visitbutton" class="flexContainer" style="justify-content: center">
+                    <button
+                            class="submitButton"
+                            (click)="checkSubmit()"
+                            [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Create!</button>
+                </div>
+                       
+                       
+                        <div *ngIf="submissionfailed">
+                            Submission failed!
+                        </div>
+                        <!-- <div *ngIf="visitbutton" class="float-right">
+                            <button class="btn btn-outline-success mouseChangeToHand" [routerLink]="['/community', commurl]">Visit community</button>
+                        </div> -->
+
+                    </form>
+                </div>
+            </div>
+        <div class="col-md-6" id="rightSideOfContainer"></div>
+    </div>
+</div>
+
+
+
+
+
+<image-editor #imgEditor [imgChangedEvent]="imgChangedEvent" (done)="getSignedRequest($event)"></image-editor>
+
+
+
+<!--<div id="comm-title" class="form-group">
                             <input type="text" style="width: 400px" formControlName="title" class="form-control" placeholder="Enter Your Community Title" />
                         </div>-->
 
-                        <!-- <div class="form-group">
+<!-- <div class="form-group">
                             <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}">
                                 <div 
                                     [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
@@ -47,8 +175,8 @@
                             </div>
                         </div> -->
 
-                        <!--<div class="row form-group form-control">-->
-                            <!--<div class="tag-input-wrapper form-control" style="margin-bottom: 16px">
+<!--<div class="row form-group form-control">-->
+<!--<div class="tag-input-wrapper form-control" style="margin-bottom: 16px">
                                 <div
                                         [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
                                         class="tag-placeholder text-muted"
@@ -68,9 +196,9 @@
                                     </tag-input-dropdown>
                                 </tag-input>
                             </div>-->
-                        <!--</div>-->
+<!--</div>-->
 
-                        <div id="comm-picture" class="row form-group">
+<!-- <div id="comm-picture" class="row form-group">
                             <label class="lead col-lg-5">
                                 Add a picture for the community
                             </label>
@@ -99,9 +227,13 @@
                             <div class="col text-center">
                                 <img *ngIf="commPicURL" style="border:1px solid gray;width:100px;" id="preview" [src]="commPicURL">
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!--<div class="row form-group form-control" style="margin-left: 2px">
+
+
+
+
+<!--<div class="row form-group form-control" style="margin-left: 2px">
                             <p>Bring life to the community! Upload a picture!</p>
                             <div id="survey-picture" class="form-group">
                                 <div class="col-md-3" *ngIf="commPicURL">
@@ -119,87 +251,30 @@
                             </div>
                         </div>-->
 
-                        <div id="privacy" class="row form-group">
-                            <label class="col-lg-3 col-md-5 lead align">Privacy settings</label>
-                            <div ngbDropdown class="col dropdown p-0">
-                                <button class="form-control dropdown-toggle" ngbDropdownToggle>
-                                    <i class="fa fa-{{privacyOptions[privacyOption].icon}}"></i>
-                                    <div class="option-body d-inline-block">
-                                        <span>{{privacyOptions[privacyOption].label}}</span>
-                                        <div class="text-muted">{{privacyOptions[privacyOption].description}}</div>
-                                    </div>
-                                </button>
-                                <div ngbDropdownMenu class="select-kind-dropdown">
-                                    <button 
-                                        *ngFor="let option of privacyOptions; let i = index" 
-                                        (click)="privacyOption = i; fgCreateCommunity.get('public').setValue(option.value)"
-                                        class="dropdown-item"
-                                    >
-                                        <i class="fa fa-{{option.icon}}"></i>
+
+
+    <!-- <div id="privacy" class="row form-group">
+                                <label class="col-lg-3 col-md-5 lead align">Privacy settings</label>
+                                <div ngbDropdown class="col dropdown p-0">
+                                    <button class="form-control dropdown-toggle" ngbDropdownToggle>
+                                        <i class="fa fa-{{privacyOptions[privacyOption].icon}}"></i>
                                         <div class="option-body d-inline-block">
-                                            <span>{{option.label}}</span>
-                                            <div class="text-muted">{{option.description}}</div>
+                                            <span>{{privacyOptions[privacyOption].label}}</span>
+                                            <div class="text-muted">{{privacyOptions[privacyOption].description}}</div>
                                         </div>
-                                    </button>                                                
+                                    </button>
+                                    <div ngbDropdownMenu class="select-kind-dropdown">
+                                        <button 
+                                            *ngFor="let option of privacyOptions; let i = index" 
+                                            (click)="privacyOption = i; fgCreateCommunity.get('public').setValue(option.value)"
+                                            class="dropdown-item"
+                                        >
+                                            <i class="fa fa-{{option.icon}}"></i>
+                                            <div class="option-body d-inline-block">
+                                                <span>{{option.label}}</span>
+                                                <div class="text-muted">{{option.description}}</div>
+                                            </div>
+                                        </button>                                                
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div id="admins" class="row form-group">
-                            <label class="col-lg-3 col-md-5 lead align">Add other admins</label>
-                            <div [ngClass]="{'col-md-6': true, 'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
-                                <div 
-                                    [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}"
-                                    class="tag-placeholder text-muted" 
-                                    (click)="showAdmins = true; focusTagInput(admins)">
-                                    Names of your friends you want to make admin
-                                </div>
-                                <tag-input
-                                    #admins
-                                    [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}"
-                                    [onAdding]="transformName"
-                                    [identifyBy]="'value'"
-                                    [displayBy]="'display'"
-                                    placeholder="@name"
-                                    secondaryPlaceholder="@name"
-                                    (onBlur)="showAdmins = false"
-                                    [separatorKeyCodes]="[32, 13, 188]"
-                                    formControlName="admins"
-                                    [onlyFromAutocomplete]="true"
-                                    id="admins">
-                                    <tag-input-dropdown 
-                                        identifyBy="id" 
-                                        displayBy="name" 
-                                        [matchingFn]="nameMatching" 
-                                        [focusFirstElement]="true" 
-                                        [autocompleteItems]="friends">
-                                    </tag-input-dropdown>
-                                </tag-input>
-                            </div>
-                        </div>
-
-                        <div id="buttons" *ngIf="!visitbutton" class="float-right">
-                            <button
-                                    class="btn btn-outline-success mouseChangeToHand"
-                                    (click)="checkSubmit()"
-                                    [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Create!</button>
-                        </div>
-                        <div *ngIf="submissionfailed">
-                            Submission failed!
-                        </div>
-                        <div *ngIf="visitbutton" class="float-right">
-                            <button class="btn btn-outline-success mouseChangeToHand" [routerLink]="['/community', commurl]">Visit community</button>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        <div class="col-md-6" id="rightSideOfContainer"></div>
-    </div>
-</div>
-
-
-
-
-
-<image-editor #imgEditor [imgChangedEvent]="imgChangedEvent" (done)="getSignedRequest($event)"></image-editor>
+                            </div> -->

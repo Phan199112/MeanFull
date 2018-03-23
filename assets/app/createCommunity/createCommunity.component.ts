@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Http} from "@angular/http";
+import { Router } from "@angular/router";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
 import {FormBuilder, FormControl, FormGroup } from "@angular/forms";
@@ -38,7 +39,8 @@ export class CreateCommunityComponent  {
     constructor(
         private fb: FormBuilder,
         private http: Http,
-        private userService: UserService
+        private userService: UserService,
+        private router: Router,
     ) {
 
     }
@@ -63,9 +65,10 @@ export class CreateCommunityComponent  {
     createForm() {
         this.fgCreateCommunity = this.fb.group({
             title: '',
-            hashtags: null,
+            description: '',
             public: true,
-            admins: null
+            admins: null,
+            pic: ""
         });
     }
 
@@ -107,6 +110,8 @@ export class CreateCommunityComponent  {
                 if (response.json().status == 1) {
                     this.commurl = response.json().id;
                     this.visitbutton = true;
+                    this.router.navigate(['/', this.commurl]);
+
                 } else {
                     this.submissionfailed = true;
                 }
@@ -226,39 +231,33 @@ export class CreateCommunityComponent  {
             targetValue.toLowerCase().indexOf(keyword.toLowerCase()) === 0;
     }
 
-    /*
-      Function to carry out the actual PUT request to S3 using the signed request from the app.
-    */
-    uploadFile(file, signedRequest, url){
+    uploadFile(file, signedRequest, url) {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', signedRequest);
         xhr.onreadystatechange = () => {
-            if(xhr.readyState === 4){
-                if(xhr.status === 200){
-                    this.commPicURL = url;
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    this.fgCreateCommunity.get('pic').setValue(url);
                 }
-                else{
+                else {
                     alert('Could not upload file.');
                 }
             }
         };
         xhr.send(file);
     }
-    /*
-      Function to get the temporary signed request from the app.
-      If request successful, continue to upload the file using this signed
-      request.
-    */
-    getSignedRequest(file){
+
+
+    getSignedRequest(file) {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
         xhr.onreadystatechange = () => {
-            if(xhr.readyState === 4){
-                if(xhr.status === 200){
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
-                   this.uploadFile(file, response.signedRequest, response.url);
+                    this.uploadFile(file, response.signedRequest, response.url);
                 }
-                else{
+                else {
                     alert('Could not get signed URL.');
                 }
             }
@@ -266,12 +265,27 @@ export class CreateCommunityComponent  {
         xhr.send();
     }
 
+
     onPicChange($event) {
         const file = $event.target.files[0];
-        if(file == null){
+        if (file == null) {
             return alert('No file selected.');
         }
         this.getSignedRequest(file);
     }
+
+    setPicUrl(url) {
+        this.fgCreateCommunity.get('pic').setValue(url);
+    }
+
+
+    toggleAudience(audience: string) {
+        this.fgCreateCommunity.get('public').setValue(audience);
+    }
+
+
+
+
+
 
 }

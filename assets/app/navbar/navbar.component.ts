@@ -50,6 +50,9 @@ export class NavbarComponent implements OnInit {
         this.checkLoggedin();
 
         // update the list every 30 seconds
+
+
+
         this.obs = Observable.interval(1000 * 30).subscribe(x => {
             this.getEventsList();
         });

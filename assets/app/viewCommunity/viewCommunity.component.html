@@ -11,15 +11,15 @@
 
         <div class="col-md-6 order-1 order-sm-2" *ngIf="loadsuccessful">
             <div id="viewCommunityContainer">
-                
-
-
-
 
                 <div class="aboutContainer">
-                    <h3 class="name">{{data.title}}</h3>
-                    <h5 class="description">{{data.description ? data.description : "This community's description will go here"}}</h5>
+                    
                     <img *ngIf="data.pic" id="community-image" [src]="data.pic" />
+                    <div style="margin-left: 15px">
+                        <h3 class="name">{{data.title}}</h3>
+                        <h5 class="description">{{data.description ? data.description : "This community's description will go here"}}</h5>
+                        <h5 class="description">{{data.members.length}} {{data.members.length > 1 ? "Members" : "Member"}}</h5>
+                    </div>
                     
                     <div ngbDropdown placement="bottom-right" class="mouseChangeToHand categoryMenu" *ngIf="loggedin">
                         <a

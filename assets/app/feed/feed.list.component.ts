@@ -45,6 +45,8 @@ export class FeedListComponent implements OnInit {
                         for (let obj of this.data) {
                             this.feedlist.push(new FeedForm(obj));
                         }
+
+                        if (this.feedlist.length == 0) this.emptyMessage = "No questions have been asked yet"
                     }
                 })
                 .catch(error => alert("Error retrieving form: " + error));

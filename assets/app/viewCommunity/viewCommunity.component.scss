@@ -86,8 +86,9 @@ feed-list {
   width: 100%;
   padding: 25px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  // flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   background: #FFF;
   margin: 0px;
   border-radius: 4px;
@@ -116,7 +117,7 @@ feed-list {
 }
 
 .description {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-family: Karla;
   font-size: 1.15rem;
   font-weight: 300;
@@ -185,7 +186,7 @@ feed-list {
 }
 
 #community-image {
-  height: 240px;
-  width: 100%;
+  height: 70px;
+  width: 70px;
   border-radius: 8px;
 }
