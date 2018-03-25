@@ -1,9 +1,11 @@
 <div class="cBody" *ngIf="!hide && form.found">
-    <div class="comSort">
+
+    <!-- Uncomment when implemented -->
+    <!-- <div class="comSort">
         <span class="comSwitch" [ngClass]="{heavy: commentSort === 'top'}" (click)="toggleSort('top')">Top Comments</span>
         <span id="divider"> | </span>
         <span class="comSwitch" [ngClass]="{heavy: commentSort === 'recent'}" (click)="toggleSort('recent')">Most Recent</span>
-    </div>
+    </div> -->
     
     <form [formGroup]="newmessage">
         <div class="userComCont">
