@@ -45,7 +45,7 @@ function getUserPic(user) {
 }
 
 exports.sendEmailVerification = function sendEmailVerification(email, link) {
-    var subject = "Account verification";
+    var subject = "Account Verification";
     var messagesafe = "A request was received to generate a user account with your email address. " +
         "If you made this request, please confirm by clicking on the link. <a href="+link+">"+link+"</a>" +
         "If not, please ignore this email.";

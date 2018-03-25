@@ -16,7 +16,7 @@ export class ResourceListComponent {
 
     pic(item) {
         if (item.fb) {
-            return `https://graph.facebook.com/${item.fb}/picture?width=30&height=30`;
+            return `https://graph.facebook.com/${item.fb}/picture?width=80&height=80`;
         } else {
             if (item.pic) {
                 return item.pic;

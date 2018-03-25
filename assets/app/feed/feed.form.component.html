@@ -1,4 +1,4 @@
-<div class="fBody" *ngIf="!hide" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
+<div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
     <!-- <div class="bg"> -->
     <!-- <div class="userImagePos"> -->
         <div class="topContainer">
@@ -99,30 +99,34 @@
         <div id="analysisContainer">
             <div class="filterBox">
                 <p class="filterCategory">Age</p>
-                <angular2-multiselect style="width: 120px" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
+                <angular2-multiselect style="width: 100px" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="age">
                 </angular2-multiselect>
             </div>
-    
+            
+            <div class="filterBox">
+                <p class="filterCategory">Gender</p>
+                <angular2-multiselect style="width: 100px" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                    formControlName="gender">
+                </angular2-multiselect>
+            </div>
+            
             <div class="filterBox">
                 <p class="filterCategory">Location</p>
-                <angular2-multiselect style="width: 120px" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
+                <angular2-multiselect style="width: 180px" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
                     (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="locations">
                 </angular2-multiselect>
             </div>
 
-            <div class="filterBox">
-                <p class="filterCategory">Gender</p>
-                <angular2-multiselect style="width: 120px" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
-                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                    formControlName="gender">
-                </angular2-multiselect>
-            </div>
     
             <!--<a class="resetButton filterCategory">Reset</a>-->
             <!-- <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">Reset graphs</button> -->
+        </div>
+        <div *ngIf="!form.loginRequired" class="flex" style="justify-content: flex-start; padding-left: 25px;">
+            <span class="partTitle" style="color: #CCC">*Unknown = Responses made without an account</span>
         </div>
     </form>
     
