@@ -1,11 +1,31 @@
-<div id="shareFormPage">
+<div style="width: 1220px; margin: 50px auto 0px auto">
+    <div class="row">
+
+        <div class="col-md-3 order-2 order-sm-1">
+            <!-- <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar> -->
+        </div>
+
+        <div class="col-md-6 order-1 order-sm-2">
+            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form"> </feed-form-component>    
+            <div class="container" *ngIf="unavailable"><h3>This survey is unavailable!</h3></div>
+            <!-- <div><h3 >Check out Questionsly!</h3></div> -->
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<!-- <div id="shareFormPage">
     <div class="row">
         <div class="col-md-2" id="leftSideOfContainer">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8"> -->
 
-            <div class="container" *ngIf="unavailable"><h3>This survey is unavailable!</h3></div>
 
+<!-- 
             <div id="takeFormContainer" class="container" *ngIf="!unavailable">
                 <div class="row">
                     <div class="col-md-2" id="authorPicture">
@@ -38,10 +58,12 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
+            </div> -->
+
+
+        <!-- </div>
         <div class="col-md-2" id="rightSideOfContainer">
         </div>
     </div>
 
-</div>
+</div> -->

@@ -1,36 +1,73 @@
 <mjml>
   <mj-head>
-    <mj-title>{{subject}}</mj-title>
+    <mj-font name="Karla" href="https://fonts.googleapis.com/css?family=Karla"/>
+    <!--<mj-style>-->
+    <!--  @media all and (max-width: 480px) { div[style*="color:#F45e46;"] { text-align: center !important } }-->
+    <!--</mj-style>-->
+    <mj-style inline="inline">
+      .link-nostyle { color: inherit; text-decoration: none ; font-weight:bold; align: center }
+    </mj-style>
+        <mj-style inline="inline">
+      .link-nostyle-nobold { color: inherit; text-decoration: none; align: center }
+    </mj-style>
+    <mj-title>Questionsly - Please confirm your email</mj-title>
   </mj-head>
   <mj-body>
-    <mj-container background-color="#1E824C">
-      <mj-section background-color="#fff" border-top="5px solid #1e824c">
-        <mj-column>
-          <mj-text font-size="32px" color="#1E824C" align="center">
-            <b>Questionsly</b>
+ 
+
+  <mj-container background-color="#f6f6f6">
+    <mj-section background-color="#fff">
+
+      <mj-column>
+          <mj-text font-size="10" color="#818181"  font-family="Karla">
+            <a class="link-nostyle-nobold" color="#818181" href="https://twitter.com/questionsly">twitter</a>
           </mj-text>
-        </mj-column>
-      </mj-section>
-      <mj-section background-color="#f9f9f9" border-top="1px solid #dddddd">
-        <mj-column>
-          <mj-text font-size="18px" color="#3a3137" padding="0px 25px">
-            <p>A request was received to generate a user account with your email address.</p>
-            <p>If you made this request, click the button below.</p>
+          
+      </mj-column>
+      <mj-column>
+        <mj-text font-size="10" color="#818181"  font-family="Karla">
+          <a class="link-nostyle-nobold"  color="#818181" href="https://www.facebook.com/questionsly/">facebook</a>
           </mj-text>
-          <mj-button href="{{link}}" background-color="#1E824C" font-size="18px">
-            <b>Verify email</b>
+      </mj-column>
+      <mj-column>
+        <mj-text font-style="italic"
+                 font-size="12"
+                 font-family="Karla"
+                 color="#818181">
+            Connect with us
+        </mj-text>
+      </mj-column>
+    </mj-section>
+     
+
+    <mj-section background-color="#fff">
+      <mj-column>
+          <!--<mj-image width="100" src="/assets/img/logo-small.png"></mj-image>-->
+          <!--<mj-divider border-color="#F45E43"></mj-divider>-->
+          <mj-text font-size="25" color="#28ab64" align="center" font-family="Karla">
+             <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
+          </mj-text>
+      </mj-column>
+    </mj-section>
+      
+      <mj-section background-color="#fff">
+
+        <mj-column>
+          <mj-text font-size="15" color="#818181"  font-family="Karla">
+             <!--<a href="https://mjml.io" class="link-nostyle">Questionsly</a>-->
+            Hi XXXXXX,
+            <br>
+            Welcome to Questionsly! To finish signing up, click on the green button below to confirm that we have the right email.
+          </mj-text>
+          <mj-button font-family="Karla" font-size="15"  background-color="#28ab64" color="white">
+            <a class="link-nostyle" href="https://www.questionsly.com/">Confirm Email</a>
           </mj-button>
-        </mj-column>
-      </mj-section>
-      <mj-section background-color="#fff" border-bottom="5px solid #1e824c">
-        <mj-column>
-          <mj-text font-size="12px" color="#989ea6" padding="0px 25px" align="center">
-            <div>If you don't wish to continue please ignore this email.</div>
-            <div>Having trouble with verification? Please, copy and paste the following link in the browser:</div>
-            <div>{{link}}</div>
+          <mj-text font-size="10" color="#818181"  font-family="Karla">
+            If you didn't sign up for Questionsly please ignore this email.
           </mj-text>
-        </mj-column>
       </mj-section>
+      
+      
     </mj-container>
   </mj-body>
 </mjml>

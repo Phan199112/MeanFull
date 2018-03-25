@@ -1297,6 +1297,7 @@ module.exports = function(app, passport, manager, hashids) {
         var exportdata;
         var answercount;
         var formcompleted = false;
+
         var formreacted = false;
         var userreaction = null;
         var tempallanswers;
@@ -1317,7 +1318,7 @@ module.exports = function(app, passport, manager, hashids) {
                             console.log('completed testformanswered');
                             resolve();
                         } else {
-                            formcompleted = false;
+                            if (req.body.answered) formcompleted = req.body.answered;
                             console.log('completed testformanswered null');
                             resolve();
                         }
@@ -1379,19 +1380,24 @@ module.exports = function(app, passport, manager, hashids) {
             });
         };
 
-        // start the data gathering
-        if (!req.isAuthenticated()) {
-            //Feed request from forms not auth
-            res.json({
-                data: '',
-                status: 1,
-                count: null,
-                reaction: {reacted: false, userreaction: null},
-                error: 'not auth',
-                loggedin: loggedin
-            });
 
-        } else {
+        // if (!req.isAuthenticated()) {
+        //     //Feed request from forms not auth
+        //     res.json({
+        //         data: '',
+        //         status: 1,
+        //         count: null,
+        //         reaction: { reacted: false, userreaction: null },
+        //         error: 'not auth',
+        //         loggedin: loggedin
+        //     });
+
+        // }
+
+
+
+        // start the data gathering
+        //  else {
             //
             console.log('start data gathering');
 
@@ -1427,6 +1433,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                         console.log('results are public');
 
+
                         // execute promises
                         promises.push(testformanswered(formid, req.session.userid));
                         promises.push(testformreacted(formid, req.session.userid));
@@ -1437,6 +1444,9 @@ module.exports = function(app, passport, manager, hashids) {
                             if (formcompleted) {
 
                                 console.log('user completed form');
+
+                                console.log("**********************Made it here**********************")
+
 
                                 // get all data and analyze
                                 getformanswers(formid).then(function () {
@@ -1520,7 +1530,7 @@ module.exports = function(app, passport, manager, hashids) {
                     });
                 });
 
-        }
+        // } If end
     });
 
     app.post('/forms/alldata', manager.ensureLoggedIn('/users/login'), function(req, res) {
@@ -1697,16 +1707,25 @@ module.exports = function(app, passport, manager, hashids) {
                 } else {
                     if (form) {
                         if (form.shared == true) {
+                            // formdata = {
+                            //     hashtags: form.hashtags,
+                            //     questions: form.questions,
+                            //     expired: form.expired,
+                            //     timestamp: form.timestamp,
+                            //     description: form.description,
+                            //     title: form.title,
+                            //     anonymous: form.anonymous,
+                            //     loginRequired: form.loginRequired
+                            // };
+
                             formdata = {
-                                hashtags: form.hashtags,
-                                questions: form.questions,
-                                expired: form.expired,
-                                timestamp: form.timestamp,
-                                description: form.description,
-                                title: form.title,
-                                anonymous: form.anonymous,
-                                loginRequired: form.loginRequired
+                                hashtags: form.hashtags, questions: form.questions, expired: form.expired,
+                                shared: form.shared, loginRequired: form.loginRequired,
+                                timestamp: form.timestamp, description: form.description,
+                                title: form.title, public: form.public,
+                                typeevent: form.typeevent, categories: form.categories, anonymous: form.anonymous
                             };
+                            formdata.reactions = form.reactions | [];
                             authorid = form.userid;
                             resolve();
 
@@ -1730,7 +1749,7 @@ module.exports = function(app, passport, manager, hashids) {
                         } else {
                             // striate based on whether or not the form is annonymous
                             if (formdata.anonymous == false) {
-                                authorprofile = {anonymous: false, facebookID: k.facebookID, pic: k.pic, name: k.name.first+" "+k.name.last, link: hashids.encodeHex(k._id), gender: k.gender};
+                                authorprofile = {anonymous: false, facebookID: k.facebookID, pic: k.pic, name: k.name.first + " " + k.name.last, location: k.location, nocreated: k.nocreated, notaken: k.notaken, nodiscussion: k.nodiscussion, link: hashids.encodeHex(k._id), gender: k.gender};
                                 resolve();
 
                             } else {

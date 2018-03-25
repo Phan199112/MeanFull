@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from "@angular/http";
 import {ActivatedRoute, Router} from "@angular/router";
+import { FeedForm } from "../feed/feed.form.model";
 
 @Component({
     selector: 'take-form',
@@ -10,6 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 export class TakeFormComponent implements OnInit {
     formdata: Object;
+    form: FeedForm;
     authordata: Object;
     id: string;
     submitted: boolean = false;
@@ -33,6 +35,7 @@ export class TakeFormComponent implements OnInit {
             this.http.get(`/forms/${params.id}`).toPromise()
                 .then(res => {
                     if (res.json().status == 1) {
+
                         this.formdata = res.json().formdata;
                         this.authordata = res.json().authordata;
                         this.loggedin = res.json().loggedin;
@@ -70,6 +73,21 @@ export class TakeFormComponent implements OnInit {
                     } else {
                         this.unavailable = true;
                     }
+                    // this.formdata.pic = this.pic;
+                    // this.formdata.pictype = this.pictype;      
+                    // this.formdata.authorgender = this.authorgender;
+                    // this.formdata.object = {author: this.authordata};
+                    this.formdata.id = this.id;
+
+                    this.form =  new FeedForm({formdata: this.formdata, author: this.authordata, id: this.id, found: true});
+                    // window.console.log("Response; ", this.formdata);
+
+                    // this.formdata.location = this.authordata.location;   
+                    // this.formdata.nocreated = this.authordata.nocreated;              
+                    // this.formdata.nodiscussion = this.authordata.nodiscussion;              
+                    // this.formdata.notaken = this.authordata.notaken;              
+           
+
 
                 })
                 .catch(error => alert("Error retrieving form: " + error));

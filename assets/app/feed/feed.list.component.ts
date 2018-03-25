@@ -43,6 +43,7 @@ export class FeedListComponent implements OnInit {
                         // create new list
                         this.data = res.json().data;
                         for (let obj of this.data) {
+                            window.console.log("pre feedform:", obj);;
                             this.feedlist.push(new FeedForm(obj));
                         }
 

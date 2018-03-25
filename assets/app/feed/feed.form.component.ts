@@ -103,9 +103,9 @@ export class FeedFormComponent implements OnInit {
 
     ngOnInit() {
         // update reactions
-        this.intReactionData = this.form.reactions;
-        this.reactionData = this.reactionssummary(this.intReactionData);
-
+        // this.intReactionData = this.form.reactions;
+        // this.reactionData = this.reactionssummary(this.intReactionData);
+        window.console.log("Boom:", this.form);
 
         // get profile info
         this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
@@ -251,22 +251,25 @@ export class FeedFormComponent implements OnInit {
         this.form.viewGraphs(false);
 
         // did the current user complete this particular survey?
-        let data = {link: this.form.id};
+        let data = {link: this.form.id, answered: this.form.answered};
 
         // post and get response
         this.http.post('/forms/data', data)
             .toPromise()
             .then(response => {
+
+                window.console.log("NOWHERE", response.json());
+
                 let responsedata = response.json().data;
                 let responsestatus = response.json().status;
-                let responsereaction = response.json().reaction;
+                // let responsereaction = response.json().reaction;
                 this.loggedin = response.json().loggedin;
 
                 //deal with reaction
-                if (responsereaction.reacted) {
-                    this.hasReacted = true;
-                    this.reaction = responsereaction.userreaction;
-                }
+                // if (responsereaction.reacted) {
+                //     this.hasReacted = true;
+                //     this.reaction = responsereaction.userreaction;
+                // }
 
                 // set parameters for visualising the results
                 if (responsestatus == 2) {
@@ -338,10 +341,16 @@ export class FeedFormComponent implements OnInit {
         // window.console.log("Presubmit: ", data.questions);
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
+
+            window.console.log("Oooooo: ", response.json());
               if (response.json().status == 1) {
                   this.submitted = true;
                   this.form.answered = true;
+                //   this.form.viewGraphs(false);
                   this.isFilledIn();
+                  this.form.setAnswered(true);
+                  this.form.viewGraphs(true);
+
               } else {
                   this.submissionfailed = true;
               }

@@ -1,4 +1,4 @@
-<div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
+<div class="fBody" *ngIf="!hide" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
     <!-- <div class="bg"> -->
     <!-- <div class="userImagePos"> -->
         <div class="topContainer">
@@ -138,9 +138,9 @@
     </div>
 
 
-    <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
+    <!-- <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
         <h4>Oops this form could not be found!</h4>
-    </div>
+    </div> -->
 
     <!-- Divider -->
     <!-- <div class="flex"><div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div></div> -->
