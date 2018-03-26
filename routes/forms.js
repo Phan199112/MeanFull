@@ -1356,8 +1356,8 @@ module.exports = function(app, passport, manager, hashids) {
                     return b[1] - a[1];
                 });
 
-                // Push unknown location to end of array ****** UNCOMMENT BELOW TO ENABLE UNKNOWN ON THE LIST ********* 
-                // sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
+                // Push unknown location to end of array
+                sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
 
             })
             .then(function() {

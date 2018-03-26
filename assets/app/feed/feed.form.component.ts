@@ -172,9 +172,10 @@ export class FeedFormComponent implements OnInit {
             { "id": 4, "itemName": "31-39", "input": "age", "min":30 , "max":39  },
             { "id": 5, "itemName": "40 - 49", "input": "age", "min":40 , "max": 49  },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min":50 , "max": 59 },
-            { "id": 7, "itemName": "60+", "input": "age", "min":60 , "max": 119  },
-            // { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
+            { "id": 7, "itemName": "60+", "input": "age", "min":60 , "max": 119  }
         ];
+        if (!this.form.loginRequired) this.ageList.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 })
+
 
         this.genderList = [
             { "id": 1, "input": "gender", "itemName": "Male" },
@@ -192,16 +193,17 @@ export class FeedFormComponent implements OnInit {
             { "id": 4, "itemName": "31-39", "input": "age", "min": 30, "max": 39 },
             { "id": 5, "itemName": "40 - 49", "input": "age", "min": 40, "max": 49 },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min": 50, "max": 59 },
-            { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 },
-            // { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
+            { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 }
         ];
+        if (!this.form.loginRequired) this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
+
 
         this.genderSelected = [
             { "id": 1, "input": "gender", "itemName": "Male" },
             { "id": 2, "input": "gender", "itemName": "Female" }        
         ];
 
-        if (!this.form.loginRequired) this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" })
+        if (!this.form.loginRequired) this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
 
         this.ageSettings = {
             singleSelection: false,
@@ -421,14 +423,44 @@ export class FeedFormComponent implements OnInit {
                 var tempage = [];
 
                 if (x.status == false) {
-                    this.ageSelected.pop;
-                    this.locationSelected.pop;
-                    this.genderSelected.pop;
+
+                    if(x.input = 'age') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName === "Unknown") this.locationSelected = this.locationSelected.slice(0, this.locationSelected.length - 1);
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName === "Unknown") this.genderSelected = this.genderSelected.slice(0, this.genderSelected.length - 1);
+                    }
+
+                    if (x.input = 'gender') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName === "Unknown") this.locationSelected = this.locationSelected.slice(0, this.locationSelected.length - 1);
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName === "Unknown") this.ageSelected = this.ageSelected.slice(0, this.ageSelected.length - 1);
+                    }
+
+                    if (x.input = 'location') {
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName === "Unknown") this.ageSelected = this.ageSelected.slice(0, this.ageSelected.length - 1);
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName === "Unknown") this.genderSelected = this.genderSelected.slice(0, this.genderSelected.length - 1);
+                    }
+
                     tempage = this.unknownage;
                     this.plotselection.age = this.plotselection.age.filter(function (e) { return tempage.indexOf(e) == -1 });
                     this.plotselection.location = this.plotselection.location.filter(function (e) { return x.itemName.indexOf(e) == -1 });
                     this.plotselection.gender = this.plotselection.gender.filter(function (e) { return tempgenderstring.indexOf(e) == -1 });
+
                 } else {
+                    
+                    if (x.input = 'age') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
+                    }
+
+                    if (x.input = 'gender') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
+                    }
+
+                    if (x.input = 'location') {
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
+                    }
+                    
                     tempage = this.unknownage;
                     this.plotselection.age = this.plotselection.age.concat(tempage);
                     this.plotselection.location = this.plotselection.location.concat(x.itemName);
