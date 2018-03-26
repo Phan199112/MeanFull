@@ -215,7 +215,7 @@ module.exports = function(app, passport, manager, hashids) {
                         }
                     }
 
-                    console.log("temp list ",memberlisttemp);
+                    //console.log("temp list ",memberlisttemp);
 
                     // query username and link of the person's network
                     var tempfunctionnetwork = function(x) {
