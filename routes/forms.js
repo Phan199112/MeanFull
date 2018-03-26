@@ -1345,8 +1345,10 @@ module.exports = function(app, passport, manager, hashids) {
             })
             .then(function() {
                 // Extract unknown location key/value to push to end of array
-                var unLoc = counts["Unknown"];
-                delete counts["Unknown"];                
+                if (counts["Unknown"]) {
+                    var unLoc = counts["Unknown"];
+                    delete counts["Unknown"];                
+                }
                 
                 for (var count in counts) {
                     sortable.push([count, Math.round(100*counts[count]/total)]);
@@ -1357,7 +1359,7 @@ module.exports = function(app, passport, manager, hashids) {
                 });
 
                 // Push unknown location to end of array
-                sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
+                if (counts["Unknown"]) sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
 
             })
             .then(function() {
