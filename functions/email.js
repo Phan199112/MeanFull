@@ -96,6 +96,22 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
 };
 
 
+exports.sendNotificationCommRequest = function sendNotificationCommRequest(email, user) {
+    var name = getUserDisplayName(user);
+    var subject = "You have been invited to join a community on Questionsly";
+    var messagesafe = "Hello! "+ name +" invited you to join a community on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+
+    renderTemplate("notification-form-request", {
+        subject: subject,
+        friendName: name,
+        pic: getUserPic(user),
+        link: `https://www.questionsly.com/settings;page=notifications`
+    }).then(function(html) {
+        exports.sendEmail(email, subject, html, messagesafe);
+    });
+};
+
+
 exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, user, link) {
     var name = getUserDisplayName(user);        
     var subject = "Survey comments on Questionsly";

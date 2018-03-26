@@ -38,7 +38,23 @@ module.exports = function(app, passport, manager, hashids) {
                     // write notifictions
                     if (unhashedAdmins != null) {
                         for (var i = 0; i < unhashedAdmins.length; i++) {
+                            // notification
                             notifications.createNotification(unhashedAdmins[i], req.session.userid, "comm-admin", "Community invitation", hashids.encodeHex(k._id));
+                            // send email
+                            UserModel.findById(unhashedAdmins[i], function(err, l) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    if (Object.keys(l.notifications).length === 0) {
+                                        if (l.notifications.commrequest === true) {
+                                            emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                        }
+                                    } else {
+                                        // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                        emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                    }
+                                }
+                            });
                         }
                     }
 
@@ -82,7 +98,23 @@ module.exports = function(app, passport, manager, hashids) {
                 // new admin notifictions
                 if (unhashedAdmins != null  && unhashedAdmins.length != 0) {
                     for (var i = 0; i < unhashedAdmins.length; i++) {
+                        // notification
                         notifications.createNotification(unhashedAdmins[i], req.session.userid, "comm-admin", "Community invitation", hashids.encodeHex(doc._id));
+                        // send email
+                        UserModel.findById(unhashedAdmins[i], function(err, l) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                if (Object.keys(l.notifications).length === 0) {
+                                    if (l.notifications.commrequest === true) {
+                                        emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                    }
+                                } else {
+                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                    emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                }
+                            }
+                        });
                     }
                 }
 
@@ -106,6 +138,21 @@ module.exports = function(app, passport, manager, hashids) {
                 req.body.userids.forEach(function(userid) {
                     var seluserid = hashids.decodeHex(userid);
                     notifications.createNotification(seluserid, req.session.userid, "comm", "Community invitation", req.body.commid);
+                    // send email
+                    UserModel.findById(seluserid, function(err, l) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            if (Object.keys(l.notifications).length === 0) {
+                                if (l.notifications.commrequest === true) {
+                                    emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                }
+                            } else {
+                                // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                            }
+                        }
+                    });
                 });
                 res.json({status: 1});
             } else {

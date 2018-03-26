@@ -127,6 +127,7 @@ module.exports = function(app, passport, manager, hashids) {
         // reformat the data
         var updateddate = {"notifications.networkrequest": req.body.networkrequest,
             "notifications.formrequest": req.body.formrequest,
+            "notifications.commrequest": req.body.commrequest,
             "notifications.discussion": req.body.discussion,
             "notifications.formactivity": req.body.formactivity};
 
