@@ -532,6 +532,22 @@
                                                 <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
                                             </div>
                                         </div>
+                                        <div class="row"  *ngIf="notification.type == 'form-shared'">
+                                            <div class="col-md-1">
+                                                <div *ngIf="!notification.seen">NEW</div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                {{notification.timestamp | date}}
+                                            </div>
+                                            <div class="col-md-5">
+                                                New response:
+                                                <a [routerLink]="['/feed', {'survey': notification.data}]" *ngIf="notification.seen">{{notification.details.title}}</a>
+                                                <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -157,6 +157,8 @@ export class NavbarComponent implements OnInit {
     notificationLink(notification) {
         switch (notification.type) {
             case "form":
+            case "form-shared":
+                return ['/feed', {'survey': notification.data}];
             case "form-answer":
                 return ['/feed', {'survey': notification.data}];
             case "form-discussion":
@@ -209,6 +211,8 @@ export class NavbarComponent implements OnInit {
         switch (notification.type) {
             case "form":
                 return `${name} has created a new survey`;
+            case "form-shared":
+                return `${name} has shared a survey`;
             case "form-answer":
                 return `${name} has answered your survey`;
             case "form-discussion":

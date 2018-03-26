@@ -111,6 +111,7 @@ export class SettingsComponent implements OnInit {
                     this.notificationsettings.form = this.fb.group({
                         networkrequest: [this.profile.notifications.networkrequest, Validators.required],
                         formrequest: [this.profile.notifications.formrequest, Validators.required],
+                        commrequest: [this.profile.notifications.commrequest, Validators.required],
                         discussion: [this.profile.notifications.discussion, Validators.required],
                         formactivity: [this.profile.notifications.formactivity, Validators.required]});
 
@@ -123,6 +124,15 @@ export class SettingsComponent implements OnInit {
                             {value: true, label: "Yes"},
                             {value: false, label: "No"}]
                     },
+                        {
+                            label: "Community requests",
+                            body: "Would you like to receive emails with community invitation requests?",
+                            name: "commrequest",
+                            type: "radio",
+                            options: [
+                                {value: true, label: "Yes"},
+                                {value: false, label: "No"}]
+                        },
                         {
                             label: "Form requests",
                             body: "Would you like to receive emails with form completion requests?",

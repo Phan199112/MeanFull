@@ -1,5 +1,6 @@
 var FormModel = require('../db.models/form.model');
 var AnswersModel = require('../db.models/answers.model');
+var CommunityModel = require('../db.models/community.model');
 var ReactionsModel = require('../db.models/reactions.model');
 var UserModel = require('../db.models/user.model');
 var log = require("../functions/logs");
@@ -21,10 +22,15 @@ module.exports = function(app, passport, manager, hashids) {
         // this is after page 2
         var receivedData = req.body;
 
+        var promisesnotifications = [];
+        var promises = [];
+
         // outputs
         var unhashedCommunities = [];
         var unhashedUsers = [];
         var categories = [];
+        var emailaddresses = [];
+        var formid = null;
 
         if (receivedData.sharedWithCommunities != null) {
             for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {
@@ -39,65 +45,142 @@ module.exports = function(app, passport, manager, hashids) {
             }
         }
 
-        for (let z=0; z<receivedData.categories.length; z++) {
-            categories.push(receivedData.categories[z].itemName);
+        if (receivedData.categories != null) {
+            for (var z=0; z<receivedData.categories.length; z++) {
+                categories.push(receivedData.categories[z].itemName);
+            }
+        }
+
+        // helper functions
+        var savecommunity = function() {
+            return new Promise(function (resolve, reject) {
+                FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
+                    {$set: {questions: receivedData.questions, title: receivedData.title, categories: categories,
+                            description: receivedData.description, anonymous: receivedData.anonymous,
+                            hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
+                            public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers,
+                            sharedWithCommunities: unhashedCommunities}}, function(err, k) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+
+                        } else {
+                            //
+                            console.log("wrote the form update");
+                            formid = k._id;
+                            resolve();
+                        }
+                    });
+            });
+        };
+
+        var getemailaddress = function (x) {
+            return new Promise(function (resolve, reject) {
+                UserModel.findById(x, function (err, l) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        // only send emails if the user allows it (notification setting)
+                        if (Object.keys(l.notifications).length === 0) {
+                            if (l.notifications.formrequest === true) {
+                                emailaddresses.push(l.email);
+                            }
+                        } else {
+                            // if no settings are recorded, emails should be send as this is default policity as signup as well
+                            emailaddresses.push(l.email);
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var getuserscomm = function (x) {
+            return new Promise(function (resolve, reject) {
+                CommunityModel.findById(x, function (err, c) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        if (c.members !== null) {
+                            for (l=0; l < c.members.length; l++) {
+                                unhashedUsers.push(c.members[l]);
+                            }
+
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        // sender information
+        var sender = {};
+
+        if (receivedData.anonymous === true) {
+            sender.name = {first: 'Anonymous', last: '', fb: null, pic: null};
+            sender.insite = null;
+
+        } else {
+            sender.name = {first: req.user.name.first, last: req.user.name.last, fb: req.user.fb, pic: req.user.pic};
+            sender.insite = req.session.userid;
         }
 
 
+        // start with saving the data and retrieving community members
+        promises.push(savecommunity());
 
-        // momgoDB update
-        FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
-            {$set: {questions: receivedData.questions, title: receivedData.title, categories: categories,
-            description: receivedData.description, anonymous: receivedData.anonymous,
-                    hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
-                public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers,
-                    sharedWithCommunities: unhashedCommunities, }}, function(err, k) {
-            if (err) {
-                res.send({status: 0});
+        if (unhashedCommunities.length > 0) {
+            unhashedCommunities.forEach(function(comm) {
+                promises.push(getuserscomm(comm));
+            });
+
+        }
+
+        return Promise.all(promises).then(function () {
+            // execute promisses to retrieve the email addresses
+            if (unhashedUsers.length > 0) {
+                // in-site notifications
+                for (i=0; i < unhashedUsers.length; i++) {
+                    notifications.createNotification(unhashedUsers[i], sender.insite, "form", "New survey", hashids.encodeHex(formid));
+                }
+
+                // retrieve email adresses
+                unhashedUsers.forEach(function(user) {
+                    promisesnotifications.push(getemailaddress(user));
+                });
 
             } else {
-                // notification
-                if (unhashedUsers != null) {
-                    for (var i = 0; i < unhashedUsers.length; i++) {
-                        // insite notification
-                        notifications.createNotification(unhashedUsers[i], req.session.userid, "form", "New survey", hashids.encodeHex(k._id));
-
-                        // email notification
-                        var sendername = '';
-                        if (receivedData.anonymous === true) {
-                            sendername = 'Anonymous';
-
-                        } else {
-                            if (req.user != null) {
-                                if (req.user.provider === "facebook") {
-                                    sendername = req.user.displayName;
-                                } else {
-                                    sendername = req.user.name.first+' '+req.user.name.last;
-                                }
-                            }
-                        }
-
-
-                        UserModel.findById(unhashedUsers[i], function(err, l) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                if (Object.keys(l.notifications).length === 0) {
-                                    if (l.notifications.formrequest === true) {
-                                        emailfunctions.sendNotificationFormRequest(l.email, req.user, hashids.encodeHex(k._id));
-                                    }
-                                } else {
-                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                    emailfunctions.sendNotificationFormRequest(l.email, req.user, hashids.encodeHex(k._id));
-                                }
-                            }
-                        });
-
-                    }
-                }
                 res.send({status: 1});
             }
-        });
+
+            return Promise.all(promisesnotifications).then(function () {
+                if (emailaddresses.length > 0) {
+                    // first check whether there are duplicates
+                    var alreadyincluded = [];
+
+                    // loop and check
+                    for (l = 0; l < emailaddresses.length; l++) {
+                        if (alreadyincluded.indexOf(emailaddresses[l]) === -1) {
+                            alreadyincluded.push(emailaddresses[l]);
+                            emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
+                        }
+                    }
+                    //
+                    res.send({status: 1});
+
+                } else {
+                    res.send({status: 1});
+                }
+            })
+                .catch(function() {
+                    res.send({status: 0});
+                });
+        })
+            .catch(function() {
+                res.send({status: 0});
+            });
     });
 
     app.get('/forms/mylist', manager.ensureLoggedIn('/users/login'), function (req, res) {
