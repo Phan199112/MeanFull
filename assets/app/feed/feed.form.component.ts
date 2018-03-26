@@ -69,9 +69,10 @@ export class FeedFormComponent implements OnInit {
 
     defaultages: string[] = [];
     // NEW: THIS IS THE DATA FED INTO THE FILTERS
-    plotselection: Object = {age: this.defaultages, location: [], gender: ['male', 'female']};
+    plotselection: Object = {age: this.defaultages, location: [], gender: ['male', 'female', 'unknown']};
 
     //ages
+    unknownage: string[] = ["Unknown"];
     valuesagesmin17: string[] = [];
     valuesages17to23: string[] = [];
     valuesages24to29: string[] = [];
@@ -133,6 +134,7 @@ export class FeedFormComponent implements OnInit {
             for (let i=0; i < 120; i++) {
                 this.defaultages.push(i);
             }
+            this.defaultages.push("Unknown");
 
             for (let i=0; i < 17; i++) {
                 this.valuesagesmin17.push(i);
@@ -172,11 +174,13 @@ export class FeedFormComponent implements OnInit {
             { "id": 5, "itemName": "40 - 49", "input": "age", "min":40 , "max": 49  },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min":50 , "max": 59 },
             { "id": 7, "itemName": "60+", "input": "age", "min":60 , "max": 119  },
+            { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
         ];
 
         this.genderList = [
             { "id": 1, "input": "gender", "itemName": "Male" },
             { "id": 2, "input": "gender", "itemName": "Female" },
+            { "id": 3, "input": "gender", "itemName": "Unknown" },            
         ];
 
         this.locationList = [];
@@ -189,11 +193,13 @@ export class FeedFormComponent implements OnInit {
             { "id": 5, "itemName": "40 - 49", "input": "age", "min": 40, "max": 49 },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min": 50, "max": 59 },
             { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 },
+            { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
         ];
 
         this.genderSelected = [
             { "id": 1, "input": "gender", "itemName": "Male" },
             { "id": 2, "input": "gender", "itemName": "Female" },
+            { "id": 3, "input": "gender", "itemName": "Unknown" },            
         ];
 
         this.ageSettings = {
@@ -229,10 +235,6 @@ export class FeedFormComponent implements OnInit {
     onItemSelect(item: any) {
         item.status = true;
         this.doDataSelectionUpdate(item);
-
-        // if(item.input === "location" && item.itemName === "Other") {
-        //     this.question
-        // }
     }
     OnItemDeSelect(item: any) {
         item.status = false;
@@ -389,26 +391,25 @@ export class FeedFormComponent implements OnInit {
                     this.locationSelected.push({ id: ind + 1, itemName: loc.itemName, input: "location"});
                 });
 
-                // this.locationList.push({ id: tempLocation.length + 1, itemName: "other", input: "location" });
-                // this.locationSelected.push({ id: tempLocation.length + 1, itemName: "other", input: "location" });
-
 
                 // deal with the possibility of more than 5 locations
-                var other = response.json().otherlocations;
-                if (other != null) {
-                    this.otherloc = true;
+                // var other = response.json().otherlocations;
+                // if (other != null) {
+                //     this.otherloc = true;
 
-                    other.map((loc, ind) => {
-                        this.locationList.push({ id: tempLocation.length + ind+ 1, itemName: loc[0], input: "location" });
-                        this.locationSelected.push({ id:tempLocation.length + ind + 1, itemName: loc[0], input: "location" });
-                    });
+                //     other.map((loc, ind) => {
+                //         this.locationList.push({ id: tempLocation.length + ind+ 1, itemName: loc[0], input: "location" });
+                //         this.locationSelected.push({ id:tempLocation.length + ind + 1, itemName: loc[0], input: "location" });
+                //     });
 
+                //     this.locationList.push({ id: tempLocation.length + other.length + 1, itemName:"Unknown", input: "location" });
+                //     this.locationSelected.push({ id: tempLocation.length + other.length + 1, itemName:"Unknown", input: "location" });
 
-                    for (let o of other) {
-                        this.otherlocations.push(o[0]);
-                        this.plotselection.location.push(o[0]);
-                    }
-                }
+                //     for (let o of other) {
+                //         this.otherlocations.push(o[0]);
+                //         this.plotselection.location.push(o[0]);
+                //     }
+                // }
             })
             .catch(error => {
             });
@@ -425,9 +426,11 @@ export class FeedFormComponent implements OnInit {
             if (x.status == false) {
                 // remove entries from the array
                 var tempremoval = [];
-                if (x.min === 0) {
+                if (x.min === -1) {
+                    tempremoval = this.unknownage;
+                } else if (x.min === 0) {
                     tempremoval = this.valuesagesmin17;
-                }  else if (x.min === 17) {
+                } else if (x.min === 17) {
                     tempremoval = this.valuesages17to23;
                 } else if (x.min === 24) {
                     tempremoval = this.valuesages24to29;
@@ -447,7 +450,9 @@ export class FeedFormComponent implements OnInit {
 
                 // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
                 var tempadd = [];
-                if (x.min === 0) {
+                if (x.min === -1) {
+                    tempadd = this.unknownage;
+                } else if (x.min === 0) {
                     tempadd = this.valuesagesmin17;
                 } else if (x.min === 17) {
                     tempadd = this.valuesages17to23;

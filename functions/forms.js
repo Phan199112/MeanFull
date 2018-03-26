@@ -196,7 +196,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                 if (users[current.userid] != null) {
                     var proceed = false;
 
-                    if (users[current.userid].type === true) {
+                    if (users[current.userid].type === true) { //This is for users with accounts
                         // a registered user
 
                         if (users[current.userid].location != null) {
@@ -230,13 +230,20 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                             proceed = true;
                         }
 
-                    } else if (users[current.userid].type === false) {
-                        //
-                        if (all === true) {
+                    } else if (users[current.userid].type === false) {    //This is for anonymous users
+                        templocation = "Unknown";
+                        age = "Unknown";
+                        tempgender = "unknown";
+
+                        // Change last two || to && if they must all filters must be unknown for this answer to be counted
+                        if (all === true || (param.age.indexOf(age) !== -1) || (param.location.indexOf(templocation) !== -1) || (param.gender.indexOf(tempgender) !== -1)) {
                             proceed = true;
                         }
 
                     }
+
+
+                    
 
                     if (proceed) {
                         // New code

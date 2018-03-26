@@ -1226,7 +1226,12 @@ module.exports = function(app, passport, manager, hashids) {
                     var promise = new Promise(function(resolve, reject){
                         UserModel.findById(x, function (err, k) {
                             if (err) {
-                                reject(err);
+                                if(x == 'anonymous') {
+                                    authorprofiles.push("Unknown");
+                                    resolve();
+                                } else{
+                                    reject(err);
+                                }
                             } else {
                                 if (k !== null) {
                                     authorprofiles.push(k.location.city+", "+k.location.state+", "+k.location.country);
@@ -1256,6 +1261,10 @@ module.exports = function(app, passport, manager, hashids) {
                 }
             })
             .then(function() {
+                // Extract unknown location key/value to push to end of array
+                var unLoc = counts["Unknown"];
+                delete counts["Unknown"];                
+                
                 for (var count in counts) {
                     sortable.push([count, Math.round(100*counts[count]/total)]);
                 }
@@ -1263,18 +1272,23 @@ module.exports = function(app, passport, manager, hashids) {
                 sortable.sort(function(a, b) {
                     return b[1] - a[1];
                 });
+
+                // Push unknown location to end of array
+                sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
+
             })
             .then(function() {
-                keylocations = sortable.slice(0, Math.min(3,sortable.length));
-                if (sortable.length > 3) {
-                    otherlocations = sortable.slice(3, sortable.length);
-                }
+                // keylocations = sortable.slice(0, Math.min(3,sortable.length));
+                // if (sortable.length > 3) {
+                //     otherlocations = sortable.slice(3, sortable.length);
+                // }
             })
             .then(function() {
                 res.json({
                     status: 1,
-                    data: keylocations,
-                    otherlocations: otherlocations
+                    data: sortable,
+                    // data: keylocations,
+                    // otherlocations: otherlocations
                 });
 
                 // data is send as array, hence the location is kept constant.
@@ -1444,9 +1458,6 @@ module.exports = function(app, passport, manager, hashids) {
                             if (formcompleted) {
 
                                 console.log('user completed form');
-
-                                console.log("**********************Made it here**********************")
-
 
                                 // get all data and analyze
                                 getformanswers(formid).then(function () {
