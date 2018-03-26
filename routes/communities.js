@@ -8,6 +8,7 @@ var usersfunctions = require('../functions/users');
 var notifications = require("../functions/notifications");
 var commfunctions = require('../functions/communities');
 var formfunctions = require('../functions/forms');
+var emailfunctions 	= require("../functions/email");
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -613,6 +614,77 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var formid = hashids.decodeHex(req.body.formid);
 
+        var emailaddresses = [];
+        var commuserslist = [];
+
+        // helper functions
+        var getemailaddress = function (x) {
+            return new Promise(function (resolve, reject) {
+                UserModel.findById(x, function (err, l) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        // only send emails if the user allows it (notification setting)
+                        if (Object.keys(l.notifications).length === 0) {
+                            if (l.notifications.formrequest === true) {
+                                emailaddresses.push(l.email);
+                            }
+                        } else {
+                            // if no settings are recorded, emails should be send as this is default policity as signup as well
+                            emailaddresses.push(l.email);
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var getuserscomm = function (x) {
+            return new Promise(function (resolve, reject) {
+                CommunityModel.findById(x, function (err, c) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        if (c.members !== null) {
+                            for (l=0; l < c.members.length; l++) {
+                                commuserslist.push(c.members[l]);
+                            }
+
+                        }
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        var sharetocomm = function() {
+            return new Promise(function (resolve, reject) {
+                FormModel.findByIdAndUpdate({_id: formid}, {$push: {sharedWithCommunities: commid}}, function(err, k) {
+                    if (err) {
+                        reject(err);
+
+                    } else {
+                        log.writeLog(req.session.userid, 'shared form in community', req.ip);
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        // information on the sender of the email
+        // here it is never anonymous
+        // sender information
+        var sender = {};
+        sender.name = {first: req.user.name.first, last: req.user.name.last, fb: req.user.fb, pic: req.user.pic};
+        sender.insite = req.session.userid;
+
+        // promises
+        var promises = [];
+        var promisesnotifications = [];
+
+
         // double check first to see whether this form is public, and if not whether the current user is the author
         new Promise(function (resolve, reject) {
             formfunctions.formPublic(formid).then(function(result) {
@@ -639,23 +711,61 @@ module.exports = function(app, passport, manager, hashids) {
 
         })
             .then(function() {
-                FormModel.findByIdAndUpdate({_id: formid}, {$push: {sharedWithCommunities: commid}}, function(err, k) {
-                    if (err) {
-                        console.log("Error in sharing form with community"+err);
+                // share the form
+                promises.push(sharetocomm());
+                // get the users in the comm
+                promises.push(getuserscomm(commid));
+
+                // execute this promise list
+                return Promise.all(promises).then(function () {
+                    // execute promisses to retrieve the email addresses
+                    if (commuserslist.length > 0) {
+                        // in-site notifications
+                        for (i=0; i < commuserslist.length; i++) {
+                            notifications.createNotification(commuserslist[i], sender.insite, "form-shared", "Shared survey", hashids.encodeHex(formid));
+                        }
+
+                        // retrieve email adresses
+                        commuserslist.forEach(function(user) {
+                            promisesnotifications.push(getemailaddress(user));
+                        });
 
                     } else {
-                        console.log("Sharing form with community");
-                        log.writeLog(req.session.userid, 'shared form in community', req.ip);
-                        res.json({status: 1});
-
+                        res.send({status: 1});
                     }
-                });
+
+                    return Promise.all(promisesnotifications).then(function () {
+                        if (emailaddresses.length > 0) {
+                            // first check whether there are duplicates
+                            var alreadyincluded = [];
+
+                            // loop and check
+                            for (l = 0; l < emailaddresses.length; l++) {
+                                if (alreadyincluded.indexOf(emailaddresses[l]) === -1) {
+                                    alreadyincluded.push(emailaddresses[l]);
+                                    emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
+                                }
+                            }
+                            //
+                            res.send({status: 1});
+
+                        } else {
+                            res.send({status: 1});
+                        }
+                    })
+                        .catch(function() {
+                            res.send({status: 0});
+                        });
+                })
+                    .catch(function() {
+                        res.send({status: 0});
+                    });
+
+
             })
             .catch(function() {
                 res.json({status: 0});
             });
-
-
 
     });
 };
