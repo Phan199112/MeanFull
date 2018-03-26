@@ -236,7 +236,7 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                         tempgender = "unknown";
 
                         // Change last two || to && if they must all filters must be unknown for this answer to be counted
-                        if (all === true || (param.age.indexOf(age) !== -1) || (param.location.indexOf(templocation) !== -1) || (param.gender.indexOf(tempgender) !== -1)) {
+                        if (all === true || (param.age.indexOf(age) !== -1) && (param.location.indexOf(templocation) !== -1) && (param.gender.indexOf(tempgender) !== -1)) {
                             proceed = true;
                         }
 

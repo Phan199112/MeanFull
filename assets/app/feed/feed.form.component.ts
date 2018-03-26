@@ -106,7 +106,6 @@ export class FeedFormComponent implements OnInit {
         // update reactions
         // this.intReactionData = this.form.reactions;
         // this.reactionData = this.reactionssummary(this.intReactionData);
-        window.console.log("Boom:", this.form);
 
         // get profile info
         this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
@@ -174,14 +173,15 @@ export class FeedFormComponent implements OnInit {
             { "id": 5, "itemName": "40 - 49", "input": "age", "min":40 , "max": 49  },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min":50 , "max": 59 },
             { "id": 7, "itemName": "60+", "input": "age", "min":60 , "max": 119  },
-            { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
+            // { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
         ];
 
         this.genderList = [
             { "id": 1, "input": "gender", "itemName": "Male" },
-            { "id": 2, "input": "gender", "itemName": "Female" },
-            { "id": 3, "input": "gender", "itemName": "Unknown" },            
+            { "id": 2, "input": "gender", "itemName": "Female" }
         ];
+        if (!this.form.loginRequired) this.genderList.push({ "id": 3, "input": "gender", "itemName": "Unknown" })
+
 
         this.locationList = [];
 
@@ -193,14 +193,15 @@ export class FeedFormComponent implements OnInit {
             { "id": 5, "itemName": "40 - 49", "input": "age", "min": 40, "max": 49 },
             { "id": 6, "itemName": "50 - 59", "input": "age", "min": 50, "max": 59 },
             { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 },
-            { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
+            // { "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 },
         ];
 
         this.genderSelected = [
             { "id": 1, "input": "gender", "itemName": "Male" },
-            { "id": 2, "input": "gender", "itemName": "Female" },
-            { "id": 3, "input": "gender", "itemName": "Unknown" },            
+            { "id": 2, "input": "gender", "itemName": "Female" }        
         ];
+
+        if (!this.form.loginRequired) this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" })
 
         this.ageSettings = {
             singleSelection: false,
@@ -259,9 +260,6 @@ export class FeedFormComponent implements OnInit {
         this.http.post('/forms/data', data)
             .toPromise()
             .then(response => {
-
-                window.console.log("NOWHERE", response.json());
-
                 let responsedata = response.json().data;
                 let responsestatus = response.json().status;
                 // let responsereaction = response.json().reaction;
@@ -288,11 +286,11 @@ export class FeedFormComponent implements OnInit {
                     this.showdiscussion = true;
                     this.count = response.json().count;
 
-                    if (this.form.typeevent) {
-                        this.retrieveEventData();
-                    }
+                    // if (this.form.typeevent) {
+                    //     this.retrieveEventData();
+                    // }
 
-                    this.retrieveEventDataTotals();
+                    // this.retrieveEventDataTotals();
 
                     this.form.setShowData(true);
 
@@ -340,11 +338,9 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         data.id = this.form.id;
-        // window.console.log("Presubmit: ", data.questions);
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
 
-            window.console.log("Oooooo: ", response.json());
               if (response.json().status == 1) {
                   this.submitted = true;
                   this.form.answered = true;
@@ -418,17 +414,35 @@ export class FeedFormComponent implements OnInit {
 // NEW: THIS IS THE FUNCTION THATS CALLED WHEN THE FORM CONTROL IS CHANGED
     doDataSelectionUpdate(x) {
         this.form.viewGraphs(false);
+
+            if(x.itemName == "Unknown") {
+
+                var tempgenderstring = ["unknown"];
+                var tempage = [];
+
+                if (x.status == false) {
+                    this.ageSelected.pop;
+                    this.locationSelected.pop;
+                    this.genderSelected.pop;
+                    tempage = this.unknownage;
+                    this.plotselection.age = this.plotselection.age.filter(function (e) { return tempage.indexOf(e) == -1 });
+                    this.plotselection.location = this.plotselection.location.filter(function (e) { return x.itemName.indexOf(e) == -1 });
+                    this.plotselection.gender = this.plotselection.gender.filter(function (e) { return tempgenderstring.indexOf(e) == -1 });
+                } else {
+                    tempage = this.unknownage;
+                    this.plotselection.age = this.plotselection.age.concat(tempage);
+                    this.plotselection.location = this.plotselection.location.concat(x.itemName);
+                    this.plotselection.gender = this.plotselection.gender.concat(tempgenderstring);
+                }
+            }
         
-        // NEW: INPUT CHANGE WAS FOR AGE
-        if (x.input == 'age') {
+        if (x.itemName !== "Unknown" && x.input == 'age') {
 
             // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
             if (x.status == false) {
                 // remove entries from the array
                 var tempremoval = [];
-                if (x.min === -1) {
-                    tempremoval = this.unknownage;
-                } else if (x.min === 0) {
+                if (x.min === 0) {
                     tempremoval = this.valuesagesmin17;
                 } else if (x.min === 17) {
                     tempremoval = this.valuesages17to23;
@@ -450,9 +464,7 @@ export class FeedFormComponent implements OnInit {
 
                 // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
                 var tempadd = [];
-                if (x.min === -1) {
-                    tempadd = this.unknownage;
-                } else if (x.min === 0) {
+                if (x.min === 0) {
                     tempadd = this.valuesagesmin17;
                 } else if (x.min === 17) {
                     tempadd = this.valuesages17to23;
@@ -472,7 +484,7 @@ export class FeedFormComponent implements OnInit {
 
             }
 
-        } else if (x.input == 'location') {
+        } else if (x.itemName !== "Unknown" && x.input == 'location') {
 
             if (x.status == false) {
                 if (x.value != 'other') {
@@ -497,7 +509,7 @@ export class FeedFormComponent implements OnInit {
 
             }
 
-        } else if (x.input == 'gender') {
+        } else if (x.itemName !== "Unknown" && x.input == 'gender') {
             // Something to filter it
             var tempgenderstring = [x.itemName.toLowerCase()];
 
@@ -513,10 +525,7 @@ export class FeedFormComponent implements OnInit {
     }
 
     executePlotDataRetrieval() {
-        console.log('update plotselection: ',this.plotselection);
         // post and get response
-
-        window.console.log("Other check: ", this.plotselection);
         this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
             .then(response => {
@@ -548,6 +557,7 @@ export class FeedFormComponent implements OnInit {
                 }
             })
             .catch(error => {
+                //Used to disenable graphs for non logged in users
                 this.form.setAnswered(false);
             });
     }
@@ -610,26 +620,26 @@ export class FeedFormComponent implements OnInit {
 
     }
 
-    retrieveEventData() {
-        this.http.post(`/forms/resultstable`, {formid: this.form.id}).toPromise()
-            .then(res => {
-                if (res.json().status == '1') {
-                    this.eventdatatable = res.json().data;
-                    this.form.eventdatatotals = res.json().totals;
-                    this.form.eventplot = true;
-                }
-            });
-    }
+    // retrieveEventData() {
+    //     this.http.post(`/forms/resultstable`, {formid: this.form.id}).toPromise()
+    //         .then(res => {
+    //             if (res.json().status == '1') {
+    //                 this.eventdatatable = res.json().data;
+    //                 this.form.eventdatatotals = res.json().totals;
+    //                 this.form.eventplot = true;
+    //             }
+    //         });
+    // }
 
-    retrieveEventDataTotals() {
-        this.http.post(`/forms/resultstabletotals`, {formid: this.form.id}).toPromise()
-            .then(res => {
-                if (res.json().status == '1') {
-                    this.form.eventdatatotals = res.json().totals;
-                    this.form.viewTablesbool = true;
-                }
-            });
-    }
+    // retrieveEventDataTotals() {
+    //     this.http.post(`/forms/resultstabletotals`, {formid: this.form.id}).toPromise()
+    //         .then(res => {
+    //             if (res.json().status == '1') {
+    //                 this.form.eventdatatotals = res.json().totals;
+    //                 this.form.viewTablesbool = true;
+    //             }
+    //         });
+    // }
 
     ResetDataForm() {
         //

@@ -1356,8 +1356,8 @@ module.exports = function(app, passport, manager, hashids) {
                     return b[1] - a[1];
                 });
 
-                // Push unknown location to end of array
-                sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
+                // Push unknown location to end of array ****** UNCOMMENT BELOW TO ENABLE UNKNOWN ON THE LIST ********* 
+                // sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
 
             })
             .then(function() {
@@ -1627,7 +1627,9 @@ module.exports = function(app, passport, manager, hashids) {
         // } If end
     });
 
-    app.post('/forms/alldata', manager.ensureLoggedIn('/users/login'), function(req, res) {
+    // Switch commented out one with current one to disenable filters for non logged in users
+    // app.post('/forms/alldata', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/forms/alldata', function(req, res) {
         // query answersdata for answers from the logged in user
         // unhash
         var formid = hashids.decodeHex(req.body.link);
