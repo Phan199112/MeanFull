@@ -1359,7 +1359,7 @@ module.exports = function(app, passport, manager, hashids) {
                 });
 
                 // Push unknown location to end of array
-                if (counts["Unknown"]) sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
+                if (unLoc) sortable.push(["Unknown", Math.round(100 * counts[unLoc] / total)]);
 
             })
             .then(function() {
