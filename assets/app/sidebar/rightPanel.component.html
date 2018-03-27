@@ -19,9 +19,9 @@
 <div class="sContainer">
     <h3 class="lpText small">Categories</h3>
     <div class="catList">
-        <div *ngFor="let c of categories" class="catContainer">
-            <img class="catIcon" src ="/images/icons/dumbbell.svg" />
-            <span class="catTitle">{{c}}</span>
+        <div *ngFor="let c of categories" class="catContainer" (click)="toggleCategory(c)">
+            <img class="catIcon" src ="/images/icons/next.svg" />
+            <span class="catTitle" [ngClass]="{selected: c === currentCat}">{{c}}</span>
         </div>
     </div>
 </div>

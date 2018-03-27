@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { Http } from "@angular/http";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import {Router, Routes} from "@angular/router";
@@ -13,11 +13,13 @@ import { CommunityListComponent } from "../communityContainer/community.list.com
 })
 export class RightPanel implements OnInit {
     @Input() loggedin: boolean;
+    @Output() toggledCat: EventEmitter<string> = new EventEmitter<string>();
+    currentCat: string;
     communities: Object[];
     users : Object[];
     postResults: Array<Object>;
     currentEmo: string = null;
-    categories: Array<string> = ["Education", "Health", "Business", "Technology", "Cooking", "Home Improvement", "Fitness", "Fashion", "Automotive"]
+    categories: Array<string> = ["Automotive", "Business", "Cooking", "Education", "Entertainment", "Fashion", "Food", "Fitness", "Health", "Home Improvement", "Sports", "Technology"]
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router) {  
@@ -28,6 +30,8 @@ export class RightPanel implements OnInit {
      }
 
     ngOnInit() {
+
+        this.currentCat = null;
 
         this.http.get('/users/feedlist')
             .toPromise()
@@ -65,6 +69,17 @@ export class RightPanel implements OnInit {
             return;
         }
         this.currentEmo = reaction;
+    }
+
+    toggleCategory(cat: string) : void {
+        if (this.currentCat == null) {
+            this.currentCat = cat;
+            this.toggledCat.emit(cat);
+        } else {
+            this.currentCat = null;
+            this.toggledCat.emit(null);
+        }
+        
     }
 
 
