@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { Http } from "@angular/http";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-import {Router, Routes} from "@angular/router";
+import { Router, Routes } from "@angular/router";
 import { CommunityListComponent } from "../communityContainer/community.list.component";
 
 // import { UserService } from "../user.service";
@@ -16,18 +16,18 @@ export class RightPanel implements OnInit {
     @Output() toggledCat: EventEmitter<string> = new EventEmitter<string>();
     currentCat: string;
     communities: Object[];
-    users : Object[];
+    users: Object[];
     postResults: Array<Object>;
     currentEmo: string = null;
     categories: Array<string> = ["Automotive", "Business", "Cooking", "Education", "Entertainment", "Fashion", "Food", "Fitness", "Health", "Home Improvement", "Sports", "Technology"]
-    
 
-    constructor(private http: Http, private fb: FormBuilder, private router: Router) {  
+
+    constructor(private http: Http, private fb: FormBuilder, private router: Router) {
         this.users = [];
         this.postResults = []
 
         // TO-DO: fetch first batch of top posts
-     }
+    }
 
     ngOnInit() {
 
@@ -40,11 +40,11 @@ export class RightPanel implements OnInit {
             }
 
         this.http.post(`/community/list`, { user: this.user }).toPromise()
-        .then(res => {
-            if (res.json().status == 1) {
-                this.communities = res.json().data;
-            }
-        }).catch(error => alert("Error retrieving form: " + error));
+                    .then(res => {
+                        if (res.json().status == 1) {
+                            this.communities = res.json().data;
+                        }
+                    }).catch(error => alert("Error retrieving form: " + error));
 
 
 
@@ -63,7 +63,7 @@ export class RightPanel implements OnInit {
     }
 
 
-    chooseReaction(reaction: string) : void {
+    chooseReaction(reaction: string): void {
         if (this.currentEmo === reaction) {
             this.currentEmo = null;
             return;
@@ -71,15 +71,15 @@ export class RightPanel implements OnInit {
         this.currentEmo = reaction;
     }
 
-    toggleCategory(cat: string) : void {
-        if (this.currentCat == null) {
-            this.currentCat = cat;
-            this.toggledCat.emit(cat);
-        } else {
+    toggleCategory(cat: string): void {
+        if (this.currentCat === cat) {
             this.currentCat = null;
             this.toggledCat.emit(null);
+        } else {
+            this.currentCat = cat;
+            this.toggledCat.emit(cat);
         }
-        
+
     }
 
 

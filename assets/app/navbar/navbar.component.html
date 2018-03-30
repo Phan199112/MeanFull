@@ -20,9 +20,9 @@
                             </a>
                         </li> -->
                         <!--<li class="nav-item">-->
-                            <!--<a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">-->
-                                <!--Create Event-->
-                            <!--</a>-->
+                        <!--<a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">-->
+                        <!--Create Event-->
+                        <!--</a>-->
                         <!--</li>-->
                         <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                             <div *ngIf="pictype" class="d-inline-block">
@@ -30,25 +30,53 @@
                                     <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
                                 </div>
                                 <div *ngIf="pictype == 'local'">
-                                    <img class="userImage" [src]="pic"/>
+                                    <img class="userImage" [src]="pic" />
                                 </div>
                                 <div *ngIf="pictype == 'default-male'">
-                                    <img class="userImage" src="/images/male.png"/>
+                                    <img class="userImage" src="/images/male.png" />
                                 </div>
                                 <div *ngIf="pictype == 'default-female'">
-                                    <img class="userImage" src="/images/female.png"/>
+                                    <img class="userImage" src="/images/female.png" />
                                 </div>
                             </div>
                             <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>
                         </li>
+
+                        <div style="display: flex; align-items: center; padding-bottom: 8px; margin-right: 18px;">
+                            <li>
+                                <div class="position-relative">
+                                    <div (click)="toggleNotifications()" class="toggleNot">
+                                        <i class="fa fa-bell" aria-hidden="true"></i>
+                                        <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+                                    </div>
+
+                                    <div class="notificationDropdown" *ngIf="showNotifications">
+                                        <div *ngFor="let notification of notifications.reverse(); let i = index">
+                                            <div *ngIf="i<9" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                                <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                                    <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                                    <div class="flex fCol" style="max-width: 300px; ">
+                                                        <p style="color: #333; margin: 0; font-size: .8rem">{{notificationMessage(notification)}}</p>
+                                                        <p style="margin: 0; color: #AAA; font-size: .7rem">Tuesday March 29th 7:27 PM</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </li>
+                        </div>
+                        <!-- 
                         <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
                             <li [ngClass]="{
                                 'nav-item': true,
-                                'd-none': true,
-                                'd-sm-block': placement == 'bottom-right', 
-                                'd-xl-none': placement == 'bottom-right',
+                                'd-none': true, 
+                                'd-sm-block': placement == 'bottom-left', 
+                                'd-xl-none': placement == 'bottom-left',
                                 'd-xl-block': placement == 'bottom-left'
-                            }" ngbDropdown [placement]="placement">                        
+                            }" ngbDropdown [placement]="'bottom-left'">                        
                                 <a class="navlinks nav-link custom-dropdown-toggle"
                                     id="notifications" 
                                     ngbDropdownToggle
@@ -57,14 +85,15 @@
                                     <div class="position-relative">
                                         <i class="fa fa-bell" aria-hidden="true"></i>
                                         <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+                                        <div></div>
                                     </div>
                                 </a>
-                                <div class="p-0 notifications" ngbDropdownMenu aria-labelledby="notifications">
+                                <div class=" " ngbDropdownMenu aria-labelledby="notifications">
                                     <div *ngFor="let notification of notifications.reverse(); let i = index">
                                         <div *ngIf="i<5" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdown-item" [routerLink]="notificationLink(notification)" >
                                             <div (click)="setAsSeen(notification)">
                                                 <img src="{{notificationPic(notification)}}"/>
-                                                <span>{{notificationMessage(notification)}}</span>
+                                                <span style="color: black">{{notificationMessage(notification)}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -73,26 +102,22 @@
                                     </div>
                                 </div>
                             </li>
-                        </div>
+                        </div> -->
+
                         <li class="nav-item d-sm-none">
                             <a class="navlinks nav-link" [routerLink]="['/settings', {'page': 'notifications'}]">
-                                <i class="fa fa-bell" aria-hidden="true"></i>                            
+                                <i class="fa fa-bell" aria-hidden="true"></i>
                             </a>
                         </li>
                         <div class="d-none d-sm-block">
-                            <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
+                            <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
                                 <li [ngClass]="{
                                     'nav-item': true, 
                                     'd-none': placement == 'bottom-left', 
                                     'd-xl-block': placement == 'bottom-left',
                                     'd-xl-none': placement == 'bottom-right'
                                 }" ngbDropdown [placement]="placement">
-                                    <a 
-                                        class="navlinks nav-link custom-dropdown-toggle"
-                                        id="nav-bar-actions" 
-                                        ngbDropdownToggle 
-                                        aria-haspopup="true" 
-                                        aria-expanded="false">
+                                    <a class="navlinks nav-link custom-dropdown-toggle" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-cog" aria-hidden="true"></i>
                                     </a>
                                     <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">

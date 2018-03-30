@@ -36,11 +36,11 @@ export class FeedListComponent implements OnInit, OnChanges {
 
             this.refreshFeed();
         });
-        
+
     }
 
     ngOnChanges() {
-            this.refreshFeed();
+        this.refreshFeed();
     }
 
 
@@ -57,7 +57,11 @@ export class FeedListComponent implements OnInit, OnChanges {
                     // create new list
                     this.data = res.json().data;
                     for (let obj of this.data) {
+<<<<<<< HEAD
                         //window.console.log("pre feedform:", obj);;
+=======
+                        // window.console.log("pre feedform:", obj);;
+>>>>>>> ff12f5c0971fab2cc32363f5cc98618dd5bfab2d
                         this.feedlist.push(new FeedForm(obj));
                     }
 

@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import {Http} from "@angular/http";
-import {UserService} from "../user.service";
-import {ShareService} from "../share.service";
-import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
-import {Router} from "@angular/router";
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import { Http } from "@angular/http";
+import { UserService } from "../user.service";
+import { ShareService } from "../share.service";
+import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-navbar',
@@ -25,10 +25,11 @@ export class NavbarComponent implements OnInit {
     pictype: string;
     picdata: Object;
     notifications: string[] = [];
-    //
     unreadNotifications: number = 0;
     events: any;
     gender: string;
+    showNotifications: boolean = false;
+
 
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler;
@@ -137,6 +138,8 @@ export class NavbarComponent implements OnInit {
 
                         //var eventid = hashids.decodeHex(req.body.id);
 
+                        window.console.log("EVENTS: ", eventsdata.json());
+                        this.events = eventsdata.json().events; // array of objects
 
                         // clear the current list
                         this.clearNotifications();
@@ -156,19 +159,12 @@ export class NavbarComponent implements OnInit {
         });
     }
 
-     hex2a(hex) {
-        var str = '';
-        for (var i = 0; i < hex.length; i += 2) str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        return str;
-    }
-    
-
     setAsSeen(notification) {
         if (notification.seen) return;
-        this.http.post('/events/seen', {id: notification.id}).toPromise()
+        this.http.post('/events/seen', { id: notification.id }).toPromise()
             .then(eventsdata => {
                 this.unreadNotifications--;
-                notification.seen = true;                
+                notification.seen = true;
             });
     }
 
@@ -176,19 +172,19 @@ export class NavbarComponent implements OnInit {
         switch (notification.type) {
             case "form":
             case "form-shared":
-                return ['/feed', {'survey': notification.data}];
+                return ['/feed', { 'survey': notification.data }];
             case "form-answer":
-                return ['/feed', {'survey': notification.data}];
+                return ['/feed', { 'survey': notification.data }];
             case "form-discussion":
                 if (typeof notification.data == "object") {
-                    return ['/feed', {'survey': notification.data.formid, 'message': notification.data.messageid}];
+                    return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
                 } else {
-                    return ['/feed', {'survey': notification.data}];                    
+                    return ['/feed', { 'survey': notification.data }];
                 }
             case "network":
             case "comm":
             case "comm-admin":
-                return ['/settings', {'page': 'notifications'}];
+                return ['/settings', { 'page': 'notifications' }];
         }
     }
 
@@ -228,19 +224,19 @@ export class NavbarComponent implements OnInit {
 
         switch (notification.type) {
             case "form":
-                return `${name} has created a new survey`;//get the text from the database
+                return `${name} has created a new survey`;
             case "form-shared":
                 return `${name} has shared a survey`;
             case "form-answer":
                 return `${name} has answered your survey`;
             case "form-discussion":
-                return `${name} has commented on your survey`;            
+                return `${name} has commented on your survey. Be happy motherfucker.`;
             case "network":
                 return `${name} has invited you to be a part of ${pronoun} network`;
             case "comm":
                 return `${name} has invited you to a community`;
             case "comm-admin":
-                return `${name} has invited you to be an admin in a community`;                        
+                return `${name} has invited you to be an admin in a community`;
         }
     }
 
@@ -254,7 +250,7 @@ export class NavbarComponent implements OnInit {
     }
 
     onDocClick(event) {
-        if (!this.toggler.nativeElement.contains(event.target))  {
+        if (!this.toggler.nativeElement.contains(event.target)) {
             this.navExpanded = false;
         }
     }
@@ -286,5 +282,8 @@ export class NavbarComponent implements OnInit {
     }
 
 
+    toggleNotifications() {
+        this.showNotifications = !this.showNotifications;
+    }
 
 }
