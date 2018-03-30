@@ -131,7 +131,8 @@ export class NavbarComponent implements OnInit {
                     .then(eventsdata => {
                         // store the data
                         this.events = eventsdata.json().events; // array of objects
-                        window.console.log("the eventData is", this.events);
+                        window.console.log("the eventdata is", this.events);
+                        
                         //get the question that the user posted
 
                         //var eventid = hashids.decodeHex(req.body.id);
@@ -143,10 +144,10 @@ export class NavbarComponent implements OnInit {
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
-                                let hashedFormId = e["data"];
-                                window.console.log("hashed is", hashedFormId);
-                                let unHashed = this.hex2a (hashedFormId);
-                                window.console.log("data is", hashedFormId);
+                                // let hashedFormId = e["data"];
+                                // window.console.log("hashed is", hashedFormId);
+                                // let unHashed = this.hex2a (hashedFormId);
+                                // window.console.log("data is", hashedFormId);
                                 this.addNotification(e);
                             }
                         }
