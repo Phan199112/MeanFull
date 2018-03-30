@@ -893,11 +893,14 @@ module.exports = function(app, passport, manager, hashids) {
         // limits to x posts
         // only public posts
 
+        console.log("**********************", req.body);
+
         var postlimit = 10;
 
         // enable different types of queries
         // query a tag
         var selectedtags = req.body.tag;
+        var category;
         var topsurvey;
         var selecteduser;
         var queryobj;
@@ -921,18 +924,30 @@ module.exports = function(app, passport, manager, hashids) {
             selectedcomm = hashids.decodeHex(req.body.comm);
         }
 
+        //CATEGORY
+        if (req.body.category == null) {
+            category = null;
+        } else {
+            category = req.body.category;
+        }
+
+
+
         //console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
-        if (selectedtags != null && selecteduser == null) {
+        if (selectedtags != null && selecteduser == null && !category) {
             queryobj = {public: true, shared: true, hashtags: selectedtags};
-        } else if (selectedtags != null && selecteduser != null) {
+        } else if (selectedtags != null && selecteduser != null && !category) {
             queryobj = {public: true, shared: true, hashtags: selectedtags, userid: selecteduser};
-        } else if (selectedtags == null && selecteduser != null) {
+        } else if (selectedtags == null && selecteduser != null && !category) {
             queryobj = {public: true, shared: true, userid: selecteduser};
-        } else if (selectedtags == null && selectedcomm != null) {
+        } else if (selectedtags == null && selectedcomm != null && !category) {
             queryobj = {shared: true, sharedWithCommunities: selectedcomm};
-        } else if (selectedtags == null && selecteduser == null && selectedcomm == null){
+        } else if (selectedtags == null && selecteduser == null && selectedcomm == null && !category){
             queryobj = {public: true, shared: true};
+            // Below is the category one
+        } else if (selectedtags == null && selecteduser == null && selectedcomm == null && category) { 
+            queryobj = { public: true, shared: true, categories: category };
         } else {
             // fall back solution
             queryobj = {public: true, shared: true}

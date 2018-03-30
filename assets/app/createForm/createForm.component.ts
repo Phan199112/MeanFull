@@ -136,11 +136,14 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             { "id": 2, "itemName": "Business" },
             { "id": 3, "itemName": "Cooking" },
             { "id": 4, "itemName": "Education" },
-            { "id": 5, "itemName": "Fashion" },
-            { "id": 6, "itemName": "Fitness" },
-            { "id": 7, "itemName": "Health" },
-            { "id": 8, "itemName": "Home Improvement" },
-            { "id": 9, "itemName": "Technology" },
+            { "id": 5, "itemName": "Entertainment" },
+            { "id": 6, "itemName": "Fashion" },
+            { "id": 7, "itemName": "Fitness" },
+            { "id": 8, "itemName": "Health" },
+            { "id": 9, "itemName": "Health" },
+            { "id": 10, "itemName": "Home Improvement" },
+            { "id": 11, "itemName": "Sports" },
+            { "id": 12, "itemName": "Technology" },
         ];
 
         this.categorySettings = {
