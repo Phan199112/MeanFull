@@ -1,9 +1,9 @@
-<div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
+<div class="fBody" *ngIf="!hide && form.found" [ngClass]="{noComments: !loggedin}" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
     <!-- <div class="bg"> -->
     <!-- <div class="userImagePos"> -->
-        <div class="topContainer">
+    <div class="topContainer">
         <div class="imageContainer">
-            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
+            <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]">
                 <div *ngIf="form.pictype == 'fb'">
                     <img src="https://graph.facebook.com/{{form.pic}}/picture?width=30&height=30" class="userImage" />
                 </div>
@@ -11,19 +11,27 @@
                     <img [src]="form.pic" class="userImage" />
                 </div>
                 <div *ngIf="form.pictype == 'default'">
-                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="userImage"/>
-                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="userImage"  />
+                    <img *ngIf="form.authorgender == 'male'" src="/images/male.png" class="userImage" />
+                    <img *ngIf="form.authorgender == 'female'" src="/images/female.png" class="userImage" />
                 </div>
                 <div *ngIf="form.pictype == 'anonymous'">
-                    <img src="/images/question.jpg" class="userImage"/>
+                    <img src="/images/question.jpg" class="userImage" />
                 </div>
             </a>
             <div class="userInfoBox">
-                <p class="nameTitle" style="margin-bottom:3px"><b>{{name.first}} {{name.last}}</b></p>
+                <p class="nameTitle" style="margin-bottom:3px">
+                    <b>{{name.first}} {{name.last}}</b>
+                </p>
                 <p class="locationTitle" style="margin-bottom:0px">{{location.city}}, {{location.state}}, {{location.country}}</p>
-                <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated}}</span></i>
-                <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken}}</span></i>
-                <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i>
+                <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;
+                    <span>{{nocreated}}</span>
+                </i>
+                <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;
+                    <span>{{notaken}}</span>
+                </i>
+                <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;
+                    <span>{{nodiscussion}}</span>
+                </i>
             </div>
 
         </div>
@@ -33,7 +41,7 @@
             <span class="cTag" *ngFor="let tag of form.categories; let i = index">{{tag}}</span>
         </div>
     </div>
-    
+
     <div class="share">
         <div class="col p-0" *ngIf="loggedin">
             <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
@@ -41,7 +49,6 @@
                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                 </a>
                 <div ngbDropdownMenu aria-labelledby="form-menu">
-
                     <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share</a>
                     <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
                     <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
@@ -55,7 +62,7 @@
 
 
     <div *ngIf="false" class="topContainer">
-            <!-- Emoticons -->
+        <!-- Emoticons -->
         <!-- <div class="emoContainer">
             <div class="emoAndText"  (click)="chooseReaction('great')">
                 <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
@@ -73,10 +80,11 @@
                 <span class="emoText">Really?!</span>
             </div>
         </div> -->
-        
+
         <div id="completedBlock" *ngIf="submitted">
             <!-- <span id="qCompleted">Completed</span> -->
-            <span id="answerCount">Answered {{count ? count : '<5'}} {{count > 1 ? 'Times' : 'Time'}}</span>
+            <span id="answerCount">Answered {{count ? count : '
+                <5 '}} {{count > 1 ? 'Times ' : 'Time '}}</span>
         </div>
     </div>
 
@@ -142,7 +150,7 @@
     </div>
 
 
-    <!-- <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
+    <!-- <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border ': '5px solid red '}">
         <h4>Oops this form could not be found!</h4>
     </div> -->
 
@@ -154,7 +162,7 @@
 
 
 
-<discussion-list [pic]="pic" [pictype]="pictype" [form]='form' [id]="form.id"></discussion-list>
+<discussion-list *ngIf="loggedin" [pic]="pic" [pictype]="pictype" [form]='form ' [id]="form.id"></discussion-list>
 
 
 
@@ -165,39 +173,31 @@
 <ng-template #shareModal let-c="close" let-d="dismiss">
     <!--<div class="modal-header" [formGroup]="inviteForm">
         <h4 class="modal-title">Invite your friends to this community</h4>
-
-
-                        <yourcomm-list [link]="form.id"></yourcomm-list> 
-
     </div>-->
-    <div class="shareContainer">
-        <!-- <div class="row">
-            <div class="col"> -->
-                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <div class="modal-body container">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click ')">
                     <span aria-hidden="true" style="font-size:30px;">&times;</span>
                 </button>
-            <!-- </div>
-        </div> -->
-        <!-- <div class="row"> -->
-            <h3 style="font-family:karla; text-align: center; color:#AAA">Share</h3>
-
-            <!-- <share-button [theme]="'default'" [button]="'copy'" [showText]="false" [size]="1" [url]="'www.google.com'" style="margin-top:1px">Link</share-button> -->
-                <div style="margin-bottom:12px">
-                       <h6 style="font-family:karla; margin-bottom:5px; font-weight:bold; color: #CCC;"> Share link
-                    </h6>
-                    <a href="https://www.questionsly.com/takeForm/{{form.id}}" style="font-size:0.7rem" target="_blank">https://www.questionsly.com/takeForm/{{form.id}}</a>
-                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Share this survey</h3>
 
             <div *ngIf="loggedin">
-                <h6 style="font-family:karla; font-weight:bold; color: #CCC;">Community</h6>
+                <h6>Community</h6>
 
-                <yourcomm-list [link]="form.id"></yourcomm-list> 
-
+                <yourcomm-list [link]="form.id"></yourcomm-list>
             </div>
-            
-        <!-- </div> -->
+            <div>
+                <h6>Link</h6>
+                You can use this link to send the surveys to anybody you'd like. Whilst anybody can see surveys, signup
+                    is required to submit answers. <a href="https://www.questionsly.com/takeForm/{{form.id}}" target="_blank">https://www.questionsly.com/takeForm/{{form.id}}</a>
+        </div>
     </div>
-    <!--<div class="modal-footer" style="justify-content: center">
+</div>
+<!--<div class="modal-footer" style="justify-content: center">
         <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>
     </div>-->
 </ng-template>

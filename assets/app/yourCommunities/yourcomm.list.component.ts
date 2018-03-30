@@ -15,7 +15,6 @@ export class YourCommunityListComponent implements OnInit {
     @Input() link: string;
 
     constructor(private http: Http) {
-
     }
 
     ngOnInit() {
@@ -23,12 +22,10 @@ export class YourCommunityListComponent implements OnInit {
             .then(res => {
                 if (res.json().status == 1) {
                     this.data = res.json().data;
-                    
-                    for (let obj of this.data) {
-                       this.yourcommlist.push(new YourCommunitiesModel(obj, this.link));
-                       window.console.log("communities", obj);
-                    }
 
+                    for (let obj of this.data) {
+                        this.yourcommlist.push(new YourCommunitiesModel(obj, this.link));
+                    }
 
                     if (this.yourcommlist.length > 0) {
                         this.visible = true;

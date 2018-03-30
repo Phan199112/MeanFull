@@ -6,9 +6,15 @@
         </div>
 
         <div class="col-md-6 order-1 order-sm-2">
-            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form"> </feed-form-component>    
-            <div class="container" *ngIf="unavailable"><h3>This survey is unavailable!</h3></div>
-            <!-- <div><h3 >Check out Questionsly!</h3></div> -->
+            <div *ngIf="form && form.answered" style="margin-bottom: 20px;">
+                <h3 class="thanksText">Thanks for your response. Check us out at
+                    <a class="qslyButton">Questionsly.com</a>
+                </h3>
+            </div>
+            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form"> </feed-form-component>
+            <div class="container" *ngIf="unavailable">
+                <h3>This survey is unavailable!</h3>
+            </div>
         </div>
 
     </div>
@@ -61,7 +67,7 @@
             </div> -->
 
 
-        <!-- </div>
+<!-- </div>
         <div class="col-md-2" id="rightSideOfContainer">
         </div>
     </div>

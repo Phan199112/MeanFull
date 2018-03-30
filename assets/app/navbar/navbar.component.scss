@@ -1,7 +1,7 @@
 $whiteColor: #fff;
 
-// $salem:  #1E824C;
-$salem:  #28ab64;
+$primarycolor:  #28ab64;
+$borderColor: rgb(226,226,226);
 
 $navBarColor:  #FFF;
 
@@ -21,7 +21,7 @@ $navBarColor:  #FFF;
 }
 
 .navlinks {
-  color: $salem !important;
+  color: #666 !important;
 }
 
 .nav-item {
@@ -42,17 +42,6 @@ $navBarColor:  #FFF;
   display: inherit;
 }
 
-.dropdown-item {
-  cursor: hand;
-  padding: 10px;
-  &:not(:last-of-type) {
-    border-bottom: 1px solid #ddd;
-  }
-  &:hover {
-    background-color: darkgreen;
-    color: #fff !important;
-  }
-}
 
 .notification {
   &.new {
@@ -70,8 +59,8 @@ $navBarColor:  #FFF;
   }
   img {
     border-radius: 100%;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     margin-right: 5px;
   }
 }
@@ -79,7 +68,7 @@ $navBarColor:  #FFF;
 /* change the brand and text color */
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
-  color: $salem;
+  color: $primarycolor;
   font-weight: 700;
 }
 
@@ -138,6 +127,69 @@ img {
 }
 
 .userImage {
-    width: 25px;
-    height: 25px;
+    width: 40;
+    height: 40;
+}
+
+.notification-bubble {
+  background: lighten($primarycolor, 14);
+  padding: 1px 3px;
+  color: white;
+  font-family: Karla;
+  top: 10px;
+  right: -13px;
+}
+
+.notificationDropdown {
+  background: papayawhip;
+  max-height: 70vh;
+  overflow-y: scroll;
+  overflow-x: none;
+
+  position: absolute;
+  // bottom: -450px;
+  // left: -360px;
+  right: 0px;
+  top: 32px;
+  width: 400px;
+  border-radius: 4px;
+  border: 1px solid $borderColor;
+}
+
+.dropdownItem {
+  cursor: hand;
+  padding: 6px 30px 5px 12px;
+  &:not(:last-of-type) {
+    border-bottom: 1px solid #ddd;
+  }
+  &:hover {
+    background-color: lighten($primarycolor, 14);
+    color: #fff !important;
+  }
+  width: 100%;
+  align-items: center;
+  background-color: #f8f8f8;
+}
+
+
+.flex {
+  display: flex;
+  width: 100%;
+}
+
+.fCol {
+    flex-direction: column;
+}
+
+.notifImage {
+  height: 48px;
+  width: 48px;
+  border-radius: 24px;
+  margin-right: 8px;
+}
+
+.toggleNot {
+  &:hover {
+    cursor: pointer;
+  }
 }
