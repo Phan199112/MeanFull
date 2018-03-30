@@ -6,7 +6,7 @@ import { AppComponent } from '../app.component';
 import { PopupShareComponent } from '../popup/popup.share.component';
 import { PopupService } from "../popup.service";
 import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'feed-form-component',
@@ -18,7 +18,7 @@ export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
     @Input() pic: string;
     @Input() pictype: string;
-    dataselectionform: FormGroup;
+    dataselectionform : FormGroup;
     submitted: boolean = false;
     showsubmit: boolean = false;
     submissionfailed: boolean = false;
@@ -27,12 +27,13 @@ export class FeedFormComponent implements OnInit {
     loggedin: boolean = false;
     userData: any;
     count: string = null;
-    name: string;
-    nocreated: any;
-    notaken: any;
-    nodiscussion: any;
-    location: any;
+    name : string;
+    nocreated :any;
+    notaken :any;
+    nodiscussion : any;
+    location: any;  
     showFilter: boolean = false;
+
 
     //  ------ Emoticon properties to change/check against
     hasReacted: boolean = false;
@@ -63,12 +64,12 @@ export class FeedFormComponent implements OnInit {
     otherloc: boolean = true;
     locations: Object[] = [];
     otherlocations: string[] = [];
-
+    
     alllocationsarray: FormArray = new FormArray([]);
 
     defaultages: string[] = [];
     // NEW: THIS IS THE DATA FED INTO THE FILTERS
-    plotselection: Object = { age: this.defaultages, location: [], gender: ['male', 'female', 'unknown'] };
+    plotselection: Object = {age: this.defaultages, location: [], gender: ['male', 'female', 'unknown']};
 
     //ages
     unknownage: string[] = ["Unknown"];
@@ -87,7 +88,7 @@ export class FeedFormComponent implements OnInit {
         this.name = "";
         this.nodiscussion = null;
         this.notaken = null;
-        this.location = { city: "", state: "", country: "" };
+        this.location = {city: "", state: "", country:""};
 
         this.dataselectionform = new FormGroup({
             //set them to true to have filters true from the start
@@ -129,49 +130,49 @@ export class FeedFormComponent implements OnInit {
             this.form.contracted = this.form.questions.length > 1;
 
             // default ages. Uncomment to have initial plot data include all ages
-            for (let i = 0; i < 120; i++) {
+            for (let i=0; i < 120; i++) {
                 this.defaultages.push(i);
             }
             this.defaultages.push("Unknown");
 
-            for (let i = 0; i < 17; i++) {
+            for (let i=0; i < 17; i++) {
                 this.valuesagesmin17.push(i);
             }
 
-            for (let i = 17; i < 24; i++) {
+            for (let i=17; i < 24; i++) {
                 this.valuesages17to23.push(i);
             }
 
-            for (let i = 24; i < 30; i++) {
+            for (let i=24; i < 30; i++) {
                 this.valuesages24to29.push(i);
             }
 
-            for (let i = 30; i < 40; i++) {
+            for (let i=30; i < 40; i++) {
                 this.valuesages30to39.push(i);
             }
 
-            for (let i = 40; i < 50; i++) {
+            for (let i=40; i < 50; i++) {
                 this.valuesages40to49.push(i);
             }
 
-            for (let i = 50; i < 60; i++) {
+            for (let i=50; i < 60; i++) {
                 this.valuesages50to59.push(i);
             }
 
-            for (let i = 60; i < 120; i++) {
+            for (let i=60; i < 120; i++) {
                 this.valuesplus60.push(i);
             }
         }
 
 
         this.ageList = [
-            { "id": 1, "itemName": "< 17", "input": "age", "min": 0, "max": 16 },
-            { "id": 2, "itemName": "17 - 23", "input": "age", "min": 17, "max": 23 },
-            { "id": 3, "itemName": "24 - 29", "input": "age", "min": 24, "max": 29 },
-            { "id": 4, "itemName": "31-39", "input": "age", "min": 30, "max": 39 },
-            { "id": 5, "itemName": "40 - 49", "input": "age", "min": 40, "max": 49 },
-            { "id": 6, "itemName": "50 - 59", "input": "age", "min": 50, "max": 59 },
-            { "id": 7, "itemName": "60+", "input": "age", "min": 60, "max": 119 }
+            { "id": 1, "itemName": "< 17", "input": "age", "min": 0 , "max": 16 },
+            { "id": 2, "itemName": "17 - 23", "input": "age", "min":17 , "max":23  },
+            { "id": 3, "itemName": "24 - 29", "input": "age", "min":24 , "max":29  },
+            { "id": 4, "itemName": "31-39", "input": "age", "min":30 , "max":39  },
+            { "id": 5, "itemName": "40 - 49", "input": "age", "min":40 , "max": 49  },
+            { "id": 6, "itemName": "50 - 59", "input": "age", "min":50 , "max": 59 },
+            { "id": 7, "itemName": "60+", "input": "age", "min":60 , "max": 119  }
         ];
         if (!this.form.loginRequired) this.ageList.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 })
 
@@ -199,7 +200,7 @@ export class FeedFormComponent implements OnInit {
 
         this.genderSelected = [
             { "id": 1, "input": "gender", "itemName": "Male" },
-            { "id": 2, "input": "gender", "itemName": "Female" }
+            { "id": 2, "input": "gender", "itemName": "Female" }        
         ];
 
         if (!this.form.loginRequired) this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
@@ -211,7 +212,7 @@ export class FeedFormComponent implements OnInit {
             badgeShowLimit: 0,
             enableCheckAll: false,
             maxHeight: 350
-        };
+        };    
 
         this.locationSettings = {
             singleSelection: false,
@@ -221,7 +222,7 @@ export class FeedFormComponent implements OnInit {
             enableCheckAll: false,
             maxHeight: 350
 
-        };
+        };    
 
         this.genderSettings = {
             singleSelection: false,
@@ -231,7 +232,7 @@ export class FeedFormComponent implements OnInit {
             enableCheckAll: false,
             maxHeight: 350
 
-        };
+        };    
     }
 
     onItemSelect(item: any) {
@@ -255,7 +256,7 @@ export class FeedFormComponent implements OnInit {
         this.form.viewGraphs(false);
 
         // did the current user complete this particular survey?
-        let data = { link: this.form.id, answered: this.form.answered };
+        let data = {link: this.form.id, answered: this.form.answered};
 
         // post and get response
         this.http.post('/forms/data', data)
@@ -281,7 +282,7 @@ export class FeedFormComponent implements OnInit {
                     // iniital data to give plot
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
 
-
+                    
                     this.submitted = true;
                     this.showsubmit = false;
                     this.showdiscussion = true;
@@ -340,22 +341,22 @@ export class FeedFormComponent implements OnInit {
     postForm(data) {
         data.id = this.form.id;
         this.http.post('/forms/answers', data).toPromise()
-            .then(response => {
+          .then(response => {
 
-                if (response.json().status == 1) {
-                    this.submitted = true;
-                    this.form.answered = true;
-                    //   this.form.viewGraphs(false);
-                    this.isFilledIn();
-                    this.form.setAnswered(true);
-                    this.form.viewGraphs(true);
+              if (response.json().status == 1) {
+                  this.submitted = true;
+                  this.form.answered = true;
+                //   this.form.viewGraphs(false);
+                  this.isFilledIn();
+                  this.form.setAnswered(true);
+                  this.form.viewGraphs(true);
 
-                } else {
-                    this.submissionfailed = true;
-                }
+              } else {
+                  this.submissionfailed = true;
+              }
 
-            })
-            .catch(error => alert("Error posting survey: " + error));
+          })
+          .catch(error => alert("Error posting survey: " + error));  
     }
 
     expand() {
@@ -363,16 +364,16 @@ export class FeedFormComponent implements OnInit {
     }
 
     queryTopLocation() {
-        this.http.post('/forms/requestTopLocations', { id: this.form.id }).toPromise()
+        this.http.post('/forms/requestTopLocations', {id: this.form.id}).toPromise()
             .then(response => {
                 var all = response.json().data;
                 let tempLocation = [];
 
                 for (let a of all) {
-                    this.locations.push({ name: a[0], count: a[1] });
+                    this.locations.push({name: a[0], count: a[1]});
 
                     // Push to list for dropdown
-                    tempLocation.push({ itemName: a[0], input: "location" });
+                    tempLocation.push({itemName: a[0], input: "location"});
 
                     //comment out to add all locations to initial plot selection
                     this.plotselection.location.push(a[0]);
@@ -383,9 +384,9 @@ export class FeedFormComponent implements OnInit {
                     this.alllocationsarray.push(fg);
                 }
 
-                tempLocation.map((loc, ind) => {
-                    this.locationList.push({ id: ind + 1, itemName: loc.itemName, input: "location" });
-                    this.locationSelected.push({ id: ind + 1, itemName: loc.itemName, input: "location" });
+                tempLocation.map((loc,ind) => {
+                    this.locationList.push({id: ind + 1, itemName: loc.itemName, input: "location"});
+                    this.locationSelected.push({ id: ind + 1, itemName: loc.itemName, input: "location"});
                 });
 
 
@@ -412,61 +413,61 @@ export class FeedFormComponent implements OnInit {
             });
     }
 
-    // NEW: THIS IS THE FUNCTION THATS CALLED WHEN THE FORM CONTROL IS CHANGED
+// NEW: THIS IS THE FUNCTION THATS CALLED WHEN THE FORM CONTROL IS CHANGED
     doDataSelectionUpdate(x) {
         this.form.viewGraphs(false);
 
-        if (x.itemName == "Unknown") {
+            if(x.itemName == "Unknown") {
 
-            var tempgenderstring = ["unknown"];
-            var tempage = [];
+                var tempgenderstring = ["unknown"];
+                var tempage = [];
 
-            if (x.status == false) {
+                if (x.status == false) {
 
-                if (x.input = 'age') {
-                    if (this.locationSelected[this.locationSelected.length - 1].itemName === "Unknown") this.locationSelected = this.locationSelected.slice(0, this.locationSelected.length - 1);
-                    if (this.genderSelected[this.genderSelected.length - 1].itemName === "Unknown") this.genderSelected = this.genderSelected.slice(0, this.genderSelected.length - 1);
+                    if(x.input = 'age') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName === "Unknown") this.locationSelected = this.locationSelected.slice(0, this.locationSelected.length - 1);
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName === "Unknown") this.genderSelected = this.genderSelected.slice(0, this.genderSelected.length - 1);
+                    }
+
+                    if (x.input = 'gender') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName === "Unknown") this.locationSelected = this.locationSelected.slice(0, this.locationSelected.length - 1);
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName === "Unknown") this.ageSelected = this.ageSelected.slice(0, this.ageSelected.length - 1);
+                    }
+
+                    if (x.input = 'location') {
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName === "Unknown") this.ageSelected = this.ageSelected.slice(0, this.ageSelected.length - 1);
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName === "Unknown") this.genderSelected = this.genderSelected.slice(0, this.genderSelected.length - 1);
+                    }
+
+                    tempage = this.unknownage;
+                    this.plotselection.age = this.plotselection.age.filter(function (e) { return tempage.indexOf(e) == -1 });
+                    this.plotselection.location = this.plotselection.location.filter(function (e) { return x.itemName.indexOf(e) == -1 });
+                    this.plotselection.gender = this.plotselection.gender.filter(function (e) { return tempgenderstring.indexOf(e) == -1 });
+
+                } else {
+                    
+                    if (x.input = 'age') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
+                    }
+
+                    if (x.input = 'gender') {
+                        if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
+                    }
+
+                    if (x.input = 'location') {
+                        if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
+                        if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
+                    }
+                    
+                    tempage = this.unknownage;
+                    this.plotselection.age = this.plotselection.age.concat(tempage);
+                    this.plotselection.location = this.plotselection.location.concat(x.itemName);
+                    this.plotselection.gender = this.plotselection.gender.concat(tempgenderstring);
                 }
-
-                if (x.input = 'gender') {
-                    if (this.locationSelected[this.locationSelected.length - 1].itemName === "Unknown") this.locationSelected = this.locationSelected.slice(0, this.locationSelected.length - 1);
-                    if (this.ageSelected[this.ageSelected.length - 1].itemName === "Unknown") this.ageSelected = this.ageSelected.slice(0, this.ageSelected.length - 1);
-                }
-
-                if (x.input = 'location') {
-                    if (this.ageSelected[this.ageSelected.length - 1].itemName === "Unknown") this.ageSelected = this.ageSelected.slice(0, this.ageSelected.length - 1);
-                    if (this.genderSelected[this.genderSelected.length - 1].itemName === "Unknown") this.genderSelected = this.genderSelected.slice(0, this.genderSelected.length - 1);
-                }
-
-                tempage = this.unknownage;
-                this.plotselection.age = this.plotselection.age.filter(function (e) { return tempage.indexOf(e) == -1 });
-                this.plotselection.location = this.plotselection.location.filter(function (e) { return x.itemName.indexOf(e) == -1 });
-                this.plotselection.gender = this.plotselection.gender.filter(function (e) { return tempgenderstring.indexOf(e) == -1 });
-
-            } else {
-
-                if (x.input = 'age') {
-                    if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
-                    if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
-                }
-
-                if (x.input = 'gender') {
-                    if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
-                    if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
-                }
-
-                if (x.input = 'location') {
-                    if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
-                    if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
-                }
-
-                tempage = this.unknownage;
-                this.plotselection.age = this.plotselection.age.concat(tempage);
-                this.plotselection.location = this.plotselection.location.concat(x.itemName);
-                this.plotselection.gender = this.plotselection.gender.concat(tempgenderstring);
             }
-        }
-
+        
         if (x.itemName !== "Unknown" && x.input == 'age') {
 
             // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
@@ -489,7 +490,7 @@ export class FeedFormComponent implements OnInit {
                     tempremoval = this.valuesplus60;
                 }
 
-                this.plotselection.age = this.plotselection.age.filter(function (e) { return tempremoval.indexOf(e) == -1 });
+                this.plotselection.age = this.plotselection.age.filter(function(e) {return tempremoval.indexOf(e) == -1});
 
             } else {
 
@@ -519,11 +520,11 @@ export class FeedFormComponent implements OnInit {
 
             if (x.status == false) {
                 if (x.value != 'other') {
-                    this.plotselection.location = this.plotselection.location.filter(function (e) { return x.itemName.indexOf(e) == -1 });
+                    this.plotselection.location = this.plotselection.location.filter(function(e) {return x.itemName.indexOf(e) == -1});
 
                 } else {
                     var remove = this.otherlocations;
-                    this.plotselection.location = this.plotselection.location.filter(function (e) { return remove.indexOf(e) == -1 });
+                    this.plotselection.location = this.plotselection.location.filter(function(e) {return remove.indexOf(e) == -1});
 
                 }
 
@@ -545,7 +546,7 @@ export class FeedFormComponent implements OnInit {
             var tempgenderstring = [x.itemName.toLowerCase()];
 
             if (x.status == false) {
-                this.plotselection.gender = this.plotselection.gender.filter(function (e) { return tempgenderstring.indexOf(e) == -1 });
+                this.plotselection.gender = this.plotselection.gender.filter(function(e) {return tempgenderstring.indexOf(e) == -1});
             } else {
                 this.plotselection.gender = this.plotselection.gender.concat(tempgenderstring);
             }
@@ -557,7 +558,7 @@ export class FeedFormComponent implements OnInit {
 
     executePlotDataRetrieval() {
         // post and get response
-        this.http.post('/forms/alldata', { link: this.form.id, dataselection: this.plotselection, all: false })
+        this.http.post('/forms/alldata', {link: this.form.id, dataselection: this.plotselection, all: false})
             .toPromise()
             .then(response => {
                 var responsedata = response.json().data;
@@ -597,7 +598,7 @@ export class FeedFormComponent implements OnInit {
         // post and get response
         this.confirmationPopup.confirm('Are you sure you want to delete this survey?').then(answer => {
             if (answer) {
-                this.http.post('/forms/delete', { id: this.form.id })
+                this.http.post('/forms/delete', {id: this.form.id})
                     .toPromise()
                     .then(response => {
                         if (response.json().status == 1) {
@@ -612,7 +613,7 @@ export class FeedFormComponent implements OnInit {
         // post and get response
         this.confirmationPopup.confirm('Are you sure you want to expire this survey? No further answers will be accepted, this action can not be undone.').then(answer => {
             if (answer) {
-                this.http.post('/forms/expire', { id: this.form.id })
+                this.http.post('/forms/expire', {id: this.form.id})
                     .toPromise()
                     .then(response => {
                         if (response.json().status == 1) {
@@ -627,7 +628,7 @@ export class FeedFormComponent implements OnInit {
         // update form parameters to make survey 'public': shared boolean set to true.
         this.confirmationPopup.confirm('Are you sure you want to release this form? Users will be able to view and answer this form when you release it.').then(answer => {
             if (answer) {
-                this.http.post('/forms/shared', { formid: this.form.id }).toPromise()
+                this.http.post('/forms/shared', {formid: this.form.id}).toPromise()
                     .then(response => {
                         if (response.json().status == 1) {
                         }
@@ -641,7 +642,7 @@ export class FeedFormComponent implements OnInit {
     }
 
     reportForm() {
-        this.http.post('/forms/report', { targetid: this.form.id }).toPromise()
+        this.http.post('/forms/report', {targetid: this.form.id}).toPromise()
             .then(response => {
                 //
             })
@@ -677,7 +678,7 @@ export class FeedFormComponent implements OnInit {
         this.form.viewGraphs(false);
 
         // alter the graph type to split by gender
-        this.http.post('/forms/alldata', { link: this.form.id, all: true })
+        this.http.post('/forms/alldata', {link: this.form.id, all: true})
             .toPromise()
             .then(response => {
                 var responsedata = response.json().data;
@@ -713,10 +714,10 @@ export class FeedFormComponent implements OnInit {
 
 
     //Emoticon functions
-    chooseReaction(reaction: string): void {
+    chooseReaction(reaction: string) : void {   
         if (this.hasReacted) return;
 
-        this.http.post('/forms/react', { id: this.form.id, reaction: reaction })
+        this.http.post('/forms/react', {id: this.form.id, reaction: reaction})
             .toPromise()
             .then(response => {
                 if (this.intReactionData) {
@@ -734,7 +735,7 @@ export class FeedFormComponent implements OnInit {
     }
 
     reactionssummary(reactions) {
-        // make a summary
+    // make a summary
         var counts = {};
         var total = 0;
         var summary = {};
@@ -747,7 +748,7 @@ export class FeedFormComponent implements OnInit {
             // reformat
             // and make percentage
             for (var k in reactions) {
-                summary[k] = (Math.round(((reactions[k] / total) * 100) * 100) / 100);
+                summary[k] = (Math.round( ( (reactions[k]/total) * 100 ) * 100 ) / 100   );
             }
         }
 

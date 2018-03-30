@@ -1,5 +1,17 @@
 <div>
-    <a [routerLink]="['/community', comm.id]">{{comm.title}}</a>
-    <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="shareInComm()">Share in this community</button>
-    <br>
+    
+    <div class="flex">
+        <div>
+            <img [src]="comm.pic" *ngIf="comm.pic" class="imageSize"/>
+            <img class="imageSize" *ngIf="!comm.pic" src="/images/community.png" />
+            
+            
+            <a *ngIf="!sharedAlready" (click)="closeModal()" [routerLink]="['/community', comm.id]" style="color: #999;">{{comm.title}}</a>
+            <span *ngIf="sharedAlready" style="font-family:karla">Post shared in <a style="color:#999" [routerLink]="['/community', comm.id]">{{comm.title}}!</a></span>
+        </div>
+        <div>
+            <button *ngIf="!sharedAlready" class="submitButton" (click)="shareInComm()">Share</button>
+        </div>
+    </div>
+    
 </div>
