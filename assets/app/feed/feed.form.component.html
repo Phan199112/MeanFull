@@ -41,6 +41,7 @@
                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                 </a>
                 <div ngbDropdownMenu aria-labelledby="form-menu">
+
                     <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share</a>
                     <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
                     <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
@@ -164,30 +165,37 @@
 <ng-template #shareModal let-c="close" let-d="dismiss">
     <!--<div class="modal-header" [formGroup]="inviteForm">
         <h4 class="modal-title">Invite your friends to this community</h4>
+
+
+                        <yourcomm-list [link]="form.id"></yourcomm-list> 
+
     </div>-->
-    <div class="modal-body container">
-        <div class="row">
-            <div class="col">
+    <div class="shareContainer">
+        <!-- <div class="row">
+            <div class="col"> -->
                 <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                     <span aria-hidden="true" style="font-size:30px;">&times;</span>
                 </button>
-            </div>
-        </div>
-        <div class="row">
-            <h3>Share this survey</h3>
+            <!-- </div>
+        </div> -->
+        <!-- <div class="row"> -->
+            <h3 style="font-family:karla; text-align: center; color:#AAA">Share</h3>
+
+            <!-- <share-button [theme]="'default'" [button]="'copy'" [showText]="false" [size]="1" [url]="'www.google.com'" style="margin-top:1px">Link</share-button> -->
+                <div style="margin-bottom:12px">
+                       <h6 style="font-family:karla; margin-bottom:5px; font-weight:bold; color: #CCC;"> Share link
+                    </h6>
+                    <a href="https://www.questionsly.com/takeForm/{{form.id}}" style="font-size:0.7rem" target="_blank">https://www.questionsly.com/takeForm/{{form.id}}</a>
+                </div>
 
             <div *ngIf="loggedin">
-                <h6>Community</h6>
+                <h6 style="font-family:karla; font-weight:bold; color: #CCC;">Community</h6>
 
-                <yourcomm-list [link]="form.id"></yourcomm-list>
+                <yourcomm-list [link]="form.id"></yourcomm-list> 
+
             </div>
-            <div>
-                <h6>Link</h6>
-                You can use this link to send the surveys to anybody you'd like. Whilst anybody can see surveys, signup is required to submit
-                answers.
-                <a href="https://www.questionsly.com/takeForm/{{form.id}}" target="_blank">https://www.questionsly.com/takeForm/{{form.id}}</a>
-            </div>
-        </div>
+            
+        <!-- </div> -->
     </div>
     <!--<div class="modal-footer" style="justify-content: center">
         <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>

@@ -1,6 +1,8 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { YourCommunitiesModel } from "./yourcomm.model";
 import { Http } from "@angular/http";
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
     selector: 'your-comm-component',
@@ -9,18 +11,22 @@ import { Http } from "@angular/http";
 })
 export class YourCommunityComponent {
     @Input() comm: YourCommunitiesModel;
+    sharedAlready: boolean = false;
+    @ViewChild('shareModal') shareModal;
 
-    constructor(private http: Http) {
+
+
+    constructor(private http: Http, private modalService: NgbModal) {
 
     }
 
     shareInComm() {
-        this.http.post(`/community/shareform`, {commid: this.comm.id, formid: this.comm.link}).toPromise()
+        this.http.post(`/community/shareform`, {commid: this.comm.id, formid: this.comm.link, pic: this.comm.pic}).toPromise()
             .then((result) => {
                 if (result.json().status == 1) {
-                    //console.log("accepted comm share request");
+                    this.sharedAlready = true;
                 } else {
-                    //console.log("failed comm share request");
+                    console.log("failed comm share request");
                 }
                 //
 
@@ -28,6 +34,11 @@ export class YourCommunityComponent {
             .catch(function() {
                 //console.log("failed comm share request");
             });
+
+    }
+
+    closeModal() {
+        this.modalService.close(this.shareModal);
 
     }
 }

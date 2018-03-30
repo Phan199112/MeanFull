@@ -298,7 +298,9 @@ module.exports = function(app, passport, manager, hashids) {
                     .on('data', function (comm) {
                         communitiesdata.push({
                             title: comm.title,
+                            pic: comm.pic,
                             id: hashids.encodeHex(comm._id)
+                            //window.console.log("")
                         });
                     })
                     .on('error', function (err) {

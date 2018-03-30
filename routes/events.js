@@ -79,6 +79,8 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/events/seen', manager.ensureLoggedIn('/users/login'), function(req, res) {
         // event id
         var eventid = hashids.decodeHex(req.body.id);
+        console.log("the eventid is", eventid);
+
         // update logs
         EventModel.findOneAndUpdate({_id: eventid, userid: req.session.userid}, {$set: {seen: true}}, function(err, k) {
             if (err) {

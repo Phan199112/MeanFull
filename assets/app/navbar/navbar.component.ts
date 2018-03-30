@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
     pictype: string;
     picdata: Object;
     notifications: string[] = [];
+    //
     unreadNotifications: number = 0;
     events: any;
     gender: string;
@@ -130,6 +131,11 @@ export class NavbarComponent implements OnInit {
                     .then(eventsdata => {
                         // store the data
                         this.events = eventsdata.json().events; // array of objects
+                        window.console.log("the eventData is", this.events);
+                        //get the question that the user posted
+
+                        //var eventid = hashids.decodeHex(req.body.id);
+
 
                         // clear the current list
                         this.clearNotifications();
@@ -137,6 +143,10 @@ export class NavbarComponent implements OnInit {
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
+                                let hashedFormId = e["data"];
+                                window.console.log("hashed is", hashedFormId);
+                                let unHashed = this.hex2a (hashedFormId);
+                                window.console.log("data is", hashedFormId);
                                 this.addNotification(e);
                             }
                         }
@@ -144,6 +154,13 @@ export class NavbarComponent implements OnInit {
             }
         });
     }
+
+     hex2a(hex) {
+        var str = '';
+        for (var i = 0; i < hex.length; i += 2) str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        return str;
+    }
+    
 
     setAsSeen(notification) {
         if (notification.seen) return;
@@ -210,7 +227,7 @@ export class NavbarComponent implements OnInit {
 
         switch (notification.type) {
             case "form":
-                return `${name} has created a new survey`;
+                return `${name} has created a new survey`;//get the text from the database
             case "form-shared":
                 return `${name} has shared a survey`;
             case "form-answer":
@@ -266,6 +283,7 @@ export class NavbarComponent implements OnInit {
     submitSearch() {
         this.router.navigate(['/searchresults', { 'q': this.searchbox.value.searchterm }]);
     }
+
 
 
 }
