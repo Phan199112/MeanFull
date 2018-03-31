@@ -19,7 +19,7 @@ module.exports = function(app, passport, manager, hashids) {
     // authentication.
     passport.use('facebook', new FacebookStrategy({
             clientID: '669514259923041',
-            clientSecret: '5c8625d2b8d7a5edd938725ab0490e86',
+            clientSecret: 'd8b44aeaa9a26c211c7605049fe45e93',
             callbackURL: 'https://www.questionsly.com/users/login/facebook/return',
             profileFields: ['id', 'displayName', 'email', 'hometown', 'about', 'birthday','education','favorite_athletes',
                 'favorite_teams','first_name','gender','inspirational_people','interested_in','is_verified','languages',

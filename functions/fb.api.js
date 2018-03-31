@@ -1,5 +1,5 @@
 var FB = require('fb');
-FB.options({appId: '669514259923041', appSecret: '5c8625d2b8d7a5edd938725ab0490e86'});
+FB.options({appId: '669514259923041', appSecret: 'd8b44aeaa9a26c211c7605049fe45e93'});
 
 exports.FBLocation = function FBLocation(locid) {
     // get location info
