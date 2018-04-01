@@ -26,7 +26,7 @@ export class YourCommunityListComponent implements OnInit {
                     
                     for (let obj of this.data) {
                        this.yourcommlist.push(new YourCommunitiesModel(obj, this.link));
-                       window.console.log("communities", obj);
+                    //    window.console.log("communities", obj);
                     }
 
 

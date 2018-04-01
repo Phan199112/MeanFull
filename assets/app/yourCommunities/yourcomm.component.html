@@ -4,8 +4,7 @@
         <div>
             <img [src]="comm.pic" *ngIf="comm.pic" class="imageSize"/>
             <img class="imageSize" *ngIf="!comm.pic" src="/images/community.png" />
-            
-            
+
             <a *ngIf="!sharedAlready" (click)="closeModal()" [routerLink]="['/community', comm.id]" style="color: #999;">{{comm.title}}</a>
             <span *ngIf="sharedAlready" style="font-family:karla">Post shared in <a style="color:#999" [routerLink]="['/community', comm.id]">{{comm.title}}!</a></span>
         </div>

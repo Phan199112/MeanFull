@@ -6,7 +6,6 @@ exports.createNotification = function createNotification(user, fromuser, type, m
             if (err) {
                 //console.log("Error in writing notification "+err);
             } else {
-                //console.log("Wrote a notification");
             }
         });
 };

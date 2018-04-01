@@ -616,6 +616,8 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var formid = hashids.decodeHex(req.body.formid);
 
+        var notiData = {commid: req.body.commid, formid: req.body.formid};
+
         var emailaddresses = [];
         var commuserslist = [];
 
@@ -724,7 +726,7 @@ module.exports = function(app, passport, manager, hashids) {
                     if (commuserslist.length > 0) {
                         // in-site notifications
                         for (i=0; i < commuserslist.length; i++) {
-                            notifications.createNotification(commuserslist[i], sender.insite, "form-shared", "Shared survey", hashids.encodeHex(formid));
+                            notifications.createNotification(commuserslist[i], sender.insite, "form-shared", "Shared survey", notiData);
                         }
 
                         // retrieve email adresses
