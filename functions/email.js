@@ -44,13 +44,14 @@ function getUserPic(user) {
     }
 }
 
-exports.sendEmailVerification = function sendEmailVerification(email, link) {
+exports.sendEmailVerification = function sendEmailVerification(email, link, firstName) {
     var subject = "Account Verification";
     var messagesafe = "A request was received to generate a user account with your email address. " +
         "If you made this request, please confirm by clicking on the link. <a href="+link+">"+link+"</a>" +
         "If not, please ignore this email.";
 
-    renderTemplate("email-verification", {subject: subject, link: link}).then(function(html) {
+
+    renderTemplate("email-verification", {subject: subject, firstName: firstName, confirmationLink: link}).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
     });
 };

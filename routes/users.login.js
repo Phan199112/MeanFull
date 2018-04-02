@@ -306,7 +306,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // send email validation
                             var confirmlink = "https://www.questionsly.com/users/settings/confirmemail/"+randomkey;
                             // send email
-                            emailfunctions.sendEmailVerification(data.email, confirmlink);
+                            emailfunctions.sendEmailVerification(data.email, confirmlink, data.name.firstname);
 
                             // return
                             log.writeLog(k._id, 'manual signup - new user', req.ip);
