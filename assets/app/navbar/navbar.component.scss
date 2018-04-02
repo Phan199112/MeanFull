@@ -48,9 +48,10 @@ $commentBackground: #f0f6f0;
 
 
 .notification {
+  background: #FFF;
   &.new {
     color: #fff !important;
-    background-color: #FFFFFF;
+    background-color: #eafff4;
     // border-bottom: 1px solid darkgreen;
     &:hover {
       background-color: #F0F0F0;
@@ -143,7 +144,7 @@ img {
 }
 
 .notificationDropdown {
-  background: #FFFFFF;
+  background: #FFF;
   max-height: 70vh;
   overflow-y: scroll;
   overflow-x: none;
@@ -174,7 +175,7 @@ img {
   }
   width: 100%;
   align-items: center;
-  background-color: #F0F0F0;
+  background-color: #FFFFFF;
 }
 
 

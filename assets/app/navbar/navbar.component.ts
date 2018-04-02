@@ -193,11 +193,7 @@ export class NavbarComponent implements OnInit {
             case "form-shared":
                 return ['/community', notification.data.commid, { 'survey': notification.data.formid } ]
             case "form-discussion":
-                if (typeof notification.data == "object") {
-                    return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
-                } else {
-                    return ['/feed', { 'survey': notification.data }];
-                }
+                return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
             case "network":
                 return ['/profile', notification.fromUserId]
             case "comm":

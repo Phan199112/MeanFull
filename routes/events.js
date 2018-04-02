@@ -82,8 +82,9 @@ module.exports = function (app, passport, manager, hashids) {
                                         }
 
 
-                                        if (event.type === "form" || event.type === "form-answer") {
+                                        if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
 
+                                            if (event.type === "form-discussion") decryptedId = hashids.decodeHex(event.data.formid);
                                             FormModel.findById(decryptedId, function (err, formInfo) {
                                                 if (err) {
                                                     reject();
