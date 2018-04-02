@@ -33,61 +33,6 @@ module.exports = function (app, passport, manager, hashids) {
                         decryptedId = hashids.decodeHex(event.data);
                     }
 
-                    //  if (event.type === "form" || event.type === "form-answer") {
-                    //      FormModel.findById(decryptedId, function (err, formInfo) {
-                    //          //console.log(formInfo);
-                    //          if (err) {
-                    //          } if (formInfo !== null && formInfo.questions) {
-                    //                  formdata.timestamp = formInfo.timestamp;
-                    //                  formdata.question = formInfo.questions[0].body;
-                    //             }
-                    //      });
-                    //  }
-
-                    //  if (event.type === "comm" || event.type === "comm-admin") {
-                    //      CommunityModel.findById(decryptedId, function (err, commInfo) {
-                    //          if (err) {
-                    //          } else {
-                    //              commdata.title = commInfo.title;
-                    //          }
-                    //      });
-                    //  }
-
-
-
-                    // if (event.type == "form-shared") {
-                    //     // **Delete this once database is wiped **
-                    //     if (typeof event.data == "string") {
-                    //         let decryptedForm = hashids.decodeHex(event.data);
-                    //         FormModel.findById(decryptedForm, function (err, formInfo) {
-                    //             //console.log(formInfo);
-                    //             if (err) {
-                    //             } else if (formInfo) {
-                    //                 formdata.question = formInfo.questions[0].body;
-                    //                 commdata.title = "Legacy Notification";
-                    //             }
-                    //         });
-                    //     } else {
-                    //         let decryptedCom = hashids.decodeHex(event.data.commid)
-                    //         let decryptedForm = hashids.decodeHex(event.data.formid);
-
-                    //         FormModel.findById(decryptedForm, function (err, formInfo) {
-                    //             //console.log(formInfo);
-                    //             if (err) {
-                    //             } else if (formInfo) {
-                    //                 formdata.question = formInfo.questions[0].body;
-                                  
-                    //                 CommunityModel.findById(decryptedCom, function (err2, commInfo) {
-                    //                     if (err2) {
-                    //                     } else {
-                    //                         commdata.title = commInfo.title; 
-                    //                     }
-                    //                 });
-                    //             }
-                    //         });
-                    //     }
-                    // }
-
 
                     promises.push(new Promise(function (resolve, reject) {
                         if (event.fromuser !== null) {
@@ -131,7 +76,8 @@ module.exports = function (app, passport, manager, hashids) {
                                         };
 
                                         if (event.type === 'network') {
-                                            console.log("NEtwork resolved!");
+                                            eventdata.fromUserId = hashids.encodeHex(event.fromuser);
+                                            outputevents.push(eventdata);
                                             resolve();
                                         }
 
@@ -227,8 +173,6 @@ module.exports = function (app, passport, manager, hashids) {
                     resolve();
                 });
         }).then(function () {
-            console.log("PROMISE ON PROMISE ON PROMISE ON PROMISE ON PROMISE", promises);
-
             Promise.all(promises).then(function () {
                 res.json({
                     status: 1, events: outputevents.sort(function (a, b) {

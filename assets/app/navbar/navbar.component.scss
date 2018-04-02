@@ -22,6 +22,9 @@ $commentBackground: #f0f6f0;
 }
 
 .navlinks {
+}
+
+.icons {
   color: #666 !important;
 }
 
@@ -135,6 +138,10 @@ img {
   right: -13px;
 }
 
+.iconActive {
+  color: $primaryColor !important;
+}
+
 .notificationDropdown {
   background: #FFFFFF;
   max-height: 70vh;
@@ -142,14 +149,18 @@ img {
   overflow-x: none;
 
   position: absolute;
-  // bottom: -450px;
-  // left: -360px;
-  right: 0px;
+  right: -10px;
   top: 32px;
   width: 400px;
   border-radius: 4px;
   border: 1px solid $borderColor;
 }
+
+// .boxTip {
+//   position: absolute;
+//   right: -10px;
+//   top: 32px;
+// }
 
 .dropdownItem {
   cursor: hand;
@@ -197,9 +208,15 @@ img {
   border: 1px solid #FFFFFF;
   border-top: 1px solid $borderColor;
   border-bottom: 1px solid $borderColor;
-
 }
 
+.showMoreLabel {
+  text-align: center;
+  font-weight: 700;
+  &:hover {
+    cursor: pointer;
+  }
+}
 
 .acceptButton {
     background: $primaryColor;

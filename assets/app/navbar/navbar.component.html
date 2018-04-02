@@ -39,26 +39,27 @@
                                     <img class="userImage" src="/images/female.png" />
                                 </div>
                             </div>
-                            <a class="navlinks nav-link d-inline-block"> {{firstname}} </a>
+                            <a class="navlinks nav-link d-inline-block icons"> {{firstname}} </a>
                         </li>
 
 
 
                         <!-- Notifications Begin -->
-                        <div style="display: flex; align-items: center; padding-bottom: 8px; margin-right: 18px;">
+                        <div style="display: flex; align-items: center; padding-bottom: 5px; margin-right: 18px;">
                             <li>
                                 <div class="position-relative">
                                     <div (click)="toggleNotifications()" class="toggleNot">
-                                        <i class="fa fa-bell" aria-hidden="true"></i>
+                                        <i class="fa fa-bell icons" [ngClass]="{iconActive: showNotifications}" aria-hidden="true"></i>
                                         <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
                                     </div>
-
+                                    
+                                    <!-- <img src="/images/tip.png" style="boxTip" /> -->
                                     <div class="notificationDropdown" *ngIf="showNotifications">
                                         
                                         <div *ngIf="networkNotifications.length > 0">
-                                            <p class="notificationTypeLabel" class="notifLabel"  [ngClass]="{'noTopBorder': true}">Friend Requests</p>
+                                            <p class="notifLabel"  [ngClass]="{'noTopBorder': true}">Friend Requests</p>
                                             <div *ngFor="let notification of networkNotifications.reverse(); let i = index">
-                                                    <div *ngIf="i<9" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
                                                         <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
                                                             <img src="{{notificationPic(notification)}}" class="notifImage" />
                                                             <div class="flex fCol" style="max-width: 300px; ">
@@ -66,10 +67,8 @@
                                                                 <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
                                                             </div>
                                                             <div class="flex">
-                                                                <a class="acceptButton">Accept</a>
-                                                                <a class="denyButton">Deny</a>
-                                                                                                                                <!-- <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
-                                                                                                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a> -->
+                                                                <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
+                                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -78,9 +77,9 @@
 
 
                                             <div *ngIf="communityNotifications.length > 0">
-                                            <p class="notificationTypeLabel" class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p>
+                                            <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p>
                                             <div *ngFor="let notification of communityNotifications.reverse(); let i = index">
-                                                    <div *ngIf="i<9" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
                                                         <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
                                                             <img src="{{notificationPic(notification)}}" class="notifImage" />
                                                             <div class="flex fCol" style="max-width: 300px; ">
@@ -88,17 +87,18 @@
                                                                 <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
                                                             </div>
                                                             <div class="flex">
-                                                                <a class="acceptButton">Accept</a>
-                                                                <a class="denyButton">Deny</a>
+                                                                <a *ngIf="notification.type === 'comm-admin' " class="acceptButton" (click)="acceptCommunityRequest(notification.id, true)">Accept</a>
+                                                                <a *ngIf="notification.type === 'comm' " class="acceptButton" (click)="acceptCommunityRequest(notification.id)">Accept</a>
+                                                                <a class="denyButton" (click)="deleteCommunityRequest(notification.id)">Deny</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <p  class="notificationTypeLabel" class="notifLabel" [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p>
+                                            <p class="notifLabel" [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p>
                                             <div *ngFor="let notification of notifications.reverse(); let i = index">
-                                                    <div *ngIf="i<12" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                                    <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
                                                         <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
                                                             <img src="{{notificationPic(notification)}}" class="notifImage" />
                                                             <div class="flex fCol" style="max-width: 300px; ">
@@ -108,6 +108,8 @@
                                                         </div>
                                                     </div>
                                             </div>
+                                            <p *ngIf="notifications.length > notifShowCount" class="notifLabel showMoreLabel" (click)="showMoreNotifications()">Show More</p>
+
 
 
 
@@ -117,50 +119,10 @@
                                 </div>
                             </li>
                         </div>
-                        <!-- Notifications End -->
 
-
-
-
-
-                        <!-- 
-                        <div *ngFor="let placement of ['bottom-left', 'bottom-right']">                                    
-                            <li [ngClass]="{
-                                'nav-item': true,
-                                'd-none': true, 
-                                'd-sm-block': placement == 'bottom-left', 
-                                'd-xl-none': placement == 'bottom-left',
-                                'd-xl-block': placement == 'bottom-left'
-                            }" ngbDropdown [placement]="'bottom-left'">                        
-                                <a class="navlinks nav-link custom-dropdown-toggle"
-                                    id="notifications" 
-                                    ngbDropdownToggle
-                                    aria-haspopup="true" 
-                                    aria-expanded="false">
-                                    <div class="position-relative">
-                                        <i class="fa fa-bell" aria-hidden="true"></i>
-                                        <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <div class=" " ngbDropdownMenu aria-labelledby="notifications">
-                                    <div *ngFor="let notification of notifications.reverse(); let i = index">
-                                        <div *ngIf="i<5" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdown-item" [routerLink]="notificationLink(notification)" >
-                                            <div (click)="setAsSeen(notification)">
-                                                <img src="{{notificationPic(notification)}}"/>
-                                                <span style="color: black">{{notificationMessage(notification)}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="notifications.length > 5" class="dropdown-item">
-                                        <span>+{{notifications.length - 6}} Notifications</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </div> -->
 
                         <li class="nav-item d-sm-none">
-                            <a class="navlinks nav-link" [routerLink]="['/settings', {'page': 'notifications'}]">
+                            <a class="navlinks nav-link icons" [routerLink]="['/settings', {'page': 'notifications'}]">
                                 <i class="fa fa-bell" aria-hidden="true"></i>
                             </a>
                         </li>
@@ -173,7 +135,7 @@
                                     'd-xl-none': placement == 'bottom-right'
                                 }" ngbDropdown [placement]="placement">
                                     <a class="navlinks nav-link custom-dropdown-toggle" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-cog" aria-hidden="true"></i>
+                                        <i class="fa fa-cog icons" aria-hidden="true"></i>
                                     </a>
                                     <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
                                         <a class="dropdown-item" routerLink="/settings">Settings</a>
@@ -195,6 +157,7 @@
                             </li>
                         </div>
                     </ng-template>
+
                     <ng-template #login>
                         <li class="nav-item">
                             <a class="navlinks nav-link" routerLink="/users/login">Login</a>

@@ -6,6 +6,9 @@ import { ShareService } from "../share.service";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 
+import * as $ from 'jquery';
+
+
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
@@ -31,7 +34,7 @@ export class NavbarComponent implements OnInit {
     events: any;
     gender: string;
     showNotifications: boolean = false;
-
+    notifShowCount: number = 10;
 
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler;
@@ -139,11 +142,6 @@ export class NavbarComponent implements OnInit {
                 this.unreadNotifications++;
             }
         }
-
-        // this.notifications.push(notification);
-        // if (notification.seen == false) {
-        //     this.unreadNotifications++;
-        // }
     }
 
     getEventsList() {
@@ -169,6 +167,11 @@ export class NavbarComponent implements OnInit {
         });
     }
 
+    showMoreNotifications() {
+        this.notifShowCount += 10;
+        window.setTimeout(()=>{this.showNotifications = true}, 1);
+    }
+
     setAsSeen(notification) {
         // if (notification.seen) {
         //     window.setTimeout(()=>{this.toggleNotifications();},10);
@@ -185,9 +188,10 @@ export class NavbarComponent implements OnInit {
     notificationLink(notification) {
         switch (notification.type) {
             case "form":
-            case "form-shared":
             case "form-answer":
                 return ['/feed', { 'survey': notification.data }];
+            case "form-shared":
+                return ['/community', notification.data.commid, { 'survey': notification.data.formid } ]
             case "form-discussion":
                 if (typeof notification.data == "object") {
                     return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
@@ -198,7 +202,7 @@ export class NavbarComponent implements OnInit {
                 return ['/profile', notification.fromUserId]
             case "comm":
             case "comm-admin":
-                // return ['/settings', { 'page': 'notifications' }];
+                return ['/community', notification.data];
         }
     }
 
@@ -268,6 +272,7 @@ export class NavbarComponent implements OnInit {
         if (this.showNotifications && !this.toggler.nativeElement.contains(event.target)) {
             this.navExpanded = false;
             this.showNotifications = false;
+            $('body').css('overflow', 'auto');
         }
     }
 
@@ -299,26 +304,67 @@ export class NavbarComponent implements OnInit {
 
 
     toggleNotifications() {
-        window.setTimeout(()=>{this.showNotifications = !this.showNotifications}, 10);
+        if (this.showNotifications) return;
+        window.setTimeout(()=>{ 
+            this.showNotifications = !this.showNotifications;
+            $('body').css('overflow', 'hidden');
+        }, 10);
     }
+
 
     acceptConnectionRequest(x) {
         this.http.post(`/users/settings/acceptnetworkrequest`, { eventid: x }).toPromise()
             .then(() => {
-                //
-                this.retrieveData();
+                
+                this.http.post(`/events/delete`, { id: x }).toPromise()
+                .then(() => {
+                    let ind = this.networkNotifications.findIndex((obj) => obj.id === x);
+                    this.networkNotifications.splice(ind,1);
+                })
             })
             .catch(error => alert("Error: " + error));
-
     }
 
     deleteConnectionRequest(x, y) {
-        this.http.post(`/users/settings/deletenetworkrequest`, { edgeid: x, eventid: y }).toPromise()
+        // this.http.post(`/users/settings/deletenetworkrequest`, { edgeid: x, eventid: y }).toPromise()
+        //     .then(() => {
+
+                this.http.post(`/events/delete`, { id: y }).toPromise()
+                    .then(() => {
+                        let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
+                        this.networkNotifications.splice(ind, 1);
+                })
+
+            // })
+            .catch(error => alert("Error: " + error));
+    }
+
+    acceptCommunityRequest(x, asAdmin = false) {
+        this.http.post(`/users/settings/acceptcommrequest`, { eventid: x, asadmin: asAdmin }).toPromise()
             .then(() => {
-                this.retrieveData();
+
+                this.http.post(`/events/delete`, { id: x }).toPromise()
+                    .then(() => {
+                        let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
+                        this.networkNotifications.splice(ind, 1);
+                    })
+
             })
             .catch(error => alert("Error: " + error));
+    }
 
+    deleteCommunityRequest(x) {
+        this.http.post(`/users/settings/deletecommrequest`, { eventid: x }).toPromise()
+            .then(() => {
+
+                this.http.post(`/events/delete`, { id: x }).toPromise()
+                    .then(() => {
+                        let ind = this.networkNotifications.findIndex((obj) => obj.id === x);
+                        this.communityNotifications.splice(ind, 1);
+                    })
+
+            })
+            .catch(error => alert("Error: " + error));
     }
 
 }

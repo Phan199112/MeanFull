@@ -25,7 +25,6 @@ export class RightPanel implements OnInit {
     constructor(private http: Http, private fb: FormBuilder, private router: Router) {
         this.users = [];
         this.postResults = []
-
         // TO-DO: fetch first batch of top posts
     }
 
@@ -45,10 +44,6 @@ export class RightPanel implements OnInit {
                             this.communities = res.json().data;
                         }
                     }).catch(error => alert("Error retrieving form: " + error));
-
-
-
-
     }
 
     setAsTouched(group) {
