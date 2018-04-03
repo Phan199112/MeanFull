@@ -295,8 +295,10 @@ export class ViewCommunityComponent implements OnInit {
         });
         this.modalService.open(this.invitationModal).result.then((result) => {
             this.http.post("/community/invite", {
-                commid: this.id, 
-                userids: this.inviteForm.get('friends').value.map(friend => friend.value)
+                commid: this.id,
+                commtitle: this.data.title,
+                commpic: this.data.pic,
+                userids: this.inviteForm.get('friends').value.map(friend => friend.value),
             }).toPromise().then((result) => {
                 if (result.json().status == 1) {
                     //console.log("accepted comm invite request");

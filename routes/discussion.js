@@ -12,6 +12,7 @@ module.exports = function(app, passport, manager, hashids) {
     // save a new community
     app.post('/discussions/new', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var receivedData =  req.body;
+        var pc = receivedData.previousCommenters;
 
         // mongodb
         DiscussionModel.create({userid: req.session.userid, formid: hashids.decodeHex(receivedData.formid),
@@ -66,6 +67,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     if (l) {
                                         // parameterization
                                         var sendername = '';
+                                        var senderpic = '';
                                         if (req.user != null) {
                                             if (req.user.provider === "facebook") {
                                                 sendername = req.user.displayName;
@@ -78,6 +80,20 @@ module.exports = function(app, passport, manager, hashids) {
                                         if (Object.keys(l.notifications).length === 0) {
                                             if (l.notifications.discussion === true) {
                                                 emailfunctions.sendNotificationDiscussion(l.email, req.user, receivedData.formid);
+
+                                                if (pc.length > 0) {
+                                                    for (let z=0; z < pc.length; z++) {
+                                                        UserModel.findById(pc[z], function (err, o) {
+                                                            if (err) {
+                                                                // no email
+                                                                res.json({ status: 1 });
+                                                            } else {
+                                                                emailfunctions.sendNotificationDiscussionFollowUp(o.email, l, receivedData.author, receivedData.firstquestion, receivedData.formid);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
                                                 res.json({status: 1});
                                             } else {
                                                 // no email
@@ -86,6 +102,20 @@ module.exports = function(app, passport, manager, hashids) {
                                         } else {
                                             // if no settings are recorded, emails should be send as this is default policity as signup as well
                                             emailfunctions.sendNotificationDiscussion(l.email, req.user, receivedData.formid);
+
+                                            if (pc.length > 0) {
+                                                for (let z = 0; z < pc.length; z++) {
+                                                    UserModel.findById(pc[z], function (err, o) {
+                                                        if (err) {
+                                                            // no email
+                                                            res.json({ status: 1 });
+                                                        } else {
+                                                            emailfunctions.sendNotificationDiscussionFollowUp(o.email, l, receivedData.author, receivedData.firstquestion, receivedData.formid);
+                                                        }
+                                                    }
+                                                    }
+                                            }
+
                                             res.json({status: 1});
                                         }
 

@@ -97,14 +97,19 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
 };
 
 
-exports.sendNotificationCommRequest = function sendNotificationCommRequest(email, user) {
+exports.sendNotificationCommRequest = function sendNotificationCommRequest(email, sender, commtitle, commpic) {
     var name = getUserDisplayName(user);
     var subject = "You have been invited to join a community on Questionsly";
     var messagesafe = "Hello! "+ name +" invited you to join a community on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var dateString = new Date();
+    dateString = dateString.toDateString();
 
-    renderTemplate("notification-form-request", {
+    renderTemplate("notification-community-invitation", {
         subject: subject,
-        friendName: name,
+        sender: sender,
+        community: commtitle,
+        commPic: commpic,
+        date: dateString,
         pic: getUserPic(user),
         link: `https://www.questionsly.com/settings;page=notifications`
     }).then(function(html) {
@@ -113,15 +118,18 @@ exports.sendNotificationCommRequest = function sendNotificationCommRequest(email
 };
 
 
-exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, user, link) {
+exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, commenter, link) {
     var name = getUserDisplayName(user);        
     var subject = "Survey comments on Questionsly";
     var messagesafe = "Hello! " + name + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
-    
+    var dateString = new Date();
+    dateString = dateString.toDateString();
+
     renderTemplate("notification-comment", {
         subject: subject, 
-        friendName: name,
-        pic: getUserPic(user),
+        commenter: commenter,
+        commenterPic: getUserPic(commenter),
+        date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
@@ -129,12 +137,34 @@ exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, 
 };
 
 
-exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, link) {
+exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussionFollowUp(email, commenter, ogPoster, firstquestion,link) {
+    var subject = "Survey comments on Questionsly";
+    var messagesafe = "Hello! " + name + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var dateString = new Date();
+    dateString = dateString.toDateString();
+
+    renderTemplate("notification-comment", {
+        subject: subject,
+        newCommenter: getUserDisplayName(commenter),
+        newCommenterPic: getUserPic(commenter),
+        ogPoster: ogPoster,
+        question: firstquestion,
+        date: dateString,
+        link: `https://www.questionsly.com/feed;survey=${link}`
+    }).then(function (html) {
+        exports.sendEmail(email, subject, html, messagesafe);
+    });
+};
+
+
+
+exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, question, link) {
     var subject = "Survey activity on Questionsly";
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     
     renderTemplate("notification-survey-activity", {
-        subject: subject, 
+        subject: subject,
+        question: question,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);

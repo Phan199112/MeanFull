@@ -132,28 +132,49 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/community/invite', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
+        var commtitle = req.body.commtitle;
+        var commpic = req.body.commpic;
 
         commfunctions.commAdmin(commid, req.session.userid).then(function(result) {
             if (result === true) {
                 // the current user is an admin
                 req.body.userids.forEach(function(userid) {
                     var seluserid = hashids.decodeHex(userid);
+                    var sender = "";
                     notifications.createNotification(seluserid, req.session.userid, "comm", "Community invitation", req.body.commid);
+                    
+                    
                     // send email
                     UserModel.findById(seluserid, function(err, l) {
                         if (err) {
                             console.log(err);
                         } else {
+
+                            UserModel.findById(req.session.userid, function (err, s) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    sender = s.name.first + " " + s.name.last;
+                                 }
+                            });
+
+
                             if (Object.keys(l.notifications).length === 0) {
                                 if (l.notifications.commrequest === true) {
-                                    emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                    emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
                                 }
                             } else {
                                 // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
                             }
                         }
                     });
+
+
+
+
+
+
                 });
                 res.json({status: 1});
             } else {
