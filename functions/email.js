@@ -1,8 +1,8 @@
 var email 	= require("../node_modules/emailjs/email");
 var server 	= email.server.connect({
-    user:    "cw@arnebruyneel.be",
-    password:"HCW-9yE-9Tz-keb",
-    host:    "send.one.com",
+    user:    "support@questionsly.com",
+    password:"welcome4294!",
+    host:    "smtpout.secureserver.net",
     ssl:     true
 });
 var fs = require("fs");
