@@ -84,7 +84,7 @@ exports.sendNotificationFriendRequest = function sendNotificationFriendRequest(e
 exports.sendNotificationFormRequest = function sendNotificationFormRequest(email, user, link) {
     var name = getUserDisplayName(user);    
     var subject = "New survey request from Questionsly";
-    var messagesafe = "Hello! "+ name +" requested you to fill in a form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var messagesafe = "Hello! " + " requested you to fill in a form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
 
     renderTemplate("notification-form-request", {
         subject: subject, 
@@ -99,7 +99,7 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
 
 exports.sendNotificationCommRequest = function sendNotificationCommRequest(email, sender, commtitle, commpic) {
     var subject = "You have been invited to join a community on Questionsly";
-    var messagesafe = "Hello! "+ name +" invited you to join a community on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var messagesafe = "Hello! " + " invited you to join a community on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
     dateString = dateString.toDateString();
 
@@ -118,7 +118,7 @@ exports.sendNotificationCommRequest = function sendNotificationCommRequest(email
 
 exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, commenter, link) {
     var subject = "Survey comments on Questionsly";
-    var messagesafe = "Hello! " + name + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var messagesafe = "Hello! " + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
     dateString = dateString.toDateString();
 
@@ -136,7 +136,7 @@ exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, 
 
 exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussionFollowUp(email, commenter, ogPoster, firstquestion, link) {
     var subject = "Survey comments on Questionsly";
-    var messagesafe = "Hello! " + name + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var messagesafe = "Hello! "  + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
     dateString = dateString.toDateString();
 
