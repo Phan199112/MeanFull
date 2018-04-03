@@ -3,7 +3,9 @@ var server 	= email.server.connect({
     user:    "support@questionsly.com",
     password:"welcome4294!",
     host:    "smtpout.secureserver.net",
-    ssl:     true
+    ssl:     true,
+    port: 465,
+    tls: {ciphers: "SSLv3"}
 });
 var fs = require("fs");
 var mjml = require("mjml");
@@ -189,7 +191,7 @@ exports.sendNotificationError = function sendNotificationError(error) {
 exports.sendEmail = function sendEmail(email, subject, html, messagesafe) {
     server.send({
         text:    messagesafe,
-        from:    "Questionsly <cw@arnebruyneel.be>",
+        from:    "Questionsly <support@questionsly.com>",
         to:      "<"+email+">",
         subject: subject,
         attachment:
