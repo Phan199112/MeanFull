@@ -140,7 +140,6 @@ module.exports = function(app, passport, manager, hashids) {
                 // the current user is an admin
                 req.body.userids.forEach(function(userid) {
                     var seluserid = hashids.decodeHex(userid);
-                    var sender = "";
                     notifications.createNotification(seluserid, req.session.userid, "comm", "Community invitation", req.body.commid);
                     
                     
@@ -154,26 +153,24 @@ module.exports = function(app, passport, manager, hashids) {
                                 if (err) {
                                     console.log(err);
                                 } else {
-                                    sender = s.name.first + " " + s.name.last;
+
+                                    var sender = s.name.first + " " + s.name.last;
+
+                                    if (Object.keys(l.notifications).length === 0) {
+                                        if (l.notifications.commrequest === true) {
+                                            emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
+                                        }
+                                    } else {
+                                        // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                        emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
+                                    }
+
                                  }
                             });
 
 
-                            if (Object.keys(l.notifications).length === 0) {
-                                if (l.notifications.commrequest === true) {
-                                    emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
-                                }
-                            } else {
-                                // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
-                            }
                         }
                     });
-
-
-
-
-
 
                 });
                 res.json({status: 1});

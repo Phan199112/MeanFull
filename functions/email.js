@@ -116,7 +116,7 @@ exports.sendNotificationCommRequest = function sendNotificationCommRequest(email
 };
 
 
-exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, commenter, link) {
+exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, commenter, link, firstquestion) {
     var subject = "Survey comments on Questionsly";
     var messagesafe = "Hello! " + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
@@ -127,6 +127,7 @@ exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, 
         commenter: getUserDisplayName(commenter),
         commenterPic: getUserPic(commenter),
         date: dateString,
+        question: firstquestion,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
@@ -140,7 +141,7 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
     var dateString = new Date();
     dateString = dateString.toDateString();
 
-    renderTemplate("notification-comment", {
+    renderTemplate("notification-followup-comment", {
         subject: subject,
         newCommenter: getUserDisplayName(commenter),
         newCommenterPic: getUserPic(commenter),

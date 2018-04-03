@@ -24,6 +24,8 @@ module.exports = function(app, passport, manager, hashids) {
             } else {
                 // so the discussion note was saved
                 // now inform author of form
+                console.log("Entering discussion route call with data: (req.body)", receivedData);
+
 
                 var authorid = null;
 
@@ -77,11 +79,11 @@ module.exports = function(app, passport, manager, hashids) {
                                                 // send
                                                 if (Object.keys(authr.notifications).length === 0) {
                                                     if (authr.notifications.discussion === true) {
-                                                        emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid);
+                                                        emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
 
                                                         if (pc.length > 0) {
                                                             for (let z=0; z < pc.length; z++) {
-                                                                UserModel.findById(pc[z], function (err, o) {
+                                                                UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
                                                                     if (err) {
                                                                         // no email
                                                                         res.json({ status: 1 });
@@ -99,14 +101,13 @@ module.exports = function(app, passport, manager, hashids) {
                                                     }
                                                 } else {
                                                     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                                    emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid);
+                                                    emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
 
                                                     if (pc.length > 0) {
                                                         for (let z = 0; z < pc.length; z++) {
-                                                            UserModel.findById(pc[z], function (err, o) {
+                                                            UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
                                                                 if (err) {
                                                                     // no email
-                                                                    res.json({ status: 1 });
                                                                 } else {
                                                                     emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
                                                                 }
