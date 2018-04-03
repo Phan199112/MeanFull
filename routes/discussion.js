@@ -90,7 +90,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                             } else {
                                                                 emailfunctions.sendNotificationDiscussionFollowUp(o.email, l, receivedData.author, receivedData.firstquestion, receivedData.formid);
                                                             }
-                                                        }
+                                                        });
                                                     }
                                                 }
 
@@ -112,8 +112,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                         } else {
                                                             emailfunctions.sendNotificationDiscussionFollowUp(o.email, l, receivedData.author, receivedData.firstquestion, receivedData.formid);
                                                         }
-                                                    }
-                                                    }
+                                                    });
+                                                }
                                             }
 
                                             res.json({status: 1});
