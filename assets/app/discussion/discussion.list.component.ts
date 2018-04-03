@@ -84,7 +84,7 @@ export class DiscussionListComponent implements OnInit {
 
     Submit() {
         this.preparePreviousCommenters();
-        let senddata = {formid: this.id, message: this.newmessage.value.message, previousCommenters: this.previousCommenters, authorlink: this.form.authorlink, firstquestion: this.form.questions[0].body};
+        let senddata = {formid: this.id, message: this.newmessage.value.message, previousCommenters: this.previousCommenters, firstquestion: this.form.questions[0].body};
         this.http.post('/discussions/new', senddata).toPromise()
             .then(response => {
                 if (response.json().status == 1) {

@@ -58,66 +58,66 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // email notification
                             // check the notification settings of this user
-                            UserModel.findById(authorid, function(err, l) {
+                            UserModel.findById(authorid, function(err, authr) {
                                 if (err) {
                                     // no email
                                     res.json({status: 1});
 
                                 } else {
-                                    if (l) {
-                                        // parameterization
-                                        var sendername = '';
-                                        var senderpic = '';
-                                        if (req.user != null) {
-                                            if (req.user.provider === "facebook") {
-                                                sendername = req.user.displayName;
-                                            } else {
-                                                sendername = req.user.name.first+' '+req.user.name.last;
-                                            }
-                                        }
+                                    if (authr) {
 
-                                        // send
-                                        if (Object.keys(l.notifications).length === 0) {
-                                            if (l.notifications.discussion === true) {
-                                                emailfunctions.sendNotificationDiscussion(l.email, req.user, receivedData.formid);
 
-                                                if (pc.length > 0) {
-                                                    for (let z=0; z < pc.length; z++) {
-                                                        UserModel.findById(pc[z], function (err, o) {
-                                                            if (err) {
-                                                                // no email
-                                                                res.json({ status: 1 });
-                                                            } else {
-                                                                emailfunctions.sendNotificationDiscussionFollowUp(o.email, l, receivedData.author, receivedData.firstquestion, receivedData.formid);
-                                                            }
-                                                        });
-                                                    }
-                                                }
-
-                                                res.json({status: 1});
-                                            } else {
+                                        UserModel.findById(req.session.userid, function (err, sndr) {
+                                            if (err) {
                                                 // no email
-                                                res.json({status: 1});
-                                            }
-                                        } else {
-                                            // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationDiscussion(l.email, req.user, receivedData.formid);
+                                                res.json({ status: 1 });
 
-                                            if (pc.length > 0) {
-                                                for (let z = 0; z < pc.length; z++) {
-                                                    UserModel.findById(pc[z], function (err, o) {
-                                                        if (err) {
-                                                            // no email
-                                                            res.json({ status: 1 });
-                                                        } else {
-                                                            emailfunctions.sendNotificationDiscussionFollowUp(o.email, l, receivedData.author, receivedData.firstquestion, receivedData.formid);
+                                            } else {
+
+                                                // send
+                                                if (Object.keys(authr.notifications).length === 0) {
+                                                    if (authr.notifications.discussion === true) {
+                                                        emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid);
+
+                                                        if (pc.length > 0) {
+                                                            for (let z=0; z < pc.length; z++) {
+                                                                UserModel.findById(pc[z], function (err, o) {
+                                                                    if (err) {
+                                                                        // no email
+                                                                        res.json({ status: 1 });
+                                                                    } else {
+                                                                        emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
+                                                                    }
+                                                                });
+                                                            }
                                                         }
-                                                    });
+
+                                                        res.json({status: 1});
+                                                    } else {
+                                                        // no email
+                                                        res.json({status: 1});
+                                                    }
+                                                } else {
+                                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                                    emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid);
+
+                                                    if (pc.length > 0) {
+                                                        for (let z = 0; z < pc.length; z++) {
+                                                            UserModel.findById(pc[z], function (err, o) {
+                                                                if (err) {
+                                                                    // no email
+                                                                    res.json({ status: 1 });
+                                                                } else {
+                                                                    emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                    res.json({status: 1});
                                                 }
                                             }
-
-                                            res.json({status: 1});
-                                        }
+                                        });
 
                                     } else {
                                         //no user found

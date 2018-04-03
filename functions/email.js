@@ -110,7 +110,6 @@ exports.sendNotificationCommRequest = function sendNotificationCommRequest(email
         community: commtitle,
         commPic: commpic,
         date: dateString,
-        pic: getUserPic(user),
         link: `https://www.questionsly.com/settings;page=notifications`
     }).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
@@ -127,7 +126,7 @@ exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, 
 
     renderTemplate("notification-comment", {
         subject: subject, 
-        commenter: commenter,
+        commenter: getUserDisplayName(commenter),
         commenterPic: getUserPic(commenter),
         date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
@@ -137,7 +136,7 @@ exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, 
 };
 
 
-exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussionFollowUp(email, commenter, ogPoster, firstquestion,link) {
+exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussionFollowUp(email, commenter, ogPoster, firstquestion, link) {
     var subject = "Survey comments on Questionsly";
     var messagesafe = "Hello! " + name + " commented on your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
@@ -147,7 +146,7 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
         subject: subject,
         newCommenter: getUserDisplayName(commenter),
         newCommenterPic: getUserPic(commenter),
-        ogPoster: ogPoster,
+        ogPoster: getUserDisplayName(ogPoster),
         question: firstquestion,
         date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
@@ -161,10 +160,13 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
 exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, question, link) {
     var subject = "Survey activity on Questionsly";
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
-    
+    var dateString = new Date();
+    dateString = dateString.toDateString();
+
     renderTemplate("notification-survey-activity", {
         subject: subject,
         question: question,
+        date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
