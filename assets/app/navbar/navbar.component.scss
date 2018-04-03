@@ -1,9 +1,10 @@
 $whiteColor: #fff;
-
-$primarycolor:  #28ab64;
+$primaryColor:  #28ab64;
 $borderColor: rgb(226,226,226);
-
 $navBarColor:  #FFF;
+$primaryFont: Dosis;
+$backgroundColor: #FFF;
+$commentBackground: #f0f6f0;
 
 
 
@@ -21,6 +22,9 @@ $navBarColor:  #FFF;
 }
 
 .navlinks {
+}
+
+.icons {
   color: #666 !important;
 }
 
@@ -44,12 +48,13 @@ $navBarColor:  #FFF;
 
 
 .notification {
+  background: #FFF;
   &.new {
     color: #fff !important;
-    background-color: $navBarColor;
-    border-bottom: 1px solid darkgreen;
+    background-color: #eafff4;
+    // border-bottom: 1px solid darkgreen;
     &:hover {
-      background-color: darkgreen;
+      background-color: #F0F0F0;
       color: #fff !important;
     }
   }
@@ -57,18 +62,12 @@ $navBarColor:  #FFF;
     background-color: #eee;
     color: #000 !important;
   }
-  img {
-    border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    margin-right: 5px;
-  }
 }
 
 /* change the brand and text color */
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
-  color: $primarycolor;
+  color: $primaryColor;
   font-weight: 700;
 }
 
@@ -132,7 +131,7 @@ img {
 }
 
 .notification-bubble {
-  background: lighten($primarycolor, 14);
+  background: lighten($primaryColor, 14);
   padding: 1px 3px;
   color: white;
   font-family: Karla;
@@ -140,41 +139,49 @@ img {
   right: -13px;
 }
 
+.iconActive {
+  color: $primaryColor !important;
+}
+
 .notificationDropdown {
-  background: papayawhip;
+  background: #FFF;
   max-height: 70vh;
   overflow-y: scroll;
   overflow-x: none;
 
   position: absolute;
-  // bottom: -450px;
-  // left: -360px;
-  right: 0px;
+  right: -10px;
   top: 32px;
   width: 400px;
   border-radius: 4px;
   border: 1px solid $borderColor;
 }
 
+// .boxTip {
+//   position: absolute;
+//   right: -10px;
+//   top: 32px;
+// }
+
 .dropdownItem {
   cursor: hand;
-  padding: 6px 30px 5px 12px;
+  padding: 6px 15px 5px 12px;
   &:not(:last-of-type) {
     border-bottom: 1px solid #ddd;
   }
   &:hover {
-    background-color: lighten($primarycolor, 14);
+    background-color: lighten($primaryColor, 14);
     color: #fff !important;
   }
   width: 100%;
   align-items: center;
-  background-color: #f8f8f8;
+  background-color: #FFFFFF;
 }
 
 
 .flex {
   display: flex;
-  width: 100%;
+  // width: 100%;
 }
 
 .fCol {
@@ -182,14 +189,82 @@ img {
 }
 
 .notifImage {
-  height: 48px;
-  width: 48px;
+  height: 36px !important;
+  width: 36px !important;
   border-radius: 24px;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 .toggleNot {
   &:hover {
     cursor: pointer;
   }
+}
+
+.notifLabel {
+  margin: 0;
+  padding: 5px 10px;
+  font-size: .75rem;
+  font-family: Karla;
+  border: 1px solid #FFFFFF;
+  border-top: 1px solid $borderColor;
+  border-bottom: 1px solid $borderColor;
+}
+
+.showMoreLabel {
+  text-align: center;
+  font-weight: 700;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.acceptButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 4px 8px;
+    border: none;
+    text-align: center;
+    font-size: .7rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin: 0px 3px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+}
+
+.denyButton {
+    background: #FFF;
+    border-radius: 8px;
+    padding: 4px 8px;
+    text-align: center;
+    border: none;
+    border: solid 1px #999;
+    font-size: .7rem;
+    font-family: Karla;
+    color: #999 !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        color: #2b2b2b !important;
+        border: solid 1px #2b2b2b;
+    }
+}
+
+.noTopBorder {
+  border-top: none;
 }

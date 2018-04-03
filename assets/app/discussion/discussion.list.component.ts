@@ -19,6 +19,8 @@ export class DiscussionListComponent implements OnInit {
     commentsExpanded: boolean = false;
     commentSort: string = "top";
 
+    previousCommenters: any[] = [];
+
     @Input() form: FeedForm;
     @Input() id: string;
     @Input() pic: string;
@@ -55,6 +57,7 @@ export class DiscussionListComponent implements OnInit {
 
                     // update
                     this.data = response.json().data;
+                    window.console.log("comments", this.form);
                     if (this.data !== null) {
                         for (let i = start; i < this.data.length; i++) {
                             this.chatlist.push(new DiscussionModel(this.data[i]));
@@ -80,7 +83,8 @@ export class DiscussionListComponent implements OnInit {
     }
 
     Submit() {
-        let senddata = {formid: this.id, message: this.newmessage.value.message};
+        this.preparePreviousCommenters();
+        let senddata = {formid: this.id, message: this.newmessage.value.message, previousCommenters: this.previousCommenters, firstquestion: this.form.questions[0].body};
         this.http.post('/discussions/new', senddata).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
@@ -96,6 +100,10 @@ export class DiscussionListComponent implements OnInit {
                 this.submissionfailed = true;
                 alert("Error posting form: " + error);
             });
+    }
+
+    preparePreviousCommenters(): void {
+        this.previousCommenters = this.data.map((comment) => comment.author.id);
     }
 
     setAsTouched(group) {

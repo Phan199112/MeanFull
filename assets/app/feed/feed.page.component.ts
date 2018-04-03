@@ -11,6 +11,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class FeedPageComponent implements OnInit  {
     loggedin: boolean = false;
+    category: string;
     fbid = false;
     firstname = null;
     dbid = null;
@@ -25,6 +26,8 @@ export class FeedPageComponent implements OnInit  {
     }
 
     ngOnInit() {
+        this.category = null;
+        
         this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
                 this.loggedin = true;
@@ -76,6 +79,10 @@ export class FeedPageComponent implements OnInit  {
                 }
             }
         });
+    }
+
+    setCategory(cat: string) : void {
+        this.category = cat;
     }
 
 }

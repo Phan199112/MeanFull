@@ -1,4 +1,4 @@
-<div class="fBody" *ngIf="!hide && form.found" [ngStyle]="form.highlight ? {'border': '5px solid red'} : {}">
+<div class="fBody" *ngIf="!hide && form.found" [ngClass]="{highlightedForm: form.highlight}">
     <!-- <div class="bg"> -->
     <!-- <div class="userImagePos"> -->
         <div class="topContainer">

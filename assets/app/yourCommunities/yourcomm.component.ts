@@ -26,7 +26,7 @@ export class YourCommunityComponent {
                 if (result.json().status == 1) {
                     this.sharedAlready = true;
                 } else {
-                    console.log("failed comm share request");
+                    // console.log("failed comm share request");
                 }
                 //
 

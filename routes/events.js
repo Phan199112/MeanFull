@@ -9,15 +9,16 @@ module.exports = function (app, passport, manager, hashids) {
     app.get('/events/list', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var promises = [];
         var outputevents = [];
-        var formdata = {};
-        var commdata = {};
-        var decryptedId = "";
-
 
 
         new Promise(function (resolve, reject) {
             EventModel.find({ userid: req.session.userid }).cursor()
                 .on('data', function (event) {
+
+                    var formdata = {};
+                    var commdata = {};
+                    var decryptedId = "";
+                    var fromUserId = "";
                     var eventdata = {
                         type: event.type,
                         message: event.message,
@@ -28,55 +29,38 @@ module.exports = function (app, passport, manager, hashids) {
                     };
 
 
-                     console.log("An event:--------------", event, event._id);
-
-                      decryptedId = hashids.decodeHex(event.data);
-
-                     if (event.type === "form" || event.type === "form-shared" || event.type === "form-answer") {
-
-                         FormModel.findById(decryptedId, function (err, formInfo) {
-                             //console.log(formInfo);
-                             if (err) {
-                                 console.log("error occured in FormModel")
-                             } else {
-
-                                 if (formInfo) {
-                                      console.log("formInfo", formInfo);
-                                 } 
-                                 if (formInfo !== null && formInfo.questions) {
-                                     formdata.timestamp = formInfo.timestamp;
-                                     formdata.question = formInfo.questions[0].body;//get the body again
-                                 }
-                             }
-
-                         });
-                     }
-
-                    if (event.type === "comm" || event.type === "comm-admin") {
-                        CommunityModel.findById(decryptedId, function (err, commInfo) {
-                            if (err) {
-                            } else {
-                                commdata = {
-                                    title: commInfo.title,
-                                };
-                            }
-                        });
+                    if (typeof event.data === 'string') {
+                        decryptedId = hashids.decodeHex(event.data);
                     }
 
 
                     promises.push(new Promise(function (resolve, reject) {
                         if (event.fromuser !== null) {
+
+
+                            if (typeof event.data === 'string') {
+                                decryptedId = hashids.decodeHex(event.data);
+                            }
+
+
                             if (event.fromuser === "anonymous") {
                                 eventdata.fromuser = {
                                     fb: null,
                                     pic: null,
                                     gender: null,
                                     name: "Anonymous",
-                                    qTitle: "someString"
-                                    //qTitle: formdata.question
                                 };
-                                outputevents.push(eventdata);
-                                resolve();
+
+                                FormModel.findById(decryptedId, function (err, formInfo) {
+                                    //console.log(formInfo);
+                                    if (err) {
+                                        reject()
+                                    } if (formInfo) {
+                                        eventdata.qTitle = formInfo.questions[0].body;
+                                        outputevents.push(eventdata);
+                                        resolve();
+                                    }
+                                });
 
                             } else {
                                 // this is default case
@@ -89,12 +73,86 @@ module.exports = function (app, passport, manager, hashids) {
                                             pic: userinfo.pic,
                                             gender: userinfo.gender,
                                             name: userinfo.name.first + " " + userinfo.name.last,
-                                             qtitle: "someString"
                                         };
-                                        eventdata.qTitle = formdata.question;
-                                        eventdata.commTitle = commdata.title;
-                                        outputevents.push(eventdata);
-                                        resolve();
+
+                                        if (event.type === 'network') {
+                                            eventdata.fromUserId = hashids.encodeHex(event.fromuser);
+                                            outputevents.push(eventdata);
+                                            resolve();
+                                        }
+
+
+                                        if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
+
+                                            if (event.type === "form-discussion") decryptedId = hashids.decodeHex(event.data.formid);
+                                            FormModel.findById(decryptedId, function (err, formInfo) {
+                                                if (err) {
+                                                    reject();
+                                                } else if (formInfo) {
+                                                    eventdata.qTitle = formInfo.questions[0].body;
+                                                    eventdata.fromUserId = hashids.encodeHex(event.fromuser);
+                                                    outputevents.push(eventdata);
+
+                                                    resolve();
+                                                } else {reject()};;
+                                            });
+                                        } else if (event.type === "comm" || event.type === "comm-admin") {
+                                            CommunityModel.findById(decryptedId, function (err, commInfo) {
+                                                if (err) {
+                                                    reject();
+                                                } else {
+                                                    eventdata.commTitle = commInfo.title;
+                                                    eventdata.fromUserId = hashids.encodeHex(event.fromuser);
+                                                    outputevents.push(eventdata);
+
+                                                    resolve();
+                                                }
+                                            });
+                                        } else if (event.type == "form-shared") {
+                                            // **Delete this once database is wiped **
+                                            if (typeof event.data == "string") {
+                                                let decryptedForm = hashids.decodeHex(event.data);
+                                                FormModel.findById(decryptedForm, function (err, formInfo) {
+                                                    if (err) {
+                                                        reject();
+                                                        
+                                                    } else if (formInfo) {
+                                                        eventdata.commTitle = "Legacy Notification";
+                                                        eventdata.qTitle = formInfo.questions[0].body;
+                                                        eventdata.fromUserId = hashids.encodeHex(event.fromuser);
+                                                        outputevents.push(eventdata);
+
+                                                        resolve();
+                                                    } else {reject()};
+                                                });
+                                            } else {
+                                                let decryptedCom = hashids.decodeHex(event.data.commid)
+                                                let decryptedForm = hashids.decodeHex(event.data.formid);
+
+                                                FormModel.findById(decryptedForm, function (err, formInfo) {
+                                                    //console.log(formInfo);
+                                                    if (err) {
+                                                        reject();
+                                                    } else if (formInfo) {
+                                                        CommunityModel.findById(decryptedCom, function (err2, commInfo) {
+                                                            if (err2) {
+                                                                reject();
+                                                            } else {
+                                                                eventdata.qTitle = formInfo.questions[0].body;
+                                                                eventdata.commTitle = commInfo.title;
+                                                                eventdata.fromUserId = hashids.encodeHex(event.fromuser);
+                                                                outputevents.push(eventdata);
+
+                                                                resolve();
+                                                            }
+                                                        });
+                                                    } else {reject()}
+                                                });
+                                            }
+                                        } else {
+                                            resolve();
+                                        }
+
                                     }
                                 });
                             }
@@ -102,7 +160,10 @@ module.exports = function (app, passport, manager, hashids) {
                             outputevents.push(eventdata);
                             resolve();
                         }
-                    }));
+                    })
+                    .then(function() {})
+                    .catch(function (err) {})
+                );
                 })
                 .on('error', function (err) {
                     // handle error
@@ -119,7 +180,7 @@ module.exports = function (app, passport, manager, hashids) {
                         return a.timestamp > b.timestamp;
                     })
                 });
-            }).catch(function () {
+            }).catch(function (err) {
                 res.json({ status: 0 });
             });
         })

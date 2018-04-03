@@ -271,6 +271,7 @@ module.exports = function(app, passport, manager, hashids) {
         var receivedData = req.body;
         var answerformid = hashids.decodeHex(receivedData.id);
         var formauthorid = null;
+        var firstQuestion = "";
         // double check to see whether this user has already submitted an answer:
         var checkedfordouble = true; // true means do not add again
         var checkedexpired = true;
@@ -309,6 +310,7 @@ module.exports = function(app, passport, manager, hashids) {
                         if (form) {
                             // look up the author of the form
                             checkedexpired = form.expired;
+                            firstQuestion = form.questions[0].body;
                         }
                         resolve();
                     }
@@ -416,7 +418,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         // send
                                         if (Object.keys(l.notifications).length === 0) {
                                             if (l.notifications.formactivity === true) {
-                                                emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                                emailfunctions.sendNotificationFormActivity(l.email, firstQuestion, hashids.encodeHex(answerformid));
                                                 res.json({status: 1});
                                             } else {
                                                 // no email
@@ -424,7 +426,7 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         } else {
                                             // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationFormActivity(l.email, hashids.encodeHex(answerformid));
+                                            emailfunctions.sendNotificationFormActivity(l.email, firstQuestion, hashids.encodeHex(answerformid));
                                             res.json({status: 1});
                                         }
 

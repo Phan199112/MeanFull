@@ -55,12 +55,12 @@
         <mj-column>
           <mj-text font-size="15" color="#818181"  font-family="Karla">
              <!--<a href="https://mjml.io" class="link-nostyle">Questionsly</a>-->
-            Hi XXXXXX,
+            Hi {{firstName}},
             <br>
             Welcome to Questionsly! To finish signing up, click on the green button below to confirm that we have the right email.
           </mj-text>
           <mj-button font-family="Karla" font-size="15"  background-color="#28ab64" color="white">
-            <a class="link-nostyle" href="https://www.questionsly.com/">Confirm Email</a>
+            <a class="link-nostyle" href="{{confirmationLink}}">Confirm Email</a>
           </mj-button>
           <mj-text font-size="10" color="#818181"  font-family="Karla">
             If you didn't sign up for Questionsly please ignore this email.

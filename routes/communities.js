@@ -132,6 +132,8 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/community/invite', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
+        var commtitle = req.body.commtitle;
+        var commpic = req.body.commpic;
 
         commfunctions.commAdmin(commid, req.session.userid).then(function(result) {
             if (result === true) {
@@ -139,21 +141,37 @@ module.exports = function(app, passport, manager, hashids) {
                 req.body.userids.forEach(function(userid) {
                     var seluserid = hashids.decodeHex(userid);
                     notifications.createNotification(seluserid, req.session.userid, "comm", "Community invitation", req.body.commid);
+                    
+                    
                     // send email
                     UserModel.findById(seluserid, function(err, l) {
                         if (err) {
                             console.log(err);
                         } else {
-                            if (Object.keys(l.notifications).length === 0) {
-                                if (l.notifications.commrequest === true) {
-                                    emailfunctions.sendNotificationCommRequest(l.email, req.user);
-                                }
-                            } else {
-                                // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                emailfunctions.sendNotificationCommRequest(l.email, req.user);
-                            }
+
+                            UserModel.findById(req.session.userid, function (err, s) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+
+                                    var sender = s.name.first + " " + s.name.last;
+
+                                    if (Object.keys(l.notifications).length === 0) {
+                                        if (l.notifications.commrequest === true) {
+                                            emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
+                                        }
+                                    } else {
+                                        // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                        emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
+                                    }
+
+                                 }
+                            });
+
+
                         }
                     });
+
                 });
                 res.json({status: 1});
             } else {
@@ -616,6 +634,8 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var formid = hashids.decodeHex(req.body.formid);
 
+        var notiData = {commid: req.body.commid, formid: req.body.formid};
+
         var emailaddresses = [];
         var commuserslist = [];
 
@@ -724,7 +744,7 @@ module.exports = function(app, passport, manager, hashids) {
                     if (commuserslist.length > 0) {
                         // in-site notifications
                         for (i=0; i < commuserslist.length; i++) {
-                            notifications.createNotification(commuserslist[i], sender.insite, "form-shared", "Shared survey", hashids.encodeHex(formid));
+                            notifications.createNotification(commuserslist[i], sender.insite, "form-shared", "Shared survey", notiData);
                         }
 
                         // retrieve email adresses
