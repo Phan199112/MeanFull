@@ -57,7 +57,6 @@ export class DiscussionListComponent implements OnInit {
 
                     // update
                     this.data = response.json().data;
-                    window.console.log("comments", this.form);
                     if (this.data !== null) {
                         for (let i = start; i < this.data.length; i++) {
                             this.chatlist.push(new DiscussionModel(this.data[i]));

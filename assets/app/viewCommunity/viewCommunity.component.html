@@ -1,15 +1,15 @@
-<div style="width: 1220px; margin: 10px auto 0px auto">
+<div class="pageLayout">
     <div class="row">
         <!-- <div *ngIf="status == '2'"><h6>{{data.title}} is a private community. Only individuals invited by the admin can see further details. </h6></div> -->
         <!-- <network-list [data]="data.members" *ngIf="!loading && loadsuccessful && status != '2'"></network-list> -->
 
-        <div class="col-md-3 order-2 order-sm-1">
+        <div class=" col-md-3 col-sm-12 col-12 order-2 order-md-1">
             <sidebar [friends]="data.members" [context]="'community'" *ngIf="!loading && loadsuccessful && status != '2'"></sidebar>
         </div>
 
 
 
-        <div class="col-md-6 order-1 order-sm-2" *ngIf="loadsuccessful">
+        <div class="col-md-6 col-12 order-1 order-md-2" *ngIf="loadsuccessful">
             <div id="viewCommunityContainer">
 
                 <!-- Info header -->

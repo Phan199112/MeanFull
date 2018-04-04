@@ -1,6 +1,3 @@
-<!-- <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
-    <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search" formControlName="searchterm" [ngClass]="{'form-control': true}" >
-</form> -->
 <div *ngIf="context === 'profile'">
     <div class="sContainer">
         <h6 *ngIf="networklist.length == 0" class="lpText small">{{me ? 'Your' : userName + "'s"}} network is empty.<br/>Discover other members!</h6>

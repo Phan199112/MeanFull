@@ -37,11 +37,9 @@ module.exports = function (app, passport, manager, hashids) {
                     promises.push(new Promise(function (resolve, reject) {
                         if (event.fromuser !== null) {
 
-
                             if (typeof event.data === 'string') {
                                 decryptedId = hashids.decodeHex(event.data);
                             }
-
 
                             if (event.fromuser === "anonymous") {
                                 eventdata.fromuser = {
@@ -54,11 +52,13 @@ module.exports = function (app, passport, manager, hashids) {
                                 FormModel.findById(decryptedId, function (err, formInfo) {
                                     //console.log(formInfo);
                                     if (err) {
-                                        reject()
+                                        reject(err)
                                     } if (formInfo) {
                                         eventdata.qTitle = formInfo.questions[0].body;
                                         outputevents.push(eventdata);
                                         resolve();
+                                    } else {
+                                        resolve();                                        
                                     }
                                 });
 
@@ -81,7 +81,6 @@ module.exports = function (app, passport, manager, hashids) {
                                             resolve();
                                         }
 
-
                                         if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
 
                                             if (event.type === "form-discussion") decryptedId = hashids.decodeHex(event.data.formid);
@@ -92,19 +91,21 @@ module.exports = function (app, passport, manager, hashids) {
                                                     eventdata.qTitle = formInfo.questions[0].body;
                                                     eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                                     outputevents.push(eventdata);
-
                                                     resolve();
-                                                } else {reject()};;
+                                                } else {
+                                                    resolve();
+                                                };
                                             });
                                         } else if (event.type === "comm" || event.type === "comm-admin") {
                                             CommunityModel.findById(decryptedId, function (err, commInfo) {
                                                 if (err) {
                                                     reject();
-                                                } else {
+                                                } else if (commInfo) {
                                                     eventdata.commTitle = commInfo.title;
                                                     eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                                     outputevents.push(eventdata);
-
+                                                    resolve();
+                                                } else {
                                                     resolve();
                                                 }
                                             });
@@ -114,16 +115,16 @@ module.exports = function (app, passport, manager, hashids) {
                                                 let decryptedForm = hashids.decodeHex(event.data);
                                                 FormModel.findById(decryptedForm, function (err, formInfo) {
                                                     if (err) {
-                                                        reject();
-                                                        
+                                                        reject(err);
                                                     } else if (formInfo) {
                                                         eventdata.commTitle = "Legacy Notification";
                                                         eventdata.qTitle = formInfo.questions[0].body;
                                                         eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                                         outputevents.push(eventdata);
-
                                                         resolve();
-                                                    } else {reject()};
+                                                    } else {
+                                                        resolve();
+                                                    };
                                                 });
                                             } else {
                                                 let decryptedCom = hashids.decodeHex(event.data.commid)
@@ -132,21 +133,26 @@ module.exports = function (app, passport, manager, hashids) {
                                                 FormModel.findById(decryptedForm, function (err, formInfo) {
                                                     //console.log(formInfo);
                                                     if (err) {
-                                                        reject();
+
+                                                        reject(err);
                                                     } else if (formInfo) {
                                                         CommunityModel.findById(decryptedCom, function (err2, commInfo) {
                                                             if (err2) {
                                                                 reject();
-                                                            } else {
+                                                            } else if (commInfo) {
                                                                 eventdata.qTitle = formInfo.questions[0].body;
                                                                 eventdata.commTitle = commInfo.title;
                                                                 eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                                                 outputevents.push(eventdata);
 
                                                                 resolve();
+                                                            } else {
+                                                                resolve();
                                                             }
                                                         });
-                                                    } else {reject()}
+                                                    } else {
+                                                        resolve();
+                                                    }
                                                 });
                                             }
                                         } else {
@@ -160,9 +166,9 @@ module.exports = function (app, passport, manager, hashids) {
                             outputevents.push(eventdata);
                             resolve();
                         }
-                    })
+                    })  
                     .then(function() {})
-                    .catch(function (err) {})
+                    .catch(function () {})
                 );
                 })
                 .on('error', function (err) {

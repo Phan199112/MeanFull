@@ -145,12 +145,14 @@ export class NavbarComponent implements OnInit {
     }
 
     getEventsList() {
+        
         this.userService.afterLoginCheck().then(response => {
             // request eventslist
             if (response != '0') {
+                window.console.log("maadeee it");
                 this.http.get('/events/list').toPromise()
-                    .then(eventsdata => {
-                        this.events = eventsdata.json().events; // array of objects
+                .then(eventsdata => {
+                    this.events = eventsdata.json().events; // array of objects
                         
                         // clear the current list
                         this.clearNotifications();
@@ -158,7 +160,7 @@ export class NavbarComponent implements OnInit {
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
-                                // window.console.log(e);
+                                window.console.log(e);
                                 this.addNotification(e);
                             }
                         }
@@ -265,7 +267,8 @@ export class NavbarComponent implements OnInit {
     }
 
     onDocClick(event) {
-        if (this.showNotifications && !this.toggler.nativeElement.contains(event.target)) {
+        // if (this.showNotifications && !this.toggler.nativeElement.contains(event.target)) {
+        if (this.showNotifications) {
             this.navExpanded = false;
             this.showNotifications = false;
             $('body').css('overflow', 'auto');

@@ -1,8 +1,8 @@
 <!--<div class="container" id="profilePage">-->
-    <div style="width: 1220px; margin: 10px auto 0px auto">
+    <div class="pageLayout">
          <div class="row" >
            
-            <div class="col-md-3 order-2 order-sm-1">
+            <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
                 <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
             </div>
         
@@ -25,7 +25,7 @@
 
 
 
-        <div class="col-md-6 order-1 order-sm-2">
+        <div class="col-md-6 col-12 order-1 order-md-2">
             <div id="profileContainer" *ngIf="loadsuccessful">
 
                 <!-- Header container with user info -->

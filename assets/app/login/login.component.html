@@ -1,26 +1,11 @@
 <div class="container" id="mainLoginPageContainer">
     <div class="row">
         <div class="col-sm-5">
-            <div class="row">
-                <div id="loginPageSocial" class="text-center">
-                    <div class="social-wrap a">
-                        <a href="\users\login\facebook"><button id="facebook">Sign in with Facebook</button></a>
-                    </div>
 
-                    <!--<div class="social-wrap a">-->
-                        <!--<button id="linkedin">Sign in with LinkedIn</button>-->
-                    <!--</div>-->
-                </div>
-            </div>
-            <div id="separator-login">
-                <hr/>
-                <span>OR</span>
-                <hr/>
-            </div>
             <div class="login-box">
                 <div class="top clearfix">
                     <div class="left">
-                        <h5 class="title">Login to our site</h5>
+                        <h5 class="title">Login</h5>
                     </div>
                 </div>
                 <div class="bottom">
@@ -47,11 +32,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <p>By using this service you agree to our <a href="/tos" target="_blank">Terms of Service</a> & <a href="/privacy" target="_blank">Privacy Policy</a>.</p>
+                            <p style="font-size: .7rem;">By using this service you agree to our<a href="/tos" target="_blank" style="font-size: .7rem; color: #999">Terms of Service</a> & <a href="/privacy" target="_blank" style="font-size: .7rem; color: #999">Privacy Policy</a>.</p>
                         </div>
                         <div>
                             <button type="submit" class="btn btn-success" [disabled]="login.invalid && login.wasChecked" (click)="checkSubmit(login, 'login')">Sign in!</button>
-                            <button type="button" class="btn btn-danger" (click)="showForgotPwd = true">Forgot password?</button>
+                            <button type="button" class="btn" style="background-color: #CCC" (click)="showForgotPwd = true">Forgot password?</button>
                         </div>
                     </form>
                 </div>
@@ -88,6 +73,28 @@
                     </form>
                 </div>
             </div>
+
+
+                        <div class="row" style="margin-top: 20px">
+                            <div id="loginPageSocial" class="text-center">
+                                <div class="social-wrap a">
+                                    <a href="\users\login\facebook">
+                                        <button id="facebook">Sign in with Facebook</button>
+                                    </a>
+                                </div>
+                        
+                                <!--<div class="social-wrap a">-->
+                                <!--<button id="linkedin">Sign in with LinkedIn</button>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                        <!-- <div id="separator-login">
+                            <hr/>
+                            <span>OR</span>
+                            <hr/>
+                        </div> -->
+
+                        
         </div>
         <div class="col-sm-1 align-self-start" id="separator-middle"></div>
         <div class="col-sm-1"></div>
@@ -95,7 +102,7 @@
             <div class="login-box">
                 <div class="top clearfix">
                     <div class="left">
-                        <h5 class="title">Sign up now</h5>
+                        <h5 class="title">Sign Up!</h5>
                     </div>
                     <!--<div class="right">-->
                         <!--<i class="fa fa-pencil" aria-hidden="true"></i>-->
@@ -107,13 +114,13 @@
                             <!--name-->
                             <div class="form-row form-group" formGroupName="name">
                                 <div class=" col-sm-6">
-                                    <input formControlName="firstname" [ngClass]="{'form-control': true, 'is-invalid': signup.get('name').get('firstname').invalid && signup.get('name').get('firstname').touched}" type="text" placeholder="Firstname">
+                                    <input formControlName="firstname" [ngClass]="{'form-control': true, 'is-invalid': signup.get('name').get('firstname').invalid && signup.get('name').get('firstname').touched}" type="text" placeholder="First Name">
                                     <div *ngIf="signup.get('name').get('firstname').invalid && signup.get('name').get('firstname').touched" class="invalid-feedback">
                                         First name must be at least 2 letters long
                                     </div>
                                 </div>
                                 <div class=" col-sm-6">
-                                    <input formControlName="lastname" [ngClass]="{'form-control': true, 'is-invalid': signup.get('name').get('lastname').invalid && signup.get('name').get('lastname').touched}" type="text" placeholder="Lastname">
+                                    <input formControlName="lastname" [ngClass]="{'form-control': true, 'is-invalid': signup.get('name').get('lastname').invalid && signup.get('name').get('lastname').touched}" type="text" placeholder="Last Name">
                                     <div *ngIf="signup.get('name').get('lastname').invalid && signup.get('name').get('lastname').touched" class="invalid-feedback">
                                         Last name must be at least 2 letters long
                                     </div>
@@ -121,20 +128,23 @@
                             </div>
 
                             <!--email-->
-                            <div class="form-group">
-                                <input formControlName="email" [ngClass]="{'form-control': true, 'is-invalid': signup.get('email').invalid && signup.get('email').touched}" type="email" name="" placeholder="Email">
-                                <div *ngIf="signup.get('email').invalid && signup.get('email').touched" class="invalid-feedback">
-                                    Email is required
+                            <div class="form-row form-group">  
+                                <div class="col-sm-6">
+                                    <input formControlName="email" [ngClass]="{'form-control': true, 'is-invalid': signup.get('email').invalid && signup.get('email').touched}" type="email" name="" placeholder="Email">
+                                    <div *ngIf="signup.get('email').invalid && signup.get('email').touched" class="invalid-feedback">
+                                        Email is required
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!--password-->
-                            <div class="form-group">
-                                <input formControlName="password"
-                                        [ngClass]="{'form-control': true, 'is-invalid': signup.get('password').invalid && signup.get('password').touched}" type="password" placeholder="Password">
-                                <div *ngIf="signup.get('password').invalid && signup.get('password').touched" class="invalid-feedback">
-                                    Password is required
+                                <!--password-->
+                                <div class="col-sm-6">
+                                    <input formControlName="password"
+                                            [ngClass]="{'form-control': true, 'is-invalid': signup.get('password').invalid && signup.get('password').touched}" type="password" placeholder="Password">
+                                    <div *ngIf="signup.get('password').invalid && signup.get('password').touched" class="invalid-feedback">
+                                        Password is required
+                                    </div>
                                 </div>
+
                             </div>
 
                             <!--profile picture-->
@@ -155,30 +165,16 @@
                             </div>
 
                             <!--School affiliation-->
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <select formControlName="schoolAffiliation" class="form-control">
                                     <option disabled selected value="">School affiliation (optional)</option>
                                     <option *ngFor="let school of UsSchools" [value]="school">{{school}}</option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <!--city, state, country -->
                             <div class="form-group">
                                 <div class="form-row">
-                                    <div class="col-md-4">
-                                        <input formControlName="city" type="text"
-                                               [ngClass]="{'form-control': true, 'is-invalid': signup.get('city').invalid && signup.get('city').touched}" placeholder="Current City">
-                                        <div *ngIf="signup.get('city').invalid && signup.get('city').touched" class="invalid-feedback">
-                                            City is required
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input formControlName="state" type="text"
-                                               [ngClass]="{'form-control': true, 'is-invalid': signup.get('state').invalid && signup.get('state').touched}" placeholder="State">
-                                        <div *ngIf="signup.get('state').invalid && signup.get('state').touched" class="invalid-feedback">
-                                            State is required
-                                        </div>
-                                    </div>
                                     <div class="col-md-5">
                                         <select formControlName="country" class="form-control" id="countries">
                                             <option value="United States" selected>United States</option>
@@ -422,37 +418,48 @@
                                             <option value="Zimbabwe">Zimbabwe</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-3">
+                                        <input formControlName="state" type="text"
+                                               [ngClass]="{'form-control': true, 'is-invalid': signup.get('state').invalid && signup.get('state').touched}" placeholder="State">
+                                        <div *ngIf="signup.get('state').invalid && signup.get('state').touched" class="invalid-feedback">
+                                            State is required
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input formControlName="city" type="text"
+                                               [ngClass]="{'form-control': true, 'is-invalid': signup.get('city').invalid && signup.get('city').touched}" placeholder="City">
+                                        <div *ngIf="signup.get('city').invalid && signup.get('city').touched" class="invalid-feedback">
+                                            City is required
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!--gender-->
                             <div class="form-group">
-                                <div class="row">
-                                    <label class="col-form-legend col-sm-2 signupTextColor">Gender</label>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input formControlName="gender" value="male" type="radio" name="gender">
-                                                Male
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input formControlName="gender" value="female" type="radio" name="gender">
-                                                Female
-                                            </label>
-                                        </div>
+                                <div class="row" style="padding-left: 10px;">
+                                    <div class="col-sm-2">
+                                        <label class="form-check-label">
+                                            <input formControlName="gender" value="male" type="radio" name="gender">
+                                            Male
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="form-check-label">
+                                            <input formControlName="gender" value="female" type="radio" name="gender">
+                                            Female
+                                        </label>
                                     </div>
                                 </div>
                             </div>
 
                             <!--dob-->
                             <div class="form-group" formGroupName="dob">
-                                <div class="row">
+                                <div class="row" style="padding-left: 10px">
                                     <label  class="col-form-legend col-sm-2 signupTextColor">DOB</label>
                                     <div class="col-sm-10">
                                         <div class="form-inline">
-                                            <select formControlName="date"
+                                            <select formControlName="date" style="margin-right: 6px"
                                                     [ngClass]="{'form-control': true, 'is-invalid': signup.get('dob').get('date').invalid && signup.get('dob').get('date').touched}" placeholder="Current City">
                                                 <option selected disabled value="">Date</option>
                                                 <option value="1" >1 </option>
@@ -487,7 +494,7 @@
                                                 <option value="30" >30 </option>
                                                 <option value="31" >31 </option>
                                             </select>
-                                            <select formControlName="month"
+                                            <select formControlName="month" style="margin-right: 6px"
                                                     [ngClass]="{'form-control': true, 'is-invalid': signup.get('dob').get('month').invalid && signup.get('dob').get('month').touched}" placeholder="Current City">
                                                 <option selected disabled value="">Month</option>
                                                 <option value="0">Jan</option>
@@ -523,7 +530,7 @@
                             </div>
 
                             <div class="form-group">
-                                <p>By creating an account you agree to our <a href="/tos" target="_blank">Terms of Service</a> & <a href="/privacy" target="_blank">Privacy Policy</a>.</p>
+                                <p style="font-size: .7rem;">By creating an account you agree to our <a href="/tos" target="_blank" style="font-size: .7rem; color: #999">Terms of Service</a> & <a href="/privacy" target="_blank" style="font-size: .7rem; color: #999">Privacy Policy</a>.</p>
                             </div>
 
                             <button class="btn btn-success" [disabled]="signup.invalid && signup.wasChecked" (click)="checkSubmit(signup, 'signup')">

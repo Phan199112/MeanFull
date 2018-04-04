@@ -17,8 +17,40 @@ $commentBackground: #f0f6f0;
 
 
 /* change the background color */
-.navbar-custom {
-  background-color: $navBarColor;
+// .navbar-custom {
+//   background-color: $navBarColor !important;
+//   height: 52px;
+//   padding: 0px 15%;
+
+//   @media (max-width: 768px) {
+//     padding: 0px 5%;
+//   }
+// }
+
+.navbar-light {
+    background-color: $navBarColor !important;
+    padding: 0px 20%;
+    
+  @media (min-width: 768px) {
+      height: 52px;
+  }
+
+  @media (max-width: 767px) {
+    padding: 0px 5%;
+    // height: 50px;
+  }
+}
+
+.navbar-light .navbar-text,
+.navbar-light .navbar-brand{
+  color: $primaryColor;
+  font-weight: 700;
+}
+
+.navbar-brand {
+    @media (max-width: 767px) {
+    padding: 10px 0px;
+  }
 }
 
 .navlinks {
@@ -37,10 +69,6 @@ $commentBackground: #f0f6f0;
   }
 }
 
-.container {
-  display: flex;
-  justify-content: space-between;
-}
 
 .dropdown-toggle {
   display: inherit;
@@ -79,7 +107,7 @@ $commentBackground: #f0f6f0;
 /* change the color of active or hovered links */
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
-  color: #ffffff;
+  color: #999;
 }
 
 .mouseChangeToHand{
@@ -95,20 +123,16 @@ img {
   width: 40px;
 }
 
-.navbar-toggler {
-  margin-top: -7px;
-  margin-left: -5px;
+// .navbar-toggler {
+//   margin-top: -7px;
+//   margin-left: -5px;
 
-  i {
-    color: #fff;
-    font-size: 22px;
-  }
-}
+//   i {
+//     color: #fff;
+//     font-size: 22px;
+//   }
+// }
 
-#mobile-navbar {
-  width: 150px;
-  margin-top: -1px;
-}
 
 .searchContainer {
   display: flex;
@@ -199,6 +223,15 @@ img {
   &:hover {
     cursor: pointer;
   }
+}
+
+.noNotifications {
+  text-align: center;
+  font-family: Helvetica Neue;
+  color: #CCC;
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin: 10px 0px;
 }
 
 .notifLabel {

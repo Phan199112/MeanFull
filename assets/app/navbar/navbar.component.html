@@ -1,184 +1,325 @@
-<div class="fixed-top">
-    <nav class="navbar navbar-expand-md navbar-custom">
-        <div class="container">
-            <button #toggler class="navbar-toggler" type="button" (click)="navExpanded = !navExpanded" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                </span>
-            </button>
-            <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
-            <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
+<!-- <nav class="navbar navbar-expand-md navbar-custom fixed-top">
+    <div class="container">
+        <button #toggler class="navbar-toggler" type="button" (click)="navExpanded = !navExpanded" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </span>
+        </button>
+        <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
+        <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
                 <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
             </form>
-            <div class="navbar-collapse collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav ml-auto">
-                    <div *ngIf="loggedin; then fullbar else login"></div>
-                    <ng-template #fullbar>
-                        <!-- <li class="nav-item">
-                            <a class="navlinks nav-link" routerLink="/createForm" title="Ask questions">
-                                Ask questions
-                            </a>
-                        </li> -->
-                        <!--<li class="nav-item">-->
-                        <!--<a class="navlinks nav-link" [routerLink]="['/createForm']" [queryParams]="{event: true}" title="Create Event">-->
-                        <!--Create Event-->
-                        <!--</a>-->
-                        <!--</li>-->
-                        <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
-                            <div *ngIf="pictype" class="d-inline-block">
-                                <div *ngIf="pictype == 'fb'">
-                                    <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
-                                </div>
-                                <div *ngIf="pictype == 'local'">
-                                    <img class="userImage" [src]="pic" />
-                                </div>
-                                <div *ngIf="pictype == 'default-male'">
-                                    <img class="userImage" src="/images/male.png" />
-                                </div>
-                                <div *ngIf="pictype == 'default-female'">
-                                    <img class="userImage" src="/images/female.png" />
-                                </div>
+        <div class="navbar-collapse collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <div *ngIf="loggedin; then fullbar else login"></div>
+                <ng-template #fullbar>
+                    <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
+                        <div *ngIf="pictype" class="d-inline-block">
+                            <div *ngIf="pictype == 'fb'">
+                                <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
                             </div>
-                            <a class="navlinks nav-link d-inline-block icons"> {{firstname}} </a>
-                        </li>
+                            <div *ngIf="pictype == 'local'">
+                                <img class="userImage" [src]="pic" />
+                            </div>
+                            <div *ngIf="pictype == 'default-male'">
+                                <img class="userImage" src="/images/male.png" />
+                            </div>
+                            <div *ngIf="pictype == 'default-female'">
+                                <img class="userImage" src="/images/female.png" />
+                            </div>
+                        </div>
+                        <a class="navlinks nav-link d-inline-block icons"> {{firstname}} </a>
+                    </li>
 
 
 
-                        <!-- Notifications Begin -->
-                        <div style="display: flex; align-items: center; padding-bottom: 5px; margin-right: 18px;">
-                            <li>
-                                <div class="position-relative">
-                                    <div (click)="toggleNotifications()" class="toggleNot">
-                                        <i class="fa fa-bell icons" [ngClass]="{iconActive: showNotifications}" aria-hidden="true"></i>
-                                        <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
-                                    </div>
-                                    
-                                    <!-- <img src="/images/tip.png" style="boxTip" /> -->
-                                    <div class="notificationDropdown" *ngIf="showNotifications">
-                                        
-                                        <div *ngIf="networkNotifications.length > 0">
-                                            <p class="notifLabel"  [ngClass]="{'noTopBorder': true}">Friend Requests</p>
-                                            <div *ngFor="let notification of networkNotifications.reverse(); let i = index">
-                                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
-                                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
-                                                            <img src="{{notificationPic(notification)}}" class="notifImage" />
-                                                            <div class="flex fCol" style="max-width: 300px; ">
-                                                                <p style="color: #333; margin: 0; font-size: .8rem"><span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}</p>
-                                                                <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
-                                                            </div>
-                                                            <div class="flex">
-                                                                <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
-                                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a>
-                                                            </div>
-                                                        </div>
+                    <div style="display: flex; align-items: center; padding-bottom: 5px; margin-right: 18px;">
+                        <li>
+                            <div class="position-relative">
+                                <div (click)="toggleNotifications()" class="toggleNot">
+                                    <i class="fa fa-bell icons" [ngClass]="{iconActive: showNotifications}" aria-hidden="true"></i>
+                                    <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+                                </div>
+
+                                <div class="notificationDropdown" *ngIf="showNotifications">
+
+                                    <div *ngIf="networkNotifications.length > 0">
+                                        <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p>
+                                        <div *ngFor="let notification of networkNotifications.reverse(); let i = index">
+                                            <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                                <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                                    <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                                    <div class="flex fCol" style="max-width: 300px; ">
+                                                        <p style="color: #333; margin: 0; font-size: .8rem">
+                                                            <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}</p>
+                                                        <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
+                                                        <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
 
 
-                                            <div *ngIf="communityNotifications.length > 0">
-                                            <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p>
-                                            <div *ngFor="let notification of communityNotifications.reverse(); let i = index">
-                                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
-                                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
-                                                            <img src="{{notificationPic(notification)}}" class="notifImage" />
-                                                            <div class="flex fCol" style="max-width: 300px; ">
-                                                                <p style="color: #333; margin: 0; font-size: .8rem"><span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}} <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span></p>
-                                                                <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
-                                                            </div>
-                                                            <div class="flex">
-                                                                <a *ngIf="notification.type === 'comm-admin' " class="acceptButton" (click)="acceptCommunityRequest(notification.id, true)">Accept</a>
-                                                                <a *ngIf="notification.type === 'comm' " class="acceptButton" (click)="acceptCommunityRequest(notification.id)">Accept</a>
-                                                                <a class="denyButton" (click)="deleteCommunityRequest(notification.id)">Deny</a>
-                                                            </div>
-                                                        </div>
+                                    <div *ngIf="communityNotifications.length > 0">
+                                        <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p>
+                                        <div *ngFor="let notification of communityNotifications.reverse(); let i = index">
+                                            <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                                <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                                    <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                                    <div class="flex fCol" style="max-width: 300px; ">
+                                                        <p style="color: #333; margin: 0; font-size: .8rem">
+                                                            <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}
+                                                            <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span>
+                                                        </p>
+                                                        <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <a *ngIf="notification.type === 'comm-admin' " class="acceptButton" (click)="acceptCommunityRequest(notification.id, true)">Accept</a>
+                                                        <a *ngIf="notification.type === 'comm' " class="acceptButton" (click)="acceptCommunityRequest(notification.id)">Accept</a>
+                                                        <a class="denyButton" (click)="deleteCommunityRequest(notification.id)">Deny</a>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <p class="notifLabel" [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p>
-                                            <div *ngFor="let notification of notifications.reverse(); let i = index">
-                                                    <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
-                                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
-                                                            <img src="{{notificationPic(notification)}}" class="notifImage" />
-                                                            <div class="flex fCol" style="max-width: 300px; ">
-                                                                <p style="color: #333; margin: 0; font-size: .8rem"><span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}} <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span></p>
-                                                                <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mma"}}</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                            <p *ngIf="notifications.length > notifShowCount" class="notifLabel showMoreLabel" (click)="showMoreNotifications()">Show More</p>
-
-
-
-
+                                        </div>
                                     </div>
+
+                                    <p class="notifLabel" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p>
+                                    <p class="noNotifications" *ngIf='communityNotifications.length == 0 && networkNotifications.length == 0 && notifications.length === 0'>No Notifications</p>
+                                    <div *ngFor="let notification of notifications.reverse(); let i = index">
+                                        <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                            <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                                <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                                <div class="flex fCol" style="max-width: 300px; ">
+                                                    <p style="color: #333; margin: 0; font-size: .8rem">
+                                                        <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}
+                                                        <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span>
+                                                    </p>
+                                                    <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mma"}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p *ngIf="notifications.length > notifShowCount" class="notifLabel showMoreLabel" (click)="showMoreNotifications()">Show More</p>
+
+
 
 
                                 </div>
-                            </li>
-                        </div>
 
 
-                        <li class="nav-item d-sm-none">
-                            <a class="navlinks nav-link icons" [routerLink]="['/settings', {'page': 'notifications'}]">
-                                <i class="fa fa-bell" aria-hidden="true"></i>
-                            </a>
+                            </div>
                         </li>
-                        <div class="d-none d-sm-block">
-                            <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
-                                <li [ngClass]="{
+                    </div>
+
+
+                    <li class="nav-item d-sm-none">
+                        <a class="navlinks nav-link icons" [routerLink]="['/settings', {'page': 'notifications'}]">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <div class="d-none d-sm-block">
+                        <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
+                            <li [ngClass]="{
                                     'nav-item': true, 
                                     'd-none': placement == 'bottom-left', 
                                     'd-xl-block': placement == 'bottom-left',
                                     'd-xl-none': placement == 'bottom-right'
                                 }" ngbDropdown [placement]="placement">
-                                    <a class="navlinks nav-link custom-dropdown-toggle" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-cog icons" aria-hidden="true"></i>
-                                    </a>
-                                    <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
-                                        <a class="dropdown-item" routerLink="/settings">Settings</a>
-                                        <a class="dropdown-item" (click)="logout()">Logout</a>
-                                    </div>
-                                </li>
-                            </div>
-                        </div>
-                        <div class="d-sm-none">
-                            <li class="nav-item">
-                                <a class="navlinks nav-link" routerLink="/settings">
-                                    Settings
+                                <a class="navlinks nav-link custom-dropdown-toggle" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-cog icons" aria-hidden="true"></i>
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="navlinks nav-link" (click)="logout()">
-                                    Logout
-                                </a>
+                                <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                    <a class="dropdown-item" routerLink="/settings">Settings</a>
+                                    <a class="dropdown-item" (click)="logout()">Logout</a>
+                                </div>
                             </li>
                         </div>
-                    </ng-template>
-
-                    <ng-template #login>
+                    </div>
+                    <div class="d-sm-none">
                         <li class="nav-item">
-                            <a class="navlinks nav-link" routerLink="/users/login">Login</a>
+                            <a class="navlinks nav-link" routerLink="/settings">
+                                Settings
+                            </a>
                         </li>
-                    </ng-template>
-                </ul>
-            </div>
+                        <li class="nav-item">
+                            <a class="navlinks nav-link" (click)="logout()">
+                                Logout
+                            </a>
+                        </li>
+                    </div>
+                </ng-template>
+
+                <ng-template #login>
+                    <li class="nav-item">
+                        <a class="navlinks nav-link" routerLink="/users/login">Login</a>
+                    </li>
+                </ng-template>
+            </ul>
         </div>
-    </nav>
-    <nav style="width:50%" id="mobile-navbar" [ngClass]="{
-        'navbar': true, 
-        'navbar-custom': true,
-        'd-sm-none': true,
-        'd-none': !navExpanded
-    }">
-        <div class="container">
-            <div [ngClass]="{'navbar-collapse': true, 'collapse': !navExpanded}">
-                <ul class="navbar-nav ml-auto" (click)="navExpanded = !navExpanded">
-                    <div *ngIf="loggedin;then fullbar else login"></div>
-                </ul>
+    </div>
+</nav> -->
+ 
+ 
+ 
+ 
+ <!-- NEW NAVBAR BELOW -->
+<nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
+    <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation" >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+
+            <li class="nav-item">
+                <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
+                    <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
+                </form>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li> -->
+        </ul>
+        <ul style="list-style: none; display: flex; margin-bottom: 0px">
+            <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
+                <div *ngIf="pictype" class="d-inline-block">
+                    <div *ngIf="pictype == 'fb'">
+                        <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
+                    </div>
+                    <div *ngIf="pictype == 'local'">
+                        <img class="userImage" [src]="pic" />
+                    </div>
+                    <div *ngIf="pictype == 'default-male'">
+                        <img class="userImage" src="/images/male.png" />
+                    </div>
+                    <div *ngIf="pictype == 'default-female'">
+                        <img class="userImage" src="/images/female.png" />
+                    </div>
+                </div>
+                <a class="navlinks nav-link d-inline-block icons"> {{firstname}} </a>
+            </li>
+
+
+            <div style="display: flex; align-items: center; padding-bottom: 5px; margin-right: 18px; align-items: center">
+                <li>
+                    <div class="position-relative">
+                        <div (click)="toggleNotifications()" class="toggleNot">
+                            <i class="fa fa-bell icons" [ngClass]="{iconActive: showNotifications}" aria-hidden="true"></i>
+                            <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+                        </div>
+            
+                        <div class="notificationDropdown" *ngIf="showNotifications">
+            
+                            <div *ngIf="networkNotifications.length > 0">
+                                <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p>
+                                <div *ngFor="let notification of networkNotifications.reverse(); let i = index">
+                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                            <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                            <div class="flex fCol" style="max-width: 300px; ">
+                                                <p style="color: #333; margin: 0; font-size: .8rem">
+                                                    <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}</p>
+                                                <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
+                                            </div>
+                                            <div class="flex">
+                                                <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
+                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+            
+                            <div *ngIf="communityNotifications.length > 0">
+                                <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p>
+                                <div *ngFor="let notification of communityNotifications.reverse(); let i = index">
+                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                            <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                            <div class="flex fCol" style="max-width: 300px; ">
+                                                <p style="color: #333; margin: 0; font-size: .8rem">
+                                                    <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}
+                                                    <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span>
+                                                </p>
+                                                <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
+                                            </div>
+                                            <div class="flex">
+                                                <a *ngIf="notification.type === 'comm-admin' " class="acceptButton" (click)="acceptCommunityRequest(notification.id, true)">Accept</a>
+                                                <a *ngIf="notification.type === 'comm' " class="acceptButton" (click)="acceptCommunityRequest(notification.id)">Accept</a>
+                                                <a class="denyButton" (click)="deleteCommunityRequest(notification.id)">Deny</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <p class="notifLabel" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p>
+                            <p class="noNotifications" *ngIf='communityNotifications.length == 0 && networkNotifications.length == 0 && notifications.length === 0'>No Notifications</p>
+                            <div *ngFor="let notification of notifications.reverse(); let i = index">
+                                <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
+                                    <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                        <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                        <div class="flex fCol" style="max-width: 300px; ">
+                                            <p style="color: #333; margin: 0; font-size: .8rem">
+                                                <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}
+                                                <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span>
+                                            </p>
+                                            <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mma"}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p *ngIf="notifications.length > notifShowCount" class="notifLabel showMoreLabel" (click)="showMoreNotifications()">Show More</p>
+                        </div>         
+                    </div>                    
+                </li>
             </div>
-        </div>
-    </nav>
-</div>
+
+            <div class="d-none d-sm-block">
+                <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
+                    <li [ngClass]="{
+                                'nav-item': true, 
+                                'd-none': placement == 'bottom-left', 
+                                'd-xl-block': placement == 'bottom-left',
+                                'd-xl-none': placement == 'bottom-right'
+                            }" ngbDropdown [placement]="placement">
+                        <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 10px" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-cog icons" aria-hidden="true"></i>
+                        </a>
+                        <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                            <a class="dropdown-item" routerLink="/settings">Settings</a>
+                            <a class="dropdown-item" (click)="logout()">Logout</a>
+                        </div>
+                    </li>
+                </div>
+            </div>
+
+
+
+        </ul>
+    </div>
+</nav>

@@ -156,6 +156,7 @@ import { ShareService } from "./share.service";
         ShareButtonsModule.forRoot(),
         ShareButtonModule.forRoot(),             
         NgbModule.forRoot(),
+        NgbModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpModule,

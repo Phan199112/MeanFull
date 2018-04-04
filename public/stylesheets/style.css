@@ -14,48 +14,44 @@ div, p, span, li, label, input, textarea, select, option, button, a {
     padding-left: 40px;
     padding-right: 40px;
   }
+
+  .col-md-6, .col-6 {
+    flex: 0 0 54% !important;
+    /* padding: auto 0px !important; */
+  }
+
+  .col-md-3 {
+    padding: 0px !important;
+    flex: 0 0 23% !important;
+    max-width: 100% !important;
+  }
+
+  
 }
 
 .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
   padding: 0px 8px;
 }
 
-.col-md-6, .col-6 {
-  flex: 0 0 54%;
-  /* padding: auto 0px !important; */
-}
-
-.col-md-3 {
-  padding: 0px;
-  flex: 0 0 23%;
-  max-width: 100%;
+.pageLayout {
+  max-width: 1220px;
+  margin: 0 auto;
 }
 
 
-/* .filterDropdownText {
-  font-family: Karla;
-  font-weight: 400;
-  color: white;
+
+@media(max-width: 767px) {
+  /* .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+    padding: 0px 24px !important;
+  }   */
+  .row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 }
 
-.filterDropdownText .c-token{
-background: #28ab64 !important;
-}
-.filterDropdownText .pure-checkbox label::before {
-border-color: #28ab64 !important;
-background: #28ab64 !important;
-}
 
-.filterDropdownText .pure-checkbox input[type="checkbox"] + label[_ngcontent-c1]:before {
-background: #FFF !important;
-}
-
-.filterDropdownText .pure-checkbox input[type="checkbox"]:checked + label[_ngcontent-c1]:before {
-background: #28ab64 !important;
-}
- */
-
-
+/* Graph Filter CSS */
 .filterDropdownText {
 color: #ccc !important;
 }
@@ -81,3 +77,4 @@ border-color: #38d574 !important;
 .pure-checkbox[_ngcontent-c10] input[type="checkbox"][_ngcontent-c10]:checked + label[_ngcontent-c10]:before {
 background: #38d574 !important;
 }
+/* End Graph Filter CSS */

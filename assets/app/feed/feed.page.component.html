@@ -1,4 +1,4 @@
-<div style="width: 1220px; margin: 0px auto" id="FeedPage">
+<div class="pageLayout">
 
 <div class="row">
     <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">Ask a Question</button>
@@ -6,11 +6,11 @@
 
 <div class="row">
   
-    <div class="col-md-3" id="leftSideOfContainer">
+    <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
         <sidebar [loggedin]="loggedin" [context]="'feed'"></sidebar>
     </div>
   
-    <div class="col-md-6">
+    <div class="col-md-6 col-12 order-1 order-md-2">
         <br>
         <div class="card" *ngIf="emailconfirmfailed">
             <div class="card-body btn-danger">Validation of your email address failed. Please try again later.</div>
@@ -24,7 +24,7 @@
         <feed-list [pic]="pic" [pictype]="pictype" [user]="null" [category]="category"></feed-list>
     </div>
   
-    <div class="col-md-3" id="rightSideOfContainer">
+    <div class="col-md-3 col-12 order-1 order-md-3" id="rightSideOfContainer">
         <right-panel [loggedin]="loggedin" (toggledCat)="setCategory($event)"></right-panel>
     </div>
 
