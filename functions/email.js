@@ -200,7 +200,7 @@ exports.sendNotificationError = function sendNotificationError(error) {
 exports.sendEmail = function sendEmail(email, subject, html, messagesafe) {
     server.send({
         text:    messagesafe,
-        from:    "Questionsly <support@questionsly.com>",
+        from:    "Questionsly <cw@arnebruyneel.be>",
         to:      "<"+email+">",
         subject: subject,
         attachment:
