@@ -71,7 +71,7 @@
     "ngx-image-cropper": "^0.1.16",
     "ngx-popups": "^1.0.5",
     "node-cron": "^1.2.1",
-    "nodemailer": "^4.4.0",
+    "nodemailer": "^4.6.4",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
