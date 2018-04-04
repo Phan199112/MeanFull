@@ -1,48 +1,21 @@
 var email 	= require("../node_modules/emailjs/email");
+// var server 	= email.server.connect({
+//     user:    "support@questionsly.com",
+//     password:"welcome4294!",
+//     host:    "smtpout.secureserver.net",
+//     ssl:     true,
+//     tls: {ciphers: "SSLv3"}
+// });
+
 var server 	= email.server.connect({
-    user:    "support@questionsly.com",
-    password:"welcome4294!",
-    host:    "smtpout.secureserver.net",
-    ssl:     true,
-    tls: {ciphers: "SSLv3"}
+    user:    "cw@arnebruyneel.be",
+    password:"HCW-9yE-9Tz-keb",
+    host:    "send.one.com",
+    ssl:     true
 });
+
 var fs = require("fs");
 var mjml = require("mjml");
-
-/// nodemailer test
-
-const nodemailer = require('nodemailer');
-
-var transporter = nodemailer.createTransport({
-    service: 'Godaddy',
-    host: "smtpout.secureserver.net",
-    secure: true,
-    port: 465,
-
-    auth: {
-        user: "support@questionsly.com",
-        pass: "welcome4294!"
-    }
-});
-
-var mailOptions = {
-    from: 'support@questionsly.com',
-    to: 'arne.bruyneel@gmail.com',
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy!',
-    html: '<h1>Welcome</h1><p>That was easy!</p>'
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Email sent: ' + info.response);
-    }
-});
-
-
-
 
 /// functions
 
