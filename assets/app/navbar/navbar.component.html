@@ -184,25 +184,10 @@
                     <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
                 </form>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li> -->
+
         </ul>
+
+
         <ul style="list-style: none; display: flex; margin-bottom: 0px">
             <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                 <div *ngIf="pictype" class="d-inline-block">
@@ -299,7 +284,7 @@
                 </li>
             </div>
 
-            <div class="d-none d-sm-block">
+            <li><div class="d-none d-sm-block">
                 <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
                     <li [ngClass]="{
                                 'nav-item': true, 
@@ -316,8 +301,11 @@
                         </div>
                     </li>
                 </div>
-            </div>
+            </div></li>
 
+            <li class="nav-item" *ngIf="!loggedin">
+                <a class="navlinks nav-link" routerLink="/users/login">Login</a>
+            </li>
 
 
         </ul>
