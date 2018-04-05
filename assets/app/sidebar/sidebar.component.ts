@@ -31,21 +31,36 @@ export class Sidebar implements OnInit, OnChanges {
     randomlist: CommunityModel[] = [];
     data: Object[];
     randomlistdata: Object[];
+    mobWidth: number;
+    amountToFetch: number = 9;
+    amountArray = Array(9);
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {  
         this.users = [];
         this.networklist = [];
+        this.mobWidth = (window.screen.width);
+        console.log(this.mobWidth)
      }
 
     ngOnInit() {
         this.communitylist = [];
+        this.changeMobileFetchCount();
+
         this.http.get('/users/feedlist')
             .toPromise()
             .then(response => {
                 this.users = this.users.concat(response.json().data);
-            });
 
+                this.users = this.users.slice(0,this.amountToFetch);
+            });
+    }
+
+    changeMobileFetchCount(){
+        if (this.mobWidth <= 768) {
+            this.amountToFetch = 6;
+            this.amountArray = Array(6);
+        }
     }
 
     ngOnChanges() {
@@ -54,8 +69,13 @@ export class Sidebar implements OnInit, OnChanges {
 
         this.networklist = [];
             if (this.friends) {
+                
+                var j = 0;
                 for (let obj of this.friends) {
-                    this.networklist.push(new NetworkModel(obj));
+                    if (j < this.amountToFetch) {
+                        this.networklist.push(new NetworkModel(obj));
+                        j++;
+                    }
                 }
             }
 
@@ -63,26 +83,38 @@ export class Sidebar implements OnInit, OnChanges {
 
         this.http.post(`/community/list`, { user: this.user }).toPromise()
             .then(res => {
+                console.log(this.amountToFetch);
                 if (res.json().status == 1) {
                     this.data = res.json().data;
+                    
                     this.randomlistdata = res.json().random;
 
                     this.communitylist = [];
 
+                    var k=0;
                     for (let obj of this.data) {
-                        this.communitylist.push(new CommunityModel(obj));
+                        if (k < this.amountToFetch) {
+                            this.communitylist.push(new CommunityModel(obj));
+                            k++;
+                        }
                     }
 
+                    var i = 0;
                     if (this.randomlistdata != null) {
                         for (let obj of this.randomlistdata) {
-                            this.randomlist.push(new CommunityModel(obj));
+                            if (i < this.amountToFetch) {
+                                this.randomlist.push(new CommunityModel(obj));
+                                i++;
+                            }
                         }
                     }
                 }
 
             })
             .catch(error => alert("Error retrieving form: " + error));
-
+            
+            if (this.networklist) console.log(this.networklist, this.users, this.communitylist);
     }
+
 
 }

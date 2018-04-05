@@ -33,4 +33,15 @@ a {
   &:hover {
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.imgTitle {
+    @media (max-width: 768px) {
+    font-size: .5rem;
+  }
 }

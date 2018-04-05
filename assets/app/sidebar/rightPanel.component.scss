@@ -18,6 +18,11 @@ h3 {
   box-sizing: border-box;
   margin: 8px auto;
   padding: 12px 10px 0px 10px;
+
+  @media (max-width: 768px) {
+    flex-basis: 33%;
+    margin: auto 0;
+  }
 }
 
 .sMenu {
@@ -53,6 +58,9 @@ h3 {
   align-items: center;
   width: 100%;
   padding-bottom: 12px;
+  @media (max-width: 768px) {
+    flex-flow: wrap;
+  }
 }
 
 .catContainer {
@@ -68,6 +76,10 @@ h3 {
       color: $primaryColor;
     }
   }
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
 }
 
 .selected {
@@ -78,6 +90,10 @@ h3 {
   width: 12px !important;
   color: #a2a2a2 !important;
   margin-right: 10px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .catTitle {
@@ -85,6 +101,10 @@ h3 {
   color: #666;
   font-weight: 300;
   font-size: .9rem;
+
+  @media (max-width: 768px) {
+    font-size: .6rem;
+  }
 }
 
 .emoContainer {

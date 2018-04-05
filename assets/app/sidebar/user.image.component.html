@@ -3,12 +3,12 @@
     <img class="img" *ngIf="(data.pic !== null && data.pic !== undefined)" [src]="data.pic" />
     <img class="img" *ngIf="(data.pic === null || data.pic === undefined) && data.fb === null && data.gender === 'male'" src="/images/male.png" />
     <img class="img" *ngIf="(data.pic === null || data.pic === undefined) && data.fb === null && data.gender === 'female'" src="/images/female.png" />
-    <div><a [routerLink]="['/profile', data.link]">{{name[0]}}<br/>{{name[1]}}</a></div>
+    <div><a class="imgTitle" [routerLink]="['/profile', data.link]">{{name[0]}}<br/>{{name[1]}}</a></div>
 </div>
 <div *ngIf="type === 'network' " class="iContainer" [routerLink]="['/profile', data.link]">
     <img class="img" *ngIf="(data.pic[0] === 'local')" [src]="data.pic[1]">
     <img class="img" *ngIf="(data.pic[0] === 'fb')" src="https://graph.facebook.com/{{data.pic[1]}}/picture?width=120&height=120">
     <!-- <img class="img" *ngIf="(data.pic === null || data.pic === undefined) && data.fb === null && data.gender === 'male'" src="/images/male.png" /> -->
     <img class="img" *ngIf="(data.pic[0] !== 'fb' && data.pic[0] !== 'local')" src="/images/male.png" />
-    <div><a [routerLink]="['/profile', data.link]">{{name.first}}<br/>{{name.last}}</a></div>
+    <div><a class="imgTitle" [routerLink]="['/profile', data.link]">{{name.first}}<br/>{{name.last}}</a></div>
 </div>
