@@ -236,7 +236,6 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/create', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // input
         var receivedData =  req.body;
-        console.log("HEHRHRHERHEHRHER", receivedData);
         // mongodb create
         FormModel.create({userid: req.session.userid,
             // title: receivedData.title,
@@ -308,6 +307,7 @@ module.exports = function(app, passport, manager, hashids) {
                         reject();
                     } else {
                         if (form) {
+                            // console.log("FORM DATA IS: ", form);
                             // look up the author of the form
                             checkedexpired = form.expired;
                             firstQuestion = form.questions[0].body;

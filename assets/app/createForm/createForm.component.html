@@ -7,7 +7,7 @@
             <div *ngIf="step === 1" class="oContainer">
                 <div class="qContainer">
                     <h3 class="containerTitle green">Options</h3>
-                    <ul>
+                    <ul class="qTypeList">
                         <li *ngFor="let k of kinds; let kIndex = index">
                             <form-buttons formControlName="kind" [active]="typeView" [qKind]="k" (selected)="toggleView($event)"></form-buttons>
                             <div *ngIf="kinds.length !== kIndex + 1" class="line"></div>

@@ -173,6 +173,8 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
     var dateString = new Date();
     dateString = dateString.toDateString();
 
+    // console.log("question:", question, "link: ", link)
+
     renderTemplate("notification-survey-activity", {
         subject: subject,
         question: question,

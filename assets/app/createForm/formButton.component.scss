@@ -3,6 +3,7 @@ $color2: #3b3e52;
 
 .choice {
     min-width: 100px;
+    width: auto;
     font-size: 1rem;
     font-weight: 300;
     font-family: Karla;
@@ -24,4 +25,12 @@ $color2: #3b3e52;
 .center {
     display: flex;
     justify-content: space-around;
+}
+
+
+.choiceContainer {
+    @media (max-width: 767px) {
+        width: 100%;
+        margin: 4px 0;
+    }
 }
