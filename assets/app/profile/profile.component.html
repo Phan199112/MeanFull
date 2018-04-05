@@ -85,7 +85,8 @@
 
 
                 <!-- Feed content and other -->
-                <div class="d-none d-sm-block">
+                <!-- <div class="d-none d-sm-block"> -->
+                <div class="">
                     <div *ngIf="!subsection"  style="margin-top:20px">
                         <div *ngIf="status == '2'" class="aboutContainer"><h6 class="location" style="text-align: center; width: 100%;">{{name}} has a private profile.<br/>Only individuals in {{pronoun}} network can see further details.</h6></div>
                         <feed-list [emptyMessage]="noPostsMessage" [user]="id" *ngIf="!hidefeed"></feed-list>

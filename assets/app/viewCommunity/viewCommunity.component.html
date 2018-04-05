@@ -43,7 +43,7 @@
 
 
                 <!-- Feed list and private community message -->
-                <div class="d-none d-sm-block" *ngIf="!showEdit">
+                <div class="" *ngIf="!showEdit">
                     <div *ngIf="status == '2'" class="aboutContainer"><h6 class="description">{{data.title}} is a private community. Only individuals invited by the admin can see the content of this community.</h6></div>
                     <feed-list *ngIf="status !== '2'" [comm]="id"></feed-list>
                 </div>

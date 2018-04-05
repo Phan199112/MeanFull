@@ -54,6 +54,12 @@ $borderColor: rgb(226,226,226);
     color: #999;
     font-size: 1.2rem;
     font-family: Karla;
+    margin-top: 25px;
+
+@media (max-width: 768px) {
+    margin-top: 15px;
+    line-height: 2rem;
+  }
 }
 
 .qslyButton {
