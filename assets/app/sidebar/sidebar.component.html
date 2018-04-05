@@ -33,7 +33,7 @@
 
 
 <div *ngIf="context === 'feed'" class="mainContainer">
-    <div class="sContainer">
+    <div class="sContainer lhs">
         <h3 class="lpText">Discover People</h3>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
             <div *ngFor="let p of networklist">
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="sContainer comPadding">
+    <div class="sContainer comPadding rhs">
         <h3 class="lpText">Discover Communities</h3>
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist">

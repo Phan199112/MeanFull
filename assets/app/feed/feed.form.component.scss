@@ -112,9 +112,12 @@ $commentBackground: #f0f6f0;
 
   &:hover {
     cursor: pointer;
-    background: #F3F3F3;
     color: #666;
     border: solid 1px #666;
+  }
+
+  @media (max-width: 767px) {
+    font-size: .6rem;  
   }
 }
 
@@ -160,6 +163,10 @@ $commentBackground: #f0f6f0;
   color: #2b2b2b;
   font-size: .85rem;
   font-weight: 400;
+
+  @media (max-width: 767px) {
+    font-size: .8rem;  
+  }
 }
 
 .locationTitle {
@@ -167,6 +174,10 @@ $commentBackground: #f0f6f0;
   color: #AAA;
   font-size: .7rem;
   font-weight: 400;
+
+  @media (max-width: 767px) {
+    font-size: .55rem;  
+  }
 }
 
 .partTitle {
@@ -185,6 +196,15 @@ $commentBackground: #f0f6f0;
   span {
     font-weight: 300;
     font-family: Karla;
+
+      @media (max-width: 767px) {
+        font-size: .5rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    font-size: .5rem;
+    margin-top: -2px;
   }
 }
 
@@ -203,6 +223,7 @@ $navBarColor:  #0088cc;
 
 #analysisContainer {
   display: flex;
+  flex-flow: wrap;
   align-items: center;
   padding: 8px;
   padding-top: 0px;
@@ -221,12 +242,16 @@ $navBarColor:  #0088cc;
 
 .filterBox {
   display: flex;
-  // width: 100%;
   align-items: center;
   padding-right: 10px;
 
   &:last-of-type {
     padding-right: 0px;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    margin-bottom: 6px;
   }
 }
 
@@ -239,15 +264,12 @@ $navBarColor:  #0088cc;
   text-align: center;
   margin-bottom: 4px;
   padding-right: 6px;
+
+  @media (max-width: 767px) {
+    min-width: 70px;
+  }
 }
 
-.filterOptions {
-  font-family: Raleway;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #2b2b2b;
-  margin: 15px;
-}
 
 #chatContainer {
   border: 1px dashed black;

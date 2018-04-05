@@ -35,6 +35,10 @@ $commentBackground: #f0f6f0;
   padding: 4px 6px;
   margin-bottom: 0px;
   border: solid 1px $borderColor;
+  
+  @media (max-width: 767px) {
+    font-size: .8rem;
+  }
 }
 
 .reverse {

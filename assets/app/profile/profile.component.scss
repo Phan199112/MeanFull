@@ -127,6 +127,11 @@ canvas {
   width: 120px;
   border-radius: 60px;
   margin-right: 25px;
+
+  @media (max-width: 767px) {
+    width: 64px;
+    border-radius: 32px;
+  }
 }
 
 .profileInfo {

@@ -102,6 +102,10 @@ $commentBackground: #f0f6f0;
     // border-bottom: solid 1px $primaryColor;
     width: 100%;
     margin-bottom: 6px;
+
+  @media (max-width: 767px) {
+    font-size: .8rem;
+  }
 }
 
 .submitButton {

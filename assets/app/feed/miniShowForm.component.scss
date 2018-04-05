@@ -223,4 +223,8 @@ $warningColor: rgb(234, 122, 133);
 .lead {
   font-weight: 700;
   color: #333;
+
+  @media (max-width: 767px) {
+    font-size: .95rem;
+  }
 }

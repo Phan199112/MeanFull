@@ -175,7 +175,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse bordTop" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
 
@@ -188,7 +188,7 @@
         </ul>
 
 
-        <ul style="list-style: none; display: flex; margin-bottom: 0px">
+        <ul *ngIf="loggedin" class="rightNavList">
             <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                 <div *ngIf="pictype" class="d-inline-block">
                     <div *ngIf="pictype == 'fb'">
@@ -284,30 +284,32 @@
                 </li>
             </div>
 
-            <li><div class="d-none d-sm-block">
-                <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
-                    <li [ngClass]="{
-                                'nav-item': true, 
-                                'd-none': placement == 'bottom-left', 
-                                'd-xl-block': placement == 'bottom-left',
-                                'd-xl-none': placement == 'bottom-right'
-                            }" ngbDropdown [placement]="placement">
-                        <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 10px" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-cog icons" aria-hidden="true"></i>
-                        </a>
-                        <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
-                            <a class="dropdown-item" routerLink="/settings">Settings</a>
-                            <a class="dropdown-item" (click)="logout()">Logout</a>
-                        </div>
-                    </li>
+            <li *ngIf="loggedin">
+                <div class="">
+                    <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
+                        <li [ngClass]="{
+                                    'nav-item': true, 
+                                    'd-none': placement == 'bottom-left', 
+                                    'd-xl-block': placement == 'bottom-left',
+                                    'd-xl-none': placement == 'bottom-right'
+                                }" ngbDropdown [placement]="placement">
+                            <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 10px" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-cog icons" aria-hidden="true"></i>
+                            </a>
+                            <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                <a class="dropdown-item" routerLink="/settings">Settings</a>
+                                <a class="dropdown-item" (click)="logout()">Logout</a>
+                            </div>
+                        </li>
+                    </div>
                 </div>
-            </div></li>
-
-            <li class="nav-item" *ngIf="!loggedin">
-                <a class="navlinks nav-link" routerLink="/users/login">Login</a>
             </li>
 
-
+            
+            
         </ul>
+
+        <a *ngIf="!loggedin" class="nav-item navlinks nav-link align-right" routerLink="/users/login">Login</a>
+
     </div>
 </nav>

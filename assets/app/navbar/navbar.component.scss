@@ -30,6 +30,7 @@ $commentBackground: #f0f6f0;
 .navbar-light {
     background-color: $navBarColor !important;
     padding: 0px 20%;
+    border-bottom: 1px solid $borderColor;
     
   @media (min-width: 768px) {
       height: 52px;
@@ -48,13 +49,15 @@ $commentBackground: #f0f6f0;
 }
 
 .navbar-brand {
-    @media (max-width: 767px) {
+  @media (max-width: 767px) {
     padding: 10px 0px;
   }
 }
 
 .navlinks {
+  color: $primaryColor !important;
 }
+
 
 .icons {
   color: #666 !important;
@@ -69,6 +72,15 @@ $commentBackground: #f0f6f0;
   }
 }
 
+.bordTop {
+  @media (max-width: 767px) {
+    border-top: 1px solid $borderColor;
+  }
+}
+
+.align-right {
+  text-align: right;
+}
 
 .dropdown-toggle {
   display: inherit;
@@ -139,6 +151,11 @@ img {
   justify-content: center;
   width: 250px;
   margin-left: 12px;
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+
 }
 
 .searchbar {
@@ -150,8 +167,14 @@ img {
 }
 
 .userImage {
-    width: 40;
-    height: 40;
+  width: 40px;
+  height: 40px;
+
+  @media (max-width: 767px) {
+    width: 24px;
+    height: 24px;
+  }
+    
 }
 
 .notification-bubble {
@@ -300,4 +323,12 @@ img {
 
 .noTopBorder {
   border-top: none;
+}
+
+.rightNavList {
+  list-style: none;
+  display: flex;
+  margin-bottom: 0px;
+  padding-left: 0;
+  justify-content: center;
 }

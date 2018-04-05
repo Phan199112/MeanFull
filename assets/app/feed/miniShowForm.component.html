@@ -8,14 +8,14 @@
 
                         <!-- LHS -->
                         <div *ngIf="question.kind === 'Short Answer' && (i == 0 || !data.contracted)" class="col-md-12">
-                            <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                            <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required" class="lead">*</span></label>
                             <div *ngIf="question.pic" class="form-group question-pic"><img style="border-radius: 8px;" [src]="question.pic" /></div>
                             <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label>
                         </div>
 
                         <!-- Make the question full width -->
                         <div *ngIf="question.kind !== 'Short Answer' && (i == 0 || !data.contracted)" class="col-md-12">
-                            <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required">*</span></label>
+                            <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required" class="lead">*</span></label>
                         </div>
 
                         <div *ngIf="question.kind !== 'Short Answer'" class="col-md-6">
@@ -73,7 +73,7 @@
                         <div class="col-md-12">
                             <div class="mx-auto form-group" [formGroupName]="i" *ngIf="i == 0 || !data.contracted">
                                 <label class="lead">{{question.number + 1}}. {{question.body}}
-                                    <span *ngIf="question.required">*</span>
+                                    <span *ngIf="question.required" class="lead">*</span>
                                     <span *ngIf="question.kind === 'Number' && question.boundaries" style="color: #999; font-size: .8rem">(Number between {{question.lowerBoundary}} and {{question.upperBoundary}})</span>
                                 </label>
                                 <div *ngIf="question.pic" class="form-group question-pic">
