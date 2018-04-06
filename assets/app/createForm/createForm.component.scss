@@ -149,7 +149,6 @@ h3 {
     border-bottom-left-radius:  12px;   
     border-top-left-radius:  12px;   
     border: solid 1px $borderColor;
-    // border-right: none;
     min-width: 12rem;
     justify-content: flex-start;
 
@@ -682,6 +681,10 @@ h3 {
     color: $color1;
     font-family: Karla;
     font-weight: 300;
+
+    @media (max-width: 767px) {
+        font-size: 1.1rem;
+    }
 }
 
 .required {

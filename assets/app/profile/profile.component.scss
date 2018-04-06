@@ -145,6 +145,10 @@ canvas {
   font-size: 1.5rem;
   font-weight: 700;
   color: #2b2b2b;
+
+  @media (max-width: 767px) {
+    font-size: 1.2rem;
+  }
 }
 
 .location {
@@ -153,6 +157,10 @@ canvas {
   font-size: 1.15rem;
   font-weight: 300;
   color: #AAA;
+
+  @media (max-width: 767px) {
+    font-size: .8rem;
+  }
 }
 
 .stats {
@@ -207,6 +215,10 @@ canvas {
         cursor: pointer;
         background: lighten($primaryColor, 5);
     }
+
+    @media (max-width: 767px) {
+      font-size: .75rem;
+    }
 }
 
 .profileMenu {
@@ -214,5 +226,10 @@ canvas {
   top: 20px;
   right: 20px;
   display: flex;
+
+  // @media (max-width: 767px) {
+  //     position: static;
+  //     margin-top: 10px;
+  // }
 }
 

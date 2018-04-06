@@ -126,6 +126,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.reject = false;
             } else {
                 this.reject = true;
+                window.setTimeout(() => { this.router.navigate(['/']); }, 2200);
             }
         });
 
@@ -155,7 +156,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             enableSearchFilter: true,
             enableCheckAll: false
         };    
-
     }
 
     ngOnDestroy() {

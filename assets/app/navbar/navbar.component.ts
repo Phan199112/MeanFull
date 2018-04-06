@@ -50,6 +50,13 @@ export class NavbarComponent implements OnInit {
 
 
     ngOnInit() {
+
+        onClick(event) {
+            if (!this._eref.nativeElement.contains(event.target)) // or some similar check
+                doSomething();
+        }
+
+
         this.searchbox = this.fb.group({
             searchterm: ['', Validators.required]
         });
@@ -160,7 +167,7 @@ export class NavbarComponent implements OnInit {
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
-                                window.console.log(e);
+                                // window.console.log(e);
                                 this.addNotification(e);
                             }
                         }

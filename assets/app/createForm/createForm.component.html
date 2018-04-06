@@ -1,6 +1,6 @@
 <div class="centerxandy">
-    <div class="container main-container title" *ngIf="reject">
-        <h2>You must be logged in to create a new form. Please login first!</h2>
+    <div class="qContainer" *ngIf="reject" style="padding: 25px;">
+        <h2 class="qbBody" style="text-align: center; padding: 15px;">You must be logged in to create ask a question!<br/>Please login first</h2>
     </div>
         <!-- Create Questions Container -->
         <form *ngIf="!reject" [formGroup]="questionnaire" class="mtClear" style="width: 100%">
