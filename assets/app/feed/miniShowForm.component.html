@@ -112,7 +112,7 @@
                                     class="formChoices num" formControlName="answer" *ngIf="question.kind == 'Number'" />
 
                                 <!-- <input (click)="loginPopup.check(data.loginRequired)" type="text" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short Answer'"/> -->
-                                <textarea class="formChoices sa" formControlName="answer" *ngIf="question.kind == 'Short Answer'"></textarea>
+                                <textarea class="formChoices sa txtarea" formControlName="answer" *ngIf="question.kind == 'Short Answer'"></textarea>
                                 <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                     Option is required
                                 </div>

@@ -12,6 +12,10 @@ $borderColor: rgb(226,226,226);
     &.firstTitle {
         margin-top: 5px;
     }
+
+    @media (max-width: 767px) {
+        margin-top: 15px;
+    }
 }
 
 .subtleText {
@@ -116,6 +120,11 @@ $borderColor: rgb(226,226,226);
     align-items: flex-start;
     width: 100%;
     padding-right: 20px;
+
+    @media (max-width: 767px) {
+        justify-content: center;
+        padding: 0;
+    }
 }
 
 .submitButton {
@@ -150,6 +159,11 @@ $borderColor: rgb(226,226,226);
         cursor: pointer;
         background: lighten($color1, 5);
     }
+
+    @media (max-width: 767px) {
+        margin-top: 15px;
+    }
+
 }
 
 
@@ -198,6 +212,10 @@ $borderColor: rgb(226,226,226);
 
 #uploadBtn {
     margin-right: 20px;
+
+    @media (max-width: 767px) {
+        margin-right: 10px;
+    }
 }
 
 #orText {
@@ -209,6 +227,10 @@ $borderColor: rgb(226,226,226);
 
 #urlImage {
     margin: 0px 20px;
+
+    @media (max-width: 767px) {
+        margin: 0 10px;
+    }
 }
 
 #preview {
@@ -217,4 +239,10 @@ $borderColor: rgb(226,226,226);
     border-radius: 8px;
     outline-style: none;
     outline: none;
+}
+
+.form-control {
+    @media (max-width: 767px) {
+       font-size: .55rem;
+    }
 }

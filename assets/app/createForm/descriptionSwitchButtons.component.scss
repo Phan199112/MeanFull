@@ -3,7 +3,7 @@ $borderColor: rgb(226,226,226);
 
 
 .box {
-    width: 150px;
+    width: 100%;
     min-height: 115px;
     height: auto;
     display: flex;
@@ -15,6 +15,10 @@ $borderColor: rgb(226,226,226);
     text-align: center;
     border-radius: 12px;
     border: solid 1px $borderColor;
+
+    @media (max-width: 767px) {
+        margin: 0;
+    }
 
 
     &:hover, &:hover .text, .selectedText {
@@ -34,6 +38,7 @@ $borderColor: rgb(226,226,226);
     font-weight: 400;
     font-family: Karla;
     color: #777;
+    width: 100%;
 
 }
 
@@ -46,8 +51,16 @@ $borderColor: rgb(226,226,226);
     font-weight: 700;
     margin: 12px auto;
     font-size: 1.1rem;
+
+    @media (max-width: 767px) {
+        font-size: 1rem;
+    }
 }
 
 .description {
     font-size: .8rem;
+
+    @media (max-width: 767px) {
+        font-size: .8rem;
+    }
 }

@@ -48,6 +48,10 @@ div, p, span, li, label, input, textarea, select, option, button, a {
     margin-left: 0px;
     margin-right: 0px;
   }
+
+  .sb-wrapper {
+    min-width: 20px !important;
+  }
 }
 
 

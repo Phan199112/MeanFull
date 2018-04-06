@@ -66,7 +66,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     reject: any = null;
     typeevent: boolean = false;
     focusedOption: number = 0;
-    step: number = 1;
+    step: number = 2;
     updateform: boolean = false; // so when you go back to the previous page to correct something that it doesn't create a new database entry for the form
     published: boolean = false;
     shareLink: string = "";

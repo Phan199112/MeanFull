@@ -2,7 +2,7 @@ $formContainerColor: #fff;
 $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
-
+$borderColor: #E2E2E2;
 $primaryColor: #28ab64;
 
 
@@ -227,4 +227,8 @@ $warningColor: rgb(234, 122, 133);
   @media (max-width: 767px) {
     font-size: .95rem;
   }
+}
+
+.txtarea {
+  border: 1px solid $borderColor;
 }
