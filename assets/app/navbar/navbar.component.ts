@@ -51,12 +51,6 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
 
-        onClick(event) {
-            if (!this._eref.nativeElement.contains(event.target)) // or some similar check
-                doSomething();
-        }
-
-
         this.searchbox = this.fb.group({
             searchterm: ['', Validators.required]
         });
