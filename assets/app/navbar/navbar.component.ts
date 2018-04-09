@@ -274,22 +274,17 @@ export class NavbarComponent implements OnInit {
             $('body').css('overflow', 'auto');
         }
 
-        console.log("THis:", event.target);
+        if ($(event.target).parents('.notificationDropdown').length || $(event.target).parents('.settingsDropdown').length) {
+            $('#navbarSupportedContent').removeClass('show');
+        }
 
-        if ($(event.target).hasClass('navbar-toggler')) {
+        if ($(event.target).hasClass('navbar-toggler') || $(event.target).hasClass('navbar-toggler-icon')) {
             return;
-            console.log("first")
         } 
 
-        if ($(event.target).hasClass('navbar-toggler-icon')) {
-            return;
-            console.log("first")
-        } 
 
         if (!$(event.target).parents('.navbar-collapse').length) {
             $('#navbarSupportedContent').removeClass('show');
-            console.log("second")
-
         }
 
         if (this.showNotifications) {
@@ -297,8 +292,10 @@ export class NavbarComponent implements OnInit {
             this.showNotifications = false;
             $('body').css('overflow', 'auto');
         }
+    }
 
-
+    closeNavbar() : void {
+        $('#navbarSupportedContent').removeClass('show');
     }
 
 
@@ -309,6 +306,8 @@ export class NavbarComponent implements OnInit {
         } else {
             // submit
             this.submitSearch();
+            this.searchbox.get("searchterm").setValue("");
+            this.closeNavbar();
         }
     }
 

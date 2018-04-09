@@ -169,7 +169,7 @@
  
  <!-- NEW NAVBAR BELOW -->
 <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
-    <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
+    <a class="navbar-brand" href="#" routerLink="/"><img src="/images/logo.png" class="logo"/></a>
 
     <a *ngIf="!loggedin" class="nav-item navlinks nav-link align-right" style="padding: 4px 12px; margin-right: 0; border-radius: 8px; border: 1px solid #28ab64" routerLink="/users/login">Login</a>
 
@@ -180,8 +180,6 @@
 
     <div *ngIf="loggedin" class="collapse navbar-collapse bordTop" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
-
             <li class="nav-item mobHide">
                 <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
                     <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
@@ -193,12 +191,13 @@
 
         <ul *ngIf="loggedin" class="rightNavList">
 
-                        <li class="nav-item mobShow">
-                            <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
-                                <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
-                            </form>
-                        </li>
-            <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
+            <li class="nav-item mobShow">
+                <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
+                    <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
+                </form>
+            </li>
+
+            <!-- <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                 <div *ngIf="pictype" class="d-inline-block">
                     <div *ngIf="pictype == 'fb'">
                         <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
@@ -214,10 +213,10 @@
                     </div>
                 </div>
                 <a class="navlinks nav-link d-inline-block icons"> {{firstname}} </a>
-            </li>
+            </li> -->
 
-
-            <div style="display: flex; align-items: center; padding-bottom: 5px; margin-right: 18px; align-items: center">
+            <div style="display:flex; align-items: center;">
+            <div class="notification-icon" [ngStyle]="{'padding-bottom': unreadNotifications > 0 ? '5px' : '0px'}">
                 <li>
                     <div class="position-relative">
                         <div (click)="toggleNotifications()" class="toggleNot">
@@ -302,10 +301,25 @@
                                     'd-xl-block': placement == 'bottom-left',
                                     'd-xl-none': placement == 'bottom-right'
                                 }" ngbDropdown [placement]="placement">
-                            <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 10px" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-cog icons" aria-hidden="true"></i>
+                            <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 8px 0" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                                <!-- <i class="fa fa-cog icons" aria-hidden="true"></i> -->
+                                                <div *ngIf="pictype" class="d-inline-block">
+                                                    <div *ngIf="pictype == 'fb'">
+                                                        <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
+                                                    </div>
+                                                    <div *ngIf="pictype == 'local'">
+                                                        <img class="userImage" [src]="pic" />
+                                                    </div>
+                                                    <div *ngIf="pictype == 'default-male'">
+                                                        <img class="userImage" src="/images/male.png" />
+                                                    </div>
+                                                    <div *ngIf="pictype == 'default-female'">
+                                                        <img class="userImage" src="/images/female.png" />
+                                                    </div>
+                                                </div>
                             </a>
-                            <div class="p-0" ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                            <div class="p-0 settingsDropdown" ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                                <a class="dropdown-item" [routerLink]="['/profile', dbid]">Profile</a>
                                 <a class="dropdown-item" routerLink="/settings">Settings</a>
                                 <a class="dropdown-item" (click)="logout()">Logout</a>
                             </div>
@@ -313,6 +327,7 @@
                     </div>
                 </div>
             </li>
+            </div>
 
             
             
