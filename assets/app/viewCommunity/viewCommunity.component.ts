@@ -51,14 +51,12 @@ export class ViewCommunityComponent implements OnInit {
 
                     if (this.status == '1') {
                         this.data = res.json().data;
-                        window.console.log("First, ", this.data);
 
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;
 
                     } else if (this.status == '2') {
                         this.data = res.json().data;
-                        window.console.log(this.data);
 
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;
@@ -67,8 +65,6 @@ export class ViewCommunityComponent implements OnInit {
                         this.loadsuccessful = false;
                     }
                   
-                    window.console.log("VC Data: ", this.data);
-
                     this.fgCreateCommunity = this.fb.group({
                         title: this.data.title,
                         description: this.data.description,

@@ -170,16 +170,19 @@
  <!-- NEW NAVBAR BELOW -->
 <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
     <a class="navbar-brand" href="#" routerLink="/">Questionsly</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+
+    <a *ngIf="!loggedin" class="nav-item navlinks nav-link align-right" style="padding: 4px 12px; margin-right: 0; border-radius: 8px; border: 1px solid #28ab64" routerLink="/users/login">Login</a>
+
+    <button *ngIf="loggedin" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
         aria-expanded="false" aria-label="Toggle navigation" >
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse bordTop" id="navbarSupportedContent">
+    <div *ngIf="loggedin" class="collapse navbar-collapse bordTop" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
 
-            <li class="nav-item">
+            <li class="nav-item mobHide">
                 <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
                     <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
                 </form>
@@ -189,6 +192,12 @@
 
 
         <ul *ngIf="loggedin" class="rightNavList">
+
+                        <li class="nav-item mobShow">
+                            <form class="searchContainer form-inline my-2 my-lg-0" [formGroup]="searchbox" (keyup.enter)="checkSubmit(searchbox)">
+                                <input class="searchbar form-control mr-sm-2" type="text" placeholder="Search Questionsly" formControlName="searchterm" [ngClass]="{'form-control': true}">
+                            </form>
+                        </li>
             <li class="mouseChangeToHand nav-item" title="Profile" [routerLink]="['/profile', dbid]">
                 <div *ngIf="pictype" class="d-inline-block">
                     <div *ngIf="pictype == 'fb'">

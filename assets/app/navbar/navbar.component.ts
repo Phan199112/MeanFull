@@ -150,7 +150,6 @@ export class NavbarComponent implements OnInit {
         this.userService.afterLoginCheck().then(response => {
             // request eventslist
             if (response != '0') {
-                window.console.log("maadeee it");
                 this.http.get('/events/list').toPromise()
                 .then(eventsdata => {
                     this.events = eventsdata.json().events; // array of objects
@@ -268,12 +267,38 @@ export class NavbarComponent implements OnInit {
     }
 
     onDocClick(event) {
-        // if (this.showNotifications && !this.toggler.nativeElement.contains(event.target)) {
+        
         if (this.showNotifications) {
             this.navExpanded = false;
             this.showNotifications = false;
             $('body').css('overflow', 'auto');
         }
+
+        console.log("THis:", event.target);
+
+        if ($(event.target).hasClass('navbar-toggler')) {
+            return;
+            console.log("first")
+        } 
+
+        if ($(event.target).hasClass('navbar-toggler-icon')) {
+            return;
+            console.log("first")
+        } 
+
+        if (!$(event.target).parents('.navbar-collapse').length) {
+            $('#navbarSupportedContent').removeClass('show');
+            console.log("second")
+
+        }
+
+        if (this.showNotifications) {
+            this.navExpanded = false;
+            this.showNotifications = false;
+            $('body').css('overflow', 'auto');
+        }
+
+
     }
 
 

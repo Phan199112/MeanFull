@@ -33,7 +33,7 @@
                                 <a class="dropdown-item" *ngIf="!data.ismember && status != '2'" (click)="joinCommunity(id)">Join Community</a>
                                 <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Community</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="inviteToCommunity(id)">Invite others to join</a>
-                                <!-- <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Community</a> -->
+                                <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Community</a>
                                 <a class="dropdown-item" *ngIf="!data.isadmin" (click)="reportCommunity(id)">Report Community</a>
                             </div>
                         </div>

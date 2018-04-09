@@ -40,7 +40,7 @@ export class Sidebar implements OnInit, OnChanges {
         this.users = [];
         this.networklist = [];
         this.mobWidth = (window.screen.width);
-        console.log(this.mobWidth)
+        // console.log(this.mobWidth)
      }
 
     ngOnInit() {
@@ -83,7 +83,6 @@ export class Sidebar implements OnInit, OnChanges {
 
         this.http.post(`/community/list`, { user: this.user }).toPromise()
             .then(res => {
-                console.log(this.amountToFetch);
                 if (res.json().status == 1) {
                     this.data = res.json().data;
                     
@@ -111,9 +110,7 @@ export class Sidebar implements OnInit, OnChanges {
                 }
 
             })
-            .catch(error => alert("Error retrieving form: " + error));
-            
-            if (this.networklist) console.log(this.networklist, this.users, this.communitylist);
+            .catch(error => alert("Error retrieving form: " + error));            
     }
 
 

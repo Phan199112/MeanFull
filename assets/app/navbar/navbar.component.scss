@@ -28,6 +28,8 @@ $commentBackground: #f0f6f0;
 // }
 
 .navbar-light {
+    display:flex;
+    justify-content: space-between;
     background-color: $navBarColor !important;
     padding: 0px 20%;
     border-bottom: 1px solid $borderColor;
@@ -154,6 +156,7 @@ img {
 
   @media (max-width: 767px) {
     width: 100%;
+    margin-left: 0px;
   }
 
 }
@@ -331,4 +334,17 @@ img {
   margin-bottom: 0px;
   padding-left: 0;
   justify-content: center;
+}
+
+.mobHide {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.mobShow {
+  display: none;
+  @media (max-width: 767px) {
+    display: block;
+  }
 }
