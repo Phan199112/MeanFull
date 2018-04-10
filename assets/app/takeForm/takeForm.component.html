@@ -5,10 +5,10 @@
             <!-- <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar> -->
         </div>
 
-        <div class="col-md-6 order-1 order-sm-2">
-            <div *ngIf="form && form.answered" style="margin-bottom: 20px;">
+        <div class="col-md-6 order-1 order-sm-2 mtop">
+            <div *ngIf="form && !form.answered" style="margin-bottom: 20px;">
                 <h3 class="thanksText">Thanks for your response. Check us out at
-                    <a class="qslyButton">Questionsly.com</a>
+                    <a class="qslyButton" [routerLink]="['/']" [queryParams]="{c: 'sports'}">Questionsly.com</a>
                 </h3>
             </div>
             <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form"> </feed-form-component>

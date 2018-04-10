@@ -127,11 +127,22 @@ feed-list {
   font-size: 1.15rem;
   font-weight: 300;
   color: #AAA;
-
+  
   @media (max-width: 767px) {
-    font-size: .8rem
+    font-size: .8rem;
   }
+
+  &.smallDesc {
+    font-size: .8rem;
+    color: #CCC;
+
+    @media (max-width: 767px) {
+      font-size: .6rem;
+    }
+  }
+
 }
+
 
 .stats {
   color: #777;
@@ -212,8 +223,8 @@ feed-list {
 }
 
 #community-image {
-  height: 70px;
-  width: 70px;
+  height: 100px;
+  width: 100px;
   border-radius: 8px;
 
   @media (max-width: 767px) {

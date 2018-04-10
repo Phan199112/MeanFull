@@ -895,7 +895,6 @@ module.exports = function(app, passport, manager, hashids) {
         // limits to x posts
         // only public posts
 
-        console.log("**********************", req.body);
 
         var postlimit = 10;
 
@@ -906,6 +905,7 @@ module.exports = function(app, passport, manager, hashids) {
         var topsurvey;
         var selecteduser;
         var queryobj;
+        var pref;
         var selectedcomm;
 
         if (req.body.topsurvey == null) {
@@ -937,15 +937,15 @@ module.exports = function(app, passport, manager, hashids) {
 
         //console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
-        if (selectedtags != null && selecteduser == null && !category) {
+        if (selectedtags != null && selecteduser == null && !category && !pref) {
             queryobj = {public: true, shared: true, hashtags: selectedtags};
-        } else if (selectedtags != null && selecteduser != null && !category) {
+        } else if (selectedtags != null && selecteduser != null && !category && !pref) {
             queryobj = {public: true, shared: true, hashtags: selectedtags, userid: selecteduser};
-        } else if (selectedtags == null && selecteduser != null && !category) {
+        } else if (selectedtags == null && selecteduser != null && !category && !pref) {
             queryobj = {public: true, shared: true, userid: selecteduser};
-        } else if (selectedtags == null && selectedcomm != null && !category) {
+        } else if (selectedtags == null && selectedcomm != null && !category && !pref) {
             queryobj = {shared: true, sharedWithCommunities: selectedcomm};
-        } else if (selectedtags == null && selecteduser == null && selectedcomm == null && !category){
+        } else if (selectedtags == null && selecteduser == null && selectedcomm == null && !category && !pref){
             queryobj = {public: true, shared: true};
             // Below is the category one
         } else if (selectedtags == null && selecteduser == null && selectedcomm == null && category) { 

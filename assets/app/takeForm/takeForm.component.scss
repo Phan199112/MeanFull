@@ -22,7 +22,13 @@ $borderColor: rgb(226,226,226);
 
 .fa-heart {
     color: $navBarColor;
-;
+}
+
+.mtop {
+    margin-top: 20px;
+    @media (max-width: 768px) {
+        margin-top: 0px;
+    }
 }
 
 .mouseChangeToHand{
