@@ -27,6 +27,10 @@ $borderColor: rgb(226,226,226);
   font-weight: 300;
   color: #AAA;
   margin-top: 10px;
+
+  @media (max-width: 767px) {
+    font-size: 1.2rem;
+  }
 }
 
 .mainTitle {
@@ -34,6 +38,10 @@ $borderColor: rgb(226,226,226);
   text-align: center;
   font-size: 1.5rem;
   margin-top: 0px;
+  
+  @media (max-width: 767px) {
+    font-size: 1.3rem;
+  }
 }
 
 .noResults {
@@ -45,5 +53,9 @@ $borderColor: rgb(226,226,226);
   width: 100%;
   text-align: center;
   font-size: 1.1rem;
+
+  @media (max-width: 767px) {
+    font-size: .9rem;
+  }
 }
 
