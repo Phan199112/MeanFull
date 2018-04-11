@@ -271,6 +271,7 @@ module.exports = function(app, passport, manager, hashids) {
         var answerformid = hashids.decodeHex(receivedData.id);
         var formauthorid = null;
         var firstQuestion = "";
+        const personwhoanswered = null;
         // double check to see whether this user has already submitted an answer:
         var checkedfordouble = true; // true means do not add again
         var checkedexpired = true;
@@ -416,20 +417,26 @@ module.exports = function(app, passport, manager, hashids) {
                                 } else {
                                     if (l) {
                                         // send
-                                        if (Object.keys(l.notifications).length === 0) {
-                                            if (l.notifications.formactivity === true) {
-                                                emailfunctions.sendNotificationFormActivity(l.email, firstQuestion, hashids.encodeHex(answerformid));
-                                                res.json({status: 1});
-                                            } else {
-                                                // no email
-                                                res.json({status: 1});
-                                            }
-                                        } else {
-                                            // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationFormActivity(l.email, firstQuestion, hashids.encodeHex(answerformid));
-                                            res.json({status: 1});
-                                        }
 
+                                        UserModel.findById(req.session.userid, function (err, q) {
+                                            if (err) {
+                                                // no email
+                                                res.json({ status: 1 });
+                                            } else {
+                                                if (Object.keys(l.notifications).length === 0) {
+                                                    if (l.notifications.formactivity === true) {
+                                                        emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                        res.json({status: 1});
+                                                    } else {
+                                                        // no email
+                                                        res.json({status: 1});
+                                                    }
+                                                } else {
+                                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                                    emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                    res.json({status: 1});
+                                                }
+                                            }})
                                     } else {
                                         //no user found
                                         res.json({status: 1});
@@ -485,6 +492,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // log
                             log.writeLog('anonymous', 'answered form');
 
+
                             // insite notification
                             notifications.createNotification(formauthorid, 'anonymous', "form-answer", "New answer", hashids.encodeHex(answerformid));
 
@@ -499,8 +507,13 @@ module.exports = function(app, passport, manager, hashids) {
                                     if (l) {
                                         // send
                                         if (Object.keys(l.notifications).length === 0) {
+                                            var user = {
+                                                name: {first:"Anonymous", last: ""},
+                                                gender: "male"
+                                            }
+
                                             if (l.notifications.formactivity === true) {
-                                                emailfunctions.sendNotificationFormActivity(l.email, firstQuestion, hashids.encodeHex(answerformid));
+                                                emailfunctions.sendNotificationFormActivity(l.email, user, firstQuestion, hashids.encodeHex(answerformid));
                                                 res.json({status: 1});
                                             } else {
                                                 // no email
@@ -508,7 +521,7 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         } else {
                                             // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationFormActivity(l.email, firstQuestion, hashids.encodeHex(answerformid));
+                                            emailfunctions.sendNotificationFormActivity(l.email, user, firstQuestion, hashids.encodeHex(answerformid));
                                             res.json({status: 1});
                                         }
 
@@ -923,6 +936,7 @@ module.exports = function(app, passport, manager, hashids) {
             selectedcomm = null;
         } else {
             selectedcomm = hashids.decodeHex(req.body.comm);
+            console.log(selectedcomm);
         }
 
         //CATEGORY
@@ -936,19 +950,16 @@ module.exports = function(app, passport, manager, hashids) {
 
         //console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
-        if (selectedtags != null && selecteduser == null && !category) {
+        if (selectedtags != null && selecteduser == null) {
             queryobj = {public: true, shared: true, hashtags: selectedtags};
-        } else if (selectedtags != null && selecteduser != null && !category) {
+        } else if (selectedtags != null && selecteduser != null) {
             queryobj = {public: true, shared: true, hashtags: selectedtags, userid: selecteduser};
-        } else if (selectedtags == null && selecteduser != null && !category) {
+        } else if (selectedtags == null && selecteduser != null) {
             queryobj = {public: true, shared: true, userid: selecteduser};
-        } else if (selectedtags == null && selectedcomm != null && !category) {
+        } else if (selectedtags == null && selectedcomm != null) {
             queryobj = {shared: true, sharedWithCommunities: selectedcomm};
-        } else if (selectedtags == null && selecteduser == null && selectedcomm == null && !category){
-            queryobj = {public: true, shared: true};
-            // Below is the category one
-        } else if (selectedtags == null && selecteduser == null && selectedcomm == null && category) { 
-            queryobj = { public: true, shared: true, categories: category };
+        } else if (selectedtags == null && selecteduser == null && selectedcomm == null) { 
+            queryobj = { public: true, shared: true };
         } else {
             // fall back solution
             queryobj = {public: true, shared: true}
@@ -1073,6 +1084,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // retrieve forms by compley queries
                 var tempfunctionByQuery = function() {
                     return new Promise(function(resolve, reject){
+                        console.log("QueryOBJect:", queryobj);
                         FormModel.find(queryobj).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
                             .on('data', function(form){
                                 // was the form generated by the current user?

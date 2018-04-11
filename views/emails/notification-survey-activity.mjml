@@ -84,13 +84,15 @@
 
       <mj-section >
               <mj-column>
+                <mj-image width="80" src="{{userPic}}" />
+              </mj-column>
+              <mj-column>
                 <mj-text href="{{link}}" color="#818181" font-size="15" font-family="Karla" >
-                  {{question}}
+                  {{userName}} answered your question: "{{question}}"
                   <br> {{date}}
                 </mj-text>
               </mj-column>
       </mj-section>
-      
       
       <mj-section background-color="#fff" >
         <mj-column><mj-text color="#818181" font-size="20" font-family="Karla" >

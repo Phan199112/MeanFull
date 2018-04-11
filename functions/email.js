@@ -167,7 +167,7 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
 
 
 
-exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, question, link) {
+exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, user, question, link) {
     var subject = "People are answering your question";
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
@@ -176,6 +176,8 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
 
     renderTemplate("notification-survey-activity", {
         subject: subject,
+        userPic: getUserPic(user),
+        userName: getUserDisplayName(user),
         question: question,
         date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
