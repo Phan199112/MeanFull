@@ -66,8 +66,7 @@ $commentBackground: #f0f6f0;
   display: flex;
   z-index: 2;
   align-items: center;
-  padding: 20px;
-  padding-bottom: 0px;
+  padding: 20px 6px 0 20px;
 }
 
 .userImage {
@@ -109,6 +108,7 @@ $commentBackground: #f0f6f0;
   margin: 4px;
   font-family: Karla;
   font-size: .7rem;
+  text-transform: capitalize;
 
   &:hover {
     cursor: pointer;

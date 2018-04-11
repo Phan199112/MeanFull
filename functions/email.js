@@ -168,7 +168,7 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
 
 
 exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, question, link) {
-    var subject = "Survey activity on Questionsly";
+    var subject = "People are answering your question";
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
     dateString = dateString.toDateString();

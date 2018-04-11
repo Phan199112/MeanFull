@@ -3,7 +3,7 @@ $borderColor: rgb(226,226,226);
 
 
 .box {
-    width: 100%;
+    width: 150px;
     min-height: 115px;
     height: auto;
     display: flex;
@@ -17,6 +17,7 @@ $borderColor: rgb(226,226,226);
     border: solid 1px $borderColor;
 
     @media (max-width: 767px) {
+        width: 100%;
         margin: 0;
     }
 

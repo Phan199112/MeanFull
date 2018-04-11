@@ -297,6 +297,10 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         }
     }
 
+    editQuestion(i) {
+        console.log("Edit question")
+    }
+
     getInputType(question) {
         switch(question.get("kind").value) {
             case "Multiple Choice":

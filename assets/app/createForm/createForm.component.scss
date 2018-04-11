@@ -493,6 +493,9 @@ h3 {
     display: none;
     @media (max-width: 767px) {
         display: block;
+        width: 100%; 
+        display: flex; 
+        justify-content: flex-start;
     }
 }
 
@@ -594,17 +597,36 @@ h3 {
     }
 }
 
-.redCross {
+.editDelete {
     position: absolute;
     right: 20px;
     top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.redCross {
     color: #ffa6a6;
     font-size: 1.3rem;
+    
+    &:hover {
+        cursor: pointer;
+        color: darken(#ffa6a6, 10);
+    }
+}
+
+.edit {
+    color: #CCC;
+    font-size: .8rem;
+    margin-right: 10px;
 
     &:hover {
         cursor: pointer;
+        color: #999;
     }
 }
+
+
 
 .settingTitle {
     font-family: Karla;
@@ -659,8 +681,10 @@ h3 {
 }
 
 .descSwitchButton {
-    width: 49%;
-    flex: 1;
+    @media(max-width: 767px) {
+        width: 49%;
+        flex: 1;
+    }
 }
 
 

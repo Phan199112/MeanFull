@@ -33,7 +33,10 @@
                         <h3 class="containerTitle abs green">Overview</h3>
                         <h3 *ngIf="!questionData.length" class="containerTitle">Your Completed Questions Will Appear Here</h3>
                         <div *ngFor="let q of getSortedQuestions(); let i = index" class="qBlock">
-                            <i class="fa fa-times redCross" (click)="removeQuestion(i)"></i>
+                            <div class="editDelete">
+                                <span class="redCross edit" (click)="editQuestion(i)">Edit</span>
+                                <i class="fa fa-times redCross" (click)="removeQuestion(i)"></i>
+                            </div>
                             
                             <div class="aqContainer">
                                 <div *ngIf="questionData.length > 0" class="sortArrowBlock">
@@ -93,15 +96,28 @@
 
         <div *ngIf="step === 2" class="oContainer l2">
             <!-- <a id="previewBtn" class="submitButton inverse" (click)="prevView()">Preview</a> -->
-            <div class="forMobile" style="width: 100%; display: flex; justify-content: flex-start;">
+            <div class="forMobile">
                 <a  class="prevButton" (click)="prevView()">Previous</a>
             </div>
 
             <div class="lContainer l2">
                 <h3 class="containerTitle green">Settings</h3>
 
-                <angular2-multiselect  style="width: 90%" [data]="categoryList" [settings]="categorySettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" formControlName="categories"></angular2-multiselect>
+                <!-- <angular2-multiselect  style="width: 90%" [data]="categoryList" [settings]="categorySettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" formControlName="categories"></angular2-multiselect> -->
 
+                <div class="form-group" style="margin-bottom: 2px; width: 80%">
+                    <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}" style="padding: auto;">
+                        <div [ngClass]="{'d-none': showHashtags || questionnaire.get('hashtags').value}" class="tag-placeholder text-muted" (click)="showHashtags = true; focusTagInput(hashtags)">
+                            Enter up to 3 Tags
+                        </div>
+                        <tag-input #hashtags [ngClass]="{'d-none': !showHashtags && questionnaire.get('hashtags').value === null}" [onAdding]="transformHashtag"
+                            placeholder="Tag" secondaryPlaceholder="#hashtag" (onBlur)="showHashtags = false" [separatorKeyCodes]="[32, 13, 188]"
+                            formControlName="hashtags" id="tags">
+                            <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceTag.bind(this)">
+                            </tag-input-dropdown>
+                        </tag-input>
+                    </div>
+                </div>
 
 
                 <div class="flexContainer fdColumn faStart">
