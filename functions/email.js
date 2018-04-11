@@ -17,6 +17,7 @@ var server 	= email.server.connect({
 var fs = require("fs");
 var mjml = require("mjml");
 
+
 /// functions
 
 function renderTemplate(template, context) {
@@ -172,7 +173,6 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
     dateString = dateString.toDateString();
-
 
     renderTemplate("notification-survey-activity", {
         subject: subject,

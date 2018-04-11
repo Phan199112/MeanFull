@@ -21,8 +21,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pref: string;
     tag: any;
     formselected: any;
-    userinfo: String = null;
-    comminfo: String = null;
+
 
     constructor(private http: Http, private route: ActivatedRoute) {
     }
@@ -31,11 +30,7 @@ export class FeedListComponent implements OnInit, OnChanges {
         this.route.params.subscribe(params => {
             this.tag = params['tag'];
             this.formselected = params['survey'];
-
-            this.userinfo = this.user;
-            this.comminfo = this.comm;
-
-            this.refreshFeed();
+            // this.refreshFeed();
         });
         
     }
@@ -46,7 +41,7 @@ export class FeedListComponent implements OnInit, OnChanges {
 
 
     refreshFeed() {
-        this.http.post(`/forms/feed`, { tag: this.tag, user: this.userinfo, topsurvey: this.formselected, comm: this.comminfo, category: this.category, pref: this.pref }).toPromise()
+        this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, category: this.category, pref: this.pref }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     // clean current data list

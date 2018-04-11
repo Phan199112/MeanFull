@@ -482,6 +482,13 @@ module.exports = function(app, passport, manager, hashids) {
 
             })
                 .then(function () {
+                    var anon = {
+                        name: { first: "Anonymous", last: "" },
+                        gender: "male",
+                        fb: false,
+                        pic: false
+                    }
+                    
                     if (proceed === true) {
                         // add the answer and send an email/notification
 
@@ -507,21 +514,19 @@ module.exports = function(app, passport, manager, hashids) {
                                     if (l) {
                                         // send
                                         if (Object.keys(l.notifications).length === 0) {
-                                            var user = {
-                                                name: {first:"Anonymous", last: ""},
-                                                gender: "male"
-                                            }
 
                                             if (l.notifications.formactivity === true) {
-                                                emailfunctions.sendNotificationFormActivity(l.email, user, firstQuestion, hashids.encodeHex(answerformid));
+                                                console.log("hyheyheyheyheyehyehyeheyheyheyheyheyheyheyh", anon);
+                                                emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
                                                 res.json({status: 1});
                                             } else {
                                                 // no email
                                                 res.json({status: 1});
                                             }
                                         } else {
+                                            console.log("hyheyheyheyheyehyehyeheyheyheyheyheyheyheyh", anon);
                                             // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationFormActivity(l.email, user, firstQuestion, hashids.encodeHex(answerformid));
+                                            emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
                                             res.json({status: 1});
                                         }
 
@@ -958,9 +963,11 @@ module.exports = function(app, passport, manager, hashids) {
             queryobj = {public: true, shared: true, userid: selecteduser};
         } else if (selectedtags == null && selectedcomm != null) {
             queryobj = {shared: true, sharedWithCommunities: selectedcomm};
-        } else if (selectedtags == null && selecteduser == null && selectedcomm == null) { 
+        } 
+        else if (selectedtags == null && selecteduser == null && selectedcomm == null) { 
             queryobj = { public: true, shared: true };
-        } else {
+        } 
+        else {
             // fall back solution
             queryobj = {public: true, shared: true}
         }
