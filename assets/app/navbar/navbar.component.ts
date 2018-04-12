@@ -397,16 +397,22 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
+    rejectNewCommMemberRequest(x, commId, memberId) {
+        this.http.post(`/community/reject`, { commid: commId, memberid: memberId }).toPromise()
+            .then(() => {
+                let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
+                this.communityNotifications.splice(ind, 1);
+            })
+            .catch(error => alert("Error: " + error));
+    }
+
+
+
     deleteCommunityRequest(x) {
         this.http.post(`/users/settings/deletecommrequest`, { eventid: x }).toPromise()
             .then(() => {
-
-                this.http.post(`/events/delete`, { id: x }).toPromise()
-                    .then(() => {
-                        let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
-                        this.communityNotifications.splice(ind, 1);
-                    })
-
+                let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
+                this.communityNotifications.splice(ind, 1);
             })
             .catch(error => alert("Error: " + error));
     }

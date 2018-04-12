@@ -22,6 +22,7 @@ export class ViewCommunityComponent implements OnInit {
     status: string;
     inviteForm: FormGroup;
     fgCreateCommunity: FormGroup;
+    autoEnrollLink: string = ""
 
     friends: any[] = [];    
     showEdit: boolean = false;
@@ -38,12 +39,14 @@ export class ViewCommunityComponent implements OnInit {
     ngOnInit() {
         this.loggedin = false;
         this.loading = true;
+
         this.loadData();
     }
 
     loadData() {
         this.route.params.subscribe(params => {
             this.id = params.id;
+
             this.http.get(`/community/retrieve/${params.id}`).toPromise()
                 .then(res => {
                     this.loading = false;
@@ -51,12 +54,14 @@ export class ViewCommunityComponent implements OnInit {
 
                     if (this.status == '1') {
                         this.data = res.json().data;
+                        this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;
 
                     } else if (this.status == '2') {
                         this.data = res.json().data;
+                        this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;

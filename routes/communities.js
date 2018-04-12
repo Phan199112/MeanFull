@@ -1,6 +1,7 @@
 var CommunityModel = require('../db.models/community.model');
 var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
+var EventModel = require('../db.models/event.model');
 var math = require("../functions/math");
 var log = require("../functions/logs");
 var networkfunctions = require('../functions/network');
@@ -202,6 +203,7 @@ module.exports = function(app, passport, manager, hashids) {
                     var ismember = true;
                     var isadmin = false;
                     var isPending = false;
+                    var adminId = hashids.encodeHex(comm.adminuserid[0]);
 
                     if (req.session.userid) {
                         var encryptedUser = hashids.encodeHex(req.session.userid);
@@ -293,18 +295,18 @@ module.exports = function(app, passport, manager, hashids) {
                         // public status
                         if (comm.public === true) {
                             // send back data
-                            sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist};
+                            sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId};
                             res.json({status: 1, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
 
                         } else {
                             if (ismember === true) {
                                 // send back data
-                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist};
+                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId};
                                 res.json({status: 1, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
 
                             } else {
                                 // send back data
-                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null, isPending: isPending};
+                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null, isPending: isPending, adminId: adminId};
                                 res.json({status: 2, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
                             }
                         }
@@ -629,24 +631,44 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var userId = hashids.decodeHex(req.body.memberid);
 
-        CommunityModel.findByIdAndUpdate(commid, { $push: { members: userid } }, function (err, k) {
+        CommunityModel.findByIdAndUpdate(commid, { $push: { members: userId }, $pull: { requests: req.body.memberid } }, function (err, k) {
             if (err) {
-                res.json({ status: 0 });
+                res.json({status: 0})
             } else {
-                res.json({ status: 1 });
+                // res.json({ status: 1 });
+
+                EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
+                    if (err) {
+                        res.json({ status: 0 });
+                    } else {
+                        res.json({ status: 1 });
+                    }
+                });
+
+
             }
         });
+    });
 
-        // CommunityModel.findByIdAndUpdate(commid, { $pull: { requests: userid  } }, function (err, k) {
-        //     if (err) {
-        //         res.json({ status: 0 });
-        //     } else {
-        //         res.json({ status: 1 });
-        //     }
-        // });
+    app.post('/community/reject', manager.ensureLoggedIn('/users/login'), function (req, res) {
+        var commid = hashids.decodeHex(req.body.commid);
+        var userId = hashids.decodeHex(req.body.memberid);
 
-        
-        
+        CommunityModel.findByIdAndUpdate(commid, { $pull: { requests: req.body.memberid } }, function (err, k) {
+            if (err) {
+                res.json({ status: 0 })
+            } else {
+                // res.json({ status: 1 });
+
+                EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
+                    if (err) {
+                        res.json({ status: 0 });
+                    } else {
+                        res.json({ status: 1 });
+                    }
+                });
+            }
+        });
     });
 
 
