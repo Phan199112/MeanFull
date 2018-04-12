@@ -201,6 +201,20 @@ module.exports = function(app, passport, manager, hashids) {
                     // determine whether the current user is a member
                     var ismember = true;
                     var isadmin = false;
+                    var isPending = false;
+
+                    if (req.session.userid) {
+                        var encryptedUser = hashids.encodeHex(req.session.userid);
+                        console.log("type:", typeof encryptedUser, "Value:", encryptedUser);
+                       
+                        for (let z of comm.requests) {
+                            if (z == encryptedUser ) {
+                                isPending = true;
+                                break;
+                            }
+                        }
+                    }
+
 
                     if (comm.members.indexOf(req.session.userid) === -1 && comm.adminuserid.indexOf(req.session.userid) === -1 ) {
                         ismember = false;
@@ -290,7 +304,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             } else {
                                 // send back data
-                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null};
+                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null, isPending: isPending};
                                 res.json({status: 2, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
                             }
                         }
@@ -556,6 +570,8 @@ module.exports = function(app, passport, manager, hashids) {
     // join a community
     app.post('/community/join', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid =  hashids.decodeHex(req.body.targetid);
+        var adminsList = [];
+        var pendingRequests = [];
 
         // one can only manually join if the community is public
         return new Promise(function(resolve, reject){
@@ -564,7 +580,33 @@ module.exports = function(app, passport, manager, hashids) {
                 if (result === true) {
                     resolve();
                 } else {
-                    reject();
+                    // Handle join PRIVATE community
+                    CommunityModel.findById(commid, function (err, c) {
+                        if (err) {
+                            reject(err);
+                        } else {
+
+                            pendingRequests = c.requests.slice();
+                            pendingRequests.push(hashids.encodeHex(req.session.userid));
+
+                            CommunityModel.findByIdAndUpdate(commid, { $push: { requests: hashids.encodeHex(req.session.userid)} }, function (err, k) {
+                                if (err) {
+                                    reject();
+                                    res.json({ status: 0 });
+                                } else {}
+                            });
+
+                            if (c.adminuserid !== null) {
+                                for (l = 0; l < c.adminuserid.length; l++) {
+                                    adminsList.push(c.adminuserid[l]);
+                                    notifications.createNotification(c.adminuserid[l], req.session.userid, "comm-request", "Request to join community", hashids.encodeHex(commid));
+                                }
+                            }
+                            // Reject so we dont add them as a member right away
+                            reject();
+                        }
+                    });
+
                 }
             })
         })
@@ -582,6 +624,34 @@ module.exports = function(app, passport, manager, hashids) {
                 res.json({status: 0});
             });
     });
+
+    app.post('/community/accept', manager.ensureLoggedIn('/users/login'), function (req, res) {
+        var commid = hashids.decodeHex(req.body.commid);
+        var userId = hashids.decodeHex(req.body.memberid);
+
+        CommunityModel.findByIdAndUpdate(commid, { $push: { members: userid } }, function (err, k) {
+            if (err) {
+                res.json({ status: 0 });
+            } else {
+                res.json({ status: 1 });
+            }
+        });
+
+        // CommunityModel.findByIdAndUpdate(commid, { $pull: { requests: userid  } }, function (err, k) {
+        //     if (err) {
+        //         res.json({ status: 0 });
+        //     } else {
+        //         res.json({ status: 1 });
+        //     }
+        // });
+
+        
+        
+    });
+
+
+
+
 
     // leave a community
     app.post('/community/leave', manager.ensureLoggedIn('/users/login'), function (req, res) {

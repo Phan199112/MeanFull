@@ -96,7 +96,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                     resolve();
                                                 };
                                             });
-                                        } else if (event.type === "comm" || event.type === "comm-admin") {
+                                        } else if (event.type === "comm" || event.type === "comm-admin" || event.type === "comm-request") {
                                             CommunityModel.findById(decryptedId, function (err, commInfo) {
                                                 if (err) {
                                                     reject();

@@ -18,7 +18,7 @@
                     <div style="margin-left: 15px">
                         <h3 class="name">{{data.title}}</h3>
                         <h5 class="description">{{data.description ? data.description : "No Description."}}</h5>
-                        <h5 class="description smallDesc">{{data.members.length}} {{data.members.length > 1 ? "Members" : "Member"}}</h5>
+                        <h5 *ngIf="data.public || data.ismember" class="description smallDesc">{{data.members.length}} {{data.members.length > 1 ? "Members" : "Member"}}</h5>
                     </div>
                     
                     <div class="profileMenu">
@@ -30,6 +30,8 @@
                             <div ngbDropdownMenu aria-labelledby="community-menu">
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="toggleEdit()">Edit</a>
                                 <a class="dropdown-item" *ngIf="!data.ismember && status != '2'" (click)="joinCommunity(id)">Join Community</a>
+                                <a class="dropdown-item" *ngIf="!data.public && !data.ismember && !data.isPending" (click)="joinCommunity(id)">Request to Join</a> 
+                                <a class="dropdown-item" *ngIf="data.isPending && !data.public">Request Pending</a> 
                                 <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Community</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="inviteToCommunity(id)">Invite others to join</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Community</a>
@@ -43,8 +45,8 @@
 
                 <!-- Feed list and private community message -->
                 <div class="" *ngIf="!showEdit">
-                    <div *ngIf="status == '2'" class="aboutContainer"><h6 class="description">{{data.title}} is a private community. Only individuals invited by the admin can see the content of this community.</h6></div>
-                    <feed-list *ngIf="status !== '2'" [comm]="id"></feed-list>
+                    <div *ngIf="status == '2'" class="aboutContainer" style="flex-direction: column"><h6 class="description center">{{data.title}} is a private community.</h6><h6 class="description center">Only members can see the content of this community.</h6></div>
+                    <feed-list *ngIf="data.public || data.ismember" [comm]="id"></feed-list>
                 </div>
 
 

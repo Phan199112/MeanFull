@@ -239,7 +239,7 @@ export class ViewCommunityComponent implements OnInit {
                 } else {
                     this.addfailed = true;
                 }
-                //
+            
             })
             .catch(error => function () {
                 this.addfailed = true;

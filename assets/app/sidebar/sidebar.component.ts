@@ -91,6 +91,7 @@ export class Sidebar implements OnInit, OnChanges {
                     this.communitylist = [];
 
                     var k=0;
+                    this.communitylist = [];
                     for (let obj of this.data) {
                         if (k < this.amountToFetch) {
                             this.communitylist.push(new CommunityModel(obj));
@@ -100,6 +101,7 @@ export class Sidebar implements OnInit, OnChanges {
 
                     var i = 0;
                     if (this.randomlistdata != null) {
+                        this.randomlist = [];
                         for (let obj of this.randomlistdata) {
                             if (i < this.amountToFetch) {
                                 this.randomlist.push(new CommunityModel(obj));

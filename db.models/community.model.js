@@ -11,7 +11,8 @@ var CommunitySchema = new Schema({
     timestamp: String,
     pic: String,
     report: Object,
-    members: [{type: String}]
+    members: [{type: String}],
+    requests: [{type: String}]
 });
 
 CommunitySchema.plugin(random, { path: 'r' });

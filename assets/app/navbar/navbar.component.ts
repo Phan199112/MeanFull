@@ -130,7 +130,7 @@ export class NavbarComponent implements OnInit {
             }
         }
 
-        if (notification.type === 'comm' || notification.type === 'comm-admin') {
+        if (notification.type === 'comm' || notification.type === 'comm-admin' || notification.type === "comm-request") {
             this.communityNotifications.push(notification);
             if (notification.seen == false) {
                 this.unreadNotifications++;
@@ -160,7 +160,7 @@ export class NavbarComponent implements OnInit {
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
-                                // window.console.log(e);
+                                window.console.log(e);
                                 this.addNotification(e);
                             }
                         }
@@ -197,6 +197,7 @@ export class NavbarComponent implements OnInit {
             case "form-discussion":
                 return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
             case "network":
+            case "comm-request":
                 return ['/profile', notification.fromUserId]
             case "comm":
             case "comm-admin":
@@ -250,6 +251,8 @@ export class NavbarComponent implements OnInit {
                 return { name: name, message: ` has commented on your question '${notification.qTitle}'` };
             case "network":
                 return { name: name, message: ` invited you to be a part of ${pronoun} network` };
+            case "comm-request":
+                return { name: name, message: ` has requested to join `, community: notification.commTitle };
             case "comm":
                 return { name: name, message: ` has invited you to join `, community: notification.commTitle };
             case "comm-admin":
@@ -377,13 +380,30 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
+    acceptNewCommMemberRequest(x, commId, memberId) {
+        this.http.post(`/community/accept`, { commid: commId, memberid: memberId }).toPromise()
+            .then(() => {
+
+
+                //delete event for all admins once one of them makes a decision
+
+                this.http.post(`/events/delete`, { id: x }).toPromise()
+                    .then(() => {
+                        let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
+                        this.communityNotifications.splice(ind, 1);
+                    })
+
+            })
+            .catch(error => alert("Error: " + error));
+    }
+
     deleteCommunityRequest(x) {
         this.http.post(`/users/settings/deletecommrequest`, { eventid: x }).toPromise()
             .then(() => {
 
                 this.http.post(`/events/delete`, { id: x }).toPromise()
                     .then(() => {
-                        let ind = this.networkNotifications.findIndex((obj) => obj.id === x);
+                        let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
                         this.communityNotifications.splice(ind, 1);
                     })
 

@@ -261,6 +261,7 @@
                                             <div class="flex">
                                                 <a *ngIf="notification.type === 'comm-admin' " class="acceptButton" (click)="acceptCommunityRequest(notification.id, true)">Accept</a>
                                                 <a *ngIf="notification.type === 'comm' " class="acceptButton" (click)="acceptCommunityRequest(notification.id)">Accept</a>
+                                                <a *ngIf="notification.type === 'comm-request' " class="acceptButton" (click)="acceptNewCommMemberRequest(notification.id, notification.data, notification.fromUserId)">Accept</a>
                                                 <a class="denyButton" (click)="deleteCommunityRequest(notification.id)">Deny</a>
                                             </div>
                                         </div>
