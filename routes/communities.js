@@ -629,9 +629,16 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/community/accept', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
-        var userId = hashids.decodeHex(req.body.memberid);
+        var memid = "";
+        
+        if (req.body.memberid) {
+            memid = req.body.memberid;
+            var userId = hashids.decodeHex(memid);
+        } else {
+            var userId = req.session.userid;
+        }
 
-        CommunityModel.findByIdAndUpdate(commid, { $push: { members: userId }, $pull: { requests: req.body.memberid } }, function (err, k) {
+        CommunityModel.findByIdAndUpdate(commid, { $push: { members: userId }, $pull: { requests: memid } }, function (err, k) {
             if (err) {
                 res.json({status: 0})
             } else {

@@ -1,6 +1,7 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var UserModel = require('../db.models/user.model');
+var CommunityModel = require('../db.models/community.model');
 var log = require("../functions/logs");
 var randommod = require("../functions/random");
 var usersfunctions = require('../functions/users');
@@ -244,6 +245,8 @@ module.exports = function(app, passport, manager, hashids) {
         var data = req.body;
         data.pic = req.body.profilePic;
 
+        var commToJoinWith = req.body.commToJoinWith;
+
         // test whether a user already exists with this email address
 
         // variables
@@ -307,6 +310,17 @@ module.exports = function(app, passport, manager, hashids) {
                             var confirmlink = "https://www.questionsly.com/users/settings/confirmemail/"+randomkey;
                             // send email
                             emailfunctions.sendEmailVerification(data.email, confirmlink, data.name.firstname);
+
+                            if (req.body.commToJoinWith) {
+                                var commid = hashids.decodeHex(req.body.commToJoinWith);
+                                console.log("MADE IT IN HERE AND HAVE COMMMMMMMMMMMM ID:", commid);
+                                CommunityModel.findByIdAndUpdate(commid, { $push: { members: k._id } }, function (err, k) {
+                                    if (err) {
+                                        console.log("Could not join community at signup");
+                                    } else {}
+                                });
+                            }
+
 
                             // return
                             log.writeLog(k._id, 'manual signup - new user', req.ip);

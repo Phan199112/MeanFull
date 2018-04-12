@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from "@angular/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppComponent } from '../app.component';
+import { UserService } from "../user.service";
 import {Observable} from "rxjs";
 import {FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
@@ -9,7 +10,9 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'view-community',
     templateUrl: './viewCommunity.component.html',
-    styleUrls: ['./viewCommunity.component.scss']
+    styleUrls: ['./viewCommunity.component.scss'],
+    providers: [UserService],
+
 })
 
 export class ViewCommunityComponent implements OnInit {
@@ -22,7 +25,10 @@ export class ViewCommunityComponent implements OnInit {
     status: string;
     inviteForm: FormGroup;
     fgCreateCommunity: FormGroup;
-    autoEnrollLink: string = ""
+    autoEnrollLink: string = "";
+    
+    communityToJoin: string = "";
+    verifyAccess: string = ""
 
     friends: any[] = [];    
     showEdit: boolean = false;
@@ -33,6 +39,7 @@ export class ViewCommunityComponent implements OnInit {
                 private modalService: NgbModal,        
                 private route: ActivatedRoute,
                 private router: Router,
+                private userService: UserService
     ) {
     }
 
@@ -40,12 +47,26 @@ export class ViewCommunityComponent implements OnInit {
         this.loggedin = false;
         this.loading = true;
 
+
+        // this.userService.afterLoginCheck().then(userData => {
+        //     if (userData != 0) {
+        //         this.loggedin = true;
+
+
+        //     } else {
+        //         this.loggedin = false;
+        //     }
+        // });
+
+
+
         this.loadData();
     }
 
     loadData() {
         this.route.params.subscribe(params => {
             this.id = params.id;
+            
 
             this.http.get(`/community/retrieve/${params.id}`).toPromise()
                 .then(res => {
@@ -59,12 +80,53 @@ export class ViewCommunityComponent implements OnInit {
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;
 
+
+                        if (params['access']) {
+                            this.communityToJoin = this.id;
+                            this.verifyAccess = params['access'];
+
+                            if (this.loggedin && !this.data.ismember) {
+                                this.forceJoinPrivateCommunity(this.id);
+                                // window.setTimeout(() => { this.router.navigate(['/community', this.id]); }, 2000);
+                                // window.setTimeout(() => { this.loadData(); }, 100);
+                                this.loadData();
+                                // return;
+                            }
+
+                            if (!this.loggedin) {
+                                localStorage.setItem("comm", this.communityToJoin);
+                                localStorage.setItem("commVerification", this.verifyAccess);
+                            }
+                        }
+
+                        
+
                     } else if (this.status == '2') {
                         this.data = res.json().data;
                         this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;
+
+
+                        if (params['access']) {
+                            this.communityToJoin = this.id;
+                            this.verifyAccess = params['access'];
+
+                            if (this.loggedin && !this.data.ismember) {
+                                this.forceJoinPrivateCommunity(this.id);
+                                // window.setTimeout(() => { this.router.navigate(['/community', this.id]); }, 2000);
+                                // window.setTimeout(() => {this.loadData();}, 100);
+                                this.loadData();
+                                // return;
+                            }
+                        
+                            if (!this.loggedin) {
+                                localStorage.setItem("comm", this.communityToJoin);
+                                localStorage.setItem("commVerification", this.verifyAccess);
+                            }
+                        }
+
 
                     } else {
                         this.loadsuccessful = false;
@@ -245,6 +307,21 @@ export class ViewCommunityComponent implements OnInit {
                     this.addfailed = true;
                 }
             
+            })
+            .catch(error => function () {
+                this.addfailed = true;
+            });
+    }
+
+    forceJoinPrivateCommunity(commid) {
+        this.http.post('/community/accept', { commid: commid }).toPromise()
+            .then(response => {
+                if (response.json().status == 1) {
+                    this.data.ismember = true;
+                } else {
+                    this.addfailed = true;
+                }
+
             })
             .catch(error => function () {
                 this.addfailed = true;

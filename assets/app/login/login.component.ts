@@ -153,9 +153,16 @@ export class LoginComponent implements OnInit {
         this.signupcompleted = false;
         this.signupfailed = false;
 
+        var commToJoinWith = localStorage.getItem("comm");
+        // var commlocalStorage.getItem("commVerification");
+
         // data
+        localStorage.removeItem("comm");
+        localStorage.removeItem("commVerification");
+
         let signupData = Object.assign({
-            profilePic: this.profilePicURL
+            profilePic: this.profilePicURL,
+            commToJoinWith: commToJoinWith
         }, this.signup.value);
 
         this.http.post('/users/signup', signupData).toPromise()
