@@ -126,6 +126,7 @@ export class LoginComponent implements OnInit {
                 (data) => {
                     // Handle response here
                     if (data.status == 1) {
+
                         // reload userservice
                         this.userService.afterLoginReload();
                         // navigate to feed

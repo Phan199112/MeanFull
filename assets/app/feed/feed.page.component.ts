@@ -56,11 +56,17 @@ export class FeedPageComponent implements OnInit  {
                         }
                     }
                 }
-                //if local pic is uploaded in settings
-                // this.shareService.get("profilePic").subscribe(pic => {
-                //     this.pictype = "local";
-                //     this.pic = pic;
-                // });
+
+                var commid = localStorage.getItem("comm");
+                if (commid) {
+                    this.http.post('/community/accept', { commid: commid }).toPromise()
+                        .then(response => {
+                            localStorage.removeItem("comm");
+                            localStorage.removeItem("commVerification");
+                        })
+                        .catch(error => function () {});
+                }
+
             } else {
                 this.loggedin = false;
             }
