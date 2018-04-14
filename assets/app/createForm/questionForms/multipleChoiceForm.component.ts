@@ -23,6 +23,7 @@ import * as $ from 'jquery';
 export class MultipleChoiceQuestionForm implements OnInit {
     @Input() questionType: string;
     @Input() qLength: number;
+    @Input() updateData: any;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     
     question: FormGroup;
@@ -41,16 +42,32 @@ export class MultipleChoiceQuestionForm implements OnInit {
     }
 
     createForm() {
-        this.question = this.fb.group({
-            body: ['', Validators.required],
-            kind: ['Multiple Choice', Validators.required],
-            options: this.fb.array([]),
-            required: true,
-            number: this.qLength,
-            pic: "",
-            canSelectMultiple: false,
-            id: Math.random().toString().substring(2),
-        })
+        if (this.updateData) {
+            this.question = this.fb.group({
+                body: [this.updateData.body, Validators.required],
+                kind: ['Multiple Choice', Validators.required],
+                options: this.fb.array(this.updateData.options),
+                required: this.updateData.required,
+                number: this.updateData.number,
+                pic: this.updateData.pic,
+                canSelectMultiple: this.updateData.canSelectMultiple,
+                id: this.updateData.id
+            })   
+        } else {
+            this.question = this.fb.group({
+                body: ['', Validators.required],
+                kind: ['Multiple Choice', Validators.required],
+                options: this.fb.array([]),
+                required: true,
+                number: this.qLength,
+                pic: "",
+                canSelectMultiple: false,
+                id: Math.random().toString().substring(2),
+            })
+        }
+
+
+
 
         this.addMcOption();
     }

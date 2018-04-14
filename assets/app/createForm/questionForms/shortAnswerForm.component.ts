@@ -21,6 +21,8 @@ export class ShortAnswerQuestionForm implements OnInit {
     @Input() questionType: string;
     @Input() qLength: number;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    @Input() updateData: any;
+
     question: FormGroup;
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 

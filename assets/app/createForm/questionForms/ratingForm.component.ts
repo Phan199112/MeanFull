@@ -20,6 +20,8 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 export class RatingQuestionForm implements OnInit {
     @Input() qLength: number;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    @Input() updateData: any;
+
     question: FormGroup;
     temp: string[];
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;

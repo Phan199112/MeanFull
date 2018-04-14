@@ -68,6 +68,7 @@ module.exports = function (app, passport, manager, hashids) {
                                     if (err) {
                                         reject(err);
                                     } else {
+                                        console.log(userinfo);
                                         eventdata.fromuser = {
                                             fb: userinfo.facebookID,
                                             pic: userinfo.pic,
