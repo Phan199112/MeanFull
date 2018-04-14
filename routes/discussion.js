@@ -196,13 +196,15 @@ module.exports = function(app, passport, manager, hashids) {
                             if (err) {
                                 reject(err);
                             } else {
-                                authorprofiles[k._id] = {
-                                    name: k.name.first+' '+k.name.last,
-                                    fb: k.facebookID,
-                                    pic: k.pic,
-                                    gender: k.gender,
-                                    id: hashids.encodeHex(k._id)
-                                };
+                                if (k) {
+                                    authorprofiles[k._id] = {
+                                        name: k.name.first+' '+k.name.last,
+                                        fb: k.facebookID,
+                                        pic: k.pic,
+                                        gender: k.gender,
+                                        id: hashids.encodeHex(k._id)
+                                    };
+                                }
                                 resolve();
                             }
                         });
