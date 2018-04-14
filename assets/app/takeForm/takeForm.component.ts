@@ -28,15 +28,15 @@ export class TakeFormComponent implements OnInit {
 
     constructor(private http: Http, private route: ActivatedRoute, private router: Router) {
     }
-
     ngOnInit() {
         this.route.params.subscribe(params => {
             this.id = params.id;
+            window.mixpanel.track(this.id.toString()); //track users directed to questionsly via shared links
             this.http.get(`/forms/${params.id}`).toPromise()
                 .then(res => {
                     if (res.json().status == 1) {
-
                         this.formdata = res.json().formdata;
+                        window.mixpanel.track(this.formdata.questions[0].body+"\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008"+this.id); //track users directed to questionsly via shared links
                         this.authordata = res.json().authordata;
                         this.loggedin = res.json().loggedin;
                         this.showsubmit = false;
