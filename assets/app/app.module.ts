@@ -19,12 +19,10 @@ import { Autocomplete } from 'js-autocomplete';
 import {AppComponent } from "./app.component";
 import {routing} from "./app.routing";
 
-
-
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 
 import {CreateFormComponent} from "./createForm/createForm.component";
-
-
 import {ShowFormComponent} from "./showForm/showForm.component";
 import {PreviewFormComponent} from "./previewForm/previewForm.component";
 import {ShareFormComponent} from "./shareForm/shareForm.component";
@@ -169,7 +167,9 @@ import { ShareService } from "./share.service";
         NguiAutoCompleteModule,
         ImageCropperModule,
         NgxEchartsModule,
-        AngularMultiSelectModule
+        AngularMultiSelectModule,
+        Angulartics2Module.forRoot([Angulartics2Mixpanel]),
+
     ],
     providers: [ShareService],
     bootstrap: [AppComponent]

@@ -11,7 +11,7 @@
                     <a class="qslyButton" [routerLink]="['/']" [queryParams]="{c: 'sports'}">Questionsly.com</a>
                 </h3>
             </div>
-            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form"> </feed-form-component>
+            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form" (submitted)="stopTimer($event)"> </feed-form-component>
             <div class="container" *ngIf="unavailable">
                 <h3>This survey is unavailable!</h3>
             </div>
@@ -19,57 +19,3 @@
 
     </div>
 </div>
-
-
-
-
-
-<!-- <div id="shareFormPage">
-    <div class="row">
-        <div class="col-md-2" id="leftSideOfContainer">
-        </div>
-        <div class="col-md-8"> -->
-
-
-<!-- 
-            <div id="takeFormContainer" class="container" *ngIf="!unavailable">
-                <div class="row">
-                    <div class="col-md-2" id="authorPicture">
-                    <a [routerLink]="authorlinkdisabled ? null : ['/profile', authorlink]">
-                        <div *ngIf="pictype == 'fb'">
-                            <img src="https://graph.facebook.com/{{pic}}/picture?width=80&height=80">
-                        </div>
-                        <div *ngIf="pictype == 'local'">
-                            <img [src]="pic" width="80" height="80"/>
-                        </div>
-                        <div *ngIf="pictype == 'default'">
-                            <img *ngIf="authorgender == 'male'" src="/images/male.png" height="80" width="80"/>
-                            <img *ngIf="authorgender == 'female'" src="/images/female.png" height="80" width="80"/>
-                        </div>
-                        <div *ngIf="pictype == 'anonymous'">
-                            <img src="/images/question.jpg" height="80" width="80"/>
-                        </div>
-                    </a>
-                    </div>
-
-                    <div class="col-md-10" id="authorDetails">
-                        <p><a [routerLink]="authorlinkdisabled ? null : ['/profile', authorlink]">{{author}}</a> on {{timestamp | date}}</p>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <show-form *ngIf="formdata && !unavailable" [data]="formdata" [showSubmit]="showsubmit" [submitted]="submitted" (submitForm)="postForm($event)"></show-form>
-                    </div>
-                </div>
-
-            </div> -->
-
-
-<!-- </div>
-        <div class="col-md-2" id="rightSideOfContainer">
-        </div>
-    </div>
-
-</div> -->

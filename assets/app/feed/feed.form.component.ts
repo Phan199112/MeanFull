@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { Http } from "@angular/http";
 import { FeedForm } from "./feed.form.model";
 import { FormArray, FormControl, FormGroup, FormBuilder, NgModel } from "@angular/forms";
@@ -19,8 +19,9 @@ export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
     @Input() pic: string;
     @Input() pictype: string;
+    @Output() submitted: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     dataselectionform : FormGroup;
-    submitted: boolean = false;
     showsubmit: boolean = false;
     submissionfailed: boolean = false;
     showdiscussion: boolean = false;
@@ -353,6 +354,7 @@ export class FeedFormComponent implements OnInit {
     }
 
     postForm(data) {
+        this.submitted.emit(true);
         data.id = this.form.id;
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {

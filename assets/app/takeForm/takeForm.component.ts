@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Http } from "@angular/http";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import { FeedForm } from "../feed/feed.form.model";
+
+import * as $ from 'jquery';
+
 
 @Component({
     selector: 'take-form',
@@ -25,18 +28,21 @@ export class TakeFormComponent implements OnInit {
     pic: string;
     pictype: string;
     timestamp: string;
+    startTime: any;
+    
 
     constructor(private http: Http, private route: ActivatedRoute, private router: Router) {
     }
     ngOnInit() {
         this.route.params.subscribe(params => {
             this.id = params.id;
-            window.mixpanel.track(this.id.toString()); //track users directed to questionsly via shared links
+
+            // window.mixpanel.track(this.id.toString()); //track users directed to questionsly via shared links
             this.http.get(`/forms/${params.id}`).toPromise()
                 .then(res => {
                     if (res.json().status == 1) {
                         this.formdata = res.json().formdata;
-                        window.mixpanel.track(this.formdata.questions[0].body+"\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008"+this.id); //track users directed to questionsly via shared links
+                        // window.mixpanel.track(this.formdata.questions[0].body+"\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008"+this.id); //track users directed to questionsly via shared links
                         this.authordata = res.json().authordata;
                         this.loggedin = res.json().loggedin;
                         this.showsubmit = false;
@@ -94,6 +100,9 @@ export class TakeFormComponent implements OnInit {
                 })
                 .catch(error => alert("Error retrieving form: " + error));
         })
+
+        this.startTime = new Date();
+
     }
 
     postForm(data) {
@@ -128,4 +137,21 @@ export class TakeFormComponent implements OnInit {
                 this.showsubmit = false;
             });
     }
+
+    stopTimer(val: boolean) {
+        if (val) {
+            // stop timer
+            var stopTime = new Date();
+
+            var elapsedTime = (stopTime.getDate() - this.startTime.getDate())/1000;
+            // window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + ` ${elapsedTime}s `); //track users directed to questionsly via shared links
+
+            // window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + ` ${elapsedTime}s `); //track users directed to questionsly via shared links
+
+        }
+    }
 }
+
+// function callTrack(str) {
+//     window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + ` ${elapsedTime}s `); //track users directed to questionsly via shared links
+// }
