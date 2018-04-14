@@ -53,7 +53,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     typeView: string;
     kind: string = null;
     questionData: Array<Object> = [];
-    sortedQuestions: Observable<Array<Object>>;
+    // sortedQuestions: Observable<Array<Object>>;
     question: any = null;
     edit: boolean = false;
     activeQuestion: string;
@@ -75,13 +75,10 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     categorySettings: Object;
 
 
-    
-     
-
     constructor(
         private fb: FormBuilder,
-        private http: Http, 
-        private formService: FormService, 
+        private http: Http,
+        private formService: FormService,
         private router: Router,
         private route: ActivatedRoute,
         private dragulaService: DragulaService,
@@ -118,10 +115,10 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             // this.typeevent = !!params.event;
 
             this.createForm();
-        });       
+        });
 
         //checks user is logged in
-        this.userService.afterLoginCheck().then(userData => {  
+        this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
                 this.reject = false;
             } else {
@@ -155,7 +152,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             limitSelection: 4,
             enableSearchFilter: true,
             enableCheckAll: false
-        };    
+        };
     }
 
     ngOnDestroy() {
@@ -188,7 +185,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             this.typeevent = prevData.typeevent;
         }
 
-        
+
         this.timePickerConfig = {
             enableTime: true,
             noCalendar: true,
@@ -219,7 +216,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             typeevent: this.typeevent,
             questions: this.fb.array([])
         });
-        
+
         if (this.edit) {
             let data = this.formService.getData();
             console.log(data);
@@ -276,7 +273,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     //     let questions = this.questionnaire.controls.questions;
 
     //     //Create form group for individual question
-        
+
     //     questions.push(question);
     //     this.questionsSubmitted++;
     //     this.questionnaire.wasChecked = false;
@@ -400,7 +397,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             value = value.substring(1);
         }
         return Observable.of({
-            display: `#${value}`, 
+            display: `#${value}`,
             value: value
         });
     }
@@ -596,7 +593,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         let data = this.questionnaire.getRawValue();
 
         data.questions = this.questionData;
-        
+
 
         for (let i=0; i < data.questions.length; i++) {
             if (this.kindsWithOptions.indexOf(data.questions[i].kind) !== -1) {
@@ -605,13 +602,13 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        
+
         for (let tagField of ['hashtags', 'sharedWith']) {
             if (data[tagField]) {
                 data[tagField] = data[tagField].map(tag => tag.value ? tag.value : tag);
             }
         }
-        
+
         return data;
     }
 
@@ -719,7 +716,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             // window.console.log("failed", last, this.questionData);
             this.questionData[i].required = !this.questionData[i].required;
         }
-        
+
     }
 
     toggleAuthor(anonymous: string) {
@@ -762,5 +759,3 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
 }
-
-
