@@ -40,12 +40,12 @@
             
                             <div *ngIf="networkNotifications.length > 0">
                               
-                                <div style="display: flex; justify-content: space-between; padding: auto 8px;" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': true}">
+                                <div class="notifTextCont" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': true}">
                                     <p class="notifLabel">Friend Requests</p>
-                                    <p class="notifLabel">Mark all as read</p>
+                                    <p class="notifLabel markAll" (click)="markAllRead()">Mark all as read</p>
                                 </div>
 
-                                <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p>
+                                <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p> -->
                                 <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p> -->
                                 <div *ngFor="let notification of networkNotifications.reverse(); let i = index">
                                     <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
@@ -67,9 +67,9 @@
             
             
                             <div *ngIf="communityNotifications.length > 0">
-                                <div style="display: flex; justify-content: space-between; padding: auto 8px;" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': networkNotifications.length == 0}">
+                                <div class="notifTextCont" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': networkNotifications.length == 0}">
                                     <p class="notifLabel">Community Requests</p>
-                                    <p class="notifLabel">Mark all as read</p>
+                                    <p class="notifLabel markAll" [ngClass]="{'notVisible': networkNotifications.length != 0}" (click)="markAllRead()">Mark all as read</p>
                                 </div>
 
                                 <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p> -->
@@ -96,9 +96,9 @@
                                 </div>
                             </div>
                             
-                            <div style="display: flex; justify-content: space-between; padding: auto 8px;" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">
+                            <div class="notifTextCont" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">
                                 <p class="notifLabel">Activity</p>
-                                <p class="notifLabel">Mark all as read</p>
+                                <p class="notifLabel markAll" [ngClass]="{'notVisible': communityNotifications.length != 0 || networkNotifications.length != 0}" (click)="markAllRead()">Mark all as read</p>
                             </div>
                             <!-- <p class="notifLabel" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p> -->
                             <p class="noNotifications" *ngIf='communityNotifications.length == 0 && networkNotifications.length == 0 && notifications.length === 0'>No Notifications</p>

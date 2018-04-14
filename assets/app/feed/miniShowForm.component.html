@@ -1,4 +1,3 @@
-<!-- <div class="container"> -->
     <form [formGroup]="questionnaire">
         <div formArrayName="questions">
                 <div class="row miniFormQuestionBox" [ngClass]="{noBotMargin: i == 0 && data.contracted}" style="display:flex; align-items: center;" *ngFor="let question of data.questions; let i = index">
@@ -61,7 +60,7 @@
                                 <pie-chart [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
                             </div>
                             <div *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" style="display: flex; width: 100%; justify-content: center">
-                                <a class="submitButton" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Apply Filters'}}</a>
+                                <a class="submitButton smaller" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Apply Filters'}}</a>
                             </div>
                        
                        
@@ -126,12 +125,12 @@
         <div class="flex submitBox"  *ngIf="!data.contracted && !submitted">
             <button *ngIf="showSubmit" class="submitButton"
                 [disabled]="questionnaire.invalid && questionnaire.wasChecked" (click)="checkSubmit($event)">
-                Finish
+                Submit
             </button>
             <p *ngIf="errorText">Submission failed!</p>
             <p *ngIf="expired" class="errorText">The survey has expired, no further answers are allowed!</p>
         </div>
 
 </form>
-<!-- </div> -->
+
 <login-popup #loginPopup></login-popup>

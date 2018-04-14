@@ -287,7 +287,19 @@ img {
     padding: 5px 10px;
     font-size: .75rem;
     font-family: Karla;
+
+    &.markAll {
+      &:hover {
+        cursor: pointer;
+        font-weight: 700;
+      }
+    }
   }
+
+}
+
+.notVisible {
+  visibility: hidden;
 }
 
 .noTopBorder {
@@ -301,6 +313,7 @@ img {
     cursor: pointer;
   }
 }
+
 
 .acceptButton {
     background: $primaryColor;

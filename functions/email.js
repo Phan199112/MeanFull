@@ -79,14 +79,18 @@ exports.sendNewPassword = function sendNewPassword(email, pw) {
 
 
 exports.sendNotificationFriendRequest = function sendNotificationFriendRequest(email, user) {
-    var name = getUserDisplayName(user);
-    var messagesafe = "Hello! " + name + " requested you to connect. Please review the notifications page to review your pending network requests. https://www.questionsly.com/settings;page=notifications";
-    var subject = "New network request from Questionsly";
+    var messagesafe = "Hello! ... requested you to connect. Please review the notifications page to review your pending network requests. https://www.questionsly.com/settings;page=notifications";
+    var subject = "New Friend Requests on Questionsly";
+    var gender = user.gender === 'male' ? "his" : "her";
+    var dateString = new Date();
+    dateString = dateString.toDateString();
     
     renderTemplate("notification-friend-request", {
         subject: subject, 
-        friendName: name,
+        friendName: getUserDisplayName(user),
         pic: getUserPic(user),
+        gender: gender,
+        date: dateString,
         link: "https://www.questionsly.com/settings;page=notifications"
     }).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
@@ -173,6 +177,8 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
     var dateString = new Date();
     dateString = dateString.toDateString();
+
+    console.log("User:", user, "pic:", getUserPic(user));
 
     renderTemplate("notification-survey-activity", {
         subject: subject,

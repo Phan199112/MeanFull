@@ -417,4 +417,27 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
+    markAllRead() {
+        this.http.post(`/events/markAllRead`, {}).toPromise()
+            .then(() => {
+               
+                this.notifications.forEach((x) => {
+                    x.seen = true;
+                })
+
+                this.networkNotifications.forEach((x) => {
+                    x.seen = true;
+                })
+
+                this.communityNotifications.forEach((x) => {
+                    x.seen = true;
+                })
+
+                this.unreadNotifications = 0;
+
+            })
+            .catch(error => alert("Error: " + error));
+
+    }
+
 }

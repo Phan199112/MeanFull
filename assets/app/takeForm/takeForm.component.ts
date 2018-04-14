@@ -43,6 +43,8 @@ export class TakeFormComponent implements OnInit {
                         this.unavailable = false;
                         this.timestamp = this.formdata.timestamp;
 
+                        console.log("fdata", this.formdata);
+
                         if (this.authordata.anonymous == false) {
                             this.author = this.authordata.name;
                             this.authorlink = this.authordata.link;

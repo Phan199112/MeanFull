@@ -208,6 +208,24 @@ module.exports = function (app, passport, manager, hashids) {
         });
     });
 
+    app.post('/events/markAllRead', manager.ensureLoggedIn('/users/login'), function (req, res) {
+        // event id
+        var eventid = hashids.decodeHex(req.body.id);
+
+        var criteria = {
+            userid: req.session.userid
+        }
+        EventModel.update(criteria, { seen: true }, { multi: true }, function (err) {
+            if (err) {
+                console.log("5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,,5,5,5");
+                res.json({ status: 0 });
+            } else {
+                console.log("8=8=8=8=8=8=8=8=8=8==8=8=8=8=8=8=8=8=8==8=8");
+                res.json({ status: 1 });
+            }
+        });
+    });
+
     app.post('/events/delete', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // event id
         var eventid = hashids.decodeHex(req.body.id);
