@@ -68,6 +68,11 @@ module.exports = function (app, passport, manager, hashids) {
                                     if (err) {
                                         reject(err);
                                     } else {
+                                        if (!userinfo) {
+                                            console.log("NOTIFICATION BREAKING THIS DOWN: ", event._id);
+                                            resolve();
+                                        }
+                                        
                                         eventdata.fromuser = {
                                             fb: userinfo.facebookID,
                                             pic: userinfo.pic,

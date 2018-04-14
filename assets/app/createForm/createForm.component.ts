@@ -74,6 +74,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
     categoryList: Array<Object>;
     categorySettings: Object;
+    updateData: any = null;
 
 
     constructor(
@@ -300,7 +301,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         var type = this.questionData[i].kind;
         console.log("Edit question", type, this.questionData[i]);
 
+        this.updateData = this.questionData[i];
+
+        
+
         this.toggleView(type);
+        this.questionnaire.get('kind').setValue(type);
 
     }
 

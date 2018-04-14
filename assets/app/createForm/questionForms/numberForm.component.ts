@@ -20,6 +20,7 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 export class NumberQuestionForm implements OnInit {
     @Input() questionType: string;
     @Input() qLength: number;
+    @Input() updateData: any;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     question: FormGroup;
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
