@@ -7,6 +7,7 @@ import { PopupShareComponent } from '../popup/popup.share.component';
 import { PopupService } from "../popup.service";
 import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { ENGINE_METHOD_DIGESTS } from "constants";
 
 @Component({
     selector: 'feed-form-component',
@@ -113,13 +114,25 @@ export class FeedFormComponent implements OnInit {
             .then(res => {
 
                 if (res) {
-                    // counts
+
                     this.userData = res.json();
-                    this.location = this.userData.userprofile.location || { city: "NA", state: "NA", country: "NA" };
-                    this.name = this.userData.userprofile.name || "";
-                    this.nocreated = this.userData.userprofile.nocreated || 0;
-                    this.nodiscussion = this.userData.userprofile.nodiscussion || 0;
-                    this.notaken = this.userData.userprofile.notaken || 0;
+                    
+                    // anonymous
+                    if (this.userData.status == 0) {
+                        this.location = { city: "", state: "", country: "" };
+                        this.name = {first:"Anonymous", last: ""};
+                        this.nocreated = 100;
+                        this.nodiscussion = 100;
+                        this.notaken = 100;
+                    } else {
+                        // User
+                        this.location = this.userData.userprofile.location || { city: "NA", state: "NA", country: "NA" };
+                        this.name = this.userData.userprofile.name || "";
+                        this.nocreated = this.userData.userprofile.nocreated || 0;
+                        this.nodiscussion = this.userData.userprofile.nodiscussion || 0;
+                        this.notaken = this.userData.userprofile.notaken || 0;
+                    }
+
                 }
             });
 
