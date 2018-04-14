@@ -25,6 +25,7 @@ export class DiscussionListComponent implements OnInit {
     @Input() id: string;
     @Input() pic: string;
     @Input() pictype: string;
+    @Input() loggedin: boolean;
 
     constructor(private fb: FormBuilder, private http: Http) {
     }

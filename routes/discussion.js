@@ -152,6 +152,8 @@ module.exports = function(app, passport, manager, hashids) {
                 res.json({status: 0});
             }
         });
+        // Update users stats
+        usersfunctions.decrementNoDiscussion(req.session.userid);
     });
 
     app.post('/discussions/list', manager.ensureLoggedIn('/users/login'), function (req, res, next) {

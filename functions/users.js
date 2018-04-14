@@ -21,37 +21,57 @@ exports.profilePublic  = function profilePublic(x) {
 exports.incrementNoTaken = function incrementNoTaken(userid) {
         UserModel.findByIdAndUpdate(userid, {$inc: {notaken:1}}, function (err, data) {
             if (err) {
-                //
+                return false;
             } else {
                 //
             }
         });
 };
 
-exports.incrementNoCreated = function incrementNoTaken(userid) {
+exports.decrementNoTaken = function decrementNoTaken(userid) {
+        UserModel.findByIdAndUpdate(userid, {$inc: {notaken:-1}}, function (err, data) {
+            if (err) {
+                return false;
+            } else {
+                //
+            }
+        });
+};
+
+exports.incrementNoCreated = function incrementNoCreated(userid) {
     UserModel.findByIdAndUpdate(userid, {$inc: {nocreated:1}}, function (err, data) {
         if (err) {
-            //
+            return false;
         } else {
             //
         }
     });
 };
 
-exports.decrementNoCreated = function decrementNoTaken(userid) {
+exports.decrementNoCreated = function decrementNoCreated(userid) {
         UserModel.findByIdAndUpdate(userid, {$inc: {nocreated:-1}}, function (err, data) {
             if (err) {
-                //
+                return false;
             } else {
                 //
             }
         });
 };
 
-exports.incrementNoDiscussion = function incrementNoTaken(userid) {
+exports.incrementNoDiscussion = function incrementNoDiscussion(userid) {
         UserModel.findByIdAndUpdate(userid, {$inc: {nodiscussion:1}}, function (err, data) {
             if (err) {
+                return false;
+            } else {
                 //
+            }
+        });
+};
+
+exports.decrementNoDiscussion = function decrementNoDiscussion(userid) {
+        UserModel.findByIdAndUpdate(userid, {$inc: {nodiscussion:-1}}, function (err, data) {
+            if (err) {
+                return false;
             } else {
                 //
             }

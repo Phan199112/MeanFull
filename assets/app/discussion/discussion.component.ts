@@ -28,13 +28,13 @@ export class DiscussionComponent {
                     window.scrollBy(0, -63.5);
                 }, 500);
             }
-        }); 
+        });
 
         this.firstName = this.data.author.name.split(' ')[0];
     }
 
     deleteMessage() {
-        // post and get response           
+        // post and get response
         this.http.post('/discussions/delete', {id: this.data.id})
             .toPromise()
             .then(response => {

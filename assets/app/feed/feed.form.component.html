@@ -36,7 +36,7 @@
             <span class="cTag" *ngFor="let tag of form.hashtags; let i = index">{{tag}}</span>
         </div>
     </div>
-    
+
     <div class="share">
         <div class="col p-0" *ngIf="loggedin">
             <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" id="form-menu-wrapper">
@@ -76,7 +76,7 @@
                 <span class="emoText">Really?!</span>
             </div>
         </div> -->
-        
+
         <div id="completedBlock" *ngIf="submitted">
             <!-- <span id="qCompleted">Completed</span> -->
             <span id="answerCount">Answered {{count ? count : '<5'}} {{count > 1 ? 'Times' : 'Time'}}</span>
@@ -89,25 +89,25 @@
     </div> -->
 
 
-    
+
     <!-- QUESTIONS CONTAINER -->
     <div class="responseBox">
         <mini-show-form class="maxWidthOfParent" [count]="count" [data]="form" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
             [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" (toggleFilters)="toggleFilters($event)" *ngIf="form.questions != null"></mini-show-form>
     </div>
-        
-    
+
+
     <!-- Graph Filters -->
     <form *ngIf="showFilter && form.answered && !form.contracted && showdiscussion && !form.typeevent" [formGroup]="dataselectionform" style="margin-bottom: 0px; padding-bottom: 10px;">
         <div id="analysisContainer">
-            
+
             <div class="filterBox">
                 <p class="filterCategory">Gender</p>
                 <angular2-multiselect style="width: 110px" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" formControlName="gender">
                 </angular2-multiselect>
             </div>
-           
+
             <div class="filterBox">
                 <p class="filterCategory">Age</p>
                 <angular2-multiselect style="width: 110px" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
@@ -115,7 +115,7 @@
                     formControlName="age">
                 </angular2-multiselect>
             </div>
-            
+
             <div class="filterBox">
                 <p class="filterCategory">Location</p>
                 <angular2-multiselect style="width: 160px" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
@@ -124,7 +124,7 @@
                 </angular2-multiselect>
             </div>
 
-    
+
             <!--<a class="resetButton filterCategory">Reset</a>-->
             <!-- <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">Reset graphs</button> -->
         </div>
@@ -132,7 +132,7 @@
             <span class="partTitle" style="color: #CCC">*Unknown = Responses made without an account</span>
         </div>
     </form>
-    
+
 
     <!-- End Graph Filters -->
 
@@ -157,7 +157,7 @@
 
 
 
-<discussion-list [pic]="pic" [pictype]="pictype" [form]='form' [id]="form.id"></discussion-list>
+<discussion-list [loggedin]="loggedin" [pic]="pic" [pictype]="pictype" [form]='form' [id]="form.id"></discussion-list>
 
 
 
@@ -168,7 +168,7 @@
 <ng-template #shareModal let-c="close" let-d="dismiss">
     <!--<div class="modal-header" [formGroup]="inviteForm">
         <h4 class="modal-title">Invite your friends to this community</h4>
-                        <yourcomm-list [link]="form.id"></yourcomm-list> 
+                        <yourcomm-list [link]="form.id"></yourcomm-list>
     </div>-->
     <div class="shareContainer">
         <!-- <div class="row">
@@ -191,10 +191,10 @@
             <div *ngIf="loggedin">
                 <h6 style="font-family:karla; font-weight:bold; color: #CCC;">Community</h6>
 
-                <yourcomm-list [link]="form.id"></yourcomm-list> 
+                <yourcomm-list [link]="form.id"></yourcomm-list>
 
             </div>
-            
+
         <!-- </div> -->
     </div>
     <!--<div class="modal-footer" style="justify-content: center">
