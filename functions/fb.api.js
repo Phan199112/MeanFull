@@ -7,7 +7,7 @@ exports.FBLocation = function FBLocation(locid) {
         return new Promise(function(resolve, reject) {
             FB.api('oauth/access_token', {
                 client_id: '669514259923041',
-                client_secret: '5c8625d2b8d7a5edd938725ab0490e86',
+                client_secret: 'd8b44aeaa9a26c211c7605049fe45e93',
                 grant_type: 'client_credentials'
             }, function (res) {
                 if (!res || res.error) {
