@@ -19,7 +19,7 @@ export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
     @Input() pic: string;
     @Input() pictype: string;
-    @Output() submitted: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() emitSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     dataselectionform : FormGroup;
     showsubmit: boolean = false;
@@ -33,6 +33,7 @@ export class FeedFormComponent implements OnInit {
     nocreated :any;
     notaken :any;
     nodiscussion : any;
+    submitted: boolean = false;
     location: any;
     showFilter: boolean = false;
 
@@ -354,7 +355,7 @@ export class FeedFormComponent implements OnInit {
     }
 
     postForm(data) {
-        this.submitted.emit(true);
+        this.emitSubmitted.emit(true);
         data.id = this.form.id;
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
