@@ -2,28 +2,9 @@
     <div class="pageLayout">
          <div class="row" >
            
-            <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
-                <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
-            </div>
-        
-        
-<!--            
-            <div class="col-md-3 order-2 order-sm-1" id="leftSideOfContainer">
-                <div class="row">
-                    <community-list class="col-12 order-2 order-sm-2" [user]="id" *ngIf="!hidetags"></community-list>                
-                    <network-list class="col-12 order-1 order-sm-1" [data]="network" [user]="id" *ngIf="!hidetags && network.length != 0"></network-list>
-                    <div class="col-12 d-md-none order-3">
-                        <div class="container">
-                            <div *ngIf="status == '2'"><h6>{{name}} has a private profile. Only individuals in {{pronoun}} network can see further details. </h6></div>
-                            <feed-list class="row" [user]="id" *ngIf="!hidefeed"></feed-list>
-                        </div>
-                    </div>   
-                    <tag-list class="col-12 order-4 order-sm-3" [user]="id" [comm]="null" *ngIf="!hidetags"></tag-list>
-                </div>
-            </div> -->
-
-
-
+        <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
+            <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
+        </div>
 
         <div class="col-md-6 col-12 order-1 order-md-2">
             <div id="profileContainer" *ngIf="loadsuccessful">

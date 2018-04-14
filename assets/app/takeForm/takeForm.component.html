@@ -6,8 +6,8 @@
         </div>
 
         <div class="col-md-6 order-1 order-sm-2 mtop">
-            <div *ngIf="form && !form.answered" style="margin-bottom: 20px;">
-                <h3 class="thanksText">Thanks for your response. Check us out at
+            <div *ngIf="form && form.answered" style="margin-bottom: 20px;">
+                <h3 class="thanksText">Thanks for your response. Please check us out!
                     <a class="qslyButton" [routerLink]="['/']" [queryParams]="{c: 'sports'}">Questionsly.com</a>
                 </h3>
             </div>

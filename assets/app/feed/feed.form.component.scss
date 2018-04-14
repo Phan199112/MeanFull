@@ -489,7 +489,7 @@ hr {
 .commentText {
   font-family: Karla;
   font-size: .9rem;
-  color: darken($primaryColor, 20);
+  color: #999;
   background: lighten($commentBackground, 5);
   border-radius: 8px;
   padding: 4px 6px;
@@ -510,6 +510,8 @@ hr {
     border: none;
     border-bottom: solid 1px $primaryColor;
     width: 100%;
+    color: #999;
+    font-size: .8rem;
 }
 
 .submitButton {

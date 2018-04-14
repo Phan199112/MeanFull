@@ -58,7 +58,7 @@ $borderColor: rgb(226,226,226);
 .thanksText {
     text-align: center;
     color: #999;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-family: Karla;
     margin-top: 25px;
 
@@ -79,6 +79,7 @@ $borderColor: rgb(226,226,226);
     border: none;
     animation: 1500ms ease-in-out 0s infinite alternate qBut;
 
+    text-decoration: none;
     font-size: 1.2rem;
     font-family: Karla;
     color: #FFF !important;

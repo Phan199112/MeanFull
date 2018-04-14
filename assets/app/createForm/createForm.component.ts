@@ -95,7 +95,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.typeView = view;
     }
 
-    pushQuestionToList(res: object) {
+    pushQuestionToList(res: Object) {
         if (res.kind === "Rating") {
             let size = Number(res.scale);
             res.temp = Array(size);
@@ -171,7 +171,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     getSortedQuestions() {
-
         let sArr = this.questionData.sort((a,b) => a.number > b.number));
         return sArr;
     }

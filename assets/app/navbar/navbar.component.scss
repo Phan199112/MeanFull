@@ -274,14 +274,24 @@ img {
   margin: 10px 0px;
 }
 
-.notifLabel {
-  margin: 0;
-  padding: 5px 10px;
-  font-size: .75rem;
-  font-family: Karla;
+.notifTextCont {
   border: 1px solid #FFFFFF;
   border-top: 1px solid $borderColor;
   border-bottom: 1px solid $borderColor;
+  display: flex; 
+  justify-content: space-between; 
+  padding: auto 8px;
+
+  .notifLabel {
+    margin: 0;
+    padding: 5px 10px;
+    font-size: .75rem;
+    font-family: Karla;
+  }
+}
+
+.noTopBorder {
+  border-top: none;
 }
 
 .showMoreLabel {
@@ -336,10 +346,6 @@ img {
         color: #2b2b2b !important;
         border: solid 1px #2b2b2b;
     }
-}
-
-.noTopBorder {
-  border-top: none;
 }
 
 .rightNavList {

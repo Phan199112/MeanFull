@@ -64,42 +64,6 @@
 </div>
 
 
-<!-- <div *ngIf="context === 'feed'" class="mainContainer">
-    <div class="sContainer">
-        <h3 class="lpText">Discover People</h3>
-        <div *ngIf="networklist.length != 0" class="peopleContainer">
-            <div *ngFor="let o of amountArray; let p = index">
-                <user-image [data]="networklist[p]"> </user-image>
-            </div>
-        </div>
-        <div *ngIf="networklist.length == 0" class="peopleContainer">
-            <div *ngFor="let o of amountArray; let p = index">
-                <user-image [data]="users[p]"> </user-image>
-            </div>
-        </div>
-    </div>
-
-    <div class="sContainer comPadding">
-        <h3 class="lpText">Discover Communities</h3>
-        <div *ngIf="communitylist.length != 0" class="peopleContainer">
-            <div *ngFor="let o of amountArray; let p = index">
-                <community-image [data]="communitylist[p]"> </community-image>
-            </div>
-        </div>
-        <div *ngIf="communitylist.length == 0" class="peopleContainer">
-            <div *ngFor="let o of amountArray; let p = index">
-                <community-image [data]="randomlistdata[p]"> </community-image>
-            </div>
-        </div>
-        <a class="submitButton" [routerLink]="['/createCommunity']">Create Community</a>
-    </div>
-</div>
-
- -->
-
-
-
-
 <div *ngIf="context === 'community'">
     <div class="sContainer">
         <h6 class="lpText small">Members</h6>

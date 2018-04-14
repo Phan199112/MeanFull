@@ -21,9 +21,12 @@
             <div class="userInfoBox">
                 <p class="nameTitle" style="margin-bottom:3px"><b>{{name.first}} {{name.last}}</b></p>
                 <p class="locationTitle" style="margin-bottom:0px">{{location.city}}, {{location.state}}, {{location.country}}</p>
-                <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated}}</span></i>
+                <!-- <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated}}</span></i>
                 <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken}}</span></i>
-                <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i>
+                <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i> -->
+                <span class="partTitle">Created: {{nocreated}}</span>
+                <span class="partTitle">Taken: {{notaken}}</span>
+                <span class="partTitle">Commented: {{nodiscussion}}</span>
             </div>
 
         </div>

@@ -9,9 +9,25 @@ import { RouterModule, Routes } from '@angular/router';
 
 export class CommunityImageComponent implements OnInit {
     @Input() data: Object;
-    title: Array<string>;
+    title: string = "";
 
     ngOnInit() {
         this.title  = this.data.title;
+        this.cropTitle();
+    }
+
+
+    cropTitle() {
+        var index = 0;
+        for (let i=0; i<3; i++) {
+            index = this.title.indexOf(" ", index + 1);
+            if (index === -1) {
+                return;
+            }
+        }
+
+        if (index !== -1) {
+            this.title = this.title.substr(0,index) + "...";
+        }
     }
 }
