@@ -30,6 +30,7 @@ export class TakeFormComponent implements OnInit {
     }
 
     ngOnInit() {
+        window.mixpanel.track(this.id);
         this.route.params.subscribe(params => {
             this.id = params.id;
             this.http.get(`/forms/${params.id}`).toPromise()
