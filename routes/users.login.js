@@ -44,8 +44,8 @@ module.exports = function(app, passport, manager, hashids) {
     //   credentials (in this case, an OpenID identifier and profile), and invoke a
     //   callback with a user object.
     passport.use(new GoogleStrategy({
-        returnURL: 'http://localhost:3000/auth/google/return',
-        realm: 'http://localhost:3000/'
+        returnURL: 'http://www.questionsly.com/auth/google/return',
+        realm: 'http://www.questionsly.com'
       },
     function(identifier, profile, done) {
         // asynchronous verification, for effect...
