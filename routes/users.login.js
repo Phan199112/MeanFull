@@ -1,4 +1,5 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var UserModel = require('../db.models/user.model');
 var CommunityModel = require('../db.models/community.model');
