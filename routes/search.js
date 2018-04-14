@@ -81,7 +81,7 @@ module.exports = function(app, passport, manager, hashids) {
                     // loop the change format
                     var output = [];
                     for (var i = 0; i < words.length; i++) {
-                        output.push({display: words[i].word, value: hashids.encodeHex(words[i].data[0])});
+                        output.push({display: words[i].word+' ('+words[i].data[0]+')', value: words[i].word});
                     }
                     res.json({status: 1, results: output});
                 }
