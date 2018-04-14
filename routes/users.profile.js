@@ -54,7 +54,7 @@ module.exports = function(app, passport, manager, hashids) {
                             } else {
                                 if (user) {
                                     yourfriendsdata.push({
-                                        name: user.name.first+" "+user.name.last, 
+                                        name: user.name.first+" "+user.name.last,
                                         id: hashids.encodeHex(user._id),
                                         fb: user.facebookID,
                                         pic: user.pic,
@@ -194,9 +194,13 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     // individual profile
-    app.get('/users/profile/:id', function(req, res, next) {
+    app.post('/users/profile/:id', function(req, res, next) {
 
         var userdbid = hashids.decodeHex(req.params.id);
+        var load_full = true;
+        if (req.body.slim) {
+            load_full = false;
+        }
 
         // temp storage
         var userdata = [];
@@ -219,6 +223,7 @@ module.exports = function(app, passport, manager, hashids) {
                     if (err) {
                         reject(err);
                     } else {
+                        debugger;
                         if (userinfo == null) {
                             status = 0;
                             reject("not found");
@@ -370,7 +375,127 @@ module.exports = function(app, passport, manager, hashids) {
 
         // push promises to array
         promiseslist.push(tempfunctionUser());
-        promiseslist.push(tempfunctionNetworkEdges());
+        if (load_full) {
+            promiseslist.push(tempfunctionNetworkEdges());
+        }
+
+        return Promise.all(promiseslist).then(function () {
+            // merge some data
+            if (innetworktemp.found === true && innetworktemp.status === true) {
+                userdata.innetwork = true;
+            } else if (innetworktemp.found === true && innetworktemp.status === false && me === false) {
+                userdata.pending = true;
+            } else {
+                userdata.innetwork = false;
+                userdata.pending = false;
+            }
+
+            if (status === 2) {
+                // we need to do some checks first to see whether
+                if (innetworktemp.status === true) {
+                    // send back
+                    res.json({status: 1, loggedin: loggedin, userprofile: userdata, network: networkdata});
+
+                } else {
+                    // so the visitor is not connected.
+                    // we should only desplay a basic profile
+                    // no feed
+                    // no communities
+                    // no friend list
+                    res.json({status: 2, loggedin: loggedin, userprofile: userdata, network: null});
+
+                }
+
+            } else if (status === 1) {
+                // send back
+                res.json({status: status, loggedin: loggedin, userprofile: userdata, network: networkdata});
+
+            } else if (status === 0) {
+                res.json({status: 0});
+
+            } else {
+                res.json({status: 0});
+            }
+        });
+
+
+    });
+
+    // individual profile
+    app.get('/users/profile_slim/:id', function(req, res, next) {
+
+        var userdbid = hashids.decodeHex(req.params.id);
+
+        // temp storage
+        var userdata = [];
+        var memberlisttemp = [];
+        var networkdata = [];
+        var networkpromise = [];
+        var promiseslist = [];
+        var networkdatatemp = [];
+        var status = 0;
+        var nocreated = 0;
+        var notaken = 0;
+        var nodiscussion = 0;
+        var me = false;
+        var loggedin = req.isAuthenticated();
+        var innetworktemp = {status: false, found: false};
+
+        var tempfunctionUser = function() {
+            return new Promise(function(resolve, reject){
+                UserModel.findById(userdbid, function (err, userinfo) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        debugger;
+                        if (userinfo == null) {
+                            status = 0;
+                            reject("not found");
+                        } else {
+                            // check whether it is me
+                            if (loggedin === true) {
+                                if (req.session.userid == userdbid) {
+                                    me = true;
+                                }
+                            }
+                            // conditional
+                            if (me === true) {
+                                status = 1;
+                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
+                                    facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
+                                    pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
+                                    nodiscussion: userinfo.nodiscussion};
+                                resolve();
+
+                            } else if (userinfo.public === true) {
+                                status = 1;
+                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
+                                    facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
+                                    pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
+                                    nodiscussion: userinfo.nodiscussion};
+                                resolve();
+
+                            } else {
+                                // test whether or not you're a friend
+                                // we'll do this later, in the NetworkEdges function
+                                userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
+                                    facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
+                                    pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
+                                    nodiscussion: userinfo.nodiscussion};
+                                status = 2;
+                                resolve();
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(function () {
+                console.log("error query user")
+            });
+        };
+
+        // push promises to array
+        promiseslist.push(tempfunctionUser());
 
         return Promise.all(promiseslist).then(function () {
             // merge some data
