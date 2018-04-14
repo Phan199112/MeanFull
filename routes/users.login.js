@@ -172,6 +172,12 @@ module.exports = function(app, passport, manager, hashids) {
     app.get('/users/login/facebook',
         passport.authenticate('facebook', { scope: ['public_profile', 'email', 'user_birthday', 'user_location']}));
 
+    app.get('/auth/google/return', 
+        passport.authenticate('google', { failureRedirect: '/login' }),
+        function(req, res) {
+           res.redirect('/');
+         });
+    
     app.get('/users/login/facebook/return',
         passport.authenticate('facebook', { failureRedirect: '/users/login' }),
         function(req, res) {
