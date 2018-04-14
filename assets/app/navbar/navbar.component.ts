@@ -356,13 +356,22 @@ export class NavbarComponent implements OnInit {
         // this.http.post(`/users/settings/deletenetworkrequest`, { edgeid: x, eventid: y }).toPromise()
         //     .then(() => {
 
-                this.http.post(`/events/delete`, { id: y }).toPromise()
-                    .then(() => {
-                        let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
-                        this.networkNotifications.splice(ind, 1);
-                })
+        this.http.post(`/events/delete`, { id: y }).toPromise()
+            .then(() => {
+                let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
+                this.networkNotifications.splice(ind, 1);
+            })
 
             // })
+            .catch(error => alert("Error: " + error));
+
+        this.http.post(`/events/delete`, { id: y }).toPromise()
+            .then(() => {
+                let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
+                this.networkNotifications.splice(ind, 1);
+        })
+
+        // })
             .catch(error => alert("Error: " + error));
     }
 
