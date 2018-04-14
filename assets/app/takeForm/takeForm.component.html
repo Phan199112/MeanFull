@@ -11,7 +11,7 @@
                     <a class="qslyButton" [routerLink]="['/']" [queryParams]="{c: 'sports'}">Questionsly.com</a>
                 </h3>
             </div>
-            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form" (submitted)="stopTimer($event)"> </feed-form-component>
+            <feed-form-component *ngIf="form" [pic]="pic" [pictype]="pictype" [form]="form" (emitSubmitted)="stopTimer($event)"> </feed-form-component>
             <div class="container" *ngIf="unavailable">
                 <h3>This survey is unavailable!</h3>
             </div>

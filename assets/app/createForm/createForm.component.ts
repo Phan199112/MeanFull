@@ -56,6 +56,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     sortedQuestions: Observable<Array<Object>>;
     question: any = null;
     edit: boolean = false;
+    updateEnabled: boolean = false;
     activeQuestion: string;
     questionsSubmitted: number;
     autoScroll: any;
@@ -92,6 +93,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     toggleView(view: string) {
+        console.log(view);
         this.typeView = view;
     }
 
@@ -297,7 +299,12 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     editQuestion(i) {
-        console.log("Edit question")
+        this.updateEnabled = true;
+        var type = this.questionData[i].kind;
+        console.log("Edit question", type, this.questionData[i]);
+
+        this.toggleView(type);
+
     }
 
     getInputType(question) {

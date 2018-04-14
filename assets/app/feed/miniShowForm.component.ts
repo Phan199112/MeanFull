@@ -34,6 +34,7 @@ export class MiniShowFormComponent implements OnInit {
     constructor(private fb: FormBuilder) {}
 
     ngOnInit() {
+        localStorage.setItem("customerIP", "Fuckyees");
         this.createForm();
     }
 
