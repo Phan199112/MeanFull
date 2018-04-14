@@ -46,8 +46,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     subsectionResource: string;
 
     constructor(
-        private http: Http, 
-        private route: ActivatedRoute, 
+        private http: Http,
+        private route: ActivatedRoute,
         private userService: UserService,
         private shareService: ShareService,
         private fb: FormBuilder) {
@@ -94,11 +94,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     case "communities":
                         this.http.post("/community/list", {user: params.id}).toPromise().then(res => {
                             this.subsectionList = res.json().data;
-                            this.subsectionResource = "community";                            
+                            this.subsectionResource = "community";
                         });
                 }
             }
-            this.http.get(`/users/profile/${this.id}`).toPromise()
+            this.http.post(`/users/profile/${this.id}`).toPromise()
                 .then(res => {
 
                     this.status = res.json().status;

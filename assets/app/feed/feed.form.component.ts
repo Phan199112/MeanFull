@@ -31,7 +31,7 @@ export class FeedFormComponent implements OnInit {
     nocreated :any;
     notaken :any;
     nodiscussion : any;
-    location: any;  
+    location: any;
     showFilter: boolean = false;
 
 
@@ -64,7 +64,7 @@ export class FeedFormComponent implements OnInit {
     otherloc: boolean = true;
     locations: Object[] = [];
     otherlocations: string[] = [];
-    
+
     alllocationsarray: FormArray = new FormArray([]);
 
     defaultages: string[] = [];
@@ -108,7 +108,8 @@ export class FeedFormComponent implements OnInit {
         // this.reactionData = this.reactionssummary(this.intReactionData);
 
         // get profile info
-        this.http.get(`/users/profile/${this.form.object.author.link}`).toPromise()
+
+        this.http.post(`/users/profile/${this.form.object.author.link}`, {slim: true}).toPromise()
             .then(res => {
 
                 if (res) {
@@ -200,7 +201,7 @@ export class FeedFormComponent implements OnInit {
 
         this.genderSelected = [
             { "id": 1, "input": "gender", "itemName": "Male" },
-            { "id": 2, "input": "gender", "itemName": "Female" }        
+            { "id": 2, "input": "gender", "itemName": "Female" }
         ];
 
         if (!this.form.loginRequired) this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
@@ -212,7 +213,7 @@ export class FeedFormComponent implements OnInit {
             badgeShowLimit: 0,
             enableCheckAll: false,
             maxHeight: 350
-        };    
+        };
 
         this.locationSettings = {
             singleSelection: false,
@@ -222,7 +223,7 @@ export class FeedFormComponent implements OnInit {
             enableCheckAll: false,
             maxHeight: 350
 
-        };    
+        };
 
         this.genderSettings = {
             singleSelection: false,
@@ -232,7 +233,7 @@ export class FeedFormComponent implements OnInit {
             enableCheckAll: false,
             maxHeight: 350
 
-        };    
+        };
     }
 
     onItemSelect(item: any) {
@@ -282,7 +283,7 @@ export class FeedFormComponent implements OnInit {
                     // iniital data to give plot
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
 
-                    
+
                     this.submitted = true;
                     this.showsubmit = false;
                     this.showdiscussion = true;
@@ -356,7 +357,7 @@ export class FeedFormComponent implements OnInit {
               }
 
           })
-          .catch(error => alert("Error posting survey: " + error));  
+          .catch(error => alert("Error posting survey: " + error));
     }
 
     expand() {
@@ -445,7 +446,7 @@ export class FeedFormComponent implements OnInit {
                     this.plotselection.gender = this.plotselection.gender.filter(function (e) { return tempgenderstring.indexOf(e) == -1 });
 
                 } else {
-                    
+
                     if (x.input = 'age') {
                         if (this.locationSelected[this.locationSelected.length - 1].itemName !== "Unknown") this.locationSelected.push({ "id": this.locationList.length, "input": "location", "itemName": "Unknown" });
                         if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
@@ -460,14 +461,14 @@ export class FeedFormComponent implements OnInit {
                         if (this.ageSelected[this.ageSelected.length - 1].itemName !== "Unknown") this.ageSelected.push({ "id": 8, "itemName": "Unknown", "input": "age", "min": -1, "max": -1 });
                         if (this.genderSelected[this.genderSelected.length - 1].itemName !== "Unknown") this.genderSelected.push({ "id": 3, "input": "gender", "itemName": "Unknown" });
                     }
-                    
+
                     tempage = this.unknownage;
                     this.plotselection.age = this.plotselection.age.concat(tempage);
                     this.plotselection.location = this.plotselection.location.concat(x.itemName);
                     this.plotselection.gender = this.plotselection.gender.concat(tempgenderstring);
                 }
             }
-        
+
         if (x.itemName !== "Unknown" && x.input == 'age') {
 
             // NEW: THIS REMOVES THIS AGE RANGE FROM THE plotselection.age array
@@ -714,7 +715,7 @@ export class FeedFormComponent implements OnInit {
 
 
     //Emoticon functions
-    chooseReaction(reaction: string) : void {   
+    chooseReaction(reaction: string) : void {
         if (this.hasReacted) return;
 
         this.http.post('/forms/react', {id: this.form.id, reaction: reaction})
