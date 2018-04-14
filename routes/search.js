@@ -78,7 +78,12 @@ module.exports = function(app, passport, manager, hashids) {
                     console.log(err);
                     res.json({status: 0});
                 } else {
-                    res.json({status: 1, results: words});
+                    // loop the change format
+                    var output = [];
+                    for (var i = 0; i < words.length; i++) {
+                        output.push({display: words[i].word+' ('+words[i].data[0]+')', value: words[i].word});
+                    }
+                    res.json({status: 1, results: output});
                 }
             });
 
@@ -350,4 +355,3 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
 };
-
