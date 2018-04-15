@@ -287,7 +287,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         var type = this.questionData[i].kind;
         console.log("Edit question", i, type, this.questionData[i]);
 
-        this.updateData = this.questionData[i];        
+        this.updateData = this.questionData[i];
 
         this.questionnaire.get('kind').setValue(type);
         this.typeView = type;
@@ -395,13 +395,13 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     transformHashtag(value) {
-        value = value.toLowerCase();
         if (value !== null && typeof value === 'object') {
             value = value.value;
         }
         if (value[0] === "#") {
             value = value.substring(1);
         }
+        value = value.toLowerCase();
         return Observable.of({
             display: `${value}`,
             value: value
