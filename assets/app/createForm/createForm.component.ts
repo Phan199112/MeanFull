@@ -73,6 +73,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
     categoryList: Array<Object>;
     categorySettings: Object;
+    updateData: any;
+    updateEnabled: boolean;
 
 
     constructor(
@@ -90,6 +92,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     toggleView(view: string) {
         this.typeView = view;
+        if (this.updateData) this.updateData = null;
     }
 
     pushQuestionToList(res: Object) {
@@ -155,6 +158,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             enableCheckAll: false
         };
     }
+    
 
     ngOnDestroy() {
         if (this.autoScroll) {
@@ -285,8 +289,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
         this.updateData = this.questionData[i];        
 
-        this.toggleView(type);
         this.questionnaire.get('kind').setValue(type);
+        this.typeView = type;
     }
 
     updateQuestion(qdata: any) {
@@ -295,7 +299,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             qdata.temp = Array(size);
         }
         this.questionData[qdata.number] = qdata;
-        this.updateData = null;
+        this.updateEnabled = false;
     }
 
     getInputType(question) {

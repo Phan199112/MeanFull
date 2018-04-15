@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
@@ -46,11 +46,18 @@ export class RatingQuestionForm implements OnInit {
         this.createForm();
     }
 
+    ngOnChanges() {
+        if (this.updateData && this.updateData.kind != "Rating") {
+            this.updateData = null;
+        }
+        this.createForm();
+    }
+
     createForm() {
 
         if (this.updateData) {
             this.updateView = true;
-            // console.log(typeof this.updateData.scale);
+            console.log(this.updateData);
             this.temp = Array(Number(this.updateData.scale));
 
             this.question = this.fb.group({

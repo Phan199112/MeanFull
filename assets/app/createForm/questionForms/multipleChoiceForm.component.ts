@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
 import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
@@ -46,6 +46,13 @@ export class MultipleChoiceQuestionForm implements OnInit {
         }
         this.createForm();
     }
+
+    ngOnChanges() {
+        if (this.updateData) {
+            this.createForm();
+        }
+    }
+    
 
     createForm() {
         if (this.updateData) {

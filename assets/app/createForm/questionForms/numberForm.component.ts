@@ -47,6 +47,13 @@ export class NumberQuestionForm implements OnInit {
         this.onChanges();
     }
 
+    ngOnChanges() {
+        if (this.updateData && this.updateData.kind != "Number") {
+            this.updateData = null;
+        }
+        this.createForm();
+    }
+
     validateNumber(event: any) {
         const newValue = Number(event.target.value);
         const name = event.target.name;
@@ -59,6 +66,8 @@ export class NumberQuestionForm implements OnInit {
     }
 
     createForm() {
+
+        console.log("num:", this.updateData, this.updateView)
 
         if (this.updateData) {
             this.updateView = true;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
 import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
@@ -43,6 +43,16 @@ export class ShortAnswerQuestionForm implements OnInit {
         }
         this.createForm();
     }
+
+    ngOnChanges() {
+        if (this.updateData) {
+            this.createForm();
+        }
+    }
+
+    // ngOnDestroy() {
+    //     this.updateData = null;
+    // }
 
     createForm() {
 
