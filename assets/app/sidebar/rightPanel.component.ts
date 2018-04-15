@@ -19,7 +19,7 @@ export class RightPanel implements OnInit {
     users: Object[];
     postResults: Array<Object>;
     currentEmo: string = null;
-    categories: Array<string> = ["Automotive", "Business", "Cooking", "Education", "Entertainment", "Fashion", "Food", "Fitness", "Health", "Home Improvement", "Sports", "Technology"]
+    categories: Array<string> = [];
 
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router) {
@@ -30,20 +30,32 @@ export class RightPanel implements OnInit {
 
     ngOnInit() {
 
+        this.http.post('/tags/list')
+        // Display the top tags + their counts
+            .toPromise()
+            .then(res => {
+                let tags = res.json().data;
+                console.log(tags);
+                for (let i=0; i<tags.length; i++) {
+                    let t = tags[i];
+                    this.categories.push(t.tag + " (" + t.count + ")");
+                }
+            })
+
         this.currentCat = null;
 
         this.http.get('/users/feedlist')
             .toPromise()
             .then(response => {
                 this.users = this.users.concat(response.json().data);
-            }
+            })
 
         this.http.post(`/community/list`, { user: this.user }).toPromise()
-                    .then(res => {
-                        if (res.json().status == 1) {
-                            this.communities = res.json().data;
-                        }
-                    }).catch(error => alert("Error retrieving form: " + error));
+            .then(res => {
+                if (res.json().status == 1) {
+                    this.communities = res.json().data;
+                }
+            }).catch(error => alert("Error retrieving form: " + error));
     }
 
     setAsTouched(group) {
@@ -56,7 +68,6 @@ export class RightPanel implements OnInit {
             }
         }
     }
-
 
     chooseReaction(reaction: string): void {
         if (this.currentEmo === reaction) {
@@ -76,6 +87,5 @@ export class RightPanel implements OnInit {
         }
 
     }
-
 
 }

@@ -1,5 +1,5 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var UserModel = require('../db.models/user.model');
 var CommunityModel = require('../db.models/community.model');
@@ -36,7 +36,7 @@ module.exports = function(app, passport, manager, hashids) {
             // providers.
             return cb(null, profile);
         }));
-    
+
     // =========================================================================
     // Google OpenID SIGNIN ====================================================
     // =========================================================================
@@ -45,23 +45,16 @@ module.exports = function(app, passport, manager, hashids) {
     //   credentials (in this case, an OpenID identifier and profile), and invoke a
     //   callback with a user object.
     passport.use(new GoogleStrategy({
-        returnURL: 'http://www.questionsly.com/auth/google/return',
-        realm: 'http://www.questionsly.com'
+        clientID: '286013008783-kt74enhegfeu7p1hg3ej15kf5k40si2v.apps.googleusercontent.com',
+        clientSecret: 'DJdZaLMJP5zMpf8ridc8u_SU',
+        callbackURL: "http://www.questionsly.com/auth/google/callback"
       },
-    function(identifier, profile, done) {
-        // asynchronous verification, for effect...
-        process.nextTick(function () {
-      
-          // To keep the example simple, the user's Google profile is returned to
-          // represent the logged-in user.  In a typical application, you would want
-          // to associate the Google account with a user record in your database,
-          // and return that user instead.
-          profile.identifier = identifier;
-          return done(null, profile);
-        });
+      function(accessToken, refreshToken, profile, done) {
+           User.findOrCreate({ googleId: profile.id }, function (err, user) {
+             return done(err, user);
+           });
       }
-    ));
-
+  ));
 
     // =========================================================================
     // LOCAL SIGNIN ============================================================
@@ -169,15 +162,18 @@ module.exports = function(app, passport, manager, hashids) {
             res.json({status: 1});
         });
 
+    app.get('/auth/google',
+      passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+    app.get('/auth/google/callback',
+      passport.authenticate('google', { failureRedirect: '/login' }),
+      function(req, res) {
+        res.redirect('/');
+      });
+
     app.get('/users/login/facebook',
         passport.authenticate('facebook', { scope: ['public_profile', 'email', 'user_birthday', 'user_location']}));
 
-    app.get('/auth/google/return', 
-        passport.authenticate('google', { failureRedirect: '/login' }),
-        function(req, res) {
-           res.redirect('/');
-         });
-    
     app.get('/users/login/facebook/return',
         passport.authenticate('facebook', { failureRedirect: '/users/login' }),
         function(req, res) {
@@ -377,6 +373,3 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
 };
-
-
-
