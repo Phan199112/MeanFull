@@ -390,6 +390,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     transformHashtag(value) {
+        value = value.toLowerCase();
         if (value !== null && typeof value === 'object') {
             value = value.value;
         }

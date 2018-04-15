@@ -167,7 +167,7 @@
                             </div>
                             <tag-input #sharedWith [ngClass]="{'d-none': !showPrivateShares && questionnaire.get('sharedWithUsers').value === null}"
                                 id="private-shares" [identifyBy]="'value'" [displayBy]="'display'" placeholder="Name" secondaryPlaceholder="Name"
-                                [onAdding]="transformName" [separatorKeyCodes]="[32, 13]" formControlName="sharedWithUsers" [onlyFromAutocomplete]="true">
+                                [onAdding]="transformName" [separatorKeyCodes]="[32, 13, 188]" formControlName="sharedWithUsers" [onlyFromAutocomplete]="true">
                                 <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceUser.bind(this)">
                                 </tag-input-dropdown>
                             </tag-input>
@@ -185,7 +185,7 @@
                             </div>
                             <tag-input #sharedWith [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
                                 id="public-shares" placeholder="Name" secondaryPlaceholder="Name" [onAdding]="transformName" (onBlur)="showPublicShares = false"
-                                [separatorKeyCodes]="[32, 13]" formControlName="sharedWithCommunities" [onlyFromAutocomplete]="true">
+                                [separatorKeyCodes]="[32, 13, 188]" formControlName="sharedWithCommunities" [onlyFromAutocomplete]="true">
                                 <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceCom.bind(this)">
                                 </tag-input-dropdown>
                             </tag-input>
