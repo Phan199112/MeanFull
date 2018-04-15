@@ -20,10 +20,13 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 export class ShortAnswerQuestionForm implements OnInit {
     @Input() questionType: string;
     @Input() qLength: number;
-    @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     @Input() updateData: any;
+    @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object>();
 
     question: FormGroup;
+    updateView: boolean = false;
+
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
     
@@ -35,19 +38,38 @@ export class ShortAnswerQuestionForm implements OnInit {
     }
 
     ngOnInit() {
+        if (this.updateData && this.updateData.kind != "Short Answer") {
+            this.updateData = null;
+        }
         this.createForm();
     }
 
     createForm() {
-        this.question = this.fb.group({
-            body: ['', Validators.required],
-            kind: ['Short Answer', Validators.required],
-            options: this.fb.array([]),
-            required: true,
-            number: this.qLength,
-            pic: "",
-            id: Math.random().toString().substring(2),
-        })
+
+        if (this.updateData) {
+            this.updateView = true;
+
+
+            this.question = this.fb.group({
+                body: [this.updateData.body, Validators.required],
+                kind: ['Short Answer', Validators.required],
+                options: this.fb.array([]),
+                required: this.updateData.required,
+                number: this.updateData.number,
+                pic: this.updateData.pic,
+                id: this.updateData.id
+            })
+        } else {
+            this.question = this.fb.group({
+                body: ['', Validators.required],
+                kind: ['Short Answer', Validators.required],
+                options: this.fb.array([]),
+                required: true,
+                number: this.qLength,
+                pic: "",
+                id: Math.random().toString().substring(2),
+            })
+        }
     }
 
     toggleRequried(isRequired: string) {
@@ -60,7 +82,17 @@ export class ShortAnswerQuestionForm implements OnInit {
 
     submitQuestion() {
         if (this.question.valid) {
-            this.questionData.emit(this.question.value);
+
+            if (this.updateView) {
+                this.outputUpdateData.emit(this.question.value);
+                this.updateView = false;
+                this.updateData = null;
+                this.createForm();
+
+            } else {
+                this.questionData.emit(this.question.value);
+            }
+
             this.purgeForm();
         }
     }

@@ -36,13 +36,14 @@ export class TakeFormComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe(params => {
             this.id = params.id;
+            this.startTime = Date.now();
 
             // window.mixpanel.track(this.id.toString()); //track users directed to questionsly via shared links
             this.http.get(`/forms/${params.id}`).toPromise()
                 .then(res => {
                     if (res.json().status == 1) {
                         this.formdata = res.json().formdata;
-                        // window.mixpanel.track(this.formdata.questions[0].body+"\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008"+this.id); //track users directed to questionsly via shared links
+                        window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " Start: " + Date.now()); //track users directed to questionsly via shared links
                         this.authordata = res.json().authordata;
                         this.loggedin = res.json().loggedin;
                         this.showsubmit = false;
@@ -139,19 +140,6 @@ export class TakeFormComponent implements OnInit {
     }
 
     stopTimer(val: boolean) {
-        if (val) {
-            // stop timer
-            var stopTime = new Date();
-
-            var elapsedTime = (stopTime.getDate() - this.startTime.getDate())/1000;
-            // window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + ` ${elapsedTime}s `); //track users directed to questionsly via shared links
-
-            // window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + ` ${elapsedTime}s `); //track users directed to questionsly via shared links
-
-        }
+        if (val) window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " Submit: " + Date.now()); //track users directed to questionsly via shared links
     }
 }
-
-// function callTrack(str) {
-//     window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + ` ${elapsedTime}s `); //track users directed to questionsly via shared links
-// }

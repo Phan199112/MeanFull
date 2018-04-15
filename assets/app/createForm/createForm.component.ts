@@ -112,6 +112,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+
         this.route.queryParams.subscribe(params => {
             if (params.edit) this.edit = true;
 
@@ -272,22 +273,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.imgTooltipCtrls.toArray()[index].close();
     }
 
-    // addQuestion(kind: string) {
-    //     let questions = this.questionnaire.controls.questions;
-
-    //     //Create form group for individual question
-
-    //     questions.push(question);
-    //     this.questionsSubmitted++;
-    //     this.questionnaire.wasChecked = false;
-
-
-    //     //enable first required control when adding second question
-    //     if (questions.controls.length === 2) {
-    //         this.questionnaire.get('questions').get('0').get('required').enable();
-    //     }
-    // }
-
     deleteQuestion(i) {
         let questions = this.questionnaire.get("questions");
         questions.removeAt(i);
@@ -299,15 +284,21 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     editQuestion(i) {
         this.updateEnabled = true;
         var type = this.questionData[i].kind;
-        console.log("Edit question", type, this.questionData[i]);
+        console.log("Edit question", i, type, this.questionData[i]);
 
-        this.updateData = this.questionData[i];
-
-        
+        this.updateData = this.questionData[i];        
 
         this.toggleView(type);
         this.questionnaire.get('kind').setValue(type);
+    }
 
+    updateQuestion(qdata: any) {
+        if (qdata.kind === "Rating") {
+            let size = Number(qdata.scale);
+            qdata.temp = Array(size);
+        }
+        this.questionData[qdata.number] = qdata;
+        this.updateData = null;
     }
 
     getInputType(question) {

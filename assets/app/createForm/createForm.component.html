@@ -19,10 +19,10 @@
                         <h3 class="containerTitle green">Create Your Question</h3>
                         <!-- <div *ngIf="!typeView"><h1 class="containerTitle">Select a Question Style to Begin</h1></div> -->
                         <div class="responseConfiguration">
-                            <mc-question-form *ngIf="questionnaire.get('kind').value == 'Multiple Choice'" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></mc-question-form>
-                            <sa-question-form *ngIf="questionnaire.get('kind').value == 'Short Answer'" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></sa-question-form>
-                            <rating-question-form *ngIf="questionnaire.get('kind').value == 'Rating'" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></rating-question-form>
-                            <number-question-form *ngIf="questionnaire.get('kind').value == 'Number'" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></number-question-form>
+                            <mc-question-form *ngIf="questionnaire.get('kind').value == 'Multiple Choice'" (outputUpdateData)="updateQuestion($event)" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></mc-question-form>
+                            <sa-question-form *ngIf="questionnaire.get('kind').value == 'Short Answer'" (outputUpdateData)="updateQuestion($event)" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></sa-question-form>
+                            <rating-question-form *ngIf="questionnaire.get('kind').value == 'Rating'" (outputUpdateData)="updateQuestion($event)" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></rating-question-form>
+                            <number-question-form *ngIf="questionnaire.get('kind').value == 'Number'" (outputUpdateData)="updateQuestion($event)" (questionData)="pushQuestionToList($event)" [updateData]="updateData"></number-question-form>
                         </div>
                     </div>
                 </div>

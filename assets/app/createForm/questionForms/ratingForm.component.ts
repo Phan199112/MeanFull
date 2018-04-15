@@ -19,10 +19,13 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 
 export class RatingQuestionForm implements OnInit {
     @Input() qLength: number;
-    @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     @Input() updateData: any;
+    @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object>();
 
     question: FormGroup;
+    updateView: boolean = false;
+
     temp: string[];
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
@@ -35,21 +38,44 @@ export class RatingQuestionForm implements OnInit {
     }
 
     ngOnInit() {
-        this.createForm();
         this.temp = Array(5);
+        if (this.updateData && this.updateData.kind != "Rating") {
+            this.updateData = null;
+        }
+
+        this.createForm();
     }
 
     createForm() {
-        this.question = this.fb.group({
-            body: ['', Validators.required],
-            kind: ['Rating', Validators.required],
-            options: this.fb.array([]),
-            required: true,
-            number: this.qLength,
-            pic: "",
-            scale: '5',
-            id: Math.random().toString().substring(2),
-        })
+
+        if (this.updateData) {
+            this.updateView = true;
+            // console.log(typeof this.updateData.scale);
+            this.temp = Array(Number(this.updateData.scale));
+
+            this.question = this.fb.group({
+                body: [this.updateData.body, Validators.required],
+                kind: ['Rating', Validators.required],
+                options: this.fb.array([]),
+                required: this.updateData.required,
+                number: this.updateData.number,
+                pic: this.updateData.pic,
+                scale: this.updateData.scale,
+                id: this.updateData.id
+            })
+        } else {
+            this.question = this.fb.group({
+                body: ['', Validators.required],
+                kind: ['Rating', Validators.required],
+                options: this.fb.array([]),
+                required: true,
+                number: this.qLength,
+                pic: "",
+                scale: '5',
+                id: Math.random().toString().substring(2),
+            })
+        }
+
     }
 
 
@@ -74,7 +100,16 @@ export class RatingQuestionForm implements OnInit {
     submitQuestion() {
         if (this.question.valid) {
             // window.console.log('Submitted!', this.question.value);
-            this.questionData.emit(this.question.value);
+
+            if (this.updateView) {
+                this.outputUpdateData.emit(this.question.value);
+                this.updateView = false;
+                this.updateData = null;
+                this.createForm();
+
+            } else {
+                this.questionData.emit(this.question.value);
+            }
             this.purgeForm();         
         }
     }

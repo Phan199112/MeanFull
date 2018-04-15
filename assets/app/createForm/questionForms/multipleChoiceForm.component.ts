@@ -25,8 +25,11 @@ export class MultipleChoiceQuestionForm implements OnInit {
     @Input() qLength: number;
     @Input() updateData: any;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object> ();
     
     question: FormGroup;
+    updateView: boolean = false;
+
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
     
@@ -38,21 +41,34 @@ export class MultipleChoiceQuestionForm implements OnInit {
     }
 
     ngOnInit() {
+        if (this.updateData && this.updateData.kind != "Multiple Choice") {
+            this.updateData = null;
+        }
         this.createForm();
     }
 
     createForm() {
         if (this.updateData) {
+            this.updateView = true;
+
+
             this.question = this.fb.group({
                 body: [this.updateData.body, Validators.required],
                 kind: ['Multiple Choice', Validators.required],
-                options: this.fb.array(this.updateData.options),
+                options: this.fb.array([]),
                 required: this.updateData.required,
                 number: this.updateData.number,
                 pic: this.updateData.pic,
                 canSelectMultiple: this.updateData.canSelectMultiple,
                 id: this.updateData.id
-            })   
+            })  
+            
+            const control = this.question.get('options');
+            
+            for (let i=0; i<this.updateData.options.length; i++) {
+                control.push(this.createOption(this.updateData.options[i].body));
+            }
+
         } else {
             this.question = this.fb.group({
                 body: ['', Validators.required],
@@ -64,12 +80,9 @@ export class MultipleChoiceQuestionForm implements OnInit {
                 canSelectMultiple: false,
                 id: Math.random().toString().substring(2),
             })
+            this.addMcOption();
         }
 
-
-
-
-        this.addMcOption();
     }
 
 
@@ -87,7 +100,6 @@ export class MultipleChoiceQuestionForm implements OnInit {
         const control = this.question.get('options');
         control.push(this.createOption());
         window.setTimeout(() => { $('#focusLastBtn').click();}, 90);
-        // $('#focusLastBtn').click();
     }
 
     focusLast(f: any) {
@@ -95,9 +107,9 @@ export class MultipleChoiceQuestionForm implements OnInit {
     }
 
 
-    createOption(): FormGroup {
+    createOption(val: string = ""): FormGroup {
         return this.fb.group({
-            body: ''
+            body: val
         });
     }
 
@@ -155,7 +167,16 @@ export class MultipleChoiceQuestionForm implements OnInit {
                 if (empty.test(control.value)) this.removeOption(i);
             }
             
-            this.questionData.emit(this.question.value);     
+            if (this.updateView) {
+                this.outputUpdateData.emit(this.question.value);
+                this.updateView = false;
+                this.updateData = null;   
+                this.createForm();
+
+            } else {
+                this.questionData.emit(this.question.value);     
+            }
+
             this.purgeForm();
         }
     }

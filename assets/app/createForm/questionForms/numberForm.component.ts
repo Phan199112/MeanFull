@@ -22,7 +22,13 @@ export class NumberQuestionForm implements OnInit {
     @Input() qLength: number;
     @Input() updateData: any;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
+    @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object>();
+
     question: FormGroup;
+
+    updateView: boolean = false;
+
+
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
     
@@ -34,6 +40,9 @@ export class NumberQuestionForm implements OnInit {
     }
 
     ngOnInit() {
+        if (this.updateData && this.updateData.kind != "Number") {
+            this.updateData = null;
+        }
         this.createForm();
         this.onChanges();
     }
@@ -50,18 +59,37 @@ export class NumberQuestionForm implements OnInit {
     }
 
     createForm() {
-        this.question = this.fb.group({
-            body: ['', Validators.required],
-            kind: ['Number', Validators.required],
-            options: this.fb.array([]),
-            required: true,
-            number: this.qLength,
-            pic: "",
-            boundaries: false,
-            lowerBoundary: [0, Validators.required],
-            upperBoundary: [100, Validators.required],
-            id: Math.random().toString().substring(2),
-        })
+
+        if (this.updateData) {
+            this.updateView = true;
+
+
+            this.question = this.fb.group({
+                body: [this.updateData.body, Validators.required],
+                kind: ['Number', Validators.required],
+                options: this.fb.array([]),
+                required: this.updateData.required,
+                number: this.updateData.number,
+                pic: this.updateData.pic,
+                boundaries: this.updateData.boundaries,
+                lowerBoundary: [this.updateData.lowerBoundary, Validators.required],
+                upperBoundary: [this.updateData.upperBoundary, Validators.required],
+                id: this.updateData.id
+            })
+        } else {
+            this.question = this.fb.group({
+                body: ['', Validators.required],
+                kind: ['Number', Validators.required],
+                options: this.fb.array([]),
+                required: true,
+                number: this.qLength,
+                pic: "",
+                boundaries: false,
+                lowerBoundary: [0, Validators.required],
+                upperBoundary: [100, Validators.required],
+                id: Math.random().toString().substring(2),
+            })
+        }
     }
 
     onChanges(): void {
@@ -92,7 +120,14 @@ export class NumberQuestionForm implements OnInit {
 
     submitQuestion() {
         if (this.question.valid) {
-            this.questionData.emit(this.question.value);
+            if (this.updateView) {
+                this.outputUpdateData.emit(this.question.value);
+                this.updateView = false;
+                this.updateData = null;
+                this.createForm();
+            } else {
+                this.questionData.emit(this.question.value);
+            }
             this.purgeForm();
         }
     }
