@@ -14,7 +14,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="lContainer">              
+                <div class="lContainer">
                     <div class="qDataScroll">
                         <h3 class="containerTitle green">Create Your Question</h3>
                         <!-- <div *ngIf="!typeView"><h1 class="containerTitle">Select a Question Style to Begin</h1></div> -->
@@ -37,26 +37,26 @@
                                 <span class="redCross edit" (click)="editQuestion(i)">Edit</span>
                                 <i class="fa fa-times redCross" (click)="removeQuestion(i)"></i>
                             </div>
-                            
+
                             <div class="aqContainer">
                                 <div *ngIf="questionData.length > 0" class="sortArrowBlock">
                                     <div *ngIf="i !== 0"><i class="fa fa-caret-up arrows" (click)="moveUp(i)"></i></div>
                                     <div *ngIf="i !== questionData.length - 1"><i class="fa fa-caret-down arrows" (click)="moveDown(i)"></i></div>
                                 </div>
-                            
+
                                 <div class="qLeftBlock" [ngClass]="{wImg: q.pic !== ''}">
                                     <h4 class="qbType" [ngClass]="{mtClear: false}">Question {{i+1}}: {{q.kind}} <span><a class="required" [ngClass]="{req: q.required, not: !q.required, hide: questionData.length == 1}" (click)="toggleRequired(i)">{{q.required ? 'Required' : 'Optional'}}</a></span> </h4>
                                     <h2 class="qbBody">{{q.body}}</h2>
                                     <!-- <h2 class="qbBody">{{q.number}}</h2> -->
-                                
+
                                     <div *ngIf="q.kind === 'Multiple Choice'">
                                         <div class="qbOptions" *ngFor="let optionGroup of q.options">
                                             <label style="color: #CCC; margin-bottom: 0px;">-</label>
                                             <h3 class="qbOption" style="">{{optionGroup.body}}</h3>
                                         </div>
                                     </div>
-                                
-                                
+
+
                                     <div *ngIf="q.kind === 'Rating'">
                                         <div class='starArray'>
                                             <div *ngFor="let x of q.temp">
@@ -67,7 +67,7 @@
                                             <span class="qbSpan">{{q.scale}}</span>
                                         </h4>
                                     </div>
-                                
+
                                     <div *ngIf="q.kind === 'Number'">
                                         <h4 class="qbOption" *ngIf="q.boundaries">A number between
                                             <span class="qbSpan">{{q.lowerBoundary}}</span> and
@@ -81,7 +81,7 @@
                             <div *ngIf="q.pic !== ''" class="qRightBlock">
                                 <img class="image" *ngIf="q.pic !== ''" id="preview" [src]="q.pic">
                             </div>
-                        
+
                         </div>
                     </div>
 
@@ -110,8 +110,8 @@
                         <div [ngClass]="{'d-none': showHashtags || questionnaire.get('hashtags').value}" class="tag-placeholder text-muted" (click)="showHashtags = true; focusTagInput(hashtags)">
                             Enter up to 3 Tags
                         </div>
-                        <tag-input #hashtags [ngClass]="{'d-none': !showHashtags && questionnaire.get('hashtags').value === null}" [onAdding]="transformHashtag"
-                            placeholder="Tag" secondaryPlaceholder="#hashtag" (onBlur)="showHashtags = false" [separatorKeyCodes]="[32, 13, 188]"
+                        <tag-input #hashtags [ngClass]="{'d-none': !showHashtags && questionnaire.get('hashtags').value === null}" [onAdding]="transformHashtag" [maxItems]='3'
+                            placeholder="Tag" secondaryPlaceholder="#hashtag" (onBlur)="showHashtags = false" [separatorKeyCodes]="[13, 188]"
                             formControlName="hashtags" id="tags">
                             <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceTag.bind(this)">
                             </tag-input-dropdown>
@@ -129,7 +129,7 @@
                             (selected)="toggleAuthor($event)" formControlName="anonymous"></desc-switch-buttons>
                     </div>
                 </div>
-                
+
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Audience</h6>
                     <div style="display:flex; justify-content: flex-start; width: 100%;">
@@ -151,7 +151,7 @@
                 </div>
             </div>
 
-            
+
 
 
             <div class="rContainer sFix">
@@ -174,7 +174,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Share with a community</h6>
                     <div style="display:flex; justify-content: flex-start;">
@@ -192,7 +192,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Share it With the World</h6>
                     <div class="shareFlex">
@@ -203,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             <div *ngIf="this.published" class="flexContainer fjCenter" style="margin-top:30px">
                 <h1 class="publishedLine">Your Post has Been Published!</h1>
             </div>
@@ -221,8 +221,8 @@
             <!-- <div id="sbContainer"> -->
                 <!-- <a id="publishBtn" class="submitButton" (click)="submitForm()">Publish</a> -->
             <!-- </div> -->
-            
-            
+
+
         </div>
 </form>
 

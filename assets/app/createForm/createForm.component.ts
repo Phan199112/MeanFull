@@ -56,7 +56,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     // sortedQuestions: Observable<Array<Object>>;
     question: any = null;
     edit: boolean = false;
-    updateEnabled: boolean = false;
     activeQuestion: string;
     questionsSubmitted: number;
     autoScroll: any;
@@ -74,7 +73,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
     categoryList: Array<Object>;
     categorySettings: Object;
-    updateData: any = null;
 
 
     constructor(
@@ -91,7 +89,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     toggleView(view: string) {
-        console.log(view);
         this.typeView = view;
     }
 
@@ -297,17 +294,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     editQuestion(i) {
-        this.updateEnabled = true;
-        var type = this.questionData[i].kind;
-        console.log("Edit question", type, this.questionData[i]);
-
-        this.updateData = this.questionData[i];
-
-        
-
-        this.toggleView(type);
-        this.questionnaire.get('kind').setValue(type);
-
+        console.log("Edit question")
     }
 
     getInputType(question) {
@@ -410,7 +397,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             value = value.substring(1);
         }
         return Observable.of({
-            display: `#${value}`,
+            display: `${value}`,
             value: value
         });
     }
@@ -423,7 +410,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             value = value.substring(1);
         }
         return {
-            display: `#${value}`,
+            display: `${value}`,
             value: value
         };
     }
