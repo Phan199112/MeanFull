@@ -44,17 +44,15 @@ module.exports = function(app, passport, manager, hashids) {
     //   Strategies in passport require a `validate` function, which accept
     //   credentials (in this case, an OpenID identifier and profile), and invoke a
     //   callback with a user object.
-    passport.use(new GoogleStrategy({
+    passport.use('google', new GoogleStrategy({
         clientID: '286013008783-kt74enhegfeu7p1hg3ej15kf5k40si2v.apps.googleusercontent.com',
         clientSecret: 'DJdZaLMJP5zMpf8ridc8u_SU',
         callbackURL: "http://www.questionsly.com/auth/google/callback"
       },
-      function(accessToken, refreshToken, profile, done) {
-           User.findOrCreate({ googleId: profile.id }, function (err, user) {
-             return done(err, user);
-           });
+      function(accessToken, refreshToken, profile, cb) {
+           return cb(null, profile);
       }
-  ));
+      ));
 
     // =========================================================================
     // LOCAL SIGNIN ============================================================
