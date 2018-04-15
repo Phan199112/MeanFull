@@ -283,7 +283,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         var type = this.questionData[i].kind;
         console.log("Edit question", i, type, this.questionData[i]);
 
-        this.updateData = this.questionData[i];        
+        this.updateData = this.questionData[i];
 
         this.toggleView(type);
         this.questionnaire.get('kind').setValue(type);
