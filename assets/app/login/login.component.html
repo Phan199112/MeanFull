@@ -52,7 +52,7 @@
                 <div class="bottom">
                     <form [formGroup]="pwdReset">
                         <div class="form-group">
-                            <input 
+                            <input
                                 formControlName="email"
                                 placeholder="Email..."
                                 type="email"
@@ -82,11 +82,16 @@
                                         <button id="facebook">Sign in with Facebook</button>
                                     </a>
                                 </div>
-                        
+
                                 <!--<div class="social-wrap a">-->
                                 <!--<button id="linkedin">Sign in with LinkedIn</button>-->
                                 <!--</div>-->
-                            </div>
+
+                                <div class="social-wrap a">
+                                    <a href="/auth/google">
+                                        <button id="google">Sign in with Google</button>
+                                    </a>
+                                </div>
                         </div>
                         <!-- <div id="separator-login">
                             <hr/>
@@ -94,7 +99,7 @@
                             <hr/>
                         </div> -->
 
-                        
+
         </div>
         <div class="col-sm-1 align-self-start" id="separator-middle"></div>
         <div class="col-sm-1"></div>
@@ -128,7 +133,7 @@
                             </div>
 
                             <!--email-->
-                            <div class="form-row form-group">  
+                            <div class="form-row form-group">
                                 <div class="col-sm-6">
                                     <input formControlName="email" [ngClass]="{'form-control': true, 'is-invalid': signup.get('email').invalid && signup.get('email').touched}" type="email" name="" placeholder="Email">
                                     <div *ngIf="signup.get('email').invalid && signup.get('email').touched" class="invalid-feedback">

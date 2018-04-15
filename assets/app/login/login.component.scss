@@ -34,7 +34,7 @@ $navBarColor:  #0077b3;
       float: left;
       width: 77%;
       padding-top: 25px;
-      
+
       .title {
         color: #555;
         font-size: 22px;
@@ -68,7 +68,7 @@ $navBarColor:  #0077b3;
         //border: 3px solid #ddd;
         font-size: inherit;
       }
-      
+
       button {
         cursor: hand;
         //width: 100%;
@@ -131,6 +131,19 @@ button#facebook {
   background-color: #3b5998;
   background-image: url(http://icons.iconarchive.com/icons/danleech/simple/512/facebook-icon.png);
   cursor: hand;
+}
+button#facebook:hover, button#facebook:focus {
+  background-color: #5B7BD5;
+  background-image: linear-gradient(#5B7BD5, #4864B1);
+}
+button#google {
+  border-color: #BB3F30;
+  background-color: #DD4B39;
+  background-image: url(https://www.drupal.org/files/project-images/Google-login_0.png);
+  cursor: hand;
+}
+button#google:hover, button#google:focus {
+    background: #E74B37;
 }
 button#linkedin {
   border-color:  #007bb6;
