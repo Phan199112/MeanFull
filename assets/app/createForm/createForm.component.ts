@@ -391,13 +391,13 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     transformHashtag(value) {
-        value = value.toLowerCase();
         if (value !== null && typeof value === 'object') {
             value = value.value;
         }
         if (value[0] === "#") {
             value = value.substring(1);
         }
+        value = value.toLowerCase();
         return Observable.of({
             display: `${value}`,
             value: value
