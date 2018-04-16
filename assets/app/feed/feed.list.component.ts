@@ -32,7 +32,6 @@ export class FeedListComponent implements OnInit, OnChanges {
             this.formselected = params['survey'];
             // this.refreshFeed();
         });
-        
     }
 
     ngOnChanges() {
