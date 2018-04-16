@@ -38,6 +38,7 @@ export class RightPanel implements OnInit {
                 for (let i=0; i<tags.length; i++) {
                     let t = tags[i];
                     this.topTags.push(t.tag + " (" + t.count + ")");
+                    // this.topTags.push(t.tag);
                 }
             })
 
@@ -77,15 +78,12 @@ export class RightPanel implements OnInit {
     }
 
     toggleTag(tag: string): void {
-        console.log("Anyone there?");
         if (this.currentTag === tag) {
             this.currentTag = null;
             this.toggledTag.emit(null);
-            console.log("toggleTag, currTag" + tag);
         } else {
             this.currentTag = tag;
             this.toggledTag.emit(tag);
-            console.log("toggleTag, else" + tag);
         }
     }
 
