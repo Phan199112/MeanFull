@@ -2,11 +2,8 @@
     <h3 class="lpText small">Top Tags</h3>
     <div class="catList">
         <div *ngFor="let t of topTags" class="catContainer" (click)="toggleTag(t)">
-            <img class="catIcon" src ="/images/icons/next.svg" />
+            <img class="catIcon" src="/images/icons/next.svg" />
             <span class="catTitle" [ngClass]="{selected: t === currentTag}">{{t}}</span>
-            <!--TODO: Want a
-                <feed-list [emptyMessage]="noPostsMessage" [tag]="t" *ngIf="!hidefeed"></feed-list>
-            on toggling a Tag-->
         </div>
     </div>
 </div>
