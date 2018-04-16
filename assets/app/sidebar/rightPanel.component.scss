@@ -101,6 +101,7 @@ h3 {
   color: #666;
   font-weight: 300;
   font-size: .9rem;
+  text-transform: capitalize;
 
   @media (max-width: 768px) {
     font-size: .62rem;
