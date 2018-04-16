@@ -18,7 +18,7 @@ module.exports = function(app, passport, manager, hashids) {
         //Fields being autocompleted, they will be concatenated
         autoCompleteFields: ["tag"],
         //Returned data with autocompleted results
-        dataFields: ["count"],
+        dataFields: ["count", "_id"],
         //Maximum number of results to return with an autocomplete request
         maximumResults: 10,
         //MongoDB model (defined earlier) that will be used for autoCompleteFields and dataFields

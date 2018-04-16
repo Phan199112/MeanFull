@@ -913,12 +913,11 @@ module.exports = function(app, passport, manager, hashids) {
         // limits to x posts
         // only public posts
 
-
         var postlimit = 10;
 
         // enable different types of queries
         // query a tag
-        var selectedtags = req.body.tag;
+        var selectedtags;
         var category;
         var topsurvey;
         var selecteduser;
@@ -941,19 +940,18 @@ module.exports = function(app, passport, manager, hashids) {
             selectedcomm = null;
         } else {
             selectedcomm = hashids.decodeHex(req.body.comm);
-            console.log(selectedcomm);
+            // console.log(selectedcomm);
         }
 
-        //CATEGORY
-        if (req.body.category == null) {
-            category = null;
+        if (req.body.tag == null) {
+            selectedtags = null;
         } else {
-            category = req.body.category;
+            var tagRegex = /.+?(?=\ \()/;
+            // req.body.tag = tagRegex.split(req.body.tag)[0];
+            selectedtags = req.body.tag;
         }
 
-
-
-        //console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
+        console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
         if (selectedtags != null && selecteduser == null) {
             queryobj = {public: true, shared: true, hashtags: selectedtags};
@@ -1088,7 +1086,7 @@ module.exports = function(app, passport, manager, hashids) {
                         });
                 };
 
-                // retrieve forms by compley queries
+                // retrieve forms by complete queries
                 var tempfunctionByQuery = function() {
                     return new Promise(function(resolve, reject){
                         console.log("QueryOBJect:", queryobj);
@@ -1194,35 +1192,35 @@ module.exports = function(app, passport, manager, hashids) {
                 };
 
                 // retrieve forms associated with particular tags
-                var tempfunctionByTag = function() {
-                    return new Promise(function(resolve, reject){
-                        // for each form_id in this tag
-                        // TagsModel.findOne({tag: queryobj.tag}, function (err, tag) {
-                        //     for (formid in tag.forms) {
-                        //         answerdata.push({formid: formid});
-                        //     }
-                        // })
-                        // TODO: Implement with indexes for faster search
-                        FormModel.find({hashtags: queryobj.tag}).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
-                            .on('data', function(form){
-                                answerdata.push({formid: form.formid});
-                            })
-                    }).then(function () {
-                        console.log("answerdata collected !");
-                        console.log(answerdata);
-
-                        answerdata.forEach(function(answer) {
-                            answerpromise.push(getFormInfo(answer.formid));
-                        });
-
-                        return Promise.all(answerpromise).then(function () {
-                            console.log("promise all completed interim");
-                        });
-                    })
-                    .catch(function () {
-                        console.log("error query tag")
-                    });
-                };
+                // var tempfunctionByTag = function() {
+                //     return new Promise(function(resolve, reject){
+                //         // for each form_id in this tag
+                //         // TagsModel.findOne({tag: queryobj.tag}, function (err, tag) {
+                //         //     for (formid in tag.forms) {
+                //         //         answerdata.push({formid: formid});
+                //         //     }
+                //         // })
+                //         // TODO: Implement with indexes for faster search
+                //         FormModel.find({hashtags: queryobj.tag}).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
+                //             .on('data', function(form){
+                //                 answerdata.push({formid: form.formid});
+                //             })
+                //     }).then(function () {
+                //         console.log("answerdata collected !");
+                //         console.log(answerdata);
+                //
+                //         answerdata.forEach(function(answer) {
+                //             answerpromise.push(getFormInfo(answer.formid));
+                //         });
+                //
+                //         return Promise.all(answerpromise).then(function () {
+                //             console.log("promise all completed interim");
+                //         });
+                //     })
+                //     .catch(function () {
+                //         console.log("error query tag")
+                //     });
+                // };
 
                 // execute
 
@@ -1233,9 +1231,9 @@ module.exports = function(app, passport, manager, hashids) {
                     promiseslist.push(tempfunctionByUser());
                 }
 
-                if (queryobj.tag != null) {
-                    promiseslist.push(tempfunctionByTag());
-                }
+                // if (queryobj.tag != null) {
+                //     promiseslist.push(tempfunctionByTag());
+                // }
 
                 if (topsurvey != null) {
                     promiseslist.push(tempfunctionByID());
