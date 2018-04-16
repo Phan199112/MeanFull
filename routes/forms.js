@@ -946,12 +946,11 @@ module.exports = function(app, passport, manager, hashids) {
         if (req.body.tag == null) {
             selectedtags = null;
         } else {
-            var tagRegex = /.+?(?=\ \()/;
-            // req.body.tag = tagRegex.split(req.body.tag)[0];
-            selectedtags = req.body.tag;
+            var ind = req.body.tag.indexOf("(");
+            selectedtags = req.body.tag.substr(0, ind - 1);
         }
 
-        console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
+        // console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
         if (selectedtags != null && selecteduser == null) {
             queryobj = {public: true, shared: true, hashtags: selectedtags};
