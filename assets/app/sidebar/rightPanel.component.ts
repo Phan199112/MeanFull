@@ -13,19 +13,18 @@ import { CommunityListComponent } from "../communityContainer/community.list.com
 })
 export class RightPanel implements OnInit {
     @Input() loggedin: boolean;
-    @Output() toggledCat: EventEmitter<string> = new EventEmitter<string>();
-    currentCat: string;
+    @Output() toggledTag: EventEmitter<string> = new EventEmitter<string>();
+    currentTag: string;
     communities: Object[];
     users: Object[];
     postResults: Array<Object>;
     currentEmo: string = null;
-    categories: Array<string> = [];
+    topTags: Array<string> = [];
 
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router) {
         this.users = [];
         this.postResults = []
-        // TO-DO: fetch first batch of top posts
     }
 
     ngOnInit() {
@@ -38,11 +37,11 @@ export class RightPanel implements OnInit {
                 console.log(tags);
                 for (let i=0; i<tags.length; i++) {
                     let t = tags[i];
-                    this.categories.push(t.tag + " (" + t.count + ")");
+                    this.topTags.push(t.tag + " (" + t.count + ")");
                 }
             })
 
-        this.currentCat = null;
+        this.currentTag = null;
 
         this.http.get('/users/feedlist')
             .toPromise()
@@ -77,15 +76,17 @@ export class RightPanel implements OnInit {
         this.currentEmo = reaction;
     }
 
-    toggleCategory(cat: string): void {
-        if (this.currentCat === cat) {
-            this.currentCat = null;
-            this.toggledCat.emit(null);
+    toggleTag(tag: string): void {
+        console.log("Anyone there?");
+        if (this.currentTag === tag) {
+            this.currentTag = null;
+            this.toggledTag.emit(null);
+            console.log("toggleTag, currTag" + tag);
         } else {
-            this.currentCat = cat;
-            this.toggledCat.emit(cat);
+            this.currentTag = tag;
+            this.toggledTag.emit(tag);
+            console.log("toggleTag, else" + tag);
         }
-
     }
 
 }

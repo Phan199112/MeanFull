@@ -17,9 +17,9 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pic: string;
     @Input() emptyMessage: string = "Retrieving Data...";
     @Input() pictype: string;
-    @Input() category: string;
+    @Input() tag: string;
     @Input() pref: string;
-    tag: any;
+    // tag: any;
     formselected: any;
 
 
@@ -28,11 +28,10 @@ export class FeedListComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.route.params.subscribe(params => {
-            this.tag = params['tag'];
+            // this.tag = params['tag'];
             this.formselected = params['survey'];
             // this.refreshFeed();
         });
-        
     }
 
     ngOnChanges() {
@@ -41,7 +40,8 @@ export class FeedListComponent implements OnInit, OnChanges {
 
 
     refreshFeed() {
-        this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, category: this.category, pref: this.pref }).toPromise()
+        console.log("in refreshFeed() and this.tag is "+this.tag);
+        this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, pref: this.pref }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     // clean current data list
