@@ -21,11 +21,16 @@ export class FeedPageComponent implements OnInit  {
     emailconfirmfailed: boolean = false;
     emailconfirmok: boolean = false;
     completedform: boolean = false;
+    startTime: any;
+
 
     constructor(private http: Http, private userService: UserService, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
+        this.startTime = Date.now();
+        window.mixpanel.track(`Feed Start: ${Date.now()}`); //track users directed to questionsly via shared links
+
         this.tag = null;
 
         this.userService.afterLoginCheck().then(userData => {
@@ -85,6 +90,11 @@ export class FeedPageComponent implements OnInit  {
                 }
             }
         });
+    }
+
+    ngOnDestroy() {
+        window.mixpanel.track(`Feed End (${(Date.now() - this.startTime) / 1000}s): ${Date.now()}`); //track users directed to questionsly via shared links
+
     }
 
     setTag(tag: string) : void {

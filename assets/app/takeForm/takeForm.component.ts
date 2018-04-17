@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output } from '@angular/core';
 import { Http } from "@angular/http";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import { FeedForm } from "../feed/feed.form.model";
@@ -106,6 +106,10 @@ export class TakeFormComponent implements OnInit {
 
     }
 
+    ngOnDestroy() {
+        window.mixpanel.track(`Left Question (${(Date.now() - this.startTime)/1000}s): ` + this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " " + Date.now()); //track users directed to questionsly via shared links
+    }
+
     postForm(data) {
         data.id = this.id;
         this.http.post('/forms/answers', data).toPromise()
@@ -140,6 +144,10 @@ export class TakeFormComponent implements OnInit {
     }
 
     stopTimer(val: boolean) {
-        if (val) window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " Submit: " + Date.now()); //track users directed to questionsly via shared links
+        if (val) window.mixpanel.track(`Submit: (${(Date.now() - this.startTime) / 1000}s): ` + this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " Submit: " + Date.now()); //track users directed to questionsly via shared links
+    }
+
+    clickedCTA() {
+        window.mixpanel.track(`Clicked CTA (${(Date.now() - this.startTime) / 1000}s): ` + this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " " + Date.now()); //track users directed to questionsly via shared links
     }
 }

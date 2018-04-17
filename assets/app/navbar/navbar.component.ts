@@ -449,4 +449,8 @@ export class NavbarComponent implements OnInit {
 
     }
 
+    clickedLogin() {
+        window.mixpanel.track(`Login Clicked: ${Date.now()}`)
+    }
+
 }

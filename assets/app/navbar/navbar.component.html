@@ -163,7 +163,7 @@
             
         </ul>
 
-        <a *ngIf="!loggedin" class="nav-item navlinks nav-link align-right" routerLink="/users/login">Login</a>
+        <a *ngIf="!loggedin" class="nav-item navlinks nav-link align-right" routerLink="/users/login" (click)="clickedLogin()">Login</a>
 
     </div>
 </nav>

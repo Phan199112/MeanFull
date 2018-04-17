@@ -146,13 +146,13 @@ export class MiniShowFormComponent implements OnInit {
 
     setRating(rating: number, i: number) {
         this.questionnaire.get('questions').controls[i].get('answer').setValue(rating);
-        window.console.log("Rating in form is: ", rating, "index is: ", this.questionnaire.get('questions').controls[i].value);
-
     }
 
     toggleFilter() {
         this.showFilters = !this.showFilters;
         this.toggleFilters.emit(this.showFilters);
+
+        window.mixpanel.track("Apply Filter: " + this.data.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.data.id + " " + Date.now()); //track users directed to questionsly via shared links
     }
 
 }
