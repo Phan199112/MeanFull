@@ -379,7 +379,7 @@ module.exports = function(app, passport, manager, hashids) {
         if (selecteduser == null) {
             // mongoDB query
             new Promise(function(resolve, reject) {
-                CommunityModel.find({public: true}).limit(100).exec(function (err, k) {
+                CommunityModel.findRandom({public: true}).limit(100).exec(function (err, k) {
                     if (err) {
                         reject(err);
                     } else {
@@ -463,7 +463,7 @@ module.exports = function(app, passport, manager, hashids) {
                     //
                     //
                     var promiseslist = [];
-                    var limitrecords = 4;
+                    var limitrecords = 9;
                     var randomcomm = [];
 
                     // get four random communities

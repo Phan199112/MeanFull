@@ -22,7 +22,6 @@ export class Sidebar implements OnInit, OnChanges {
     @Input() name: string;
     @Input() me: boolean;
 
-
     userName: string = "";
     communities: Object[];
     users : Object[];
@@ -50,6 +49,7 @@ export class Sidebar implements OnInit, OnChanges {
         this.http.get('/users/feedlist')
             .toPromise()
             .then(response => {
+                console.log("TESTER:", response.json());
                 this.users = this.users.concat(response.json().data);
 
                 this.users = this.users.slice(0,this.amountToFetch);
@@ -64,6 +64,7 @@ export class Sidebar implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
+        var searchUser = null;
 
         if (this.name) this.userName = this.name.split(' ')[0];
 
@@ -79,9 +80,7 @@ export class Sidebar implements OnInit, OnChanges {
                 }
             }
 
-
-
-        this.http.post(`/community/list`, { user: this.user }).toPromise()
+        this.http.post(`/community/list`, { user: searchUser }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     this.data = res.json().data;

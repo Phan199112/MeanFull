@@ -99,8 +99,8 @@ exports.sendNotificationFriendRequest = function sendNotificationFriendRequest(e
 
 exports.sendNotificationFormRequest = function sendNotificationFormRequest(email, user, link) {
     var name = getUserDisplayName(user);    
-    var subject = "New survey request from Questionsly";
-    var messagesafe = "Hello! " + " requested you to fill in a form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    var subject = getUserDisplayName(user) + ": Request to answer question on Questionsly";
+    var messagesafe = "Hello! " + " requested you to answer on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
 
     renderTemplate("notification-form-request", {
         subject: subject, 

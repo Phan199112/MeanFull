@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var random = require('mongoose-simple-random');
 var bcrypt   = require('bcrypt-nodejs');
 
 var UserSchema = new Schema({
@@ -38,6 +39,7 @@ UserSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+UserSchema.plugin(random);
 
 
 // Compile model from schema

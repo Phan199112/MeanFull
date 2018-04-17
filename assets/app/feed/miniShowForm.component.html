@@ -52,17 +52,14 @@
                         <div *ngIf="question.kind !== 'Short Answer'" class="col-md-6">
                             <!-- <app-chartjs [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [questionkind]="question.kind" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool"></app-chartjs> -->
                             <!-- <miniresults-table-component [data]="data.eventdatatotals[i]" *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool && data.viewTablesbool"></miniresults-table-component> -->
-                                
-                            
-                            
+                                     
                             <!-- ********** Chart ************ -->
                             <div *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool">
                                 <pie-chart [qKind]="question.kind" [dataLabels]="data.plotdata[i][0]" [dataValues]="data.plotdata[i][1]" [dataCounts]="data.plotdata[i][2]" [count]="count" ></pie-chart>
                             </div>
                             <div *ngIf="(i == 0 || !data.contracted) && data.viewGraphsbool" style="display: flex; width: 100%; justify-content: center">
-                                <a class="submitButton smaller" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Apply Filters'}}</a>
+                                <a class="submitButton smaller" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Filter Responses'}}</a>
                             </div>
-                       
                        
                         </div>
                     </ng-template>

@@ -14,7 +14,7 @@ export class UserImageComponent implements OnInit {
 
     ngOnInit() {
 
-        if (typeof this.data.name === "object") {
+        if (this.data && typeof this.data.name === "object") {
             this.type = 'network';
             this.name = this.data.name; 
         } else {
