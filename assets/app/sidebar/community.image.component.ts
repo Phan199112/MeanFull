@@ -30,4 +30,8 @@ export class CommunityImageComponent implements OnInit {
             this.title = this.title.substr(0,index) + "...";
         }
     }
+
+    clickedCommunity() {
+        window.mixpanel.track(`Discovered Community from Feed (${this.data.id}): ${this.data.title}`);
+    }
 }

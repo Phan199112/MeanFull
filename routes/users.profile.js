@@ -102,10 +102,8 @@ module.exports = function(app, passport, manager, hashids) {
             UserModel.find({public: true}).limit(100).exec(function (err, k) {
                 if (err) {
                     reject(err);
-                    console.log("FAILED AT FIRST SPOT;", err)
                 } else {
                     if (k != null) {
-                        console.log("MADE IT TO HERE HERE HERE HERE: ONE;", k)
                         if (k.length <= 9) {
                             for (i=0; i<k.length; i++) {
                                 var user = k[i];

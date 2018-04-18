@@ -1,4 +1,4 @@
-<div class="iContainer" [routerLink]="['/community', data.id]">
+<div class="iContainer" [routerLink]="['/community', data.id]" (click)="clickedCommunity()">
     <img class="img" *ngIf="data.pic" [src]="data.pic" />
     <img class="img" *ngIf="!data.pic" src="/images/community.png" />
     <div class="title">

@@ -101,4 +101,9 @@ export class FeedPageComponent implements OnInit  {
         this.tag = tag;
     }
 
+    askQuestion() {
+        window.mixpanel.track(`Clicked Ask Question: ${Date.now()}`);
+
+    }
+
 }

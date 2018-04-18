@@ -356,6 +356,7 @@ export class FeedFormComponent implements OnInit {
 
     postForm(data) {
         this.emitSubmitted.emit(true);
+        window.mixpanel.track(`Answered Question (${this.form.id}):  ${Date.now()}`);
         data.id = this.form.id;
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
@@ -378,6 +379,8 @@ export class FeedFormComponent implements OnInit {
 
     expand() {
         this.form.contracted = false;
+        window.mixpanel.track(`Clicked 'See More' (${this.form.id}):  ${Date.now()}`);
+
     }
 
     queryTopLocation() {

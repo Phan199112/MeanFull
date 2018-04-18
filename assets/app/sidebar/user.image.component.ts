@@ -23,6 +23,7 @@ export class UserImageComponent implements OnInit {
         }
     }
 
-
-    
+    clickedUser() {
+        window.mixpanel.track(`Discovered User from Feed (${this.data.link}): ${this.data.name}`);
+    }
 }
