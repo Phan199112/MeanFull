@@ -35,6 +35,7 @@ export class NavbarComponent implements OnInit {
     gender: string;
     showNotifications: boolean = false;
     notifShowCount: number = 10;
+    startingTime: any;
 
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler;
@@ -50,6 +51,7 @@ export class NavbarComponent implements OnInit {
 
 
     ngOnInit() {
+        this.startingTime = Date.now();
 
         this.searchbox = this.fb.group({
             searchterm: ['', Validators.required]
@@ -450,7 +452,11 @@ export class NavbarComponent implements OnInit {
     }
 
     clickedLogin() {
-        window.mixpanel.track(`Login Clicked: ${Date.now()}`)
+        var startingTime = this.startingTime;
+        window.mixpanel.track("Login Clicked", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "timestamp": Date.now()
+        });
     }
 
 }

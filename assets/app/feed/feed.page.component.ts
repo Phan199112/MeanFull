@@ -28,7 +28,7 @@ export class FeedPageComponent implements OnInit  {
     }
 
     ngOnInit() {
-        this.startTime = Date.now();
+        this.startingTime = Date.now();
         var startingTime = this.startingTime;
         window.mixpanel.track("Feed Start", {
             "timestamp": Date.now()
