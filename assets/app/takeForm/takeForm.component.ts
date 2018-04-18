@@ -28,7 +28,7 @@ export class TakeFormComponent implements OnInit {
     pic: string;
     pictype: string;
     timestamp: string;
-    startTime: any;
+    startingTime: any;
     
 
     constructor(private http: Http, private route: ActivatedRoute, private router: Router) {
@@ -37,13 +37,28 @@ export class TakeFormComponent implements OnInit {
         this.route.params.subscribe(params => {
             this.id = params.id;
             this.startTime = Date.now();
+            var startingTime = this.startingTime;
+
+            window.addEventListener("beforeunload", function (event) {
+                window.mixpanel.track("Bounced Stand Alone Page", {
+                    "timeSpentOnFeed": (Date.now() - startingTime) / 1000,
+                    "timestamp": Date.now()
+                });
+
+            });
 
             // window.mixpanel.track(this.id.toString()); //track users directed to questionsly via shared links
             this.http.get(`/forms/${params.id}`).toPromise()
                 .then(res => {
                     if (res.json().status == 1) {
                         this.formdata = res.json().formdata;
-                        window.mixpanel.track(this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " Start: " + Date.now()); //track users directed to questionsly via shared links
+                       
+                        window.mixpanel.track("Landed at Stand Alone Page", {
+                            "question": this.formdata.questions[0].body,
+                            "id": this.id,
+                            "timestamp": startingTime
+                        });
+                       
                         this.authordata = res.json().authordata;
                         this.loggedin = res.json().loggedin;
                         this.showsubmit = false;
@@ -107,7 +122,14 @@ export class TakeFormComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        window.mixpanel.track(`Left Question (${(Date.now() - this.startTime)/1000}s): ` + this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " " + Date.now()); //track users directed to questionsly via shared links
+        var startingTime = this.startTime;
+        
+        window.mixpanel.track("Bounced Stand Alone Page", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "question": this.formdata.questions[0].body,
+            "id": this.id,
+            "timestamp": Date.now()
+        });
     }
 
     postForm(data) {
@@ -144,10 +166,24 @@ export class TakeFormComponent implements OnInit {
     }
 
     stopTimer(val: boolean) {
-        if (val) window.mixpanel.track(`Submit: (${(Date.now() - this.startTime) / 1000}s): ` + this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " Submit: " + Date.now()); //track users directed to questionsly via shared links
+        if (val) {
+            var startingTime = this.startingTime;
+            window.mixpanel.track("Answered Stand Alone Question", {
+                "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+                "question": this.formdata.questions[0].body,
+                "id": this.id,
+                "timestamp": Date.now()
+            });
+        }    
     }
 
     clickedCTA() {
-        window.mixpanel.track(`Clicked CTA (${(Date.now() - this.startTime) / 1000}s): ` + this.formdata.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.id + " " + Date.now()); //track users directed to questionsly via shared links
+        var startingTime = this.startingTime;
+        window.mixpanel.track("Clicked CTA in Stand Along Page", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "question": this.formdata.questions[0].body,
+            "id": this.id,
+            "timestamp": Date.now()
+        });
     }
 }

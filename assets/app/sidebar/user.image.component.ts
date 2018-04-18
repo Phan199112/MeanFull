@@ -12,7 +12,10 @@ export class UserImageComponent implements OnInit {
     name: Array<string>;
     type: string;
 
+    startingTime:any;
+
     ngOnInit() {
+        this.startTime = Date.now();
 
         if (this.data && typeof this.data.name === "object") {
             this.type = 'network';
@@ -24,6 +27,13 @@ export class UserImageComponent implements OnInit {
     }
 
     clickedUser() {
-        window.mixpanel.track(`Discovered User from Feed (${this.data.link}): ${this.data.name}`);
+        var startingTime = this.startingTime;
+
+        window.mixpanel.track("Discovered User on Feed", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "userLink": this.data.link,
+            "name": this.data.name,
+            "timestamp": Date.now()
+        });
     }
 }

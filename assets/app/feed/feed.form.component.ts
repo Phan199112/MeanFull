@@ -36,6 +36,7 @@ export class FeedFormComponent implements OnInit {
     submitted: boolean = false;
     location: any;
     showFilter: boolean = false;
+    startingTime: any;
 
 
     //  ------ Emoticon properties to change/check against
@@ -111,6 +112,8 @@ export class FeedFormComponent implements OnInit {
         // this.reactionData = this.reactionssummary(this.intReactionData);
 
         // get profile info
+
+        this.startingTime = Date.now();
 
         this.http.post(`/users/profile/${this.form.object.author.link}`, {slim: true}).toPromise()
             .then(res => {
@@ -355,8 +358,15 @@ export class FeedFormComponent implements OnInit {
     }
 
     postForm(data) {
+        var startingTime = this.startingTime;
         this.emitSubmitted.emit(true);
-        window.mixpanel.track(`Answered Question (${this.form.id}):  ${Date.now()}`);
+        window.mixpanel.track("Answered Question", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "question": this.form.questions[0].body,
+            "id": this.form.id,
+            "timestamp": Date.now()
+        });
+
         data.id = this.form.id;
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
@@ -378,8 +388,15 @@ export class FeedFormComponent implements OnInit {
     }
 
     expand() {
+        var startingTime = this.startingTime;
+
         this.form.contracted = false;
-        window.mixpanel.track(`Clicked 'See More' (${this.form.id}):  ${Date.now()}`);
+        window.mixpanel.track("Clicked 'See More'", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "question": this.data.questions[0].body,
+            "id": this.data.id,
+            "timestamp": Date.now()
+        });
 
     }
 

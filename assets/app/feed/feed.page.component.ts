@@ -21,7 +21,7 @@ export class FeedPageComponent implements OnInit  {
     emailconfirmfailed: boolean = false;
     emailconfirmok: boolean = false;
     completedform: boolean = false;
-    startTime: any;
+    startingTime: any;
 
 
     constructor(private http: Http, private userService: UserService, private route: ActivatedRoute) {
@@ -29,7 +29,20 @@ export class FeedPageComponent implements OnInit  {
 
     ngOnInit() {
         this.startTime = Date.now();
-        window.mixpanel.track(`Feed Start: ${Date.now()}`); //track users directed to questionsly via shared links
+        var startingTime = this.startingTime;
+        window.mixpanel.track("Feed Start", {
+            "timestamp": Date.now()
+        });
+
+        window.addEventListener("beforeunload", function (event) {
+            var amountScrolled = window.scrollY;
+            window.mixpanel.track("Feed End", {
+                "timeSpentOnFeed": (Date.now() - startingTime) / 1000,
+                "scrolled": amountScrolled,
+                "timestamp": Date.now()
+            });
+
+        });
 
         this.tag = null;
 
@@ -93,16 +106,29 @@ export class FeedPageComponent implements OnInit  {
     }
 
     ngOnDestroy() {
-        window.mixpanel.track(`Feed End (${(Date.now() - this.startTime) / 1000}s): ${Date.now()}`); //track users directed to questionsly via shared links
+        var amountScrolled = window.scrollY;
+        var startingTime = this.startingTime;
+        window.mixpanel.track("Feed End", {
+            "timeSpentOnFeed": (Date.now() - startingTime) / 1000,
+            "scrolled": amountScrolled,
+            "timestamp": Date.now()
+        });
 
     }
+
+    
 
     setTag(tag: string) : void {
         this.tag = tag;
     }
 
     askQuestion() {
-        window.mixpanel.track(`Clicked Ask Question: ${Date.now()}`);
+        var startingTime = this.startingTime;
+        window.mixpanel.track("Clicked Ask Question", {
+            "timeSpentOnFeed": (Date.now() - startingTime) / 1000,
+            "timestamp": Date.now()
+        });
+        
 
     }
 

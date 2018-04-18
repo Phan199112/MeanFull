@@ -10,8 +10,10 @@ import { RouterModule, Routes } from '@angular/router';
 export class CommunityImageComponent implements OnInit {
     @Input() data: Object;
     title: string = "";
+    startingTime: any;
 
     ngOnInit() {
+        this.startingTime = Date.now();
         this.title  = this.data.title;
         this.cropTitle();
     }
@@ -32,6 +34,12 @@ export class CommunityImageComponent implements OnInit {
     }
 
     clickedCommunity() {
-        window.mixpanel.track(`Discovered Community from Feed (${this.data.id}): ${this.data.title}`);
+        var startingTime = this.startingTime;
+        window.mixpanel.track("Discovered Community on Feed", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "communityId": this.data.id,
+            "name": this.data.title,
+            "timestamp": Date.now()
+        });
     }
 }

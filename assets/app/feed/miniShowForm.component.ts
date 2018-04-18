@@ -13,6 +13,7 @@ export class MiniShowFormComponent implements OnInit {
     questionnaire: FormGroup;
     contracted: boolean = false;
     showFilters: boolean = false;
+    startingTime: any;
 
     @Input() data: FeedForm;
 
@@ -34,7 +35,7 @@ export class MiniShowFormComponent implements OnInit {
     constructor(private fb: FormBuilder) {}
 
     ngOnInit() {
-        localStorage.setItem("customerIP", "Fuckyees");
+        this.startingTime = Date.now();
         this.createForm();
     }
 
@@ -149,10 +150,17 @@ export class MiniShowFormComponent implements OnInit {
     }
 
     toggleFilter() {
+        var startingTime = this.startingTime;
+
         this.showFilters = !this.showFilters;
         this.toggleFilters.emit(this.showFilters);
 
-        window.mixpanel.track("Apply Filter: " + this.data.questions[0].body + "\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008\u2008" + this.data.id + " " + Date.now()); //track users directed to questionsly via shared links
+        window.mixpanel.track("Clicked Apply Filters", {
+            "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
+            "question": this.data.questions[0].body,
+            "id": this.data.id,
+            "timestamp": Date.now()
+        });
     }
 
 }
