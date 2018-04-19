@@ -3,10 +3,12 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { GoogleCharts } from 'google-charts';
 import { FeedForm } from "./feed.form.model";
 
+import * as $ from 'jquery';
+
 @Component({
     selector: 'mini-show-form',
     templateUrl: './miniShowForm.component.html',
-    styleUrls: ['./miniShowForm.component.scss']
+    styleUrls: ['./miniShowForm.component.scss'],
 })
 
 export class MiniShowFormComponent implements OnInit {
@@ -148,13 +150,13 @@ export class MiniShowFormComponent implements OnInit {
     setRating(rating: number, i: number) {
         this.questionnaire.get('questions').controls[i].get('answer').setValue(rating);
     }
+  
 
     toggleFilter() {
         var startingTime = this.startingTime;
-
         this.showFilters = !this.showFilters;
         this.toggleFilters.emit(this.showFilters);
-
+        
         window.mixpanel.track("Clicked Apply Filters", {
             "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
             "question": this.data.questions[0].body,

@@ -226,13 +226,15 @@ feed-list {
 }
 
 #community-image {
-  height: 150px;
-  width: 150px;
+  max-height: 150px;
+  max-width: 150px;
+  width: auto;
+  height: auto;
   border-radius: 8px;
 
   @media (max-width: 767px) {
-    height: 90px;
-    width: 90px;
+    max-height: 90px;
+    max-width: 90px;
   }
 }
 

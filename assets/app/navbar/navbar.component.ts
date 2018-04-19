@@ -272,6 +272,34 @@ export class NavbarComponent implements OnInit {
     }
 
     onDocClick(event) {
+
+        // Auto Scroll for Filters in Feed Post
+        if ($(event.target).hasClass('filterButton')) {
+            window.setTimeout(() => {
+                var target = $(event.target).closest('.fBody').find('#analysisContainer');
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: Math.ceil(target.offset().top - 100)
+                    }, 700);
+                    return;
+                } 
+                // else {
+                //     window.setTimeout(() => {
+                //         var target = $(event.target).closest('.fBody').;
+                //         console.log("DOWN HERE BUDDY 1", target)
+                //         if (target.length) {
+                //             $('html, body').animate({
+                //                 scrollTop: Math.ceil(target.offset().top - 100)
+                //             }, 700);
+                //             return;
+                //         }
+                //     }, 2000);
+                //   }
+            }, 50);
+                
+            
+            return;
+        }
         
         if (this.showNotifications) {
             this.navExpanded = false;

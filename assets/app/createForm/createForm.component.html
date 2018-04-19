@@ -123,22 +123,31 @@
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Post as</h6>
                     <div style="display:flex; justify-content: flex-start;">
-                        <desc-switch-buttons class="descSwitchButton lhs" [active]="questionnaire.get('anonymous').value" [option]="false" [title]="'Myself'" [description]="'You will be shown as the poster of this question'"
+                        <switch-buttons [active]="questionnaire.get('anonymous').value" [option]="false" [title]="'Myself'" (selected)="toggleAuthor($event)"
+                            formControlName="anonymous"></switch-buttons>
+                        <switch-buttons [active]="questionnaire.get('anonymous').value" [option]="true" [title]="'Anonymous'" (selected)="toggleAuthor($event)"
+                            formControlName="anonymous"></switch-buttons>
+                        <!-- <desc-switch-buttons class="descSwitchButton lhs" [active]="questionnaire.get('anonymous').value" [option]="false" [title]="'Myself'" [description]="'You will be shown as the poster of this question'"
                             (selected)="toggleAuthor($event)" formControlName="anonymous"></desc-switch-buttons>
                         <desc-switch-buttons class="descSwitchButton rhs" [active]="questionnaire.get('anonymous').value" [option]="true" [title]="'Anonymous'" [description]="'No one will know who asked the question'"
-                            (selected)="toggleAuthor($event)" formControlName="anonymous"></desc-switch-buttons>
+                            (selected)="toggleAuthor($event)" formControlName="anonymous"></desc-switch-buttons> -->
                     </div>
                 </div>
 
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Audience</h6>
                     <div style="display:flex; justify-content: flex-start; width: 100%;">
-                        <desc-switch-buttons class="descSwitchButton lhs" [active]="questionnaire.get('public').value" [option]="true" [title]="'Public'" [description]="'Everyone can see view your post'"
-                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
-                        <desc-switch-buttons class="descSwitchButton rhs" [active]="questionnaire.get('public').value" [option]="false" [title]="'Private'" [description]="'Only people with a link can see your post'"
-                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
-                            <!-- <desc-switch-buttons [active]="questionnaire.get('public').value" [option]="false" [title]="'Friends'" [description]="'Only your friends can see your post'"
-                                (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons> -->
+                        <switch-buttons [active]="questionnaire.get('public').value" [option]="true" [title]="'Public'" (selected)="toggleAudience($event)"
+                            formControlName="public"></switch-buttons>
+                        <switch-buttons [active]="questionnaire.get('public').value" [option]="false" [title]="'Private'" (selected)="toggleAudience($event)"
+                            formControlName="public"></switch-buttons>
+
+                        <!-- <desc-switch-buttons class="descSwitchButton lhs" [active]="questionnaire.get('public').value" [option]="true" [title]="'Public'" [description]="'Everyone can see view your post'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons> -->
+                        <!-- <desc-switch-buttons class="descSwitchButton rhs" [active]="questionnaire.get('public').value" [option]="false" [title]="'Private'" [description]="'Only people with a link can see your post'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons> -->
+                        <!-- <desc-switch-buttons [active]="questionnaire.get('public').value" [option]="false" [title]="'Friends'" [description]="'Only your friends can see your post'"
+                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons> -->
                     </div>
                 </div>
 
@@ -159,11 +168,11 @@
 
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Share with your friends</h6>
-                    <div style="display:flex; justify-content: flex-start;">
+                    <div style="display:flex; justify-content: flex-start; width: 100%">
                         <div class="tag-input-wrapper form-control" style="margin-left: 10px;">
                             <div [ngClass]="{'d-none': showPrivateShares || questionnaire.get('sharedWithUsers').value}" class="tag-placeholder text-muted"
                                 (click)="showPrivateShares = true; focusTagInput(sharedWith)">
-                                Enter their name (@john) or email
+                                Enter their name or email
                             </div>
                             <tag-input #sharedWith [ngClass]="{'d-none': !showPrivateShares && questionnaire.get('sharedWithUsers').value === null}"
                                 id="private-shares" [identifyBy]="'value'" [displayBy]="'display'" placeholder="Name" secondaryPlaceholder="Name"
@@ -177,11 +186,11 @@
 
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="settingTitle">Share with a community</h6>
-                    <div style="display:flex; justify-content: flex-start;">
+                    <div style="display:flex; justify-content: flex-start; width: 100%">
                         <div class="tag-input-wrapper form-control" style="margin-left: 10px;">
                             <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}" class="tag-placeholder text-muted"
                                 (click)="showPublicShares = true; focusTagInput(sharedWith)">
-                                Enter community name @ucla @hikers
+                                Enter a Community 
                             </div>
                             <tag-input #sharedWith [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
                                 id="public-shares" placeholder="Name" secondaryPlaceholder="Name" [onAdding]="transformName" (onBlur)="showPublicShares = false"
