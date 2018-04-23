@@ -186,7 +186,7 @@
                 <div style="margin-bottom:12px">
                        <h6 style="font-family:karla; margin-bottom:5px; font-weight:bold; color: #CCC;"> Share link
                     </h6>
-                    <a href="https://www.questionsly.com/takeForm/{{form.id}}" style="font-size:0.7rem" target="_blank">https://www.questionsly.com/takeForm/{{form.id}}</a>
+                    <a [routerLink]="['/feed', { 'survey': form.id }]" style="font-size:0.7rem" target="_blank">https://www.questionsly.com/feed;survey={{form.id}}</a>
                 </div>
 
             <div *ngIf="loggedin">

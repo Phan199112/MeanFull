@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { Http } from "@angular/http";
+import { Router } from "@angular/router";
 import { FeedForm } from "./feed.form.model";
 import { FormArray, FormControl, FormGroup, FormBuilder, NgModel } from "@angular/forms";
 import { AppComponent } from '../app.component';

@@ -50,7 +50,7 @@
     <div class="sContainer comPadding rhs">
         <h3 class="lpText">Discover Communities</h3>
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
-            <div *ngFor="let c of communitylist">
+            <div *ngFor="let c of communitylist" style="flex-basis:33%;">
                 <community-image [data]="c"> </community-image>
             </div>
         </div>
