@@ -7,3 +7,30 @@
         </div>
     </div>
 </div>
+
+<div class="sContainer" *ngIf="loggedin && noLocation">
+    <h3 class="lpText small">Please Complete Your Profile</h3>
+
+    <h3 class="lpText medium" *ngIf="submittedLocation">Thanks for updating your profile!</h3>
+
+    <div *ngIf="!submittedLocation">
+        <p>Location</p>
+        <form [formGroup]="locationForm" novalidate>
+            <div class="formBox">
+                <div class="formGroup">
+                    <label for="city">City</label>
+                    <input type="text" name="city" formControlName="city" />
+                </div>
+                <div class="formGroup">
+                    <label for="state">State</label>
+                    <input type="text" name="city" formControlName="state" />
+                </div>
+                <div class="formGroup">
+                    <label for="country">Country</label>
+                    <input type="text" name="city" formControlName="country" />
+                </div>
+            </div>
+        </form>
+        <p class="submitButton" (click)="updateLocation()">Submit</p>
+    </div>
+</div>

@@ -120,6 +120,7 @@ module.exports = function(app, passport, manager, hashids) {
         UserModel.findOne(obj, function(err, user) {
             if (user) {
                 temp.id = user._id;
+                temp.location = user.location;
                 temp.name = user.name;
                 temp.pic = user.pic;
                 temp.gender = user.gender;
@@ -141,9 +142,13 @@ module.exports = function(app, passport, manager, hashids) {
         var returnobj = {};
 
         if (req.user != null) {
+
+            console.log("REQ USER:::::::",req.user)
+
             returnobj = {firstname: req.user.name.first,
                     lastname: req.user.name.last,
                     dbid: hashids.encodeHex(req.session.userid),
+                    location: req.user.location,
                     picdata: req.user.pic, gender: req.user.gender,
                     fbid:req.user.fbid, fb: req.user.fb};
         }
@@ -310,7 +315,8 @@ module.exports = function(app, passport, manager, hashids) {
                         searchname: data.name.firstname+" "+data.name.lastname,
                         email: data.email,
                         emailConfirmed: {value: false, key: randomkey},
-                        location: {city: data.city, state: data.state, country: data.country},
+                        // location: {city: data.city, state: data.state, country: data.country},
+                        location: {city: "", state: "", country: ""},
                         gender: data.gender,
                         dob: data.dob,
                         pic: data.pic,
@@ -338,7 +344,6 @@ module.exports = function(app, passport, manager, hashids) {
 
                             if (req.body.commToJoinWith) {
                                 var commid = hashids.decodeHex(req.body.commToJoinWith);
-                                console.log("MADE IT IN HERE AND HAVE COMMMMMMMMMMMM ID:", commid);
                                 CommunityModel.findByIdAndUpdate(commid, { $push: { members: k._id } }, function (err, k) {
                                     if (err) {
                                         console.log("Could not join community at signup");

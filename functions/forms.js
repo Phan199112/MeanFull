@@ -205,12 +205,14 @@ exports.analyzeSegregated = function analyzeSegregated(x, users, param, types, a
                                 templocation = users[current.userid].location.city+", "+users[current.userid].location.state+", "+users[current.userid].location.country;
 
                             } else {
-                                templocation = 'Earth';
+                                // "Was Earth"
+                                templocation = 'Unknown';
 
                             }
 
                         } else {
-                            templocation = 'Earth';
+                                // "Was Earth"
+                            templocation = 'Unknown';
 
                         }
 

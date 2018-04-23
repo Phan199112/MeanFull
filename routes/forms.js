@@ -1371,6 +1371,7 @@ module.exports = function(app, passport, manager, hashids) {
                 var tempfunction = function(x) {
                     var promise = new Promise(function(resolve, reject){
                         UserModel.findById(x, function (err, k) {
+                            console.log("Users:",k)
                             if (err) {
                                 if(x == 'anonymous') {
                                     authorprofiles.push("Unknown");
@@ -1380,7 +1381,13 @@ module.exports = function(app, passport, manager, hashids) {
                                 }
                             } else {
                                 if (k !== null) {
-                                    authorprofiles.push(k.location.city+", "+k.location.state+", "+k.location.country);
+
+                                    if (k.location.city == '' && k.location.country == '') {
+                                        // If user hasn't entered an address
+                                        authorprofiles.push("Unknown");
+                                    } else {
+                                        authorprofiles.push(k.location.city+", "+k.location.state+", "+k.location.country);
+                                    }
                                 }
                                 resolve();
                             }

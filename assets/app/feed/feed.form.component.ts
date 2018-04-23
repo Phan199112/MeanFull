@@ -131,7 +131,7 @@ export class FeedFormComponent implements OnInit {
                         this.notaken = 100;
                     } else {
                         // User
-                        this.location = this.userData.userprofile.location || { city: "NA", state: "NA", country: "NA" };
+                        this.location = this.userData.userprofile.location || { city: "", state: "", country: "" };
                         this.name = this.userData.userprofile.name || "";
                         this.nocreated = this.userData.userprofile.nocreated || 0;
                         this.nodiscussion = this.userData.userprofile.nodiscussion || 0;

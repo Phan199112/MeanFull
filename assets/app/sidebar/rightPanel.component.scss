@@ -194,3 +194,78 @@ h3 {
 .small {
   font-size: .9rem;
 }
+
+.medium {
+  font-size: 1rem;
+  margin-top: 20px;
+  color: #CCCCCC;
+}
+
+.submitButton {
+    background: #BBB;
+    border-radius: 8px;
+    padding: 6px 18px;
+    float: right;
+    text-align: center;
+    border: none;
+    display: inline-block;
+    margin: 0 auto;
+    margin-bottom: 12px;
+
+    font-size: .8rem;
+    font-family: Karla;
+    font-weight: 300;
+    color: #FFF !important;
+    outline-style: none;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten(#BBB, 8);
+    }
+}
+
+
+
+p {
+  color: #CCC;
+  font-size: .8rem;
+  font-weight: 700;
+  font-family: Karla;
+  margin: 4px; 
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+
+  label {
+    color: #AAA;
+    font-size: .65rem;
+    margin-right: 6px;
+    margin-bottom: 0;
+    min-width: 22%;
+  }
+
+  input {
+    // border-radius: 0px;
+    outline-style: none;
+    font-size: .75rem;
+    color: #666;
+    flex: 1;
+    font-family: Karla;
+  }
+}
+
+.formBox {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  padding: 10px;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+}

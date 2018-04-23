@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
 import {FormBuilder, FormControl, FormArray, FormGroup, Validators} from "@angular/forms";
 import {FormService} from "../../form.service";
-import {UserService} from "../../user.service";
 import {Router, ActivatedRoute} from "@angular/router";
 import * as autoScroll from 'dom-autoscroller';
 import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';

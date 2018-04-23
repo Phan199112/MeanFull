@@ -34,8 +34,7 @@ export class LoginComponent implements OnInit {
         private http: Http,
         private router: Router,
         private userService: UserService
-    ){
-
+    ){       
     }
     
     ngOnInit() {
@@ -51,9 +50,9 @@ export class LoginComponent implements OnInit {
             }),
             email: ['', Validators.required],
             password: ['', Validators.required],
-            city: ['', Validators.required],
-            state: ['', Validators.required],
-            country: ['United States', Validators.required],
+            // city: ['', Validators.required],
+            // state: ['', Validators.required],
+            // country: ['United States', Validators.required],
             gender: ['female', Validators.required],
             dob: this.fb.group({
                 date : ['', Validators.required],

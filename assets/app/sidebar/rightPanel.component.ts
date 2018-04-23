@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { Http } from "@angular/http";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { Router, Routes } from "@angular/router";
+import { UserService } from "../user.service";
 import { CommunityListComponent } from "../communityContainer/community.list.component";
 
 // import { UserService } from "../user.service";
@@ -9,6 +10,7 @@ import { CommunityListComponent } from "../communityContainer/community.list.com
 @Component({
     selector: 'right-panel',
     templateUrl: './rightPanel.component.html',
+    providers: [UserService],
     styleUrls: ['./rightPanel.component.scss']
 })
 export class RightPanel implements OnInit {
@@ -20,14 +22,24 @@ export class RightPanel implements OnInit {
     postResults: Array<Object>;
     currentEmo: string = null;
     topTags: Array<string> = [];
+    locationForm: FormGroup;
+    noLocation: boolean = false;
+    submittedLocation = false;
 
 
-    constructor(private http: Http, private fb: FormBuilder, private router: Router) {
+    constructor(private http: Http, private fb: FormBuilder, private router: Router, private userService: UserService) {
         this.users = [];
         this.postResults = []
     }
 
     ngOnInit() {
+        this.checkLocation();
+        
+        this.locationForm = this.fb.group({
+            city: ["", Validators.required],
+            state: ["", Validators.required],
+            country: ["", Validators.required]
+        })  
 
         this.http.post('/tags/list')
         // Display the top tags + their counts
@@ -58,6 +70,15 @@ export class RightPanel implements OnInit {
             }).catch(error => alert("Error retrieving form: " + error));
     }
 
+    checkLocation() {
+        this.userService.afterLoginCheck().then(userData => {
+            if (userData != 0) {
+                if (userData.location.city == "") {
+                    this.noLocation = true;
+                }
+            });
+    };
+
     setAsTouched(group) {
         group.markAsTouched();
         for (let i in group.controls) {
@@ -85,6 +106,26 @@ export class RightPanel implements OnInit {
             this.currentTag = tag;
             this.toggledTag.emit(tag);
         }
+    }
+
+    updateLocation() {
+        this.http.post('/users/updateLocation', {location: this.locationForm.value})
+            .toPromise()
+            .then(response => {
+                if (response.json().status == 1) {
+                    this.locationReceived();
+                }
+            })
+        // console.log(this.locationForm.value);
+    }
+
+    locationReceived() {
+        this.submittedLocation = true;
+
+        window.setTimeout(() => {
+            this.noLocation = false;
+         }, 2500);
+        
     }
 
 }

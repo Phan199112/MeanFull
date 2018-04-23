@@ -12,15 +12,9 @@
 
     <div class="col-md-6 col-12 order-3 order-md-2">
         <br>
-        <div class="card" *ngIf="emailconfirmfailed">
-            <div class="card-body btn-danger">Validation of your email address failed. Please try again later.</div>
-        </div>
-        <div class="card" *ngIf="emailconfirmok">
-            <div class="card-body btn-success">Your email address was confirmed! Many thanks for joining Questionsly!</div>
-        </div>
-        <div class="card" *ngIf="completedform">
-            <div class="card-body btn-success">Many thanks for completing a form on Questionsly!</div>
-        </div>
+        <div class="statusMessage bad" *ngIf="emailconfirmfailed">Validation of your email address failed. Please try again later.</div>
+        <div class="statusMessage" *ngIf="emailconfirmok">Your email address was confirmed! Many thanks for joining Questionsly!</div>
+        <div class="card-body btn-success" *ngIf="completedform">Many thanks for completing a form on Questionsly!</div>
         <feed-list [pic]="pic" [pictype]="pictype" [user]="null" [tag]="tag" [pref]="preference"></feed-list>
     </div>
 

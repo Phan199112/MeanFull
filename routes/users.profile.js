@@ -88,6 +88,21 @@ module.exports = function(app, passport, manager, hashids) {
 
     });
 
+    app.post('/users/updateLocation', function(req,res) {
+        var location = req.body.location;
+
+        new Promise(function (resolve, reject) {
+            UserModel.findByIdAndUpdate(req.session.userid, { $set: { location: location } }, function (err, k) {
+                if (err) {
+                    res.json({ status: 0 });
+                } else {
+                    res.json({ status: 1 });
+                }
+            });
+        });
+    });
+
+
 
     app.get('/users/feedlist', function (req, res) {
         // list for feed, provide 9 users

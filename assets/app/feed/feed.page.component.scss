@@ -68,3 +68,19 @@ $primaryGreen: #28ab64;
   margin-top: 20px;
   margin-bottom:20px;
 }
+
+.statusMessage {
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-size: .7rem;
+  padding: 15px 40px;
+  border-radius: 8px;
+  background: lighten(#28ab64, 14);
+  margin-bottom: 18px;
+  margin-top: -8px;
+
+  &.bad {
+    background: #d74a4a;
+  }
+}
