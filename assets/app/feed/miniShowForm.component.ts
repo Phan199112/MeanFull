@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { Http } from "@angular/http";
 import { GoogleCharts } from 'google-charts';
 import { FeedForm } from "./feed.form.model";
 
@@ -18,6 +19,7 @@ export class MiniShowFormComponent implements OnInit {
     startingTime: any;
 
     @Input() data: FeedForm;
+    @Input() shortAnswers: any;
 
     @Input() count: number;
 
@@ -34,11 +36,30 @@ export class MiniShowFormComponent implements OnInit {
 
 
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: FormBuilder, private http: Http,) {}
 
     ngOnInit() {
         this.startingTime = Date.now();
         this.createForm();
+    }
+
+    ngOnChanges() {
+        console.log("Here I hope are my short answers:", this.shortAnswers);
+    }
+
+    getShortAnswerResponses() {
+        this.http.post('/forms/shortAnswerResponses', {})
+            // Display the top tags + their counts
+            .toPromise()
+            .then(res => {
+                let tags = res.json().data;
+                console.log(tags);
+                for (let i = 0; i < tags.length; i++) {
+                    let t = tags[i];
+                    this.topTags.push(t.tag + " (" + t.count + ")");
+                    // this.topTags.push(t.tag);
+                }
+            });
     }
 
     createForm() {

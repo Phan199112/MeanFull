@@ -143,7 +143,6 @@ module.exports = function(app, passport, manager, hashids) {
 
         if (req.user != null) {
 
-            console.log("REQ USER:::::::",req.user)
 
             returnobj = {firstname: req.user.name.first,
                     lastname: req.user.name.last,

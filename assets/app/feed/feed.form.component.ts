@@ -38,6 +38,7 @@ export class FeedFormComponent implements OnInit {
     location: any;
     showFilter: boolean = false;
     startingTime: any;
+    shortAnswers: any = [];
 
 
     //  ------ Emoticon properties to change/check against
@@ -283,6 +284,7 @@ export class FeedFormComponent implements OnInit {
             .toPromise()
             .then(response => {
                 let responsedata = response.json().data;
+                this.shortAnswers = response.json().shortAnswers;
                 let responsestatus = response.json().status;
                 // let responsereaction = response.json().reaction;
                 this.loggedin = response.json().loggedin;

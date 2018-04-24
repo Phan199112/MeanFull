@@ -9,7 +9,9 @@
                         <div *ngIf="question.kind === 'Short Answer' && (i == 0 || !data.contracted)" class="col-md-12">
                             <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required" class="lead">*</span></label>
                             <div *ngIf="question.pic" class="form-group question-pic"><img style="border-radius: 8px;" [src]="question.pic" /></div>
-                            <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label>
+                            <!-- <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label> -->
+                            <label class="wAnswerOpts">Responses</label>
+                            <p *ngFor="let ans of shortAnswers; let x = index;" style="margin-bottom: 4px; margin-left: 6px;"><span *ngIf="x < 2"><strong>{{ans[ans.length -1]}}: </strong>{{ans[0]}}</span></p>
                         </div>
 
                         <!-- Make the question full width -->
