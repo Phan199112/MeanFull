@@ -378,11 +378,14 @@ module.exports = function(app, passport, manager, hashids) {
 
         if (selecteduser == null) {
             // mongoDB query
+            console.log("PRE MONGODB COMMUNITY LIST CALL")
             new Promise(function(resolve, reject) {
                 CommunityModel.findRandom({public: true}).limit(100).exec(function (err, k) {
                     if (err) {
                         reject(err);
                     } else {
+                        console.log("POST MONGODB COMMUNITY LIST CALL")
+
                         if (k != null) {
                             if (k.length <= 9) {
                                 for (i=0; i<k.length; i++) {

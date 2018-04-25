@@ -1517,7 +1517,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             var authorPromises = []
 
-                            if (shortAnswers[0][0].length !== 0) {
+                            if (shortAnswers[0].length !== 0) {
                                 allanswers.map((surveyAnsw, i) => {
                                     if (surveyAnsw.userid !== "anonymous") {
                                         authorPromises.push(
