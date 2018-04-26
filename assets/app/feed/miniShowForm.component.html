@@ -12,11 +12,13 @@
                             <!-- <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label> -->
                             <div class="sa-response-container">
                                 <label class="wAnswerOpts">Responses</label>
-                                <p class="submitButton smaller" (click)="shortAnswersModal.open(returnIndex(i))">See All</p>
+                                <!-- <p class="submitButton smaller" (click)="shortAnswersModal.open(returnIndex(i))">See All</p> -->
                             </div>
                             
                             <p *ngFor="let ans of shortAnswers; let x = index;" style="margin-bottom: 4px; margin-left: 6px;"><span *ngIf="x < 2"><strong>{{ans[ans.length -1]}}: </strong>{{ans[0]}}</span></p>
-                            <p *ngIf="shortAnswers.length > 2" style="margin-bottom: 4px; margin-left: 6px;">...</p>
+                            <!-- <p *ngIf="shortAnswers.length > 2" style="margin-bottom: 4px; margin-left: 6px;">...</p> -->
+                            <p *ngIf="shortAnswers.length > 2" style="margin-bottom: 4px; margin-top: 12px; margin-left: 6px; width: max-content" class="submitButton smaller" (click)="shortAnswersModal.open(returnIndex(i))">See All</p>
+
                         </div>
 
                         <!-- Make the question full width -->
