@@ -20,6 +20,7 @@ export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
     @Input() pic: string;
     @Input() pictype: string;
+    @Input() inComm: string;
     @Output() emitSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     dataselectionform : FormGroup;
@@ -39,6 +40,7 @@ export class FeedFormComponent implements OnInit {
     showFilter: boolean = false;
     startingTime: any;
     shortAnswers: any = [];
+    shareUrl: string;
 
 
     //  ------ Emoticon properties to change/check against
@@ -116,6 +118,12 @@ export class FeedFormComponent implements OnInit {
         // get profile info
 
         this.startingTime = Date.now();
+
+        if (this.inComm) {
+            this.shareUrl = `https://www.questionsly.com/community/${this.inComm};survey=${this.form.id}`;
+        } else {
+            this.shareUrl = `https://www.questionsly.com/feed;survey=${this.form.id}`
+        }
 
         this.http.post(`/users/profile/${this.form.object.author.link}`, {slim: true}).toPromise()
             .then(res => {

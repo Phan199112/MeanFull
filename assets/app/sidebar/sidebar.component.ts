@@ -49,9 +49,7 @@ export class Sidebar implements OnInit, OnChanges {
         this.http.get('/users/feedlist')
             .toPromise()
             .then(response => {
-                console.log("TESTER:", response.json());
                 this.users = this.users.concat(response.json().data);
-
                 this.users = this.users.slice(0,this.amountToFetch);
             });
     }

@@ -162,7 +162,7 @@ export class NavbarComponent implements OnInit {
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
-                                window.console.log(e);
+                                // window.console.log(e);
                                 this.addNotification(e);
                             }
                         }
@@ -195,7 +195,8 @@ export class NavbarComponent implements OnInit {
             case "form-answer":
                 return ['/feed', { 'survey': notification.data }];
             case "form-shared":
-                return ['/community', notification.data.commid, { 'survey': notification.data.formid } ]
+                return ['/community', notification.data.commid ]
+                // return ['/community', notification.data.commid, { 'survey': notification.data.formid } ]
             case "form-discussion":
                 return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
             case "network":

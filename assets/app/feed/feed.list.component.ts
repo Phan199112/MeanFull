@@ -28,18 +28,25 @@ export class FeedListComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.route.params.subscribe(params => {
+            // this.formselected = params.survey;
             // this.tag = params['tag'];
-            this.formselected = params['survey'];
             // this.refreshFeed();
         });
     }
 
     ngOnChanges() {
+        this.route.params.subscribe(params => {
+            // this.tag = params['tag'];
+            this.formselected = params.survey;
+            // this.refreshFeed();
+        });
         this.refreshFeed();
     }
 
 
     refreshFeed() {
+        console.log("params:", this.formselected);
+
         this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, pref: this.pref }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {

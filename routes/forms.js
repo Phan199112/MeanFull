@@ -1280,6 +1280,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                 // add to the beginning
                 if (topsurvey != null) {
+                    console.log("FORM SHOULD HAVE BEEN ADDED TO THE TOP")
                     if (Object.keys(firstform).length !== 0) {
                         outputformsdatatemp.unshift({
                             formdata: firstform.formdata,
@@ -1526,7 +1527,15 @@ module.exports = function(app, passport, manager, hashids) {
                                                     if (err) {
                                                         reject();
                                                     } else {
-                                                        shortAnswers[i].push(`${usr.name.first} ${usr.name.last}`);
+                                                        var pic;
+                                                        if (usr.pic) {
+                                                            pic = usr.pic
+                                                        } else if (usr.facebookID) {
+                                                            pic = `https://graph.facebook.com/${usr.facebookID}/picture?width=40&height=40`;
+                                                        } else {
+                                                            pic = "/images/male.png";
+                                                        }
+                                                        shortAnswers[i].push({name: `${usr.name.first} ${usr.name.last}`, pic: pic});
                                                         resolve();
                                                     }
                                                 });
@@ -1534,7 +1543,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         );
 
                                     } else {
-                                        shortAnswers[i].push("Anonymous")
+                                        shortAnswers[i].push({ name: "Anonymous", pic: "/images/male.png" })
                                     }
 
                                 });

@@ -15,7 +15,8 @@
         <p class="question">All Responses <span>({{answers.length}})</span></p>
         <div class="response-container" *ngFor="let ans of answers; let x = index;">
             <div>
-                <span class="author">{{ans[ans.length -1]}}:</span>
+                <img class="response-image" src="{{ans[ans.length -1].pic}}" />
+                <span class="author">{{ans[ans.length -1].name}}:</span>
                 <span class="response">{{ans[index]}}</span>
             </div>
             <hr>

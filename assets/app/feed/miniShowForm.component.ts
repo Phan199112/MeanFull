@@ -54,7 +54,6 @@ export class MiniShowFormComponent implements OnInit {
     
             qs.map((q,i) => {
                 if (q.kind == "Short Answer") {
-                    console.log('questsion', q.body, i);
                     this.saIndexes.push(i);
                 }
             });
