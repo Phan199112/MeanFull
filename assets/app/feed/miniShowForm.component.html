@@ -10,8 +10,13 @@
                             <label class="lead">{{question.number + 1}}. {{question.body}}<span *ngIf="question.required" class="lead">*</span></label>
                             <div *ngIf="question.pic" class="form-group question-pic"><img style="border-radius: 8px;" [src]="question.pic" /></div>
                             <!-- <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label> -->
-                            <label class="wAnswerOpts">Responses</label>
+                            <div class="sa-response-container">
+                                <label class="wAnswerOpts">Responses</label>
+                                <p class="submitButton smaller" (click)="shortAnswersModal.open(returnIndex(i))">See All</p>
+                            </div>
+                            
                             <p *ngFor="let ans of shortAnswers; let x = index;" style="margin-bottom: 4px; margin-left: 6px;"><span *ngIf="x < 2"><strong>{{ans[ans.length -1]}}: </strong>{{ans[0]}}</span></p>
+                            <p *ngIf="shortAnswers.length > 2" style="margin-bottom: 4px; margin-left: 6px;">...</p>
                         </div>
 
                         <!-- Make the question full width -->
@@ -109,7 +114,6 @@
                                 <input (click)="loginPopup.check(data.loginRequired)" type="number" min="question.lowerBoundary" max="question.upperBoundary"
                                     class="formChoices num" formControlName="answer" *ngIf="question.kind == 'Number'" />
 
-                                <!-- <input (click)="loginPopup.check(data.loginRequired)" type="text" class="formChoices" formControlName="answer" *ngIf="question.kind == 'Short Answer'"/> -->
                                 <textarea class="formChoices sa txtarea" formControlName="answer" *ngIf="question.kind == 'Short Answer'"></textarea>
                                 <div *ngIf="isInvalid(i)" class="invalid-feedback">
                                     Option is required
@@ -132,3 +136,4 @@
 </form>
 
 <login-popup #loginPopup></login-popup>
+<short-answers [answers]="shortAnswers" #shortAnswersModal></short-answers>

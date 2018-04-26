@@ -17,6 +17,7 @@ export class MiniShowFormComponent implements OnInit {
     contracted: boolean = false;
     showFilters: boolean = false;
     startingTime: any;
+    saIndexes: number[] = [];
 
     @Input() data: FeedForm;
     @Input() shortAnswers: any;
@@ -36,6 +37,8 @@ export class MiniShowFormComponent implements OnInit {
 
 
 
+
+
     constructor(private fb: FormBuilder, private http: Http,) {}
 
     ngOnInit() {
@@ -44,7 +47,20 @@ export class MiniShowFormComponent implements OnInit {
     }
 
     ngOnChanges() {
-        console.log("Here I hope are my short answers:", this.shortAnswers);
+        // Load short answer array and get index of questions that are short answers and put their index in an array
+        if (this.data) {
+            var qs = this.data.questions;
+            this.saIndexes = [];
+    
+            qs.map((q,i) => {
+                if (q.kind == "Short Answer") {
+                    console.log('questsion', q.body, i);
+                    this.saIndexes.push(i);
+                }
+            });
+
+        }
+
     }
 
     getShortAnswerResponses() {
@@ -60,6 +76,13 @@ export class MiniShowFormComponent implements OnInit {
                     // this.topTags.push(t.tag);
                 }
             });
+    }
+
+    returnIndex(i: number) : number {
+        // This function feeds the right index to the short answer modal to load the question "See All" was clicked for
+        var ind = this.saIndexes.findIndex(x => x === i);
+
+        return ind;
     }
 
     createForm() {

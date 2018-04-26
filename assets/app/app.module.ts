@@ -44,6 +44,7 @@ import {ToolTipModule} from 'angular2-tooltip';
 import {CreateCommunityComponent} from './createCommunity/createCommunity.component';
 import {ViewCommunityComponent} from "./viewCommunity/viewCommunity.component";
 import {FeedPageComponent } from "./feed/feed.page.component";
+import {ShortAnswers} from "./feed/shortAnswers.component";
 import {YourFormComponent } from "./yourForms/yourform.component";
 import {YourFormListComponent } from "./yourForms/yourform.list.component";
 import {FeedbackComponent } from "./feedback/feedback.component";
@@ -81,6 +82,7 @@ import { RatingQuestionForm } from "./createForm/questionForms/ratingForm.compon
 import { NumberQuestionForm } from "./createForm/questionForms/numberForm.component";
 import { StarsArray } from "./feed/starArray.component";
 import { NgxEchartsModule } from 'ngx-echarts';
+
 
 
 import { ShareService } from "./share.service";
@@ -144,7 +146,8 @@ import { ShareService } from "./share.service";
         SwitchButtons,
         DescriptionSwitchButtons,
         StarsArray,
-        PieChart
+        PieChart,
+        ShortAnswers
     ],
     imports: [
         // vendor //
