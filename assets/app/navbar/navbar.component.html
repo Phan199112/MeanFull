@@ -48,8 +48,8 @@
                                 <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p> -->
                                 <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': true}">Friend Requests</p> -->
                                 <div *ngFor="let notification of networkNotifications.reverse(); let i = index">
-                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
-                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)" (click)="setAsSeen(notification)">
+                                        <div class="flex" style="align-items: center">
                                             <img src="{{notificationPic(notification)}}" class="notifImage" />
                                             <div class="flex fCol" style="max-width: 300px; ">
                                                 <p style="color: #333; margin: 0; font-size: .8rem">
@@ -74,8 +74,8 @@
 
                                 <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p> -->
                                 <div *ngFor="let notification of communityNotifications.reverse(); let i = index">
-                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
-                                        <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                    <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)" (click)="setAsSeen(notification)">
+                                        <div class="flex" style="align-items: center">
                                             <img src="{{notificationPic(notification)}}" class="notifImage" />
                                             <div class="flex fCol" style="max-width: 300px; ">
                                                 <p style="color: #333; margin: 0; font-size: .8rem">
@@ -103,8 +103,8 @@
                             <!-- <p class="notifLabel" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p> -->
                             <p class="noNotifications" *ngIf='communityNotifications.length == 0 && networkNotifications.length == 0 && notifications.length === 0'>No Notifications</p>
                             <div *ngFor="let notification of notifications.reverse(); let i = index">
-                                <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)">
-                                    <div (click)="setAsSeen(notification)" class="flex" style="align-items: center">
+                                <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)" (click)="setAsSeen(notification)">
+                                    <div class="flex" style="align-items: center">
                                         <img src="{{notificationPic(notification)}}" class="notifImage" />
                                         <div class="flex fCol" style="max-width: 300px; ">
                                             <p style="color: #333; margin: 0; font-size: .8rem">
