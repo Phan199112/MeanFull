@@ -248,6 +248,7 @@ module.exports = function(app, passport, manager, hashids) {
             shared: false,
             resultsPublic: true,
             expired: false,
+            activityEmailSent: false,
             typeevent: receivedData.typeevent,
             timestamp: Date.now()}, function(err, k) {
             if (err) {
@@ -270,6 +271,7 @@ module.exports = function(app, passport, manager, hashids) {
         var receivedData = req.body;
         var answerformid = hashids.decodeHex(receivedData.id);
         var formauthorid = null;
+        var activityEmailSent = null;
         var firstQuestion = "";
         const personwhoanswered = null;
         // double check to see whether this user has already submitted an answer:
@@ -361,6 +363,17 @@ module.exports = function(app, passport, manager, hashids) {
                         if (form) {
                             // look up the author of the form
                             formauthorid = form.userid;
+                            activityEmailSent = form.activityEmailSent;
+
+                            if (!form.activityEmailSent) {
+                                form.activityEmailSent = true;
+
+                                form.save(function (err) {
+                                    if (err) {
+                                        console.error('Error saving updated activityEmailSent!');
+                                    }
+                                });
+                            }
                         }
                         resolve();
                     }
@@ -409,6 +422,8 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // email notification
                             // check the notification settings of this user
+
+
                             UserModel.findById(formauthorid, function (err, l) {
                                 if (err) {
                                     // no email
@@ -425,7 +440,9 @@ module.exports = function(app, passport, manager, hashids) {
                                             } else {
                                                 if (Object.keys(l.notifications).length === 0) {
                                                     if (l.notifications.formactivity === true) {
-                                                        emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                        if (!activityEmailSent) {
+                                                            emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                        }
                                                         res.json({status: 1});
                                                     } else {
                                                         // no email
@@ -433,7 +450,9 @@ module.exports = function(app, passport, manager, hashids) {
                                                     }
                                                 } else {
                                                     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                                    emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                    if (!activityEmailSent) {
+                                                        emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                    }
                                                     res.json({status: 1});
                                                 }
                                             }})
@@ -444,6 +463,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                                 }
                             });
+                            
 
                         })
                             .catch(function () {
@@ -505,6 +525,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // email notification
                             // check the notification settings of this user
+
                             UserModel.findById(formauthorid, function (err, l) {
                                 if (err) {
                                     // no email
@@ -516,7 +537,9 @@ module.exports = function(app, passport, manager, hashids) {
                                         if (Object.keys(l.notifications).length === 0) {
 
                                             if (l.notifications.formactivity === true) {
-                                                emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                                if (!activityEmailSent) {
+                                                    emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                                }
                                                 res.json({status: 1});
                                             } else {
                                                 // no email
@@ -524,7 +547,9 @@ module.exports = function(app, passport, manager, hashids) {
                                             }
                                         } else {
                                             // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                            if (!activityEmailSent) {
+                                                emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                            }
                                             res.json({status: 1});
                                         }
 

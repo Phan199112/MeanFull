@@ -19,7 +19,8 @@ var FormSchema = new Schema({
     description: String,
     expired: Boolean,
     timestamp: String,
-    report: Object
+    report: Object,
+    activityEmailSent: Boolean
 });
 
 // Compile model from schema
