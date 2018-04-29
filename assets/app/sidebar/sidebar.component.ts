@@ -91,6 +91,7 @@ export class Sidebar implements OnInit, OnChanges {
                     this.communitylist = [];
                     for (let obj of this.data) {
                         if (k < this.amountToFetch) {
+                            // console.log("obj:", obj);
                             this.communitylist.push(new CommunityModel(obj));
                             k++;
                         }

@@ -461,20 +461,22 @@ module.exports = function(app, passport, manager, hashids) {
                                         var tempa, tempb;
 
                                         // deal with picture
-                                        if (user.facebookID !== null) {
+                                        if (user && user.facebookID !== null) {
                                             tempa = "fb";
                                             tempb = user.facebookID;
                                         } else {
-                                            if (user.pic != null) {
+                                            if (user && user.pic != null) {
                                                 tempa = "local";
                                                 tempb = user.pic;
                                             } else {
                                                 tempa = "default";
-                                                tempb = user.gender;
+                                                tempb = "male";
                                             }
                                         }
 
-                                        networkdata.push({name: user.name, pic: [tempa, tempb], link: hashids.encodeHex(user._id), status: x.status, edgeid: x.id});
+                                        if (user) {
+                                            networkdata.push({name: user.name, pic: [tempa, tempb], link: hashids.encodeHex(user._id), status: x.status, edgeid: x.id});
+                                        }
                                         resolve();
                                     }
                                 });

@@ -121,8 +121,23 @@
                         <!-- IMAGE END -->
                     
                                        
-                        <!-- <div class="flexContainer faStart fdColumn">
+                        <div class="flexContainer faStart fdColumn">
                             <h6 class="title firstTitle">Add Admins</h6>
+                            <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
+                                <div [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}" class="tag-placeholder text-muted" (click)="showAdmins = true; focusTagInput(admins)">
+                                    Add your friends as admins
+                                </div>
+                                <tag-input #admins [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}" [onAdding]="transformName"
+                                    [identifyBy]="'value'" [displayBy]="'display'" placeholder="@name" secondaryPlaceholder="@name" (onBlur)="showAdmins = false"
+                                    [separatorKeyCodes]="[32, 13, 188]" formControlName="admins" [onlyFromAutocomplete]="true" id="admins">
+                                    <tag-input-dropdown identifyBy="id" displayBy="name" [matchingFn]="nameMatching" [focusFirstElement]="true" [autocompleteItems]="friends">
+                                    </tag-input-dropdown>
+                                </tag-input>
+                            </div>
+                        </div>
+
+                        <!-- <div class="flexContainer faStart fdColumn">
+                            <h6 class="title firstTitle">Add Other Community Admins</h6>
                             <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
                                 <div [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}" class="tag-placeholder text-muted" (click)="showAdmins = true; focusTagInput(admins)">
                                     Add your friends as admins

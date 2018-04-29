@@ -98,7 +98,7 @@ var CommunityModel = require('./db.models/community.model');
 
 
 // crons for tags
-cron.schedule('*/5 * * * *', function(){
+cron.schedule('*/2 * * * *', function(){
     var tags = [];
     var datadump = [];
     var promiseslist = [];
