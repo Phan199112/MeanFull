@@ -275,7 +275,10 @@ module.exports = function(app, passport, manager, hashids) {
                                         }
                                     }
 
-                                    memberlist.push({name: user.name, pic: [tempa, tempb], link: hashids.encodeHex(user._id)});
+                                    if (user) {
+                                        memberlist.push({name: user.name, pic: [tempa, tempb], link: hashids.encodeHex(user._id)});
+                                    }
+
                                     resolve();
                                 }
                             });
