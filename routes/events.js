@@ -76,12 +76,21 @@ module.exports = function (app, passport, manager, hashids) {
 
                                         console.log("Username");
                                         
-                                        eventdata.fromuser = {
-                                            fb: userinfo.facebookID,
-                                            pic: userinfo.pic,
-                                            gender: userinfo.gender,
-                                            name: userinfo.name.first + " " + userinfo.name.last,
-                                        };
+                                        // eventdata.fromuser = {
+                                        //     fb: userinfo.facebookID,
+                                        //     pic: userinfo.pic,
+                                        //     gender: userinfo.gender,
+                                        //     name: userinfo.name.first + " " + userinfo.name.last,
+                                        // };
+
+                                        if (userinfo) {
+                                            eventdata.fromuser = {
+                                                fb: userinfo.facebookID,
+                                                pic: userinfo.pic,
+                                                gender: userinfo.gender,
+                                                name: userinfo.name.first + " " + userinfo.name.last,
+                                            };
+                                        }
 
                                         if (event.type === 'network') {
                                             eventdata.fromUserId = hashids.encodeHex(event.fromuser);

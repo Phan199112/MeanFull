@@ -149,7 +149,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // loop the change format
                             for (var i = 0; i < words.length; i++) {
                                 var current = words[i];
-                                console.log(current._id);
+                                // console.log(current._id);
                                 searchtempoutput.push(current._id);
                             }
                             resolve();
@@ -190,7 +190,7 @@ module.exports = function(app, passport, manager, hashids) {
                     });
 
                     return Promise.all(networkpromise).then(function () {
-                        console.log(usersdata);
+                        // console.log(usersdata);
                     });
                 });
         };
@@ -210,7 +210,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // loop the change format
                             for (var i = 0; i < words.length; i++) {
                                 var current = words[i];
-                                console.log(current._id);
+                                // console.log(current._id);
                                 searchtempoutput.push(current._id);
                             }
                             resolve();
