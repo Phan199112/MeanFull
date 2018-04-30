@@ -28,14 +28,14 @@
                     <!-- <div> -->
                         <div class="profileInfo">
                             <h3 class="name">{{name}}</h3>
-                            <h5 class="location" *ngIf="location.country">{{location.city}}, {{location.state}}, {{location.country}}</h5>
-                            <!-- <h5 class="location">{{location}}</h5> -->
+                            <!-- <h5 class="location" *ngIf="location.country">{{location.city}}, {{location.state}}, {{location.country}}</h5> -->
+                            <h5 class="location" *ngIf="location !== '' ">{{location}}</h5>
                             <div style="display: flex;">
                                 <i class="stats fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated ? nocreated : '0'}}</span></i>
                                 <i class="stats fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken ? notaken : '0'}}</span></i>
                                 <i class="stats fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion ? nodiscussion : '0'}}</span></i>
                             </div>
-                            <div *ngIf="(loggedin && !innetwork && !pending && !me) || pending" style="margin-top: 4px">
+                            <div *ngIf="(loggedin && !innetwork && !pending && !me) || pending" style="margin-top: 8px">
                                 <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network</a>
                                 <a class="submitButton" *ngIf="pending">Request Pending</a>
                             </div>

@@ -136,7 +136,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                             this.pronoun = "their";
                         }
 
-                        if (this.userprofile.location == null) {
+                        if (this.userprofile.location == null || this.userprofile.location.city == "") {
                             this.location = "";
                         } else {
                             this.location = this.userprofile.location.city+", "+this.userprofile.location.state+", "+this.userprofile.location.country;
