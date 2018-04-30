@@ -1,5 +1,5 @@
 <div class="container main-container" *ngIf="reject">
-    <h2>You are not authorised to view settings. Please login first!</h2>
+    <h2>You are not authorized to view settings. Please login first.</h2>
 </div>
 <div class="container main-container" *ngIf="!reject">
     <div class="row">
@@ -435,7 +435,7 @@
                                     <button class="btn btn-primary" [disabled]="notificationsettings.form.invalid && notificationsettings.form.wasChecked" (click)="submitNotificationSettingsField()">Save</button>
                                 </form>
 
-                                <div *ngIf="notifications.length > 0">
+                                <!-- <div *ngIf="notifications.length > 0">
                                     <hr>
                                     <h6>List</h6>
                                     <div *ngFor="let notification of notifications">
@@ -549,7 +549,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </ng-template>
                     </ngb-tab>

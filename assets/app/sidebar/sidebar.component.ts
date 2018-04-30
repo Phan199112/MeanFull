@@ -62,8 +62,6 @@ export class Sidebar implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        var searchUser = null;
-
         if (this.name) this.userName = this.name.split(' ')[0];
 
         this.networklist = [];
@@ -78,7 +76,7 @@ export class Sidebar implements OnInit, OnChanges {
                 }
             }
 
-        this.http.post(`/community/list`, { user: searchUser }).toPromise()
+        this.http.post(`/community/list`, { user: this.user }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     this.data = res.json().data;

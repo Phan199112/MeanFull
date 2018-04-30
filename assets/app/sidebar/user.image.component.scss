@@ -41,7 +41,9 @@ a {
 }
 
 .imgTitle {
-    @media (max-width: 768px) {
+  display: block;
+  text-align: center;
+  @media (max-width: 768px) {
     font-size: .55rem;
   }
 }
