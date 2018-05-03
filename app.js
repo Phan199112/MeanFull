@@ -96,107 +96,109 @@ var UserModel = require('./db.models/user.model');
 var FormModel = require('./db.models/form.model');
 var CommunityModel = require('./db.models/community.model');
 
-
+getSearchAndTags();
 // crons for tags
-cron.schedule('*/2 * * * *', function(){
+cron.schedule('*/2 * * * *', getSearchAndTags);
+
+function getSearchAndTags() {
     var tags = [];
     var datadump = [];
     var promiseslist = [];
 
     // mongoDB query for tags, only query public forms
-    new Promise(function(resolve, reject) {
-            var tempfunctionTagsForms = function () {
-                return new Promise(function(resolve, reject) {
-                    FormModel.find({public: true, shared: true}).cursor()
-                        .on('data', function (form) {
-                            // form is one entry of many
-                            // there may be multi hashtags
-                            if (form.hashtags != null) {
-                                for (i = 0; i < form.hashtags.length; i++) {
-                                    if (tags[form.hashtags[i]] == null) {
-                                        tags[form.hashtags[i]] = 1;
-                                    } else {
-                                        tags[form.hashtags[i]] += 1;
-                                    }
-
+    new Promise(function (resolve, reject) {
+        var tempfunctionTagsForms = function () {
+            return new Promise(function (resolve, reject) {
+                FormModel.find({ public: true, shared: true }).cursor()
+                    .on('data', function (form) {
+                        // form is one entry of many
+                        // there may be multi hashtags
+                        if (form.hashtags != null) {
+                            for (i = 0; i < form.hashtags.length; i++) {
+                                if (tags[form.hashtags[i]] == null) {
+                                    tags[form.hashtags[i]] = 1;
+                                } else {
+                                    tags[form.hashtags[i]] += 1;
                                 }
-                            }
-                        })
-                        .on('error', function (err) {
-                            reject(err);
-                        })
-                        .on('end', function () {
-                            resolve();
-                        });
-                });
-            };
 
-            var tempfunctionTagsCommunities = function () {
-                return new Promise(function(resolve, reject) {
-                    CommunityModel.find({public: true}).cursor()
-                        .on('data', function (comm) {
-                            // form is one entry of many
-                            // there may be multi hashtags
-                            if (comm.hashtags != null) {
-                                for (i = 0; i < comm.hashtags.length; i++) {
-                                    if (tags[comm.hashtags[i]] == null) {
-                                        tags[comm.hashtags[i]] = 1;
-                                    } else {
-                                        tags[comm.hashtags[i]] += 1;
-                                    }
-                                }
                             }
-                        })
-                        .on('error', function (err) {
-                            reject(err);
-                        })
-                        .on('end', function () {
-                            resolve();
-                        });
-                });
-            };
-
-            var randomCommunitities = function() {
-                return new Promise(function(resolve, reject) {
-                    CommunityModel.syncRandom(function (err, result) {
+                        }
+                    })
+                    .on('error', function (err) {
+                        reject(err);
+                    })
+                    .on('end', function () {
                         resolve();
                     });
-                });
-            };
-
-            var tempfunctionListUsers = function () {
-                var userlist = [];
-                return new Promise(function(resolve, reject) {
-                    UserModel.find({}).cursor()
-                        .on('data', function (user) {
-                            userlist.push(user.name.first+" "+user.name.last);
-                        })
-                        .on('error', function (err) {
-                            reject(err);
-                        })
-                        .on('end', function () {
-                            console.log(userlist);
-                            resolve();
-                        });
-                });
-            };
-
-            // push promises to array
-            promiseslist.push(tempfunctionTagsForms());
-            //promiseslist.push(tempfunctionTagsCommunities());
-            promiseslist.push(randomCommunitities());
-            //promiseslist.push(tempfunctionListUsers());
-
-            return Promise.all(promiseslist).then(function () {
-                for (var key in tags) {
-                    datadump.push({tag: key, count: +tags[key]});
-                }
-                resolve();
-            }).catch(function() {
-                reject();
             });
+        };
 
-        })
+        var tempfunctionTagsCommunities = function () {
+            return new Promise(function (resolve, reject) {
+                CommunityModel.find({ public: true }).cursor()
+                    .on('data', function (comm) {
+                        // form is one entry of many
+                        // there may be multi hashtags
+                        if (comm.hashtags != null) {
+                            for (i = 0; i < comm.hashtags.length; i++) {
+                                if (tags[comm.hashtags[i]] == null) {
+                                    tags[comm.hashtags[i]] = 1;
+                                } else {
+                                    tags[comm.hashtags[i]] += 1;
+                                }
+                            }
+                        }
+                    })
+                    .on('error', function (err) {
+                        reject(err);
+                    })
+                    .on('end', function () {
+                        resolve();
+                    });
+            });
+        };
+
+        var randomCommunitities = function () {
+            return new Promise(function (resolve, reject) {
+                CommunityModel.syncRandom(function (err, result) {
+                    resolve();
+                });
+            });
+        };
+
+        var tempfunctionListUsers = function () {
+            var userlist = [];
+            return new Promise(function (resolve, reject) {
+                UserModel.find({}).cursor()
+                    .on('data', function (user) {
+                        userlist.push(user.name.first + " " + user.name.last);
+                    })
+                    .on('error', function (err) {
+                        reject(err);
+                    })
+                    .on('end', function () {
+                        console.log(userlist);
+                        resolve();
+                    });
+            });
+        };
+
+        // push promises to array
+        promiseslist.push(tempfunctionTagsForms());
+        //promiseslist.push(tempfunctionTagsCommunities());
+        promiseslist.push(randomCommunitities());
+        //promiseslist.push(tempfunctionListUsers());
+
+        return Promise.all(promiseslist).then(function () {
+            for (var key in tags) {
+                datadump.push({ tag: key, count: +tags[key] });
+            }
+            resolve();
+        }).catch(function () {
+            reject();
+        });
+
+    })
         .then(function () {
             // delete all current counts
             TagsModel.collection.drop();
@@ -211,6 +213,7 @@ cron.schedule('*/2 * * * *', function(){
                 }
             });
         });
-});
+}
+
 
 module.exports = app;

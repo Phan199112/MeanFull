@@ -975,15 +975,23 @@ module.exports = function(app, passport, manager, hashids) {
         // console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
         if (selectedtags != null && selecteduser == null) {
-            queryobj = {public: true, shared: true, hashtags: selectedtags};
-        } else if (selectedtags != null && selecteduser != null) {
-            queryobj = {public: true, shared: true, hashtags: selectedtags, userid: selecteduser};
+            // Feed for home page with selected tags
+            queryobj = { shared: true, hashtags: selectedtags};
         } else if (selectedtags == null && selecteduser != null) {
-            queryobj = {public: true, shared: true, userid: selecteduser};
+            // Feed for User Profile
+            if (req.session.userid == selecteduser) {
+                // View own profile
+                queryobj = { shared: true, userid: selecteduser};
+            } else {
+                // Viewing someone else's profile
+                queryobj = {public: true, shared: true, userid: selecteduser};
+            }
         } else if (selectedtags == null && selectedcomm != null) {
+            // Feed for Community
             queryobj = {shared: true, sharedWithCommunities: selectedcomm};
         }
         else if (selectedtags == null && selecteduser == null && selectedcomm == null) {
+            // Feed for home page
             queryobj = { public: true, shared: true };
         }
         else {
