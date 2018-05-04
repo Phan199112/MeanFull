@@ -976,7 +976,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         if (selectedtags != null && selecteduser == null) {
             // Feed for home page with selected tags
-            queryobj = { shared: true, hashtags: selectedtags};
+            queryobj = { public: true, shared: true, hashtags: selectedtags};
         } else if (selectedtags == null && selecteduser != null) {
             // Feed for User Profile
             if (req.session.userid == selecteduser) {
