@@ -2,7 +2,8 @@ $formContainerColor: #fff;
 $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
-$primaryGreen: #28ab64;
+$primaryColor: #28ab64;
+
 
 #FeedContainer {
   background-color: $whiteColor;
@@ -26,12 +27,12 @@ $primaryGreen: #28ab64;
   font-size: 1.2rem;
   font-weight: 400;
   color: white;
-  background-color: $primaryGreen;
-  // border: 3px solid $primaryGreen;
+  background-color: $primaryColor;
+  // border: 3px solid $primaryColor;
   border-radius: 10px;
 
   &:hover {
-    background-color: lighten($primaryGreen, 10);
+    background-color: lighten($primaryColor, 10);
   }
 
   @media (max-width: 767px) {
