@@ -64,7 +64,7 @@ exports.sendEmailVerification = function sendEmailVerification(email, link, firs
 
 
     renderTemplate("email-verification", {subject: subject, firstName: firstName, confirmationLink: link}).then(function(html) {
-        // exports.sendEmail(email, subject, html, messagesafe);
+        exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -73,7 +73,7 @@ exports.sendNewPassword = function sendNewPassword(email, pw) {
     var subject = "New password requested";
     
     renderTemplate("new-password", {subject: subject, password: pw}).then(function(html) {
-        // exports.sendEmail(email, subject, html, messagesafe);
+        exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
