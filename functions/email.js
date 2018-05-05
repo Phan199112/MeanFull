@@ -64,7 +64,7 @@ exports.sendEmailVerification = function sendEmailVerification(email, link, firs
 
 
     renderTemplate("email-verification", {subject: subject, firstName: firstName, confirmationLink: link}).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -73,7 +73,7 @@ exports.sendNewPassword = function sendNewPassword(email, pw) {
     var subject = "New password requested";
     
     renderTemplate("new-password", {subject: subject, password: pw}).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -93,7 +93,7 @@ exports.sendNotificationFriendRequest = function sendNotificationFriendRequest(e
         date: dateString,
         link: "https://www.questionsly.com/settings;page=notifications"
     }).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -108,7 +108,7 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
         pic: getUserPic(user),
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -127,7 +127,7 @@ exports.sendNotificationCommRequest = function sendNotificationCommRequest(email
         date: dateString,
         link: `https://www.questionsly.com/settings;page=notifications`
     }).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -146,7 +146,7 @@ exports.sendNotificationDiscussion = function sendNotificationDiscussion(email, 
         question: firstquestion,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -166,7 +166,7 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
         date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function (html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -188,7 +188,7 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
         date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
@@ -202,7 +202,7 @@ exports.sendNotificationError = function sendNotificationError(error) {
         subject: subject, 
         error: error
     }).then(function(html) {
-        exports.sendEmail(email, subject, html, messagesafe);
+        // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 
