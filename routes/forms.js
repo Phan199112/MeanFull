@@ -1193,7 +1193,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // retrieve forms associated with particular users
                 var tempfunctionByUser = function() {
                     return new Promise(function(resolve, reject){
-                        AnswersModel.find({userid: queryobj.userid}).limit(20).cursor()
+                        AnswersModel.find({userid: queryobj.userid}).cursor()
                             .on('data', function(ans){
                                 answerdata.push(ans.formid);
                             })
