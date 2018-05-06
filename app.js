@@ -15,6 +15,7 @@ var flash = require('req-flash');
 var fs = require('fs');
 var sslRedirect = require('heroku-ssl-redirect');
 
+
 // HTTPS
 // enable ssl redirect
 app.use(sslRedirect());
@@ -88,6 +89,8 @@ app.use('/tos', function(req, res, next) {
 app.use(function(req, res, next) {
     res.render("index");
 });
+
+
 
 // cron jobs
 var cron = require('node-cron');

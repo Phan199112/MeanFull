@@ -2,6 +2,7 @@ var FormModel = require('../db.models/form.model');
 var AnswersModel = require('../db.models/answers.model');
 var CommunityModel = require('../db.models/community.model');
 var ReactionsModel = require('../db.models/reactions.model');
+var EmailStoreModel = require('../db.models/emailStore.model');
 var UserModel = require('../db.models/user.model');
 var log = require("../functions/logs");
 var notifications = require("../functions/notifications");
@@ -164,7 +165,7 @@ module.exports = function(app, passport, manager, hashids) {
                     for (l = 0; l < emailaddresses.length; l++) {
                         if (alreadyincluded.indexOf(emailaddresses[l]) === -1) {
                             alreadyincluded.push(emailaddresses[l]);
-                            emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
+                            // emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
                         }
                     }
                     //
@@ -264,6 +265,10 @@ module.exports = function(app, passport, manager, hashids) {
             }
         });
     });
+
+
+
+    
 
 
     app.post('/forms/answers', function(req, res, next) {
@@ -438,23 +443,70 @@ module.exports = function(app, passport, manager, hashids) {
                                                 // no email
                                                 res.json({ status: 1 });
                                             } else {
-                                                if (Object.keys(l.notifications).length === 0) {
-                                                    if (l.notifications.formactivity === true) {
-                                                        if (!activityEmailSent) {
-                                                            emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                // if (Object.keys(l.notifications).length === 0) {
+                                                //     if (l.notifications.formactivity === true) {
+                                                //         if (!activityEmailSent) {
+                                                //             emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                //         }
+                                                //         res.json({status: 1});
+                                                //     } else {
+                                                //         // no email
+                                                //         res.json({status: 1});
+                                                //     }
+                                                // } else {
+                                                //     // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                                //     if (!activityEmailSent) {
+                                                //         emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
+                                                //     }
+                                                //     res.json({status: 1});
+                                                // }
+
+                                                new Promise(function (resolve, reject) {
+                                                    EmailStoreModel.findOne({ userid: formauthorid }, function (err, e) {
+                                                        if (err) {
+                                                            console.log("Error fetching emailstore in form answer");
+                                                            reject();
+                                                        } else {                                                                
+                                                            if (e) {                                                                
+                                                                var questionNotifications = e.questions;
+                                                                var qInd = questionNotifications.findIndex(q => q.formid === answerformid);
+
+                                                                if (qInd != -1) {
+                                                                    questionNotifications[qInd].responseCount += 1;
+                                                                } else {
+                                                                    questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 });
+                                                                }
+    
+                                                                e.save(function (err) {
+                                                                    if (err) {
+                                                                        console.log("Problem pushing form answer update to email store");
+                                                                    }
+                                                                });
+                                                                resolve();
+    
+                                                            } else {    
+                                                                EmailStoreModel.create({
+                                                                    userid: formauthorid,
+                                                                    questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 }],
+                                                                    community: [],
+                                                                    network: []
+                                                                }, function (err, k) {
+                                                                    if (err) {
+                                                                        console.log("Failed to create emailstore object", err);
+                                                                        reject();
+                                                                    } else {
+                                                                        resolve();
+                                                                    }
+                                                                });
+                                                            }
                                                         }
-                                                        res.json({status: 1});
-                                                    } else {
-                                                        // no email
-                                                        res.json({status: 1});
-                                                    }
-                                                } else {
-                                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                                    if (!activityEmailSent) {
-                                                        emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
-                                                    }
-                                                    res.json({status: 1});
-                                                }
+                                                    });
+                                                }).catch(err => {
+                                                    console.log("emailstore form answer promise rejected", err);
+                                                });
+                                                
+                                                res.json({status: 1});
+
                                             }})
                                     } else {
                                         //no user found
@@ -534,24 +586,69 @@ module.exports = function(app, passport, manager, hashids) {
                                 } else {
                                     if (l) {
                                         // send
-                                        if (Object.keys(l.notifications).length === 0) {
+                                        // if (Object.keys(l.notifications).length === 0) {
 
-                                            if (l.notifications.formactivity === true) {
-                                                if (!activityEmailSent) {
-                                                    emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                        //     if (l.notifications.formactivity === true) {
+                                        //         if (!activityEmailSent) {
+                                        //             emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                        //         }
+                                        //         res.json({status: 1});
+                                        //     } else {
+                                        //         // no email
+                                        //         res.json({status: 1});
+                                        //     }
+                                        // } else {
+                                        //     // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                        //     if (!activityEmailSent) {
+                                        //         emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
+                                        //     }
+                                        //     res.json({status: 1});
+                                        // }
+                                        new Promise(function (resolve, reject) {
+                                            EmailStoreModel.findOne({ userid: formauthorid }, function (err, e) {
+                                                if (err) {
+                                                    console.log("Error fetching emailstore in form answer");
+                                                    reject();
+                                                } else {
+                                                    if (e) {
+                                                        var questionNotifications = e.questions;
+                                                        var qInd = questionNotifications.findIndex(q => q.formid === answerformid);
+
+                                                        if (qInd != -1) {
+                                                            questionNotifications[qInd].responseCount += 1;
+                                                        } else {
+                                                            questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 });
+                                                        }
+
+                                                        e.save(function (err) {
+                                                            if (err) {
+                                                                console.log("Problem pushing form answer update to email store");
+                                                            }
+                                                        });
+                                                        resolve();
+
+                                                    } else {
+                                                        EmailStoreModel.create({
+                                                            userid: formauthorid,
+                                                            questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 }],
+                                                            community: [],
+                                                            network: []
+                                                        }, function (err, k) {
+                                                            if (err) {
+                                                                console.log("Failed to create emailstore object", err);
+                                                                reject();
+                                                            } else {
+                                                                resolve();
+                                                            }
+                                                        });
+                                                    }
                                                 }
-                                                res.json({status: 1});
-                                            } else {
-                                                // no email
-                                                res.json({status: 1});
-                                            }
-                                        } else {
-                                            // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                            if (!activityEmailSent) {
-                                                emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
-                                            }
-                                            res.json({status: 1});
-                                        }
+                                            });
+                                        }).catch(err => {
+                                            console.log("emailstore form answer promise rejected", err);
+                                        });
+
+                                        res.json({status: 1});
 
                                     } else {
                                         //no user found
@@ -1548,9 +1645,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 });
                             }
 
-                            Promise.all(authorPromises).then(() => {
-                                console.log("ALL ANSWERS WOOOOO :::::::::::::::::>", shortAnswers);
-                                //
+                            Promise.all(authorPromises).then(() => {                            
                                 resolve();
                             }).catch(() => { console.log('Problem pushing author names to short responses') })
 

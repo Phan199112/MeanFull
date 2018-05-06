@@ -2,6 +2,7 @@ var CommunityModel = require('../db.models/community.model');
 var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
 var EventModel = require('../db.models/event.model');
+var EmailStoreModel = require('../db.models/emailStore.model');
 var math = require("../functions/math");
 var log = require("../functions/logs");
 var networkfunctions = require('../functions/network');
@@ -24,6 +25,8 @@ module.exports = function(app, passport, manager, hashids) {
                 // save value
                 unhashedAdmins.push(hashids.decodeHex(receivedData.admins[i]));
             }
+            console.log("ADMINS:", unhashedAdmins);
+
         }
 
         // mongodb
@@ -40,31 +43,88 @@ module.exports = function(app, passport, manager, hashids) {
                     // write notifictions
                     if (unhashedAdmins != null) {
                         for (var i = 0; i < unhashedAdmins.length; i++) {
+                            var currentAdmin = unhashedAdmins[i];
                             // notification
-                            notifications.createNotification(unhashedAdmins[i], req.session.userid, "comm-admin", "Community invitation", hashids.encodeHex(k._id));
+                            notifications.createNotification(currentAdmin, req.session.userid, "comm-admin", "Community invitation", hashids.encodeHex(k._id));
+                            
                             // send email
-                            UserModel.findById(unhashedAdmins[i], function(err, l) {
+
+                            UserModel.findById(currentAdmin, function(err, l) {
+
                                 if (err) {
                                     console.log(err);
                                 } else {
-                                    if (Object.keys(l.notifications).length === 0) {
-                                        if (l.notifications.commrequest === true) {
-                                            emailfunctions.sendNotificationCommRequest(l.email, req.user);
-                                        }
-                                    } else {
+                                    // if (Object.keys(l.notifications).length === 0) {
+                                        // if (l.notifications.commrequest === true) {
+
+                                            new Promise(function(resolve, reject) {
+                                                EmailStoreModel.findOne({userid: currentAdmin}, function(err,e) {
+                                                    if (err) {
+                                                        console.log("Error fetching emailstore in community");
+                                                        reject();
+                                                    }
+                                                    UserModel.findById(req.session.userid, function (err, me) {
+                                                        if (err) {
+                                                            console.log("Error fetching user!");
+                                                            reject();
+                                                        } else {
+                                                            var senderName = me.name.first + " " + me.name.last;
+
+                                                            if (e) {
+                                                                var communityNotifications = e.community;
+                                                                communityNotifications.push({ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title })
+
+                                                                e.save(function (err) {
+                                                                    if (err) {
+                                                                        console.log("Problem pushing community update to email store");
+                                                                    }
+                                                                });
+                                                                resolve();
+
+                                                            } else {
+                                                                console.log("YOYOYOYOYOYOYOY", currentAdmin);
+                                                                EmailStoreModel.create({
+                                                                    userid: currentAdmin,
+                                                                    community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title }],
+                                                                    questions:[],
+                                                                    network: []                                                                
+                                                                }, function (err, k) {
+                                                                    if (err) {
+                                                                        console.log("Failed to create emailstore object");
+                                                                        reject();
+                                                                    } else {
+                                                                        resolve();
+                                                                    }
+                                                                });                                                            
+                                                            }
+
+                                                        }
+                                                    });
+                                                });
+                                            })
+                                            .catch(err => {
+                                                console.log("emailstore promise rejected");
+                                            });
+
+
+                                            // emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                        // }
+                                    // } else {
                                         // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                        emailfunctions.sendNotificationCommRequest(l.email, req.user);
-                                    }
+                                        // emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                    // }
                                 }
                             });
                         }
+                        res.json({ status: 1, id: hashids.encodeHex(k._id) });
+                        
                     }
 
                     // log
                     log.writeLog(req.session.userid, 'create community', req.ip);
 
                     // return
-                    res.json({status: 1, id: hashids.encodeHex(k._id)});
+                    // res.json({status: 1, id: hashids.encodeHex(k._id)});
                 }
         });
     });
@@ -108,15 +168,62 @@ module.exports = function(app, passport, manager, hashids) {
                                 console.log(err);
                             } else {
                                 if (Object.keys(l.notifications).length === 0) {
-                                    if (l.notifications.commrequest === true) {
-                                        emailfunctions.sendNotificationCommRequest(l.email, req.user);
-                                    }
-                                } else {
-                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                    emailfunctions.sendNotificationCommRequest(l.email, req.user);
-                                }
+                                //     if (l.notifications.commrequest === true) {
+                                //         emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                //     }
+                                // } else {
+                                //     if no settings are recorded, emails should be send as this is default policity as signup as well
+                                //     emailfunctions.sendNotificationCommRequest(l.email, req.user);
+                                // }
+                                new Promise(function (resolve, reject) {
+                                    EmailStoreModel.findOne({ userid: unhashedAdmins[i] }, function (err, e) {
+                                        if (err) {
+                                            console.log("Error fetching emailstore in community");
+                                            reject();
+                                        }
+
+                                        UserModel.findById(req.session.userid, function (err, me) {
+                                            if (err) {
+                                                console.log("Error fetching user!");
+                                                reject();
+                                            } else {
+                                                var senderName = me.name.first + " " + me.name.last;
+
+                                                if (e) {
+                                                    var communityNotifications = e.community;
+                                                    communityNotifications.push({ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title })
+
+                                                    e.save(function (err) {
+                                                        if (err) {
+                                                            console.log("Problem pushing community update to email store");
+                                                        }
+                                                    });
+                                                    resolve();
+
+                                                } else {
+                                                    EmailStoreModel.create({
+                                                        userid: unhashedAdmins[i],
+                                                        community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title }],
+                                                        questions: [],
+                                                        network: []  
+                                                    }, function (err, k) {
+                                                        if (err) {
+                                                            console.log("Failed to create emailstore object");
+                                                            reject();
+                                                        } else {
+                                                            resolve();
+                                                        }
+                                                    });
+                                                }
+
+                                            }
+                                        });
+                                    });
+                                }).catch(err => {
+                                    console.log("emailstore promise rejected");
+                                });
                             }
-                        });
+                        }});
                     }
                 }
 
@@ -155,16 +262,63 @@ module.exports = function(app, passport, manager, hashids) {
                                     console.log(err);
                                 } else {
 
-                                    var sender = s.name.first + " " + s.name.last;
+                                    // var sender = s.name.first + " " + s.name.last;
 
-                                    if (Object.keys(l.notifications).length === 0) {
-                                        if (l.notifications.commrequest === true) {
-                                            emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
-                                        }
-                                    } else {
-                                        // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                        emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
-                                    }
+                                    // if (Object.keys(l.notifications).length === 0) {
+                                    //     if (l.notifications.commrequest === true) {
+                                    //         emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
+                                    //     }
+                                    // } else {
+                                    //     if no settings are recorded, emails should be send as this is default policity as signup as well
+                                    //     emailfunctions.sendNotificationCommRequest(l.email, sender, commtitle, commpic);
+                                    // }
+                                    new Promise(function (resolve, reject) {
+                                        EmailStoreModel.findOne({ userid: seluserid }, function (err, e) {
+                                            if (err) {
+                                                console.log("Error fetching emailstore in community");
+                                                reject();
+                                            }
+
+                                            UserModel.findById(req.session.userid, function (err, me) {
+                                                if (err) {
+                                                    console.log("Error fetching user!");
+                                                    reject();
+                                                } else {
+                                                    var senderName = me.name.first + " " + me.name.last;
+
+                                                    if (e) {
+                                                        var communityNotifications = e.community;
+                                                        communityNotifications.push({ senderName: senderName, communityPic: commpic, communityTitle: commtitle })
+
+                                                        e.save(function (err) {
+                                                            if (err) {
+                                                                console.log("Problem pushing community update to email store");
+                                                            }
+                                                        });
+                                                        resolve();
+
+                                                    } else {
+                                                        EmailStoreModel.create({
+                                                            userid: seluserid,
+                                                            community: [{ senderName: senderName, communityPic: commpic, communityTitle: commtitle }],
+                                                            questions: [],
+                                                            network: []  
+                                                        }, function (err, k) {
+                                                            if (err) {
+                                                                console.log("Failed to create emailstore object");
+                                                                reject();
+                                                            } else {
+                                                                resolve();
+                                                            }
+                                                        });
+                                                    }
+
+                                                }
+                                            });
+                                        });
+                                    }).catch(err => {
+                                        console.log("emailstore promise rejected");
+                                    });
 
                                  }
                             });
@@ -870,7 +1024,10 @@ module.exports = function(app, passport, manager, hashids) {
                             for (l = 0; l < emailaddresses.length; l++) {
                                 if (alreadyincluded.indexOf(emailaddresses[l]) === -1) {
                                     alreadyincluded.push(emailaddresses[l]);
-                                    emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
+                                    // This email would notify people that a question is shared in a community of theirs.
+                                    // TO-DO: Create a notification for this, not an email
+                                    // emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
+                                    
                                 }
                             }
                             //

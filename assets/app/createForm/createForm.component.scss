@@ -521,10 +521,10 @@ h3 {
 }
 
 #publishBtn {
-    position: relative;
-    bottom: 12px;
-    right: 20px;
-    left: 20px;
+    // position: static;
+    // bottom: 12px;
+    // right: 20px;
+    // left: 20px;
     margin: 10px auto;
     margin-bottom: 5px;
     width: 100%;
@@ -532,7 +532,7 @@ h3 {
     max-width: 80%;
 
     @media (max-width: 767px) {
-        position: static;
+        // position: static;
         margin: 15px auto;
     }
 }

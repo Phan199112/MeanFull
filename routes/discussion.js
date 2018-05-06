@@ -1,6 +1,7 @@
 var DiscussionModel = require('../db.models/discussion.model');
 var FormModel = require('../db.models/form.model');
 var UserModel = require('../db.models/user.model');
+var EmailStoreModel = require('../db.models/emailStore.model');
 var log = require("../functions/logs");
 var emailfunctions 	= require("../functions/email");
 var notifications = require("../functions/notifications");
@@ -28,15 +29,18 @@ module.exports = function(app, passport, manager, hashids) {
 
 
                 var authorid = null;
+                var formid = hashids.decodeHex(receivedData.formid);
+                var firstquestion;
 
                 return new Promise(function(resolve, reject) {
-                    FormModel.findById(hashids.decodeHex(receivedData.formid), function (err, form) {
+                    FormModel.findById(formid, function (err, form) {
                         if (err) {
                             reject(err);
                         } else {
                             if (form) {
                                 // look up the author of the form
                                 authorid = form.userid;
+                                firstquestion = form.questions[0].body;
                             }
                             resolve();
                         }
@@ -75,48 +79,104 @@ module.exports = function(app, passport, manager, hashids) {
                                                 res.json({ status: 1 });
 
                                             } else {
+                                                new Promise(function (resolve, reject) {
+                                                    EmailStoreModel.findOne({ userid: authorid }, function (err, e) {
+                                                        if (err) {
+                                                            console.log("Error fetching emailstore in discussion");
+                                                            reject();
+                                                        }
+
+                                                        UserModel.findById(authorid, function (err, me) {
+                                                            if (err) {
+                                                                console.log("Error fetching user!");
+                                                                reject();
+                                                            } else {
+
+                                                                if (e) {
+                                                                    var questionNotifications = e.questions;
+                                                                    var qInd = questionNotifications.findIndex(q => q.formid === formid);
+                                                                    if (qInd != -1) {
+                                                                        questionNotifications[qInd].commentCount += 1;
+                                                                    } else {
+                                                                        questionNotifications.push({formid: formid, question: firstquestion, commentCount: 1, responseCount: 0});
+                                                                    }
+
+                                                                    e.save(function (err) {
+                                                                        if (err) {
+                                                                            console.log("Problem pushing discussion update to email store");
+                                                                        }
+                                                                    });
+                                                                    resolve();
+
+                                                                } else {
+                                                                    EmailStoreModel.create({
+                                                                        userid: authorid,
+                                                                        questions: [{ formid: formid, question: firstquestion, commentCount: 1, responseCount: 0 }],
+                                                                        community: [],
+                                                                        network: []  
+                                                                    }, function (err, k) {
+                                                                        if (err) {
+                                                                            console.log("Failed to create emailstore object");
+                                                                            reject();
+                                                                        } else {
+                                                                            resolve();
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                            }
+                                                        });
+                                                    });
+                                                }).catch(err => {
+                                                    console.log("emailstore discussion promise rejected");
+                                                });
+
+                                                res.json({status: 1});
+
+
+
 
                                                 // send
-                                                if (Object.keys(authr.notifications).length === 0) {
-                                                    if (authr.notifications.discussion === true) {
-                                                        emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
+                                                // if (Object.keys(authr.notifications).length === 0) {
+                                                //     if (authr.notifications.discussion === true) {
+                                                //         emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
 
-                                                        if (pc.length > 0) {
-                                                            for (let z=0; z < pc.length; z++) {
-                                                                UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
-                                                                    if (err) {
-                                                                        // no email
-                                                                        res.json({ status: 1 });
-                                                                    } else {
-                                                                        emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
-                                                                    }
-                                                                });
-                                                            }
-                                                        }
+                                                //         if (pc.length > 0) {
+                                                //             for (let z=0; z < pc.length; z++) {
+                                                //                 UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
+                                                //                     if (err) {
+                                                //                         // no email
+                                                //                         res.json({ status: 1 });
+                                                //                     } else {
+                                                //                         emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
+                                                //                     }
+                                                //                 });
+                                                //             }
+                                                //         }
 
-                                                        res.json({status: 1});
-                                                    } else {
-                                                        // no email
-                                                        res.json({status: 1});
-                                                    }
-                                                } else {
-                                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                                    emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
+                                                //         res.json({status: 1});
+                                                //     } else {
+                                                //         // no email
+                                                //         res.json({status: 1});
+                                                //     }
+                                                // } else {
+                                                //     // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                                //     emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
 
-                                                    if (pc.length > 0) {
-                                                        for (let z = 0; z < pc.length; z++) {
-                                                            UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
-                                                                if (err) {
-                                                                    // no email
-                                                                } else {
-                                                                    emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
-                                                                }
-                                                            });
-                                                        }
-                                                    }
+                                                //     if (pc.length > 0) {
+                                                //         for (let z = 0; z < pc.length; z++) {
+                                                //             UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
+                                                //                 if (err) {
+                                                //                     // no email
+                                                //                 } else {
+                                                //                     emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
+                                                //                 }
+                                                //             });
+                                                //         }
+                                                //     }
 
-                                                    res.json({status: 1});
-                                                }
+                                                //     res.json({status: 1});
+                                                // }
                                             }
                                         });
 

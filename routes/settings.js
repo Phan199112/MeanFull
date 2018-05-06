@@ -3,6 +3,7 @@ var FormModel = require('../db.models/form.model');
 var CommunityModel = require('../db.models/community.model');
 var EventModel = require('../db.models/event.model');
 var NetworkEdgesModel = require('../db.models/networkedges.model');
+var EmailStoreModel = require('../db.models/emailStore.model');
 var randommod = require("../functions/random");
 var commfunctions = require('../functions/communities');
 var emailfunctions 	= require("../functions/email");
@@ -590,22 +591,77 @@ module.exports = function(app, passport, manager, hashids) {
                         }
 
                         // get notification settings of the user and if allowed send an invitation email.
-                        UserModel.findById(targetuserid, function(err, k) {
-                            if (err) {
-                                // err
-                            } else {
+                        // UserModel.findById(targetuserid, function(err, k) {
+                        //     if (err) {
+                        //         // err
+                        //     } else {
                                 //
-                                if (Object.keys(k.notifications).length === 0) {
-                                    if (k.notifications.networkrequest === true) {
-                                        emailfunctions.sendNotificationFriendRequest(k.email, req.user)
-                                    }
-                                } else {
-                                    // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                    emailfunctions.sendNotificationFriendRequest(k.email, req.user)
-                                }
+                                // if (Object.keys(k.notifications).length === 0) {
+                                //     if (k.notifications.networkrequest === true) {
+                                //         emailfunctions.sendNotificationFriendRequest(k.email, req.user)
+                                //     }
+                                // } else {
+                                //     // if no settings are recorded, emails should be send as this is default policity as signup as well
+                                //     emailfunctions.sendNotificationFriendRequest(k.email, req.user)
+                                // }
 
-                            }
-                        });
+                                console.log("UNO");
+                                new Promise(function (resolve, reject) {
+                                    EmailStoreModel.findOne({ userid: targetuserid }, function (err, e) {
+                                        if (err) {
+                                            console.log("Error fetching emailstore in network");
+                                            reject();
+                                        }
+                                        console.log("dos");
+
+                                        UserModel.findById(req.session.userid, function (err, me) {
+                                            if (err) {
+                                                console.log("Error fetching user!");
+                                                reject();
+                                            } else {
+                                                console.log("TERS");
+
+                                                var senderName = me.name.first + " " + me.name.last;
+
+                                                if (e) {
+                                                    console.log("CUATR");
+
+                                                    var networkNotifications = e.network;
+                                                        networkNotifications.push({ name: senderName, pic: me.pic});
+                                                    
+
+                                                    e.save(function (err) {
+                                                        if (err) {
+                                                            console.log("Problem pushing network update to email store");
+                                                        }
+                                                    });
+                                                    resolve();
+
+                                                } else {
+                                                    console.log("CINCO");
+
+                                                    EmailStoreModel.create({
+                                                        userid: targetuserid,
+                                                        questions: [],
+                                                        community: [],
+                                                        network: [{ name: senderName, pic: me.pic }]
+                                                    }, function (err, k) {
+                                                        if (err) {
+                                                            console.log("Failed to create emailstore object");
+                                                            reject();
+                                                        } else {
+                                                            resolve();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    });
+                                }).catch(err => {
+                                    console.log("emailstore network promise rejected");
+                                });
+                        //     }
+                        // });
                     });
             })
             .then(function () {

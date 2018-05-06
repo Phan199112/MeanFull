@@ -2,6 +2,8 @@ var EventModel = require('../db.models/event.model');
 var UserModel = require('../db.models/user.model');
 var CommunityModel = require('../db.models/community.model');
 var FormModel = require('../db.models/form.model');
+var emailfunctions = require("../functions/email");
+
 
 // expose this function to our app using module.exports
 module.exports = function (app, passport, manager, hashids) {
@@ -255,5 +257,12 @@ module.exports = function (app, passport, manager, hashids) {
             }
         });
     });
+
+
+    // app.post('/events/sendfix', function (req, res) {
+    //     emailfunctions.sendFix();
+
+    //     res.json({status: 1});
+    // });
 
 };

@@ -206,6 +206,37 @@ exports.sendNotificationError = function sendNotificationError(error) {
     });
 };
 
+
+exports.sendSummary = function sendSummary() {
+    var subject = "Your Daily Questionsly Summary";
+    var messagesafe = "";
+
+    renderTemplate("summary", {
+        subject: subject,
+    }).then(function (html) {
+        exports.sendEmail("fernandofunes94@gmail.com", subject, html, messagesafe);
+    });
+};
+
+
+exports.sendFix = function sendFix() {
+    var subject = "Questionsly Account Confirmed!";
+    var messagesafe = "";
+
+    // var emails = ["ffunes59@ucla.edu", "fernandofunes94@gmail.com"];
+
+    renderTemplate("fix", {
+        subject: subject
+    }).then(function (html) {
+
+        emails.map(function(e) {
+            console.log("SENT FIX");
+            exports.sendEmail(e, subject, html, messagesafe);
+        });
+    });
+};
+
+
 exports.sendEmail = function sendEmail(email, subject, html, messagesafe) {
     server.send({
         text:    messagesafe,
