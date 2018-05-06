@@ -75,6 +75,7 @@ var feedbackroute = require('./routes/feedback')(app, passport, manager, hashids
 var searchroute = require('./routes/search')(app, passport, manager, hashids);
 var uploadroute = require('./routes/upload')(app, passport, manager, hashids);
 var discussroute = require('./routes/discussion')(app, passport, manager, hashids);
+var emailfunctions = require("./functions/email");
 
 //
 app.use('/', index);
@@ -98,6 +99,7 @@ var TagsModel = require('./db.models/tags.model');
 var UserModel = require('./db.models/user.model');
 var FormModel = require('./db.models/form.model');
 var CommunityModel = require('./db.models/community.model');
+var EmailStoreModel = require('./db.models/emailStore.model');
 
 getSearchAndTags();
 // crons for tags
@@ -218,5 +220,14 @@ function getSearchAndTags() {
         });
 }
 
+
+var CronJob = require('cron').CronJob;
+var job = new CronJob({
+    cronTime: '00 50 23 * * 0-6',
+    onTick: emailfunctions.sendSummary,
+    start: false,
+    timeZone: 'America/Los_Angeles'
+});
+job.start();
 
 module.exports = app;

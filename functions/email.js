@@ -1,4 +1,9 @@
 var email 	= require("../node_modules/emailjs/email");
+var EmailStoreModel = require('../db.models/emailStore.model');
+var UserModel = require('../db.models/user.model');
+var FormModel = require('../db.models/form.model');
+var CommunityModel = require('../db.models/community.model');
+
 // var server 	= email.server.connect({
 //     user:    "support@questionsly.com",
 //     password:"welcome4294!",
@@ -207,33 +212,149 @@ exports.sendNotificationError = function sendNotificationError(error) {
 };
 
 
+
+
+
+function renderTemplateLoopFix(template, context) { 
+    return new Promise(function (resolve, reject) {
+        fs.readFile(`views/emails/${template}.mjml`, function (error, data) {
+            var str = data.toString();
+            Object.keys(context).forEach(function (key) {
+                str = str.replace(new RegExp(key, 'g'), context[key]);
+            });
+            resolve(mjml.mjml2html(str).html);
+        });
+    });
+}
+
 exports.sendSummary = function sendSummary() {
     var subject = "Your Daily Questionsly Summary";
     var messagesafe = "";
+    var date = new Date();
+    var dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    var date = date.toLocaleDateString('en-US', dateOptions);
 
-    renderTemplate("summary", {
-        subject: subject,
-    }).then(function (html) {
-        exports.sendEmail("fernandofunes94@gmail.com", subject, html, messagesafe);
-    });
-};
+    EmailStoreModel.find({}, function (err, updates) {
+        if (err) {
+            console.log("Error sending out summary email.");
+            return;
+        } 
+
+        updates.forEach(function(update) {
+            var email = "";
+            var networkString = "";
+            var communityString = "";
+            var questionsString = "";
+            var ifNetworkString = "";
+            var ifCommunityString = "";
+            var ifQuestionsString = "";
+
+            if (update.network.length > 0) ifNetworkString = `
+                <mj-section padding-left="20px" padding-bottom="5px">
+                    <mj-text font-size="22" color="#BBB"font-family="Karla">People Who Added You</mj-text>  
+                </mj-section>
+            `;
+            if (update.community.length > 0) ifCommunityString = `
+                <mj-section padding-left="20px" padding-bottom="5px">
+                    <mj-text font-size="22" color="#BBB"font-family="Karla">Community Requests</mj-text>  
+                </mj-section>
+            `;
+            if (update.questions.length > 0) ifQuestionsString = `
+                <mj-section padding-left="20px" padding-bottom="5px">
+                    <mj-text font-size="22" color="#BBB"font-family="Karla">Question Updates</mj-text>  
+                </mj-section>
+            `;
+
+            update.network.forEach(function(person) {
+                networkString += `
+                    <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="10px">
+                        <mj-column width="60px">
+                            <mj-image width="50" src="${person.pic}" />
+                            </mj-column>
+                            
+                            <mj-column width="70%">
+                            <mj-text color="#818181" font-size="15" font-family="Karla" >
+                                ${person.name}
+                            </mj-text>
+                        </mj-column>
+                    </mj-section> 
+
+                `
+            });
+            
+            update.community.forEach(function(community) {
+                communityString += `
+                    <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="5px">
+                        <mj-column width="60px">
+                            <mj-image width="50" src="${community.communityPic}" />
+                            </mj-column>
+                            
+                            <mj-column width="70%">
+                            <mj-text color="#818181" font-size="15" font-family="Karla" >
+                                ${community.senderName} invited you to join the community ${community.communityTitle}
+                            </mj-text>
+                        </mj-column>
+                    </mj-section> 
+                    
+                `
+            });
+            
+            update.questions.forEach(function(question) {
+                questionsString += `
+                    <mj-section border="0px" padding-left="25px" padding-bottom="0px">
+                        <mj-text color="#818181" font-size="15" font-family="Karla">
+                            ${question.question}
+                        </mj-text>
+                    </mj-section>
+                    <mj-section border="0px" padding-left="40px" padding-top="10px">
+                        <mj-text color="#A0A0A0" font-size="15" font-family="Karla" line-height="24px">
+                            +${question.responseCount} Responses
+                            <br/>
+                            +${question.commentCount} Comments
+                        </mj-text>
+                    </mj-section>
+
+                `
+            });
 
 
-exports.sendFix = function sendFix() {
-    var subject = "Questionsly Account Confirmed!";
-    var messagesafe = "";
-
-    // var emails = ["ffunes59@ucla.edu", "fernandofunes94@gmail.com"];
-
-    renderTemplate("fix", {
-        subject: subject
-    }).then(function (html) {
-
-        emails.map(function(e) {
-            console.log("SENT FIX");
-            exports.sendEmail(e, subject, html, messagesafe);
+            new Promise(function(resolve, reject) {
+                UserModel.findById(update.userid, function (err, recipient) {
+                    if (err) {
+                        console.log("Error getting user!");
+                        reject();
+                    }
+                    email = recipient.email;
+                    resolve();
+                });
+            }).then(function() {
+                renderTemplateLoopFix("summary", {
+                    subject: subject,
+                    fecha: date,
+                    ifNetworkRequests: ifNetworkString,
+                    ifCommunityRequests: ifCommunityString,
+                    ifQuestionsRequests: ifQuestionsString,      
+                    networkRequests: networkString,
+                    communityRequests: communityString,
+                    questionsRequests: questionsString      
+                }).then(function (html) {
+                    console.log("SUMMARY SENT OUT");
+                    exports.sendEmail(email, subject, html, messagesafe);
+                });
+            })
+            .catch(function(err) {
+                console.log("Error in summary promise.", err);
+            })
         });
+        return;
     });
+
+    EmailStoreModel.remove({}, function(err, res) {
+        if (err) {
+            console.log("error deleting email store", err);
+        }
+    });
+    
 };
 
 

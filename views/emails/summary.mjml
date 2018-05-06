@@ -50,7 +50,7 @@
           <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center">
             <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
           </mj-text>
-          <mj-text font-size="16" color="#BBB"font-family="Karla" align="center">Your Summary for {{date}}</mj-text>
+          <mj-text font-size="16" color="#BBB"font-family="Karla" align="center">Your Summary for fecha </mj-text>
         </mj-column>
       </mj-section>
       
@@ -58,89 +58,20 @@
       
       <mj-wrapper background-color="#FFF" border-top="1px solid #aaaaaa" border-left="1px solid #aaaaaa" border-right="1px solid #aaaaaa" border-bottom="1px solid #aaaaaa" padding="20px">
         
+        ifNetworkRequests
+        networkRequests
+          
+
+        ifCommunityRequests  
+        communityRequests
+          
+          
+
+        ifQuestionsRequests          
+        questionsRequests
+                  
         
-        <!--Network Requests-->
-          <mj-section padding-left="20px" padding-bottom="5px">
-            <mj-text font-size="22" color="#BBB"font-family="Karla">People Who Added You</mj-text>  
-          </mj-section>
-          
-          <mj-raw> {% for person in var:networkRequests %} </mj-raw>
-          
-            <mj-section text-align="left" padding-left="20px"  padding-top="10px">
-              <mj-column width="60px">
-                  <mj-image width="50" src="{{person.pic}}" />
-                </mj-column>
-                
-                <mj-column width="70%">
-                  <mj-text color="#818181" font-size="15" font-family="Karla" >
-                    {{person.name}}
-                  </mj-text>
-              </mj-column>
-            </mj-section>
-            
-          <mj-raw> {% endfor%} </mj-raw>
-          
 
-        <!--Community Requests-->
-          <mj-section padding-left="20px" padding-bottom="5px">
-            <mj-text font-size="22" color="#BBB"font-family="Karla">Community Requests</mj-text>  
-          </mj-section>
-          
-          <mj-raw> {% for community in var:communityRequests %} </mj-raw>
-          
-            <mj-section text-align="left" padding-left="20px"  padding-top="5px">
-              <mj-column width="60px">
-                  <mj-image width="50" src="{{community.pic}}" />
-                </mj-column>
-                
-                <mj-column width="70%">
-                  <mj-text color="#818181" font-size="15" font-family="Karla" >
-                    {{community.sender}} invited you to join the community {{community.community}}
-                  </mj-text>
-              </mj-column>
-            </mj-section>
-            
-          <mj-raw> {% endfor%} </mj-raw>
-          
-          
-
-        <!--Question Updates-->
-          <mj-section padding-left="20px" padding-bottom="5px">
-            <mj-text font-size="22" color="#BBB"font-family="Karla">Question Updates</mj-text>  
-          </mj-section>
-          
-          <mj-raw> {% for question in var:questions %} </mj-raw>
-          
-            <mj-section padding-left="25px" padding-bottom="0px">
-              <mj-text color="#818181" font-size="15" font-family="Karla">
-                {{question.question}}
-              </mj-text>
-            </mj-section>
-            
-            <mj-section padding-left="40px" padding-top="10px">
-              <mj-text color="#A0A0A0" font-size="15" font-family="Karla" line-height="24px">
-                +{{question.responses}} Responses
-                <br/>
-                +{{question.comments}} Comments
-              </mj-text>
-            </mj-section>
-            
-            <!--<mj-divider border-width="1px" border-style="dashed" border-color="#DDD" />-->
-
-            
-          <mj-raw> {% endfor%} </mj-raw>
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-        
         <mj-section background-color="#fff" padding-bottom="0" padding-left="40px">
          <mj-text color="#999" font-size="14" font-family="Karla" >
               With love,
