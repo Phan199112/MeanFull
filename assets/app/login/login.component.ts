@@ -192,9 +192,9 @@ export class LoginComponent implements OnInit {
                             }
                         );
 
-                    this.signupfailed = false;
-                    this.signuppending = false;
-                    this.signupcompleted = true;
+                    // this.signupfailed = false;
+                    // this.signuppending = false;
+                    // this.signupcompleted = true;
 
                 } else {
                     this.signuppending = false;
