@@ -343,10 +343,21 @@ module.exports = function(app, passport, manager, hashids) {
 
                             if (req.body.commToJoinWith) {
                                 var commid = hashids.decodeHex(req.body.commToJoinWith);
-                                CommunityModel.findByIdAndUpdate(commid, { $push: { members: k._id } }, function (err, k) {
+                                CommunityModel.findById(commid, function (err, comm) {
                                     if (err) {
                                         console.log("Could not join community at signup");
-                                    } else {}
+                                    } else {
+                                        if (comm) {
+                                            var members = comm.members;
+                                            var mInd = members.findIndex(m => m == k._id);
+                                            if (mInd != -1) {
+                                                members.push(k._id);
+                                            }
+                                            comm.save(function(err) {
+                                                if (err) console.log("Error saving community in login");
+                                            })
+                                        }
+                                    }
                                 });
                             }
 

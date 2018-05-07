@@ -740,6 +740,7 @@ module.exports = function(app, passport, manager, hashids) {
             // check whether the community is public
             commfunctions.commPublic(commid).then(function(result) {
                 if (result === true) {
+                    // Handle join PUBLIC community
                     resolve();
                 } else {
                     // Handle join PRIVATE community
@@ -747,23 +748,23 @@ module.exports = function(app, passport, manager, hashids) {
                         if (err) {
                             reject(err);
                         } else {
+                            pendingRequests = c.requests;
+                            
+                            var ind = pendingRequests.findIndex(z => z === req.session.userid);
 
-                            pendingRequests = c.requests.slice();
-                            pendingRequests.push(hashids.encodeHex(req.session.userid));
+                            if (ind == -1) {
+                                pendingRequests.push(hashids.encodeHex(req.session.userid));
 
-                            CommunityModel.findByIdAndUpdate(commid, { $push: { requests: hashids.encodeHex(req.session.userid)} }, function (err, k) {
-                                if (err) {
-                                    reject();
-                                    res.json({ status: 0 });
-                                } else {}
-                            });
-
-                            if (c.adminuserid !== null) {
-                                for (l = 0; l < c.adminuserid.length; l++) {
-                                    adminsList.push(c.adminuserid[l]);
-                                    notifications.createNotification(c.adminuserid[l], req.session.userid, "comm-request", "Request to join community", hashids.encodeHex(commid));
+                                // Notify all members that someone needs to be approved into the community
+                                if (c.adminuserid !== null) {
+                                    for (l = 0; l < c.adminuserid.length; l++) {
+                                        adminsList.push(c.adminuserid[l]);
+                                        notifications.createNotification(c.adminuserid[l], req.session.userid, "comm-request", "Request to join community", hashids.encodeHex(commid));
+                                    }
                                 }
+                                c.save(err => {console.log('Error in request to join community');});
                             }
+
                             // Reject so we dont add them as a member right away
                             reject();
                         }
@@ -797,6 +798,31 @@ module.exports = function(app, passport, manager, hashids) {
         } else {
             var userId = req.session.userid;
         }
+
+        CommunityModel.findById(commid, function (err, comm) {
+            if (err) {
+                console.log("Could not join community at signup");
+            } else {
+                if (comm) {
+                    var members = comm.members;
+                    var mInd = members.findIndex(m => m == userId);
+                    if (mInd != -1) {
+                        members.push(userId);
+                    } 
+                    
+                    var requests = comm.requests;
+                    var rInd = requests.findIndex(r => r == userId);
+                    if (rInd != -1) {
+                        requests.splice(rInd,1);
+                    }
+
+                    comm.save(function (err) {
+                        if (err) console.log("Error saving community in login");
+                    });
+                }
+            }
+        });
+
 
         CommunityModel.findByIdAndUpdate(commid, { $push: { members: userId }, $pull: { requests: memid } }, function (err, k) {
             if (err) {
