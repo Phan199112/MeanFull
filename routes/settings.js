@@ -547,6 +547,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         // variables
         var targetuserid = hashids.decodeHex(req.body.targetid);
+        var networkLink = `https://www.questionsly.com/profile/${hashids.encodeHex(req.session.userid)}`
         var edgeid = null;
         var status = 0;
 
@@ -605,29 +606,23 @@ module.exports = function(app, passport, manager, hashids) {
                                 //     emailfunctions.sendNotificationFriendRequest(k.email, req.user)
                                 // }
 
-                                console.log("UNO");
                                 new Promise(function (resolve, reject) {
                                     EmailStoreModel.findOne({ userid: targetuserid }, function (err, e) {
                                         if (err) {
                                             console.log("Error fetching emailstore in network");
                                             reject();
                                         }
-                                        console.log("dos");
 
                                         UserModel.findById(req.session.userid, function (err, me) {
                                             if (err) {
                                                 console.log("Error fetching user!");
                                                 reject();
                                             } else {
-                                                console.log("TERS");
-
                                                 var senderName = me.name.first + " " + me.name.last;
 
                                                 if (e) {
-                                                    console.log("CUATR");
-
                                                     var networkNotifications = e.network;
-                                                        networkNotifications.push({ name: senderName, pic: me.pic});
+                                                        networkNotifications.push({ name: senderName, pic: me.pic, link: networkLink});
                                                     
 
                                                     e.save(function (err) {
@@ -638,13 +633,12 @@ module.exports = function(app, passport, manager, hashids) {
                                                     resolve();
 
                                                 } else {
-                                                    console.log("CINCO");
 
                                                     EmailStoreModel.create({
                                                         userid: targetuserid,
                                                         questions: [],
                                                         community: [],
-                                                        network: [{ name: senderName, pic: me.pic }]
+                                                        network: [{ name: senderName, pic: me.pic, link: networkLink}]
                                                     }, function (err, k) {
                                                         if (err) {
                                                             console.log("Failed to create emailstore object");

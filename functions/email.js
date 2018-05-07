@@ -240,6 +240,8 @@ exports.sendSummary = function sendSummary() {
             return;
         } 
 
+        console.log("Called in here", updates);
+
         updates.forEach(function(update) {
             var email = "";
             var networkString = "";
@@ -268,13 +270,15 @@ exports.sendSummary = function sendSummary() {
             update.network.forEach(function(person) {
                 networkString += `
                     <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="10px">
-                        <mj-column width="60px">
-                            <mj-image width="50" src="${person.pic}" />
+                        <mj-column width="100px">
+                            <mj-image width="80px" src="${person.pic}" href="${person.link}"/>
                             </mj-column>
                             
-                            <mj-column width="70%">
-                            <mj-text color="#818181" font-size="15" font-family="Karla" >
+                            <mj-column>
+                            <mj-text color="#818181" font-size="15" font-family="Karla">
+                            <a style="text-decoration: none; color: #818181" href="${person.link}">
                                 ${person.name}
+                            </a>
                             </mj-text>
                         </mj-column>
                     </mj-section> 
@@ -285,13 +289,15 @@ exports.sendSummary = function sendSummary() {
             update.community.forEach(function(community) {
                 communityString += `
                     <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="5px">
-                        <mj-column width="60px">
-                            <mj-image width="50" src="${community.communityPic}" />
+                        <mj-column width="100px">
+                            <mj-image width="80px" src="${community.communityPic}" href="${community.link}"/>
                             </mj-column>
                             
-                            <mj-column width="70%">
-                            <mj-text color="#818181" font-size="15" font-family="Karla" >
+                            <mj-column>
+                            <mj-text color="#818181" font-size="15" font-family="Karla">
+                                <a style="text-decoration: none; color: #818181" href="${community.link}">
                                 ${community.senderName} invited you to join the community ${community.communityTitle}
+                                </a>
                             </mj-text>
                         </mj-column>
                     </mj-section> 
@@ -303,14 +309,16 @@ exports.sendSummary = function sendSummary() {
                 questionsString += `
                     <mj-section border="0px" padding-left="25px" padding-bottom="0px">
                         <mj-text color="#818181" font-size="15" font-family="Karla">
-                            ${question.question}
+                            <a style="text-decoration: none; color: #818181" href="${question.link}">${question.question}</a>
                         </mj-text>
                     </mj-section>
                     <mj-section border="0px" padding-left="40px" padding-top="10px">
                         <mj-text color="#A0A0A0" font-size="15" font-family="Karla" line-height="24px">
+                        <a style="text-decoration: none; color: #A0A0A0" href="${question.link}">
                             +${question.responseCount} Responses
                             <br/>
                             +${question.commentCount} Comments
+                        </a>
                         </mj-text>
                     </mj-section>
 
@@ -341,18 +349,19 @@ exports.sendSummary = function sendSummary() {
                     console.log("SUMMARY SENT OUT");
                     exports.sendEmail(email, subject, html, messagesafe);
                 });
+            }).then(function() {
+                EmailStoreModel.remove({}, function (err, res) {
+                    if (err) {
+                        console.log("error deleting email store", err);
+                    }
+                    console.log("Emptied email store.");
+                });
             })
             .catch(function(err) {
                 console.log("Error in summary promise.", err);
             })
         });
         return;
-    });
-
-    EmailStoreModel.remove({}, function(err, res) {
-        if (err) {
-            console.log("error deleting email store", err);
-        }
     });
     
 };

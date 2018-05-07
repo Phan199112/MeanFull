@@ -102,6 +102,7 @@ var CommunityModel = require('./db.models/community.model');
 var EmailStoreModel = require('./db.models/emailStore.model');
 
 getSearchAndTags();
+
 // crons for tags
 cron.schedule('*/2 * * * *', getSearchAndTags);
 
@@ -153,6 +154,7 @@ function getSearchAndTags() {
                                 }
                             }
                         }
+                        
                     })
                     .on('error', function (err) {
                         reject(err);
@@ -220,10 +222,9 @@ function getSearchAndTags() {
         });
 }
 
-
 var CronJob = require('cron').CronJob;
 var job = new CronJob({
-    cronTime: '00 50 23 * * 0-6',
+    cronTime: '00 00 20 * * 0-6',
     onTick: emailfunctions.sendSummary,
     start: false,
     timeZone: 'America/Los_Angeles'

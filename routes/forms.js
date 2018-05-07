@@ -275,6 +275,7 @@ module.exports = function(app, passport, manager, hashids) {
         // add new answer
         var receivedData = req.body;
         var answerformid = hashids.decodeHex(receivedData.id);
+        var questionLink = `https://www.questionsly.com/feed;survey=${receivedData.id}`;
         var formauthorid = null;
         var activityEmailSent = null;
         var firstQuestion = "";
@@ -474,7 +475,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                                 if (qInd != -1) {
                                                                     questionNotifications[qInd].responseCount += 1;
                                                                 } else {
-                                                                    questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 });
+                                                                    questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink });
                                                                 }
     
                                                                 e.save(function (err) {
@@ -487,7 +488,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                             } else {    
                                                                 EmailStoreModel.create({
                                                                     userid: formauthorid,
-                                                                    questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 }],
+                                                                    questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink }],
                                                                     community: [],
                                                                     network: []
                                                                 }, function (err, k) {
@@ -617,7 +618,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                         if (qInd != -1) {
                                                             questionNotifications[qInd].responseCount += 1;
                                                         } else {
-                                                            questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 });
+                                                            questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink });
                                                         }
 
                                                         e.save(function (err) {
@@ -630,7 +631,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                     } else {
                                                         EmailStoreModel.create({
                                                             userid: formauthorid,
-                                                            questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1 }],
+                                                            questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink }],
                                                             community: [],
                                                             network: []
                                                         }, function (err, k) {

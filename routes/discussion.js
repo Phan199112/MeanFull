@@ -31,6 +31,7 @@ module.exports = function(app, passport, manager, hashids) {
                 var authorid = null;
                 var formid = hashids.decodeHex(receivedData.formid);
                 var firstquestion;
+                var questionLink = `https://www.questionsly.com/feed;survey=${receivedData.formid}`;
 
                 return new Promise(function(resolve, reject) {
                     FormModel.findById(formid, function (err, form) {
@@ -98,7 +99,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                                     if (qInd != -1) {
                                                                         questionNotifications[qInd].commentCount += 1;
                                                                     } else {
-                                                                        questionNotifications.push({formid: formid, question: firstquestion, commentCount: 1, responseCount: 0});
+                                                                        questionNotifications.push({formid: formid, question: firstquestion, commentCount: 1, responseCount: 0, link: questionLink});
                                                                     }
 
                                                                     e.save(function (err) {
@@ -111,7 +112,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                                 } else {
                                                                     EmailStoreModel.create({
                                                                         userid: authorid,
-                                                                        questions: [{ formid: formid, question: firstquestion, commentCount: 1, responseCount: 0 }],
+                                                                        questions: [{ formid: formid, question: firstquestion, commentCount: 1, responseCount: 0, link: questionLink }],
                                                                         community: [],
                                                                         network: []  
                                                                     }, function (err, k) {

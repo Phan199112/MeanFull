@@ -69,10 +69,11 @@ module.exports = function(app, passport, manager, hashids) {
                                                             reject();
                                                         } else {
                                                             var senderName = me.name.first + " " + me.name.last;
+                                                            var communityLink = `www.questionsly.com/community/${hashids.encodeHex(k._id)}`;
 
                                                             if (e) {
                                                                 var communityNotifications = e.community;
-                                                                communityNotifications.push({ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title })
+                                                                communityNotifications.push({ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title, link: communityLink})
 
                                                                 e.save(function (err) {
                                                                     if (err) {
@@ -85,7 +86,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                                 console.log("YOYOYOYOYOYOYOY", currentAdmin);
                                                                 EmailStoreModel.create({
                                                                     userid: currentAdmin,
-                                                                    community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title }],
+                                                                    community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title, link: communityLink }],
                                                                     questions:[],
                                                                     network: []                                                                
                                                                 }, function (err, k) {
@@ -142,6 +143,8 @@ module.exports = function(app, passport, manager, hashids) {
         var newpublic = receivedData.public;
         var newpic = receivedData.pic;
         var newdescription = receivedData.description;
+        var communityLink = `www.questionsly.com/community/${receivedData.commid}`;
+
         
         if (receivedData.admins != null) {
             for (var i = 0; i < receivedData.admins.length; i++) {
@@ -191,7 +194,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                                                 if (e) {
                                                     var communityNotifications = e.community;
-                                                    communityNotifications.push({ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title })
+                                                    communityNotifications.push({ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title, link: communityLink })
 
                                                     e.save(function (err) {
                                                         if (err) {
@@ -203,7 +206,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                 } else {
                                                     EmailStoreModel.create({
                                                         userid: unhashedAdmins[i],
-                                                        community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title }],
+                                                        community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title, link: communityLink }],
                                                         questions: [],
                                                         network: []  
                                                     }, function (err, k) {
@@ -242,6 +245,8 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var commtitle = req.body.commtitle;
         var commpic = req.body.commpic;
+        var communityLink = `www.questionsly.com/community/${req.body.commid}`;
+
 
         commfunctions.commAdmin(commid, req.session.userid).then(function(result) {
             if (result === true) {
@@ -288,7 +293,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                                                     if (e) {
                                                         var communityNotifications = e.community;
-                                                        communityNotifications.push({ senderName: senderName, communityPic: commpic, communityTitle: commtitle })
+                                                        communityNotifications.push({ senderName: senderName, communityPic: commpic, communityTitle: commtitle, link: communityLink })
 
                                                         e.save(function (err) {
                                                             if (err) {
@@ -300,7 +305,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                     } else {
                                                         EmailStoreModel.create({
                                                             userid: seluserid,
-                                                            community: [{ senderName: senderName, communityPic: commpic, communityTitle: commtitle }],
+                                                            community: [{ senderName: senderName, communityPic: commpic, communityTitle: commtitle, link: communityLink }],
                                                             questions: [],
                                                             network: []  
                                                         }, function (err, k) {
