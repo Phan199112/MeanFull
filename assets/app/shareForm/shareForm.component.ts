@@ -17,11 +17,12 @@ export class ShareFormComponent implements OnInit {
                 private userService: UserService) {}
 
     ngOnInit() {
-        if (this.userService.getLoggedin() === true) {
-            this.link = `https://www.questionsly.com/takeForm/${this.formService.getData().id}`;
-        } else {
-            this.reject = true;
-        }
-
+        this.userService.afterLoginCheck().then(userData => {
+            if (userData) {
+                this.link = `https://www.questionsly.com/takeForm/${this.formService.getData().id}`;
+            } else {
+                this.reject = true;
+            }
+        });
     }
 }
