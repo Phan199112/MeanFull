@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Http} from "@angular/http";
+import { Http } from "@angular/http";
 
 let data: any = null;
 let checkedLogin: boolean = false;
 let loggedin: boolean = false;
+let loginCheckPromise: Promise = null;
 
 @Injectable()
 export class UserService {
@@ -21,47 +22,30 @@ export class UserService {
         data = null;
         checkedLogin = false;
         loggedin = false;
-    }
-
-    getLoggedin() {
-        return loggedin;
+        loginCheckPromise = null;
     }
 
     afterLoginCheck() {
-        return new Promise((resolve, reject) => {
-            if (!checkedLogin) {
-                this.http.get('/users/loggedin').toPromise()
-                    .then(res => {
-                        checkedLogin = true;
-                        data = res.json();
-                        loggedin = data != null;
-                        resolve(data);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-            } else {
+        if (checkedLogin) {
+            return new Promise((resolve, reject) => {
                 resolve(data);
-            }
-        })
-            .catch(function() {
-                data = null;
-                checkedLogin = false;
-                loggedin = false;
             });
-    }
+        }
 
-    afterLoginReload() {
-        return new Promise((resolve, reject) => {
+        // We are already checking /users/loggedin; we already have a promise
+        if (loginCheckPromise) {
+            return loginCheckPromise;
+        }
+
+        return loginCheckPromise = new Promise((resolve, reject) => {
             this.http.get('/users/loggedin').toPromise()
                 .then(res => {
                     checkedLogin = true;
                     data = res.json();
-                    loggedin = data != null;
+                    loggedin = data != 0;
                     resolve(data);
                 })
                 .catch(error => {
-                    alert("Error checking if logged in: " + error);
                     reject(error);
                 });
         })
@@ -69,6 +53,16 @@ export class UserService {
                 data = null;
                 checkedLogin = false;
                 loggedin = false;
+                loginCheckPromise = null;
+
+                // Indicate that the user is not logged in
+                return 0;
             });
+    }
+
+    afterLoginReload() {
+        checkedLogin = false;
+        loginCheckPromise = null;
+        return this.afterLoginCheck();
     }
 }
