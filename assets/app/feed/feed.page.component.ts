@@ -48,6 +48,7 @@ export class FeedPageComponent implements OnInit  {
 
         this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
+                
                 this.loggedin = true;
                 this.fbid = userData.fbid;
                 this.dbid = userData.dbid;
@@ -89,6 +90,7 @@ export class FeedPageComponent implements OnInit  {
                 this.loggedin = false;
             }
         });
+
 
         this.route.queryParams.subscribe(params => {
             if (params.message) {

@@ -93,7 +93,7 @@
 
     <!-- QUESTIONS CONTAINER -->
     <div class="responseBox">
-        <mini-show-form class="maxWidthOfParent" [count]="count" [data]="form" [shortAnswers]="shortAnswers" [expired]="form.expired" [showSubmit]="showsubmit && !form.expired"
+        <mini-show-form class="maxWidthOfParent" [count]="count" [data]="form" [shortAnswers]="shortAnswers" [expired]="form.expired" [isMyPost]="isMyPost" [showSubmit]="showsubmit && !form.expired"
             [submitted]="submitted" [submissionfailed]="submissionfailed" (submitForm)="postForm($event)" (toggleFilters)="toggleFilters($event)" *ngIf="form.questions != null"></mini-show-form>
     </div>
 

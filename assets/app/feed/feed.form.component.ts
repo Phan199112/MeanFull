@@ -21,6 +21,7 @@ export class FeedFormComponent implements OnInit {
     @Input() pic: string;
     @Input() pictype: string;
     @Input() inComm: string;
+    @Input() me: string;
     @Output() emitSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     dataselectionform : FormGroup;
@@ -41,6 +42,7 @@ export class FeedFormComponent implements OnInit {
     startingTime: any;
     shortAnswers: any = [];
     shareUrl: string;
+    isMyPost: boolean = false;
 
 
     //  ------ Emoticon properties to change/check against
@@ -111,6 +113,9 @@ export class FeedFormComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.me && this.form && this.me == this.form.authorlink) {
+            this.isMyPost = true;
+        }
         // update reactions
         // this.intReactionData = this.form.reactions;
         // this.reactionData = this.reactionssummary(this.intReactionData);
@@ -285,7 +290,8 @@ export class FeedFormComponent implements OnInit {
         this.form.viewGraphs(false);
 
         // did the current user complete this particular survey?
-        let data = {link: this.form.id, answered: this.form.answered};
+        var accessToAnswer = this.isMyPost || this.form.answered;
+        let data = {link: this.form.id, answered: accessToAnswer};
 
         // post and get response
         this.http.post('/forms/data', data)

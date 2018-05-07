@@ -31,6 +31,7 @@ export class MiniShowFormComponent implements OnInit {
     @Input() submitted: boolean = false;
 
     @Input() expired: boolean = false;
+    @Input() isMyPost: boolean = false;
 
     @Output() submitForm: EventEmitter<Object> = new EventEmitter<Object>();
     @Output() toggleFilters: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -2,11 +2,14 @@ import { Component, OnInit, OnChanges, Input } from "@angular/core";
 import { FeedForm } from "./feed.form.model";
 import { Http } from "@angular/http";
 import { ActivatedRoute } from "@angular/router";
+import { UserService } from "../user.service";
+
 
 @Component({
     selector: 'feed-list',
     templateUrl: './feed.list.component.html',
-    styleUrls: ['./feed.list.component.scss']
+    styleUrls: ['./feed.list.component.scss'],
+    providers: [UserService]
 })
 export class FeedListComponent implements OnInit, OnChanges {
     feedlist: FeedForm[] = [];
@@ -19,11 +22,16 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pictype: string;
     @Input() tag: string;
     @Input() pref: string;
+    
     // tag: any;
+    
+    me: string;
     formselected: any;
 
 
-    constructor(private http: Http, private route: ActivatedRoute) {
+    constructor(private http: Http, 
+                private userService: UserService,
+                private route: ActivatedRoute) {
     }
 
     ngOnInit() {
@@ -31,6 +39,13 @@ export class FeedListComponent implements OnInit, OnChanges {
             // this.formselected = params.survey;
             // this.tag = params['tag'];
             // this.refreshFeed();
+        });
+
+
+        this.userService.afterLoginCheck().then(userData => {
+            if (userData != 0) {
+                this.me = userData.dbid;
+            }
         });
     }
 
