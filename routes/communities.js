@@ -386,7 +386,7 @@ module.exports = function(app, passport, manager, hashids) {
                     var memberlist = [];
 
                     if (comm.members !== null) {
-                        for (l=0; l < Math.min(5,comm.members.length); l++) {
+                        for (l=0; l < comm.members.length; l++) {
                             var newval = math.getRandomInt(0, comm.members.length);
                             if (randomints.indexOf(newval) === -1) {
                                 randomints.push(newval);

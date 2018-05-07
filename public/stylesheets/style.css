@@ -85,6 +85,12 @@ background: #38d574 !important;
 
 
 
+.modal {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 
 .modal-dialog {
   max-width: 1000px;

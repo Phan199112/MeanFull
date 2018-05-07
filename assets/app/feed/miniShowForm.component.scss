@@ -90,7 +90,8 @@ $primaryColor: #28ab64;
 
 .question-pic {
   img {
-    height: 180px;
+    max-height: 180px;
+    max-width: 100%;
   }
 }
 

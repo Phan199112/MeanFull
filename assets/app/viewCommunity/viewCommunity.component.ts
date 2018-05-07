@@ -47,19 +47,6 @@ export class ViewCommunityComponent implements OnInit {
         this.loggedin = false;
         this.loading = true;
 
-
-        // this.userService.afterLoginCheck().then(userData => {
-        //     if (userData != 0) {
-        //         this.loggedin = true;
-
-
-        //     } else {
-        //         this.loggedin = false;
-        //     }
-        // });
-
-
-
         this.loadData();
     }
 
@@ -75,6 +62,8 @@ export class ViewCommunityComponent implements OnInit {
 
                     if (this.status == '1') {
                         this.data = res.json().data;
+                        console.log("1Members:", this.data);
+
                         this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
@@ -103,6 +92,7 @@ export class ViewCommunityComponent implements OnInit {
 
                     } else if (this.status == '2') {
                         this.data = res.json().data;
+                        console.log("2Members:", this.data);
                         this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
@@ -155,8 +145,8 @@ export class ViewCommunityComponent implements OnInit {
         });
     }
 
-    updateCommunity() {
 
+    updateCommunity() {
         let data = this.createcommunityData();
 
         window.console.log("Submitted:", data);
