@@ -168,6 +168,30 @@ export class LoginComponent implements OnInit {
         this.http.post('/users/signup', signupData).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
+                    this.http.post('/users/login/local', {email: signupData.email, password: signupData.password})
+                        .map((res: any) => res.json())
+                        .subscribe(
+                            (data) => {
+                                // Handle response here
+                                if (data.status == 1) {
+                                    // reload userservice
+                                    this.userService.afterLoginReload();
+                                    // navigate to feed
+                                    this.router.navigate(['/'])
+                                        .then(function () {
+                                            // reload the page
+                                            location.reload(true);
+                                        });
+
+                                } else {
+                                    this.status = false;
+                                }
+                            },
+                            err => {
+                                this.status = false;
+                            }
+                        );
+
                     this.signupfailed = false;
                     this.signuppending = false;
                     this.signupcompleted = true;

@@ -313,7 +313,7 @@ module.exports = function(app, passport, manager, hashids) {
                         name: {first: data.name.firstname, last: data.name.lastname},
                         searchname: data.name.firstname+" "+data.name.lastname,
                         email: data.email,
-                        emailConfirmed: {value: false, key: randomkey},
+                        emailConfirmed: {value: true, key: randomkey},
                         // location: {city: data.city, state: data.state, country: data.country},
                         location: {city: "", state: "", country: ""},
                         gender: data.gender,
@@ -335,7 +335,7 @@ module.exports = function(app, passport, manager, hashids) {
                             res.json({status: 0});
 
                         } else {
-                            //req.session.userid = k._id;
+                            req.session.userid = k._id;
                             // send email validation
                             var confirmlink = "https://www.questionsly.com/users/settings/confirmemail/"+randomkey;
                             // send email
