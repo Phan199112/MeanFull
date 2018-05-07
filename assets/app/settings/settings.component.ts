@@ -50,11 +50,13 @@ export class SettingsComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.userService.getLoggedin() === true) {
-            this.retrieveData();
-        } else {
-            this.reject = true;
-        }
+        this.userService.afterLoginCheck().then(userData => {
+            if (userData) {
+                this.retrieveData();
+            } else {
+                this.reject = true;
+            }
+        });
     }
 
     retrieveData() {
