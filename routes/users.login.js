@@ -308,6 +308,14 @@ module.exports = function(app, passport, manager, hashids) {
                     //
                     var randomkey = randommod.makeRandomEmailVerificationKey();
 
+                    if (!data.pic) {
+                        if (data.gender == "male") {
+                            data.pic = "https://questionsly1.s3.amazonaws.com/0y0PSn8KAPutNjxuyYpxLsW3sAbxiUsRUBHQxPdo6EICGeaxfv.jpg";
+                        } else {
+                            data.pic = "https://questionsly1.s3.amazonaws.com/Z9fJ4Q7sEdsGCjInkXvpJtnlKfmieFPGftrK8E3nJFCI9d7CXl.jpg";
+                        }
+                    }
+
                     // mongodb create operation
                     UserModel.create({
                         name: {first: data.name.firstname, last: data.name.lastname},

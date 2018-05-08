@@ -20,7 +20,7 @@
                     <div style="margin-left: 15px">
                         <h3 class="name">{{data.title}}</h3>
                         <h5 class="description">{{data.description ? data.description : "No Description."}}</h5>
-                        <h5 *ngIf="(data.public || data.ismember) && data.members" class="description smallDesc">{{data.members.length}} {{data.members.length > 1 ? "Members" : "Member"}}</h5>
+                        <h5 *ngIf="(data.public || data.ismember) && data.members" class="description smallDesc">{{data.memberCount}} {{data.memberCount > 1 ? "Members" : "Member"}}</h5>
                     </div>
                     
                     <div class="profileMenu">

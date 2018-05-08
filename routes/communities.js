@@ -363,6 +363,7 @@ module.exports = function(app, passport, manager, hashids) {
                     var isadmin = false;
                     var isPending = false;
                     var adminId = hashids.encodeHex(comm.adminuserid[0]);
+                    var memberCount = comm.members.length;
 
                     if (req.session.userid) {
                         var encryptedUser = hashids.encodeHex(req.session.userid);
@@ -457,18 +458,18 @@ module.exports = function(app, passport, manager, hashids) {
                         // public status
                         if (comm.public === true) {
                             // send back data
-                            sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId};
+                            sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId, memberCount: memberCount};
                             res.json({status: 1, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
 
                         } else {
                             if (ismember === true) {
                                 // send back data
-                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId};
+                                sendcomm = { title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId, memberCount: memberCount};
                                 res.json({status: 1, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
 
                             } else {
                                 // send back data
-                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null, isPending: isPending, adminId: adminId};
+                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null, isPending: isPending, adminId: adminId, memberCount: memberCount};
                                 res.json({status: 2, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
                             }
                         }
