@@ -77,11 +77,12 @@ export class ViewCommunityComponent implements OnInit {
                             if (this.loggedin && !this.data.ismember) {
                                 this.forceJoinPrivateCommunity(this.id);
                                 // window.setTimeout(() => { this.router.navigate(['/community', this.id]); }, 2000);
-                                // window.setTimeout(() => { this.loadData(); }, 100);
-                                this.loadData();
+                                // this.loadData();
+                                window.setTimeout(() => { this.loadData(); }, 100);
                                 // return;
                             }
 
+                            // Setting local storage so people are automatically added once they sign up or log in
                             if (!this.loggedin) {
                                 localStorage.setItem("comm", this.communityToJoin);
                                 localStorage.setItem("commVerification", this.verifyAccess);

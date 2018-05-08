@@ -797,10 +797,13 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var memid = "";
         
+        // Checks whether this is coming from the automatic local storage enroll or if someone is accepting someone into their community
         if (req.body.memberid) {
+            // Admin accepting someone
             memid = req.body.memberid;
             var userId = hashids.decodeHex(memid);
         } else {
+            // localstorage speical access
             var userId = req.session.userid;
         }
 
@@ -816,7 +819,7 @@ module.exports = function(app, passport, manager, hashids) {
                     } 
                     
                     var requests = comm.requests;
-                    var rInd = requests.findIndex(r => r == userId);
+                    var rInd = requests.findIndex(r => r == memid);
                     if (rInd != -1) {
                         requests.splice(rInd,1);
                     }

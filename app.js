@@ -101,6 +101,7 @@ var FormModel = require('./db.models/form.model');
 var CommunityModel = require('./db.models/community.model');
 var EmailStoreModel = require('./db.models/emailStore.model');
 
+
 getSearchAndTags();
 
 // crons for tags
@@ -232,3 +233,46 @@ var job = new CronJob({
 job.start();
 
 module.exports = app;
+
+
+
+// Functions below are for quick fixes for MongoDB problems during UCLA signups
+
+// Multiple Community Addition Fix
+// (function() {
+//     if (CommunityModel) {
+//         CommunityModel.findById("5ae62c8a93627a0014880ba3", function(err, comm) {
+//         var members = comm.members;
+//         var gotFirstAlready = false;
+//         var firstIndex = 0;
+//         var lastIndex = 0;
+//         members.forEach((m,i) => {
+//             if (m === "") {
+//                 if (!gotFirstAlready) {
+//                     gotFirstAlready = true; 
+//                     firstIndex = i;
+//                     lastIndex = i;
+//                     console.log("Special treatment", i);
+//                 } else {
+//                     // console.log(i);
+//                     lastIndex = i;
+//                 }   
+//             }
+//             return;
+//         })
+
+//         var numToDelete = lastIndex - firstIndex;
+//         console.log('lastIndex:', lastIndex, "TO DELETE: ", numToDelete);
+
+//         members.splice(firstIndex + 1, numToDelete);
+//         comm.save(function(err) {
+//             console.log("OOPS", err);
+//         })
+//         console.log(members);
+//     })
+
+// }}
+// )();
+
+// Decode hash
+// console.log("Unhashed:", hashids.decodeHex(""));
