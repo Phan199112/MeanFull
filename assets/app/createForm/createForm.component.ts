@@ -224,7 +224,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
         if (this.edit) {
             let data = this.formService.getData();
-            console.log(data);
             for (let key of Object.keys(data)) {
                 if (key !== "questions" && key !== "hashtags") {
                     let control = this.questionnaire.get(key);
@@ -236,7 +235,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                     for (let tag of data['hashtags']) {
                         tagarray.push(this.transformHashtagArray(tag));
                     }
-                    console.log(tagarray);
                     this.questionnaire.get('hashtags').setValue(tagarray);
                 }
             }
@@ -285,10 +283,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     editQuestion(i) {
         this.updateEnabled = true;
         var type = this.questionData[i].kind;
-        console.log("Edit question", i, type, this.questionData[i]);
-
         this.updateData = this.questionData[i];
-
         this.questionnaire.get('kind').setValue(type);
         this.typeView = type;
     }
@@ -637,8 +632,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         };
         let data = Object.assign(this.questionnaireData(), meta);
 
-        console.log(data);
-
         this.http.put(`/forms/${data.id}`, data).toPromise()
             .then(response => {
                 this.formService.setData(Object.assign(this.questionnaireData(), meta));
@@ -712,14 +705,11 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     toggleRequired(i: number) {
         let last: number = 0;
         for (let j=0; j<this.getSortedQuestions()[j]; j++) {
-            window.console.log("value", this.questionData[j].required);
             if (this.getSortedQuestions[j].required) {last++};
         }
         if (last === 1 && this.getSortedQuestions()[i].required) {
-            // window.console.log("worked",last, this.questionData);
             return;
         } else {
-            // window.console.log("failed", last, this.questionData);
             this.questionData[i].required = !this.questionData[i].required;
         }
 
@@ -735,10 +725,6 @@ export class CreateFormComponent implements OnInit, OnDestroy {
 
     toggleLogin(required: string) {
         this.questionnaire.get('loginRequired').setValue(required);
-    }
-
-    tester() {
-        window.console.log(this.questionnaireData());
     }
 
     moveUp(i: number) {

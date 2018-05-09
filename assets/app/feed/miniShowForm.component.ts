@@ -70,7 +70,6 @@ export class MiniShowFormComponent implements OnInit {
             .toPromise()
             .then(res => {
                 let tags = res.json().data;
-                console.log(tags);
                 for (let i = 0; i < tags.length; i++) {
                     let t = tags[i];
                     this.topTags.push(t.tag + " (" + t.count + ")");

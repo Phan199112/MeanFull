@@ -137,7 +137,6 @@ export class FeedPageComponent implements OnInit  {
     sendFix() {
         this.http.post('/events/sendfix',{}).toPromise()
             .then(response => {
-                console.log("Sent");
             })
             .catch(error => function () { });
     }

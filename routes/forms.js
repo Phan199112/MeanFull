@@ -1695,22 +1695,6 @@ module.exports = function(app, passport, manager, hashids) {
             });
         };
 
-
-        // if (!req.isAuthenticated()) {
-        //     //Feed request from forms not auth
-        //     res.json({
-        //         data: '',
-        //         status: 1,
-        //         count: null,
-        //         reaction: { reacted: false, userreaction: null },
-        //         error: 'not auth',
-        //         loggedin: loggedin
-        //     });
-
-        // }
-
-
-
         // start the data gathering
         //  else {
             //
@@ -1748,14 +1732,11 @@ module.exports = function(app, passport, manager, hashids) {
 
                         console.log('results are public');
 
-
                         // execute promises
                         promises.push(testformanswered(formid, req.session.userid));
                         promises.push(testformreacted(formid, req.session.userid));
 
                         return Promise.all(promises).then(function () {
-                            console.log('FINISHED ALL FUCKING PROMISES');
-
                             // did the current user answer the form?
                             if (formcompleted) {
 
@@ -1764,7 +1745,6 @@ module.exports = function(app, passport, manager, hashids) {
                                 // get all data and analyze
                                 getformanswers(formid).then(function () {
                                     console.log('getformanswers proceeded');
-                                    console.log('FINISHED ALL FUCKING PROMISES 000', req.body.link, answercount);
 
                                     //export
                                     if (answercount > 0) {
@@ -1786,8 +1766,6 @@ module.exports = function(app, passport, manager, hashids) {
 
                                 })
                                     .catch(function() {
-                                        console.log('FINISHED ALL FUCKING PROMISES 1', req.body.link);
-
                                         // error
                                         res.json({
                                             data: null,
@@ -1801,8 +1779,6 @@ module.exports = function(app, passport, manager, hashids) {
                                     });
 
                             } else {
-                                console.log('FINISHED ALL FUCKING PROMISES 2', req.body.link);
-
                                 // user did not complete this form
                                 res.json({
                                     data: '',
@@ -1818,8 +1794,6 @@ module.exports = function(app, passport, manager, hashids) {
 
                         })
                             .catch(function() {
-                                console.log('FINISHED ALL FUCKING PROMISES 3', req.body.link);
-
                             // error
                             res.json({
                                 data: '',
@@ -1833,8 +1807,6 @@ module.exports = function(app, passport, manager, hashids) {
                         });
 
                     } else {
-                        console.log('FINISHED ALL FUCKING PROMISES 4', req.body.link);
-
                         res.json({
                             data: '',
                             shortAnswers: [],
@@ -1848,8 +1820,6 @@ module.exports = function(app, passport, manager, hashids) {
                 })
                 .catch(function() {
                     // error
-                    console.log('FINISHED ALL FUCKING PROMISES 5', req.body.link);
-
                     res.json({
                         data: '',
                         shortAnswers: [],

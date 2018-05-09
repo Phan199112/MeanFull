@@ -62,7 +62,6 @@ export class ViewCommunityComponent implements OnInit {
 
                     if (this.status == '1') {
                         this.data = res.json().data;
-                        console.log("1Members:", this.data);
 
                         this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
@@ -93,7 +92,6 @@ export class ViewCommunityComponent implements OnInit {
 
                     } else if (this.status == '2') {
                         this.data = res.json().data;
-                        console.log("2Members:", this.data);
                         this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
@@ -150,9 +148,6 @@ export class ViewCommunityComponent implements OnInit {
     updateCommunity() {
         let data = this.createcommunityData();
 
-        window.console.log("Submitted:", data);
-
-
         this.http.put('/community/update', data).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
@@ -163,9 +158,6 @@ export class ViewCommunityComponent implements OnInit {
                     this.data.pic = data.pic;
                     this.data.public = data.public;
 
-
-
-                    window.console.log("Dumb");
                     this.toggleEdit();
 
                 } else {

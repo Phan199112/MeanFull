@@ -60,8 +60,6 @@ export class FeedListComponent implements OnInit, OnChanges {
 
 
     refreshFeed() {
-        console.log("params:", this.formselected);
-
         this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, pref: this.pref }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {

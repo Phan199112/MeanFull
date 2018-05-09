@@ -294,18 +294,14 @@ export class FeedFormComponent implements OnInit {
         
         let data = {link: this.form.id, answered: this.form.answered, isAuthor: this.isMyPost };
 
-        // console.log(this.form.questions[0].body.substring(0, 4), authorAccess);
 
         // post and get response
         this.http.post('/forms/data', data)
             .toPromise()
             .then(response => {
-                console.log('AA:', this.form.questions[0].body.substring(0, 8), response.json().count);
 
-                let responsedata = response.json().data;
-                
-                
-                
+                let responsedata = response.json().data;              
+               
                 this.shortAnswers = response.json().shortAnswers;
                 let responsestatus = response.json().status;
                 this.loggedin = response.json().loggedin;
