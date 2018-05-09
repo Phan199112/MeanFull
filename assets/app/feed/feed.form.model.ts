@@ -24,6 +24,7 @@ export class FeedForm {
     shared: boolean;
     typeevent: boolean;
     public: boolean;
+    answerCount: Number;
     download: string;
     found: boolean;
     highlight: boolean;

@@ -1566,11 +1566,19 @@ module.exports = function(app, passport, manager, hashids) {
         var userreaction = null;
         var tempallanswers;
 
+        // if (req.body.link != "zDm5VaNp8ZUodjGN6jzE") return;
 
         /// temporary function declaration
         // temp functions
         var testformanswered  = function(formid, userid) {
             return new Promise(function(resolve, reject){
+
+                if (req.body.isAuthor) {
+                    formcompleted = req.body.isAuthor;
+                    resolve();
+                };
+
+
                 AnswersModel.findOne({formid: formid, userid: userid}, function (err, answer) {
                     if (err) {
                         console.log('error testformanswered');
@@ -1583,6 +1591,7 @@ module.exports = function(app, passport, manager, hashids) {
                             resolve();
                         } else {
                             if (req.body.answered) formcompleted = req.body.answered;
+
                             console.log('completed testformanswered null');
                             resolve();
                         }
@@ -1600,7 +1609,7 @@ module.exports = function(app, passport, manager, hashids) {
                         console.log('error getformanswers');
                         reject();
                     } else {
-                        if (allanswers != null) {
+                        if (allanswers != null && allanswers.length != 0) {
                             console.log('completed getformanswers');
                             // retrieved an array with all answers
                             tempallanswers = allanswers;
@@ -1615,7 +1624,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             var authorPromises = []
 
-                            if (shortAnswers[0].length !== 0) {
+                            if (shortAnswers[0] && shortAnswers[0].length !== 0) {
                                 allanswers.map((surveyAnsw, i) => {
                                     if (surveyAnsw.userid !== "anonymous") {
                                         authorPromises.push(
@@ -1745,6 +1754,7 @@ module.exports = function(app, passport, manager, hashids) {
                         promises.push(testformreacted(formid, req.session.userid));
 
                         return Promise.all(promises).then(function () {
+                            console.log('FINISHED ALL FUCKING PROMISES');
 
                             // did the current user answer the form?
                             if (formcompleted) {
@@ -1754,6 +1764,8 @@ module.exports = function(app, passport, manager, hashids) {
                                 // get all data and analyze
                                 getformanswers(formid).then(function () {
                                     console.log('getformanswers proceeded');
+                                    console.log('FINISHED ALL FUCKING PROMISES 000', req.body.link, answercount);
+
                                     //export
                                     if (answercount > 0) {
                                         console.log('crunching numbers');
@@ -1774,6 +1786,8 @@ module.exports = function(app, passport, manager, hashids) {
 
                                 })
                                     .catch(function() {
+                                        console.log('FINISHED ALL FUCKING PROMISES 1', req.body.link);
+
                                         // error
                                         res.json({
                                             data: null,
@@ -1787,6 +1801,8 @@ module.exports = function(app, passport, manager, hashids) {
                                     });
 
                             } else {
+                                console.log('FINISHED ALL FUCKING PROMISES 2', req.body.link);
+
                                 // user did not complete this form
                                 res.json({
                                     data: '',
@@ -1802,6 +1818,8 @@ module.exports = function(app, passport, manager, hashids) {
 
                         })
                             .catch(function() {
+                                console.log('FINISHED ALL FUCKING PROMISES 3', req.body.link);
+
                             // error
                             res.json({
                                 data: '',
@@ -1815,6 +1833,8 @@ module.exports = function(app, passport, manager, hashids) {
                         });
 
                     } else {
+                        console.log('FINISHED ALL FUCKING PROMISES 4', req.body.link);
+
                         res.json({
                             data: '',
                             shortAnswers: [],
@@ -1828,6 +1848,8 @@ module.exports = function(app, passport, manager, hashids) {
                 })
                 .catch(function() {
                     // error
+                    console.log('FINISHED ALL FUCKING PROMISES 5', req.body.link);
+
                     res.json({
                         data: '',
                         shortAnswers: [],

@@ -43,6 +43,7 @@ export class FeedFormComponent implements OnInit {
     shortAnswers: any = [];
     shareUrl: string;
     isMyPost: boolean = false;
+    answersExist: boolean = true;
 
 
     //  ------ Emoticon properties to change/check against
@@ -290,20 +291,28 @@ export class FeedFormComponent implements OnInit {
         this.form.viewGraphs(false);
 
         // did the current user complete this particular survey?
-        var accessToAnswer = this.isMyPost || this.form.answered;
-        let data = {link: this.form.id, answered: accessToAnswer};
+        
+        let data = {link: this.form.id, answered: this.form.answered, isAuthor: this.isMyPost };
+
+        // console.log(this.form.questions[0].body.substring(0, 4), authorAccess);
 
         // post and get response
         this.http.post('/forms/data', data)
             .toPromise()
             .then(response => {
+                console.log('AA:', this.form.questions[0].body.substring(0, 8), response.json().count);
+
                 let responsedata = response.json().data;
+                
+                
+                
                 this.shortAnswers = response.json().shortAnswers;
                 let responsestatus = response.json().status;
-                // let responsereaction = response.json().reaction;
                 this.loggedin = response.json().loggedin;
-
+                                                    
+                
                 //deal with reaction
+                // let responsereaction = response.json().reaction;
                 // if (responsereaction.reacted) {
                 //     this.hasReacted = true;
                 //     this.reaction = responsereaction.userreaction;
@@ -313,10 +322,12 @@ export class FeedFormComponent implements OnInit {
                 if (responsestatus == 2) {
                     this.form.setAnswered(true);
                     // make sure the plot is given the data
+                    this.form.answerCount = response.json().count;
                     this.form.plotdata = [];
 
                     // iniital data to give plot
                     this.form.plotdata = this.form.plotdata.concat(responsedata);
+                    
 
 
                     this.submitted = true;
@@ -410,8 +421,8 @@ export class FeedFormComponent implements OnInit {
         this.form.contracted = false;
         window.mixpanel.track("Clicked 'See More'", {
             "timeElapsedFromInit": (Date.now() - startingTime) / 1000,
-            "question": this.data.questions[0].body,
-            "id": this.data.id,
+            "question": this.form.questions[0].body,
+            "id": this.form.id,
             "timestamp": Date.now()
         });
 

@@ -48,6 +48,7 @@ export class MiniShowFormComponent implements OnInit {
     }
 
     ngOnChanges() {
+        
         // Load short answer array and get index of questions that are short answers and put their index in an array
         if (this.data) {
             var qs = this.data.questions;
