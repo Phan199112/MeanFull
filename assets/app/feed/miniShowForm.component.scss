@@ -157,9 +157,9 @@ $warningColor: rgb(234, 122, 133);
 
 .submitButton {
     background: #FFF;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 2px 14px;
-    line-height: 1rem;
+    line-height: 1;
     width: auto;
     text-align: center;
     border: none;
@@ -172,11 +172,11 @@ $warningColor: rgb(234, 122, 133);
     outline-style: none;
     margin-top: 0px;
 
-    &.smaller {
-      padding: 1px 8px;
-      font-size: .7rem;
-      line-height: .7rem;
-    }
+    // &.smaller {
+    //   padding: 1px 8px;
+    //   font-size: .7rem;
+    //   line-height: .7rem;
+    // }
 
     &:active {
         outline-style: none;

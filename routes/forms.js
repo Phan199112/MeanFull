@@ -1033,7 +1033,7 @@ module.exports = function(app, passport, manager, hashids) {
         // limits to x posts
         // only public posts
 
-        var postlimit = 10;
+        var postlimit = 25;
 
         // enable different types of queries
         // query a tag
