@@ -1,7 +1,8 @@
 <div class="pageLayout">
 
 <div class="row">
-    <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm" (click)="askQuestion()">Ask a Question</button>
+    <button *ngIf="loggedin" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm" (click)="askQuestion()">Ask a Question</button>
+    <button *ngIf="!loggedin" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/users/login">Log In to Get the Best Questionsly Experience</button>
 </div>
 
 <div class="row">

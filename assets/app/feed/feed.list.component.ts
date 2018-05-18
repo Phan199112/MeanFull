@@ -4,6 +4,8 @@ import { Http } from "@angular/http";
 import { ActivatedRoute } from "@angular/router";
 import { UserService } from "../user.service";
 
+import * as $ from 'jquery';
+
 
 @Component({
     selector: 'feed-list',
@@ -14,6 +16,9 @@ import { UserService } from "../user.service";
 export class FeedListComponent implements OnInit, OnChanges {
     feedlist: FeedForm[] = [];
     data: Object[];
+    formids: String[] = [];
+
+
 
     @Input() user: String;
     @Input() comm: String;
@@ -38,7 +43,6 @@ export class FeedListComponent implements OnInit, OnChanges {
         this.route.params.subscribe(params => {
             // this.formselected = params.survey;
             // this.tag = params['tag'];
-            // this.refreshFeed();
         });
 
 
@@ -47,6 +51,10 @@ export class FeedListComponent implements OnInit, OnChanges {
                 this.me = userData.dbid;
             }
         });
+
+        var loadMorePosts = this.loadMorePosts.bind(this);
+
+        window.setTimeout(loadMorePosts, 3000);
     }
 
     ngOnChanges() {
@@ -58,9 +66,35 @@ export class FeedListComponent implements OnInit, OnChanges {
         this.refreshFeed();
     }
 
+    loadMorePosts() {
+        var $docHeight = $(document).height(),
+            $windHeight = $(window).height(),
+            triggerHeight = .75 * ($docHeight - $windHeight),
+            fetched = false;
+
+        console.log("Document Height:", $docHeight, "\nWindow Height:", $windHeight, "\nTRIGGER HEIGHT:", triggerHeight);
+
+        var refreshFeed = this.refreshFeed.bind(this);
+
+        $(window).scroll(function () {
+            var wScroll = $(window).scrollTop();
+            if (wScroll > triggerHeight && !fetched) {
+                refreshFeed();
+                fetched = true;
+
+                window.setTimeout(function() {
+                    $docHeight = $(document).height();
+                    triggerHeight = .75 * ($docHeight - $windHeight);
+                    fetched = false;
+                }, 3000);
+            }
+
+        })
+    }
+
 
     refreshFeed() {
-        this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, pref: this.pref }).toPromise()
+        this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, pref: this.pref, currentPosts: this.formids }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     // clean current data list
@@ -76,6 +110,14 @@ export class FeedListComponent implements OnInit, OnChanges {
                     }
 
                     if (this.feedlist.length == 0) this.emptyMessage = "No questions have been asked yet"
+
+                    // Populate array full of id's of questions currently shown on feed
+                    // Sending this to the backend so it can skip over these when fetching for more questions
+                    for (let form of this.feedlist) {
+                        if (this.formids.indexOf(form.id) == -1) {
+                            this.formids.push(form.id);
+                        }
+                    }
                 }
             })
             .catch(error => alert("Error retrieving form: " + error));
