@@ -18,8 +18,6 @@ export class FeedListComponent implements OnInit, OnChanges {
     data: Object[];
     formids: String[] = [];
 
-
-
     @Input() user: String;
     @Input() comm: String;
     @Input() pic: string;
@@ -27,13 +25,10 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pictype: string;
     @Input() tag: string;
     @Input() pref: string;
-    @Input() showAnsweredQuestions: boolean;
-    
-    // tag: any;
+    @Input() showAnsweredQuestions: boolean; // when true, `user` must be given, and `comm` / `tag` do not apply
     
     me: string;
     formselected: any;
-
 
     constructor(private http: Http, 
                 private userService: UserService,

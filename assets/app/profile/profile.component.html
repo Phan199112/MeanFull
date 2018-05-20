@@ -58,6 +58,17 @@
                     </div>
                 </div>
 
+                <div class="row" *ngIf="!hidefeed && !genericSubsection" class="toggleRow">
+                    <p *ngIf="!showAnsweredQuestions">
+                        Asked questions •
+                        <a [routerLink]="['/profile', id, 'answered']">Answered</a>
+                    </p>
+                    <p *ngIf="showAnsweredQuestions">
+                        Answered questions •
+                        <a [routerLink]="['/profile', id]">Asked</a>
+                    </p>
+                </div>
+
                 <!-- Feed content or other info -->
                 <div class="">
                     <div *ngIf="!genericSubsection"  style="margin-top:20px">
