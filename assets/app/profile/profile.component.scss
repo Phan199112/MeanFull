@@ -122,6 +122,17 @@ canvas {
   position: relative;
 }
 
+.container {
+  margin-top: 8px;
+  border: 1px solid $borderColor;
+  background: #FFF;
+  border-radius: 4px;
+}
+.container h3 {
+  margin: 12px 0 0 4px;
+  font-size: 1.3rem;
+}
+
 .profilePicture {
   // margin-bottom: 20px;
   width: 120px;

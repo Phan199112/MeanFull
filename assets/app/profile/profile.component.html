@@ -1,7 +1,6 @@
-<!--<div class="container" id="profilePage">-->
-    <div class="pageLayout">
-         <div class="row" >
-           
+<div class="pageLayout">
+     <div class="row" >
+
         <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
             <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
         </div>
@@ -25,56 +24,47 @@
                         </div>
                     </div>
 
-                    <!-- <div> -->
-                        <div class="profileInfo">
-                            <h3 class="name">{{name}}</h3>
-                            <!-- <h5 class="location" *ngIf="location.country">{{location.city}}, {{location.state}}, {{location.country}}</h5> -->
-                            <h5 class="location" *ngIf="location !== '' ">{{location}}</h5>
-                            <div style="display: flex;">
-                                <i class="stats fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated ? nocreated : '0'}}</span></i>
-                                <i class="stats fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken ? notaken : '0'}}</span></i>
-                                <i class="stats fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion ? nodiscussion : '0'}}</span></i>
-                            </div>
-                            <div *ngIf="(loggedin && !innetwork && !pending && !me) || pending" style="margin-top: 8px">
-                                <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network</a>
-                                <a class="submitButton" *ngIf="pending">Request Pending</a>
-                            </div>
+                    <div class="profileInfo">
+                        <h3 class="name">{{name}}</h3>
+                        <h5 class="location" *ngIf="location !== '' ">{{location}}</h5>
+                        <div style="display: flex;">
+                            <i class="stats fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated ? nocreated : '0'}}</span></i>
+                            <i class="stats fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken ? notaken : '0'}}</span></i>
+                            <i class="stats fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion ? nodiscussion : '0'}}</span></i>
                         </div>
+                        <div *ngIf="(loggedin && !innetwork && !pending && !me) || pending" style="margin-top: 8px">
+                            <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network</a>
+                            <a class="submitButton" *ngIf="pending">Request Pending</a>
+                        </div>
+                    </div>
 
-                        <div class="profileMenu">
-                            <div>
-                                <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" *ngIf="loggedin && !me">
-                                    <a
-                                            class="navlinks nav-link custom-dropdown-toggle"
-                                            id="profile-menu"
-                                            ngbDropdownToggle
-                                            aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <i class="fa fa-bars" aria-hidden="true"></i>
-                                    </a>
-                                    <div ngbDropdownMenu aria-labelledby="profile-menu">
-                                        <!--<a class="dropdown-item" (click)="onAddToNetwork(id)" *ngIf="!innetwork && !pending && !me" >Add to my network</a>-->
-                                        <!--<div *ngIf="pending">Network request is pending</div>-->
-                                        <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork && !me" >Remove from my network</a>
-                                        <a class="dropdown-item" (click)="reportUser(id)" *ngIf="!me" >Report user</a>
-                                    </div>
+                    <div class="profileMenu">
+                        <div>
+                            <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" *ngIf="loggedin && !me">
+                                <a  class="navlinks nav-link custom-dropdown-toggle"
+                                    id="profile-menu"
+                                    ngbDropdownToggle
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </a>
+                                <div ngbDropdownMenu aria-labelledby="profile-menu">
+                                    <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork && !me" >Remove from my network</a>
+                                    <a class="dropdown-item" (click)="reportUser(id)" *ngIf="!me" >Report user</a>
                                 </div>
-                                <div *ngIf="addfailed">failed..</div>
                             </div>
+                            <div *ngIf="addfailed">failed..</div>
                         </div>
-                    <!-- </div> -->
-                    
+                    </div>
                 </div>
 
                 <div class="row" *ngIf="me">
-                    <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">Ask a Question</button>
+                    <button style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">
+                        Ask a Question
+                    </button>
                 </div>
 
-
-
-
-                <!-- Feed content and other -->
-                <!-- <div class="d-none d-sm-block"> -->
+                <!-- Feed content or other info -->
                 <div class="">
                     <div *ngIf="!subsection"  style="margin-top:20px">
                         <div *ngIf="status == '2'" class="aboutContainer"><h6 class="location" style="text-align: center; width: 100%;">{{name}} has a private profile.<br/>Only individuals in {{pronoun}} network can see further details.</h6></div>
@@ -94,7 +84,6 @@
                     </div>
                 </div>
 
-
             </div>
 
             <div class="aboutContainer" id="profileContainer" *ngIf="!loadsuccessful && !loading">
@@ -104,11 +93,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3 order-3 order-sm-3" id="rightSideOfContainer">
-            <feedback-form *ngIf="loggedin"></feedback-form>
-        </div> -->
-
 
     </div>
 </div>

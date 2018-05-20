@@ -91,7 +91,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         });
                         break;
                     case "communities":
-                        this.http.post("/community/list", {user: params.id}).toPromise().then(res => {
+                        this.http.post("/community/list", {user: params.id, userCommunitiesLimit: 100}).toPromise().then(res => {
                             this.subsectionList = res.json().data;
                             this.subsectionResource = "community";
                         });

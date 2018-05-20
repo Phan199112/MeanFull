@@ -1,7 +1,13 @@
 <div *ngIf="context === 'profile'">
     <div class="sContainer">
-        <h6 *ngIf="networklist.length == 0" class="lpText small">{{me ? 'Your' : userName + "'s"}} network is empty.<br/>Discover other members!</h6>
-        <h6 *ngIf="networklist.length !== 0" class="lpText small">{{me ? 'My' : userName + "'s"}} Network</h6>
+        <h6 *ngIf="networklist.length == 0" class="lpText">
+            {{me ? 'Your' : userName + "'s"}} network is empty.<br/>
+            Discover other members!
+        </h6>
+        <h6 *ngIf="networklist.length !== 0" class="lpText">
+            {{me ? 'My' : userName + "'s"}} Network
+        </h6>
+
         <div *ngIf="networklist.length != 0" class="peopleContainer">
             <div *ngFor="let p of networklist" style="flex-basis:33%;">
                 <user-image [data]="p"> </user-image>
@@ -12,11 +18,22 @@
                 <user-image [data]="p"> </user-image>
             </div>
         </div>
+
+        <div *ngIf="networklist.length !== 0" class="moreLink">
+            <a [routerLink]="['/profile', user, 'network']">
+                More...
+            </a>
+        </div>
     </div>
 
     <div class="sContainer">
-        <h6 *ngIf="communitylist.length == 0" class="lpText small">{{me ? "You haven't" : userName + " hasn't"}} joined a community yet.<br/>Discover other communities!</h6>
-        <h6 *ngIf="communitylist.length !== 0" class="lpText small">{{me ? 'My' : userName + "'s"}} Communities</h6>
+        <h6 *ngIf="communitylist.length == 0" class="lpText">
+            {{me ? "You haven't" : userName + " hasn't"}} joined a community yet.<br/>
+            Discover other communities!
+        </h6>
+        <h6 *ngIf="communitylist.length !== 0" class="lpText">
+            {{me ? 'My' : userName + "'s"}} Communities
+        </h6>
 
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist" style="flex-basis:33%;">
@@ -27,6 +44,12 @@
             <div *ngFor="let c of randomlist" style="flex-basis:33%;">
                 <community-image [data]="c"> </community-image>
             </div>
+        </div>
+
+        <div *ngIf="communitylist.length !== 0" class="moreLink">
+            <a [routerLink]="['/profile', user, 'communities']">
+                More...
+            </a>
         </div>
     </div>
 </div>

@@ -596,6 +596,11 @@ module.exports = function(app, passport, manager, hashids) {
         } else {
             // generate the communitites associated to a user and some random ones for discovery
 
+            var userCommunitiesLimit = 9;
+            if (typeof req.body.userCommunitiesLimit !== "undefined") {
+                userCommunitiesLimit = req.body.userCommunitiesLimit;
+            }
+
             //the output will depend on whether or not the profile of this user is public and whether or not the users are connected
             new Promise(function(resolve, reject) {
                 if (selecteduser === req.session.userid) {
@@ -658,7 +663,7 @@ module.exports = function(app, passport, manager, hashids) {
                         var promise = new Promise(function (resolve, reject) {
                             CommunityModel.find({
                                 $or: [{'adminuserid': selecteduser}, {'members': selecteduser}]
-                            }).limit(10).cursor()
+                            }).limit(userCommunitiesLimit * 2).cursor()
                                 .on('data', function (comm) {
                                     communitiesdatatemp.push({
                                         title: comm.title,
@@ -680,7 +685,7 @@ module.exports = function(app, passport, manager, hashids) {
                             .then(function () {
                                 //
                                 if (communitiesdatatemp != null) {
-                                    if (communitiesdatatemp.length <= 9) {
+                                    if (communitiesdatatemp.length <= userCommunitiesLimit) {
                                         // do nothing all is good
                                         communitiesdata = communitiesdatatemp;
 
@@ -688,7 +693,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         // get some random communities
                                         var randomints = [];
 
-                                        while (randomints.length != 9) {
+                                        while (randomints.length != userCommunitiesLimit) {
                                             var newval = math.getRandomInt(0, communitiesdatatemp.length);
                                             if (randomints.indexOf(newval) === -1) {
                                                 randomints.push(newval);
