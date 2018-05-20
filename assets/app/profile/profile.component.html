@@ -66,14 +66,19 @@
 
                 <!-- Feed content or other info -->
                 <div class="">
-                    <div *ngIf="!subsection"  style="margin-top:20px">
+                    <div *ngIf="!genericSubsection"  style="margin-top:20px">
                         <div *ngIf="status == '2'" class="aboutContainer"><h6 class="location" style="text-align: center; width: 100%;">{{name}} has a private profile.<br/>Only individuals in {{pronoun}} network can see further details.</h6></div>
-                        <feed-list [emptyMessage]="noPostsMessage" [user]="id" *ngIf="!hidefeed"></feed-list>
+                        <feed-list
+                            [emptyMessage]="noPostsMessage"
+                            [user]="id"
+                            [showAnsweredQuestions]="showAnsweredQuestions"
+                            *ngIf="!hidefeed">
+                        </feed-list>
                     </div>
-                    <div *ngIf="subsection" class="container">
+                    <div *ngIf="genericSubsection" class="container">
                         <div class="row">
                             <div class="col">
-                                <h3 style="text-transform: capitalize">{{subsection}}</h3>
+                                <h3 style="text-transform: capitalize">{{genericSubsection}}</h3>
                             </div>
                         </div>
                         <div class="row">

@@ -27,6 +27,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pictype: string;
     @Input() tag: string;
     @Input() pref: string;
+    @Input() showAnsweredQuestions: boolean;
     
     // tag: any;
     
@@ -100,7 +101,21 @@ export class FeedListComponent implements OnInit, OnChanges {
 
 
     refreshFeed() {
-        this.http.post(`/forms/feed`, { tag: this.tag, user: this.user, topsurvey: this.formselected, comm: this.comm, pref: this.pref, currentPosts: this.formids }).toPromise()
+        var route = (this.showAnsweredQuestions ? `/forms/feed/answered` : `/forms/feed`);
+
+        this.http
+            .post(
+                route,
+                {
+                    tag: this.tag,
+                    user: this.user,
+                    topsurvey: this.formselected,
+                    comm: this.comm,
+                    pref: this.pref,
+                    currentPosts: this.formids
+                }
+            )
+            .toPromise()
             .then(res => {
                 if (res.json().status == 1) {
 

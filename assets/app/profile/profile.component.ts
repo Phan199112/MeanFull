@@ -41,9 +41,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     pending: boolean = false;
     noPostsMessage: string;
     status: string = 0;
-    subsection: any = null;
+
+    genericSubsection: any = null;
     subsectionList: any[] = [];
     subsectionResource: string;
+
+    showAnsweredQuestions: boolean = false;
 
     constructor(
         private http: Http,
@@ -81,22 +84,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.route.params.subscribe(params => {
             this.clearAll();
             this.id = params.id;
-            this.subsection = params.subsection;
-            if (this.subsection) {
-                switch (this.subsection) {
-                    case "network":
-                        this.http.get("/users/network", {params: {user: params.id}}).toPromise().then(res => {
-                            this.subsectionList = res.json().data;
-                            this.subsectionResource = "user";
-                        });
-                        break;
-                    case "communities":
-                        this.http.post("/community/list", {user: params.id, userCommunitiesLimit: 100}).toPromise().then(res => {
-                            this.subsectionList = res.json().data;
-                            this.subsectionResource = "community";
-                        });
-                }
+
+            if (params.subsection == "answered") {
+                this.genericSubsection = "";
+                this.showAnsweredQuestions = true;
+            } else {
+                this.genericSubsection = params.subsection;
             }
+
+            switch (this.genericSubsection) {
+                case "network":
+                    this.http.get("/users/network", {params: {user: params.id}}).toPromise().then(res => {
+                        this.subsectionList = res.json().data;
+                        this.subsectionResource = "user";
+                    });
+                    break;
+                case "communities":
+                    this.http.post("/community/list", {user: params.id, userCommunitiesLimit: 100}).toPromise().then(res => {
+                        this.subsectionList = res.json().data;
+                        this.subsectionResource = "community";
+                    });
+                    break;
+            }
+
             this.http.post(`/users/profile/${this.id}`).toPromise()
                 .then(res => {
 
@@ -248,7 +258,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 } else {
                     this.addfailed = true;
                 }
-                //
             })
             .catch(error => function () {
                 this.addfailed = true;
