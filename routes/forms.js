@@ -1512,7 +1512,8 @@ module.exports = function(app, passport, manager, hashids) {
                 res.json({
                     status: 1,
                     loggedin: loggedin,
-                    data: outputformsdata
+                    data: outputformsdata,
+                    queryForDebug: queryobj
                 });
             })
             .catch(function() {
