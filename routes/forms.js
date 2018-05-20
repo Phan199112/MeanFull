@@ -1196,12 +1196,12 @@ module.exports = function(app, passport, manager, hashids) {
         // Get how many are viewed right now and add 12 to be post limit.
         // Skip over the first y - 12 posts
         // Don't search top queries twice (pass in an argument with the top question id to check if we shouldn't pick it up again)
-        var postlimit = 25;
+        var postlimit = 12;
 
         if (req.body.currentPosts.length == 0) {
-            postlimit = 25;
+            postlimit = 12;
         } else {
-            postlimit = 25 + req.body.currentPosts.length
+            postlimit = 12 + req.body.currentPosts.length
         }
 
 

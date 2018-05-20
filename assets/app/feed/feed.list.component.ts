@@ -52,7 +52,7 @@ export class FeedListComponent implements OnInit, OnChanges {
 
         // TODO: Fix autoscroll bug.
         // Uncomment for Infinite Scroll
-        // window.setTimeout(loadMorePosts, 3000);
+        window.setTimeout(loadMorePosts, 3000);
     }
 
     ngOnChanges() {
@@ -72,7 +72,7 @@ export class FeedListComponent implements OnInit, OnChanges {
             triggerHeight = .75 * ($docHeight - $windHeight),
             fetched = false;
 
-        console.log("Document Height:", $docHeight, "\nWindow Height:", $windHeight, "\nTRIGGER HEIGHT:", triggerHeight);
+        // console.log("Document Height:", $docHeight, "\nWindow Height:", $windHeight, "\nTRIGGER HEIGHT:", triggerHeight);
 
         var refreshFeed = this.refreshFeed.bind(this);
 
@@ -114,27 +114,22 @@ export class FeedListComponent implements OnInit, OnChanges {
             .then(res => {
                 if (res.json().status == 1) {
 
-                    // clean current data list
-                    var l = this.feedlist.length;
-                    while (l--) {
-                        this.feedlist.splice(l, 1);
-                    }
-
                     // add to list
                     this.data = res.json().data;
                     for (let obj of this.data) {
-                        this.feedlist.push(new FeedForm(obj));
+                        if (this.formids.indexOf(obj.id) == -1) {
+                            // Push forms into feedlist if not there already
+                            this.feedlist.push(new FeedForm(obj));
+                            
+                            // Populate array full of id's of questions currently shown on feed
+                            // Sending this to the backend so it can skip over these when fetching for more questions
+                            this.formids.push(obj.id);
+                        }
                     }
+
 
                     if (this.feedlist.length == 0) this.emptyMessage = "No questions have been asked yet"
 
-                    // Populate array full of id's of questions currently shown on feed
-                    // Sending this to the backend so it can skip over these when fetching for more questions
-                    // for (let form of this.feedlist) {
-                    //     if (this.formids.indexOf(form.id) == -1) {
-                    //         this.formids.push(form.id);
-                    //     }
-                    // }
                 }
             })
             .catch(error => alert("Error retrieving form: " + error));
