@@ -192,3 +192,22 @@ h3 {
     display: none;
   }
 }
+
+#askBtn {
+  display: block;
+  margin: 0px auto;
+  // margin-top: 15px;
+  width: 250px;
+  padding: 4px 10px;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: white;
+  background-color: $primaryColor;
+  border-radius: 10px;
+  margin-top: 8px;
+  margin-bottom: -2px;
+
+  &:hover {
+    background-color: lighten($primaryColor, 10);
+  }
+}

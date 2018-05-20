@@ -1,4 +1,8 @@
 <div *ngIf="context === 'profile'">
+    <button *ngIf="me" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">
+        Ask a Question
+    </button>
+
     <div class="sContainer">
         <h6 *ngIf="networklist.length == 0" class="lpText">
             {{me ? 'Your' : userName + "'s"}} network is empty.<br/>
