@@ -50,8 +50,6 @@ export class FeedListComponent implements OnInit, OnChanges {
 
         var loadMorePosts = this.loadMorePosts.bind(this);
 
-        // TODO: Fix autoscroll bug.
-        // Uncomment for Infinite Scroll
         window.setTimeout(loadMorePosts, 3000);
     }
 
