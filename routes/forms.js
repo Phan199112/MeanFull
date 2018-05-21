@@ -1038,8 +1038,8 @@ module.exports = function(app, passport, manager, hashids) {
         }
 
         var selecteduser = hashids.decodeHex(req.body.user);
-        var queryOffset = 0;
-        var queryLimit = 0;
+        var queryOffset = (req.body.offset ? req.body.offset : 0);
+        var queryLimit = (req.body.limit ? req.body.limit : 10);
 
         var surveysToReturn = [];
         var authors = [];
@@ -1077,9 +1077,10 @@ module.exports = function(app, passport, manager, hashids) {
 
             return new Promise(function(resolve, reject){
                 AnswersModel
-                    .find({ userid: selecteduser }, null, {skip: queryOffset, limit: queryLimit})
-                    // Note: the sort matters for the skip & limit, but it will not determine the order of end results
-                    .sort({ 'timestamp': 'desc' }).cursor()
+                    // Note: this does not scale well. In order to return n surveys to the client, need to load
+                    // *all* answers; some answers correspond to private surveys
+                    .find({ userid: selecteduser })
+                    .cursor()
                     .on('data', function(ans){
                         answerdata.push(ans);
                     })
@@ -1178,7 +1179,9 @@ module.exports = function(app, passport, manager, hashids) {
             res.json({
                 status: 1,
                 loggedin: req.isAuthenticated(),
-                data: data.sort(function (a, b) {return b.answerTimestamp - a.answerTimestamp})
+                data: data
+                    .sort(function (a, b) {return b.answerTimestamp - a.answerTimestamp})
+                    .slice(queryOffset, queryOffset + queryLimit)
             });
         })
             .catch(function() {

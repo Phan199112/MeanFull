@@ -96,20 +96,31 @@ export class FeedListComponent implements OnInit, OnChanges {
 
 
     refreshFeed() {
-        var route = (this.showAnsweredQuestions ? `/forms/feed/answered` : `/forms/feed`);
+        var route;
+        var requestBody;
+
+        if (this.showAnsweredQuestions) {
+            route = `/forms/feed/answered`;
+            requestBody = {
+                user: this.user,
+                pref: this.pref,
+                offset: 0,
+                limit: this.formids.length + 10
+            };
+        } else {
+            route = `/forms/feed`;
+            requestBody = {
+                tag: this.tag,
+                user: this.user,
+                topsurvey: this.formselected,
+                comm: this.comm,
+                pref: this.pref,
+                currentPosts: this.formids
+            };
+        }
 
         this.http
-            .post(
-                route,
-                {
-                    tag: this.tag,
-                    user: this.user,
-                    topsurvey: this.formselected,
-                    comm: this.comm,
-                    pref: this.pref,
-                    currentPosts: this.formids
-                }
-            )
+            .post(route, requestBody)
             .toPromise()
             .then(res => {
                 if (res.json().status == 1) {
