@@ -752,4 +752,35 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.questionData[i + 1].number = currentNum;
     }
 
+    uploadShareEmailAddresses() {
+        var uploadButton = $(".shareEmails input[type=file]")[0];
+
+        uploadButton.innerHTML = 'Loading...';
+
+        // Prepare form data
+        var formData = new FormData();
+        var fileInput = $(".shareEmails input[type=file]")[0];
+        for (var i = 0; i < fileInput.files.length; i++) {
+            var file = fileInput.files[i];
+            formData.append('files[]', file, file.name);
+        }
+
+        // Send
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/extract-emails', true);
+        xhr.onload = function (data) {
+            if (xhr.status === 200) {
+                uploadButton.innerHTML = 'Upload';
+
+                var results = JSON.parse(xhr.response);
+                if (results.status == 1) {
+                    $(".shareEmails input[type=text]").val(results.emails.join(', '));
+                    $(".shareEmails input[type=file]").val('');
+                }
+            } else {
+                uploadButton.innerHTML = 'Error';
+            }
+        };
+        xhr.send(formData);
+    }
 }

@@ -41,4 +41,8 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
+    app.post('/extract-emails', function (req, res) {
+        // TODO
+        res.send({status: 1, emails: ["extracted@qq.com", "xyz@abc.def"]});
+    });
 };

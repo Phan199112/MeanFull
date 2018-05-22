@@ -191,12 +191,12 @@
                 <div class="flexContainer fdColumn faStart shareEmails">
                     <h6 class="settingTitle">Share with email addresses</h6>
                     <div>
-                        <input type="text" name="shareEmailAddresses" placeholder="email@address.com, ...">
+                        <input type="text" name="shareEmailAddresses" placeholder="Emails">
                         <a href="#" onClick="$('#secretUploadBox').toggle(); return false">Upload .XLS...</a>
                         <fieldset id="secretUploadBox">
                             <p>Upload an Excel file (.XLS) to extract email addresses</p>
-                            <input type="file" name="shareEmailAddressesFile">
-                            <button>Upload</button>
+                            <input type="file" name="shareEmailAddressesFile" accept=".xls,.xlsx">
+                            <button (click)="uploadShareEmailAddresses()">Upload</button>
                         </fieldset>
                     </div>
                 </div>
