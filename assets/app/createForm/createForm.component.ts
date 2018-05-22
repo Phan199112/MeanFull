@@ -610,7 +610,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             }
         }
 
-        data['shareEmailAddresses'] = $('input[name=shareEmailAddresses]').val();
+        data['sharedWithEmailAddresses'] = $('input[name=shareEmailAddresses]').val();
 
         return data;
     }

@@ -113,7 +113,7 @@ exports.sendNotificationFormRequest = function sendNotificationFormRequest(email
         pic: getUserPic(user),
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
-        // exports.sendEmail(email, subject, html, messagesafe);
+        exports.sendEmail(email, subject, html, messagesafe);
     });
 };
 

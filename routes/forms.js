@@ -14,6 +14,7 @@ var formfunctions = require('../functions/forms');
 var exportfunctions = require('../functions/export');
 var emailfunctions 	= require("../functions/email");
 var fs = require('fs');
+var emailAddress = require("email-addresses");
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -30,7 +31,7 @@ module.exports = function(app, passport, manager, hashids) {
         var unhashedCommunities = [];
         var unhashedUsers = [];
         var categories = [];
-        var emailaddresses = [];
+        var newEmailAddresses = []; // email addresses that do not match to any existing account
         var formid = null;
 
         if (receivedData.sharedWithCommunities != null) {
@@ -52,8 +53,8 @@ module.exports = function(app, passport, manager, hashids) {
             }
         }
 
-        // helper functions
-        var savecommunity = function() {
+        // update survey
+        var saveSurvey = function() {
             return new Promise(function (resolve, reject) {
                 FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
                     {$set: {questions: receivedData.questions, title: receivedData.title, categories: categories,
@@ -74,29 +75,9 @@ module.exports = function(app, passport, manager, hashids) {
                     });
             });
         };
+        promises.push(saveSurvey());
 
-        var getemailaddress = function (x) {
-            return new Promise(function (resolve, reject) {
-                UserModel.findById(x, function (err, l) {
-                    if (err) {
-                        console.log(err);
-                        reject(err);
-                    } else {
-                        // only send emails if the user allows it (notification setting)
-                        if (Object.keys(l.notifications).length === 0) {
-                            if (l.notifications.formrequest === true) {
-                                emailaddresses.push(l.email);
-                            }
-                        } else {
-                            // if no settings are recorded, emails should be send as this is default policity as signup as well
-                            emailaddresses.push(l.email);
-                        }
-                        resolve();
-                    }
-                });
-            });
-        };
-
+        // load users of the community, add them to `unhashedUsers`
         var getuserscomm = function (x) {
             return new Promise(function (resolve, reject) {
                 CommunityModel.findById(x, function (err, c) {
@@ -115,69 +96,63 @@ module.exports = function(app, passport, manager, hashids) {
                 });
             });
         };
+        if (unhashedCommunities.length > 0) {
+            unhashedCommunities.forEach(function(comm) {
+                promises.push(getuserscomm(comm));
+            });
+        }
+
+        // find all users that do or do not match to the given email list,
+        // and add to `unhashedUsers` or `newEmailAddresses`
+        var getUserByEmailAddress = function (x) {
+            return new Promise(function (resolve, reject) {
+                UserModel.findOne({ $or:[ {"local.email": x}, {'email': x} ]}, function (err, user) {
+                    if (err) {
+                        reject();
+                    } else {
+                        if (user)
+                            unhashedUsers.push(user._id);
+                        else
+                            newEmailAddresses.push(x);
+                        resolve();
+                    }
+                });
+            });
+        };
+        var tmp = emailAddress.parseAddressList(receivedData.sharedWithEmailAddresses);
+        if (tmp)
+            tmp.forEach(function (x) {
+                promises.push(getUserByEmailAddress(x.address));
+            });
 
         // sender information
         var sender = {};
-
         if (receivedData.anonymous === true) {
             sender.name = {first: 'Anonymous', last: '', fb: null, pic: null};
             sender.insite = null;
-
         } else {
             sender.name = {first: req.user.name.first, last: req.user.name.last, fb: req.user.fb, pic: req.user.pic};
             sender.insite = req.session.userid;
         }
 
-
-        // start with saving the data and retrieving community members
-        promises.push(savecommunity());
-
-        if (unhashedCommunities.length > 0) {
-            unhashedCommunities.forEach(function(comm) {
-                promises.push(getuserscomm(comm));
-            });
-
-        }
-
         return Promise.all(promises).then(function () {
-            // execute promisses to retrieve the email addresses
+            // Send notifications to existing users
+            var seen = {};
             if (unhashedUsers.length > 0) {
-                // in-site notifications
                 for (i=0; i < unhashedUsers.length; i++) {
+                    if (seen[unhashedUsers[i]]) continue;
+                    seen[unhashedUsers[i]] = true;
+
                     notifications.createNotification(unhashedUsers[i], sender.insite, "form", "New survey", hashids.encodeHex(formid));
                 }
-
-                // retrieve email adresses
-                unhashedUsers.forEach(function(user) {
-                    promisesnotifications.push(getemailaddress(user));
-                });
-
-            } else {
-                res.send({status: 1});
             }
 
-            return Promise.all(promisesnotifications).then(function () {
-                if (emailaddresses.length > 0) {
-                    // first check whether there are duplicates
-                    var alreadyincluded = [];
+            // Send email to new users
+            newEmailAddresses.forEach(function (x) {
+                emailfunctions.sendNotificationFormRequest(x, sender, hashids.encodeHex(formid));
+            });
 
-                    // loop and check
-                    for (l = 0; l < emailaddresses.length; l++) {
-                        if (alreadyincluded.indexOf(emailaddresses[l]) === -1) {
-                            alreadyincluded.push(emailaddresses[l]);
-                            // emailfunctions.sendNotificationFormRequest(emailaddresses[l], sender, hashids.encodeHex(formid));
-                        }
-                    }
-                    //
-                    res.send({status: 1});
-
-                } else {
-                    res.send({status: 1});
-                }
-            })
-                .catch(function() {
-                    res.send({status: 0});
-                });
+            res.send({status: 1, debugInfo: {uhu: unhashedUsers, nea: newEmailAddresses}});
         })
             .catch(function() {
                 res.send({status: 0});
