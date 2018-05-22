@@ -8,6 +8,7 @@ import {UserService} from "../user.service";
 import {Router, ActivatedRoute} from "@angular/router";
 import {DragulaService} from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
+import * as XLSX from 'xlsx';
 import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 
 @Component({
@@ -633,6 +634,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             id: formData.id
         };
         let data = Object.assign(this.questionnaireData(), meta);
+        
 
         this.http.put(`/forms/${data.id}`, data).toPromise()
             .then(response => {
@@ -753,34 +755,31 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     uploadShareEmailAddresses() {
-        var uploadButton = $(".shareEmails input[type=file]")[0];
-
-        uploadButton.innerHTML = 'Loading...';
-
-        // Prepare form data
-        var formData = new FormData();
         var fileInput = $(".shareEmails input[type=file]")[0];
-        for (var i = 0; i < fileInput.files.length; i++) {
-            var file = fileInput.files[i];
-            formData.append('files[]', file, file.name);
-        }
+        const target: DataTransfer = <DataTransfer>(fileInput);
+        if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+        const reader: FileReader = new FileReader();
+        reader.onload = (e: any) => {
+            /* read workbook */
+            const bstr: string = e.target.result;
+            const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
-        // Send
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/extract-emails', true);
-        xhr.onload = function (data) {
-            if (xhr.status === 200) {
-                uploadButton.innerHTML = 'Upload';
+            /* grab first sheet */
+            const wsname: string = wb.SheetNames[0];
+            const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-                var results = JSON.parse(xhr.response);
-                if (results.status == 1) {
-                    $(".shareEmails input[type=text]").val(results.emails.join(', '));
-                    $(".shareEmails input[type=file]").val('');
-                }
-            } else {
-                uploadButton.innerHTML = 'Error';
-            }
+            /* save data */
+            var emailArray = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+            
+            /* strip emails of the individual arrays they are in */
+            emailArray = emailArray.map(x => x[0]);
+
+            $(".shareEmails input[type=text]").val(emailArray.join(', '));
+            $(".shareEmails input[type=file]").val('');
+
+            console.log("email", emailArray)
         };
-        xhr.send(formData);
+        reader.readAsBinaryString(target.files[0]);
     }
+    
 }

@@ -90,7 +90,7 @@
     "supports-color": "^5.1.0",
     "to-string-loader": "^1.1.5",
     "webpack-sass-loaders": "^1.0.0",
-    "xlsx": "^0.11.14",
+    "xlsx": "^0.11.19",
     "yargs": "^9.0.1",
     "zone.js": "^0.8.14"
   },

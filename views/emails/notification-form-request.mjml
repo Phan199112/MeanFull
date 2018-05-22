@@ -1,29 +1,69 @@
 <mjml>
+  
   <mj-head>
-    <mj-title>{{subject}}</mj-title>
+    <mj-font name="Karla" href="https://fonts.googleapis.com/css?family=Karla" />
+    <!--<mj-style>-->
+    <!--  @media all and (max-width: 480px) { div[style*="color:#F45e46;"] { text-align: center !important } }-->
+    <!--</mj-style>-->
+    <mj-style inline="inline">
+      .link-nostyle { color: inherit; text-decoration: none ; font-weight:bold; align: center }
+    </mj-style>
+    <mj-style inline="inline">
+      .link-nostyle-nobold { color: inherit; text-decoration: none; align: center }
+    </mj-style>
   </mj-head>
+  
+  
   <mj-body>
-    <mj-container background-color="#1E824C">
-      <mj-section background-color="#fff" border-top="5px solid #1e824c">
-        <mj-column>
-          <mj-text font-size="32px" color="#1E824C" align="center">
-            <b>Questionsly</b>
-          </mj-text>
-        </mj-column>
-      </mj-section>
-      <mj-section background-color="#f9f9f9" border-top="1px solid #dddddd" border-bottom="5px solid #1e824c">
+
+
+    <mj-container background-color="#f6f6f6">
+      <mj-section background-color="#fff">
         <mj-group>
-          <mj-column width="20%" vertical-align="middle">
-            <!--<mj-image width="80" padding-right="0" src="http://Questionsly.us/images/male.png"/>-->
-            <mj-image width="80" href="{{link}}" padding-right="0" src="{{pic}}"/>
+          <mj-column>
+            <mj-text font-size="10" color="#818181" font-family="Karla" align="center">
+              <a class="link-nostyle-nobold" color="#818181" href="https://twitter.com/questionsly">twitter</a>
+            </mj-text>
+
           </mj-column>
-          <mj-column width="80%" vertical-align="middle">
-            <mj-text font-size="18px" color="#3a3137" padding="0 20px">
-              <p><a style="text-decoration:none; color:inherit" href="{{link}}">{{friendName}} requested you to fill in a form on Questionsly</a></p>
+          <mj-column>
+            <mj-text font-size="10" color="#818181" font-family="Karla" align="center">
+              <a class="link-nostyle-nobold" color="#818181" href="https://www.facebook.com/q
+              
+              
+              
+              
+              
+              uestionsly/">facebook</a>
+            </mj-text>
+          </mj-column>
+          <mj-column>
+            <mj-text font-style="italic" font-size="12" font-family="Karla" color="#818181" align="center">
+              Connect with us
             </mj-text>
           </mj-column>
         </mj-group>
       </mj-section>
+
+
+      <mj-section background-color="#fff">
+        <mj-column>
+          <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center">
+            <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
+          </mj-text>
+          <mj-text font-size="16" color="#BBB"font-family="Karla" align="center">Your Summary for fecha </mj-text>
+        </mj-column>
+      </mj-section>
+      
+      
+      
+      <mj-wrapper background-color="#FFF" border-top="1px solid #aaaaaa" border-left="1px solid #aaaaaa" border-right="1px solid #aaaaaa" border-bottom="1px solid #aaaaaa" padding="20px">
+      
+      
+      </mj-wrapper>
+      
+
     </mj-container>
   </mj-body>
+  
 </mjml>

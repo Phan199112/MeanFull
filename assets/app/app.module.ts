@@ -18,6 +18,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { Autocomplete } from 'js-autocomplete';
 import {AppComponent } from "./app.component";
 import {routing} from "./app.routing";
+import * as XLSX from 'xlsx';
+
+
 
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
