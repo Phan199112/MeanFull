@@ -28,13 +28,7 @@
           </mj-column>
           <mj-column>
             <mj-text font-size="10" color="#818181" font-family="Karla" align="center">
-              <a class="link-nostyle-nobold" color="#818181" href="https://www.facebook.com/q
-              
-              
-              
-              
-              
-              uestionsly/">facebook</a>
+              <a class="link-nostyle-nobold" color="#818181" href="https://www.facebook.com/questionsly/">facebook</a>
             </mj-text>
           </mj-column>
           <mj-column>
@@ -48,20 +42,31 @@
 
       <mj-section background-color="#fff">
         <mj-column>
-          <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center">
+          
+          <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center" padding-bottom="20px">
             <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
           </mj-text>
-          <mj-text font-size="16" color="#BBB"font-family="Karla" align="center">Your Summary for fecha </mj-text>
+          
+          <mj-text font-size="20" color="#BBB"font-family="Karla" align="center" padding-bottom="15px">Hello There.</mj-text>
+        
+          <mj-image width="120px" src="{{userPic}}" href="{{questionLink}}" align="center" padding-bottom="20px"/>
+          
+          <mj-text font-size="24" color="#28ab64" font-family="Karla" align="center">
+            {{name}}
+          </mj-text>
+          
+          <mj-text font-size="20" color="#BBB"font-family="Karla" align="center" padding-bottom="20px" line-height="1.4">
+            ..has requested you to answer {{gender}} survey on Questionsly!
+          </mj-text>
+          
+          <mj-button font-family="Karla" font-size="18"  background-color="#28ab64" color="white">
+            <a class="link-nostyle" href="{{questionLink}}">View Question!</a>
+          </mj-button>
+
         </mj-column>
       </mj-section>
-      
-      
-      
-      <mj-wrapper background-color="#FFF" border-top="1px solid #aaaaaa" border-left="1px solid #aaaaaa" border-right="1px solid #aaaaaa" border-bottom="1px solid #aaaaaa" padding="20px">
-      
-      
-      </mj-wrapper>
-      
+
+
 
     </mj-container>
   </mj-body>
