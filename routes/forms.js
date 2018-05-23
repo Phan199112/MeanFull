@@ -19,6 +19,7 @@ var emailAddress = require("email-addresses");
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
 
+
     // update the form
     app.put('/forms/:id', manager.ensureLoggedIn('/users/login'), function(req, res) {
         // this is after page 2
@@ -33,6 +34,9 @@ module.exports = function(app, passport, manager, hashids) {
         var categories = [];
         var newEmailAddresses = []; // email addresses that do not match to any existing account
         var formid = null;
+
+        // Author info for emails
+        var userName, userPic, questionLink;
 
         if (receivedData.sharedWithCommunities != null) {
             for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {
@@ -52,6 +56,22 @@ module.exports = function(app, passport, manager, hashids) {
                 categories.push(receivedData.categories[z].itemName);
             }
         }
+
+        // Get author name and pic for emails to be sent out
+        UserModel.findById(req.session.userid, function (err, user) {
+            if (err) {
+                reject();
+            } else {
+                if (user) {
+                    unhashedUsers.push(user._id);
+                    userName = user.name.first + " " + user.name.last;
+                    userPic = user.pic;
+                    questionLink = `https://www.questionsly.com/feed;survey=${req.params.id}`;
+                } else {
+                    reject();
+                }
+            }
+        });
 
         // update survey
         var saveSurvey = function() {
@@ -112,9 +132,6 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         if (user) {
                             unhashedUsers.push(user._id);
-                            var userName = user.name.first + " " + user.name.last;
-                            var userPic = user.pic;
-                            var questionLink = `https://www.questionsly.com/feed;survey?=${req.params.id}`;
 
                             new Promise(function (resolve, reject) {
                                 EmailStoreModel.findOne({ userid: user._id }, function (err, e) {
@@ -125,7 +142,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         if (e) {
                                             var sharedNotifications = e.shared;
                                             
-                                            sharedNotifications.push({ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink });
+                                            sharedNotifications.push({ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: userPic, link: questionLink });
                                             
                                             e.save(function (err) {
                                                 if (err) {
@@ -141,7 +158,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                 questions: [],
                                                 community: [],
                                                 network: [],
-                                                shared: [{ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink }]
+                                                shared: [{ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: userPic, link: questionLink }]
                                             }, function (err, k) {
                                                 if (err) {
                                                     console.log("Failed to create emailstore object", err);
@@ -2345,5 +2362,12 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     });
+
+
+        // Tests summary email
+    // app.get('/test-summary', function (req, res) {
+    //     emailfunctions.sendSummary();
+    //     console.log("Summary Sent");
+    // });
 
 };

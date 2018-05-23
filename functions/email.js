@@ -313,10 +313,9 @@ exports.sendSummary = function sendSummary() {
                 communityString += `
                     <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="5px">
                         <mj-column width="100px">
-                            <mj-image width="80px" src="${community.communityPic}" href="${community.link}"/>
-                            </mj-column>
-                            
-                            <mj-column>
+                            <mj-image width="80px" src="${community.communityPic || 'https://kehillah.org/wp-content/uploads/2016/11/community-icon-1.png'}" href="${community.link}"/>
+                        </mj-column>
+                        <mj-column>
                             <mj-text color="#818181" font-size="15" font-family="Karla">
                                 <a style="color: #007bff" href="${community.link}">
                                 ${community.senderName} invited you to join the community ${community.communityTitle}
@@ -334,10 +333,9 @@ exports.sendSummary = function sendSummary() {
                         <mj-text color="#818181" font-size="15" font-family="Karla">
                             <a style="color: #007bff" href="${question.link}">${question.question}</a>
                         </mj-text>
-                    </mj-section>
-                    <mj-section border="0px" padding-left="40px" padding-top="10px">
-                        <mj-text color="#A0A0A0" font-size="15" font-family="Karla" line-height="24px">
-                        <a style="text-decoration: none; color: #A0A0A0" href="${question.link}">
+
+                        <mj-text color="#A0A0A0" font-size="15" font-family="Karla" line-height="24px" border="0px" padding-left="40px" padding-top="10px">
+                        <a style="text-decoration: none; color: #888" href="${question.link}">
                             +${question.responseCount} Responses
                             <br/>
                             +${question.commentCount} Comments
@@ -350,18 +348,15 @@ exports.sendSummary = function sendSummary() {
 
             update.shared.forEach(function(question) {
                 sharedString += `
-                    <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="10px">
+                    <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="5px">
+                        <mj-column width="120px">
+                            <mj-image width="100px" src="${question.senderPic}" href="${question.link}"/>
+                        </mj-column>
                         <mj-column>
                             <mj-text color="#818181" font-size="15" font-family="Karla">
-                            <a style="color: #007bff" href="${question.link}">
-                                ${question.question}
-                            </a>
-                            </mj-text>
-                        </mj-column>
-                        <mj-column width="100px">
-                            <mj-image width="80px" src="${question.senderPic}" href="${question.link}"/>
-                            <mj-text color="#818181" font-size="15" font-family="Karla">
-                                Shared by ${question.senderName}
+                                <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">${question.senderName} requested your answer to: </a>
+                                <br/>
+                                 <a style="color: #007bff" href="${question.link}">${question.question}</a>
                             </mj-text>
                         </mj-column>
                     </mj-section> 

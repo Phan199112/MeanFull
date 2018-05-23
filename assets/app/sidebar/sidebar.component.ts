@@ -111,5 +111,13 @@ export class Sidebar implements OnInit, OnChanges {
             .catch(error => alert("Error retrieving form: " + error));            
     }
 
+// Function to test summary email
+    // sendSummary() {
+    //     this.http.get('/test-summary')
+    //         .toPromise()
+    //         .then(response => {
+            
+    //         });
+    // }
 
 }
