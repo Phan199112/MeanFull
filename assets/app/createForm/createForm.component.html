@@ -30,7 +30,24 @@
             <div class="rContainer" [ngClass]="{centered: questionData.length === 0}">
                 <div class="qDataScroll">
                     <h3 class="containerTitle abs green">Overview</h3>
+
                     <h3 *ngIf="!questionData.length" class="containerTitle">Your Completed Questions Will Appear Here</h3>
+
+                    <div class="surveyTitle">
+                        <a
+                            href="#"
+                            onClick="$('.surveyTitle a').hide(); $('.surveyTitle fieldset').show(); $('.surveyTitle textarea').focus(); return false">
+                            Click to add a title for your questions
+                        </a>
+                        <fieldset>
+                            <textarea
+                                formControlName="title"
+                                rows="1"
+                                placeholder="Title">
+                            </textarea>
+                        </fieldset>
+                    </div>
+
                     <div *ngFor="let q of getSortedQuestions(); let i = index" class="qBlock">
                         <div class="editDelete">
                             <span class="redCross edit" (click)="editQuestion(i)">Edit</span>

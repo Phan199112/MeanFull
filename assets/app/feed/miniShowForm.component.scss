@@ -80,9 +80,6 @@ $primaryColor: #28ab64;
   vertical-align: middle;
 }
 
-#survey-title {
-  text-align: center;
-}
 #survey-description {
   text-align: center;
   font-size: 20px;
@@ -238,4 +235,12 @@ $warningColor: rgb(234, 122, 133);
   height: 30px;
   margin-right: 4px;
   border-radius: 8px;
+}
+
+.survey-title {
+  width: 100%;
+  color: #28ab64;
+  margin-top: -12px;
+  text-align: center;
+  width: 100%;
 }
