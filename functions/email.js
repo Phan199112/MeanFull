@@ -106,17 +106,31 @@ exports.sendNotificationFriendRequest = function sendNotificationFriendRequest(e
     });
 };
 
-exports.sendNotificationFormRequest = function sendNotificationFormRequest(email, user, link) {
-    var name = getUserDisplayName(user);    
+// `user` can be null for anonymous questions
+exports.sendNotificationFormRequest = function sendNotificationFormRequest(email, user, link, questionText) {
     var subject = getUserDisplayName(user) + ": Request to answer question on Questionsly";
     var messagesafe = "Hello! " + " requested you to answer on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
 
-    renderTemplate("notification-form-request", {
-        subject: subject, 
-        friendName: name,
-        pic: getUserPic(user),
-        link: `https://www.questionsly.com/feed;survey=${link}`
-    }).then(function(html) {
+    var data;
+    if (user) {
+        data = {
+            userName:   getUserDisplayName(user),
+            userPic:    getUserPic(user),
+            userGender: user.gender === 'male' ? "his" : "her",
+            question:   questionText,
+            link:       `https://www.questionsly.com/feed;survey=${link}`
+        };
+    } else {
+        data = {
+            userName:   'Someone',
+            userPic:    '',
+            userGender: 'his',
+            question:   questionText,
+            link:       `https://www.questionsly.com/feed;survey=${link}`
+        };
+    }
+
+    renderTemplate("notification-form-request", data).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);
     });
 };

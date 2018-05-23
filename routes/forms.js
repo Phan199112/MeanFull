@@ -110,56 +110,56 @@ module.exports = function(app, passport, manager, hashids) {
                     if (err) {
                         reject();
                     } else {
-                        if (user)
+                        if (user) {
                             unhashedUsers.push(user._id);
                             var userName = user.name.first + " " + user.name.last;
                             var userPic = user.pic;
                             var questionLink = `https://www.questionsly.com/feed;survey?=${req.params.id}`;
 
-                        new Promise(function (resolve, reject) {
-                            EmailStoreModel.findOne({ userid: user._id }, function (err, e) {
-                                if (err) {
-                                    console.log("Error fetching emailstore in shared question");
-                                    reject();
-                                } else {
-                                    if (e) {
-                                        var sharedNotifications = e.shared;
-                                        
-                                        sharedNotifications.push({ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink });
-                                        
-                                        e.save(function (err) {
-                                            if (err) {
-                                                console.log("Problem pushing form answer update to email store");
-                                            }
-                                        });
-
-                                        resolve();
-
+                            new Promise(function (resolve, reject) {
+                                EmailStoreModel.findOne({ userid: user._id }, function (err, e) {
+                                    if (err) {
+                                        console.log("Error fetching emailstore in shared question");
+                                        reject();
                                     } else {
-                                        EmailStoreModel.create({
-                                            userid: formauthorid,
-                                            questions: [],
-                                            community: [],
-                                            network: [],
-                                            shared: [{ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink }]
-                                        }, function (err, k) {
-                                            if (err) {
-                                                console.log("Failed to create emailstore object", err);
-                                                reject();
-                                            } else {
-                                                resolve();
-                                            }
-                                        });
+                                        if (e) {
+                                            var sharedNotifications = e.shared;
+                                            
+                                            sharedNotifications.push({ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink });
+                                            
+                                            e.save(function (err) {
+                                                if (err) {
+                                                    console.log("Problem pushing form answer update to email store");
+                                                }
+                                            });
+
+                                            resolve();
+
+                                        } else {
+                                            EmailStoreModel.create({
+                                                userid: user._id,
+                                                questions: [],
+                                                community: [],
+                                                network: [],
+                                                shared: [{ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink }]
+                                            }, function (err, k) {
+                                                if (err) {
+                                                    console.log("Failed to create emailstore object", err);
+                                                    reject();
+                                                } else {
+                                                    resolve();
+                                                }
+                                            });
+                                        }
                                     }
-                                }
+                                });
+                            }).catch(err => {
+                                console.log("emailstore form answer promise rejected", err);
                             });
-                        }).catch(err => {
-                            console.log("emailstore form answer promise rejected", err);
-                        });
 
-
-                        else
+                        } else {
                             newEmailAddresses.push(x);
+                        }
                         resolve();
                     }
                 });
@@ -171,16 +171,6 @@ module.exports = function(app, passport, manager, hashids) {
                 promises.push(getUserByEmailAddress(x.address));
             });
 
-        // sender information
-        var sender = {};
-        if (receivedData.anonymous === true) {
-            sender.name = {first: 'Anonymous', last: '', fb: null, pic: null};
-            sender.insite = null;
-        } else {
-            sender.name = {first: req.user.name.first, last: req.user.name.last, fb: req.user.fb, pic: req.user.pic};
-            sender.insite = req.session.userid;
-        }
-
         return Promise.all(promises).then(function () {
             // Send notifications to existing users
             var seen = {};
@@ -189,13 +179,24 @@ module.exports = function(app, passport, manager, hashids) {
                     if (seen[unhashedUsers[i]]) continue;
                     seen[unhashedUsers[i]] = true;
 
-                    notifications.createNotification(unhashedUsers[i], sender.insite, "form", "New survey", hashids.encodeHex(formid));
+                    notifications.createNotification(
+                        unhashedUsers[i],
+                        receivedData.anonymous === true ? null : req.session.userid,
+                        "form",
+                        "New survey",
+                        hashids.encodeHex(formid)
+                    );
                 }
             }
 
             // Send email to new users
             newEmailAddresses.forEach(function (x) {
-                emailfunctions.sendNotificationFormRequest(x, sender, hashids.encodeHex(formid));
+                emailfunctions.sendNotificationFormRequest(
+                    x,
+                    receivedData.anonymous === true ? null : req.user,
+                    hashids.encodeHex(formid),
+                    receivedData.title || receivedData.questions[0].body
+                );
             });
 
             res.send({status: 1, debugInfo: {uhu: unhashedUsers, nea: newEmailAddresses}});
