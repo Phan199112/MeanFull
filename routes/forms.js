@@ -112,6 +112,52 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         if (user)
                             unhashedUsers.push(user._id);
+                            var userName = user.name.first + " " + user.name.last;
+                            var userPic = user.pic;
+                            var questionLink = `https://www.questionsly.com/feed;survey?=${req.params.id}`;
+
+                        new Promise(function (resolve, reject) {
+                            EmailStoreModel.findOne({ userid: user._id }, function (err, e) {
+                                if (err) {
+                                    console.log("Error fetching emailstore in shared question");
+                                    reject();
+                                } else {
+                                    if (e) {
+                                        var sharedNotifications = e.shared;
+                                        
+                                        sharedNotifications.push({ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink });
+                                        
+                                        e.save(function (err) {
+                                            if (err) {
+                                                console.log("Problem pushing form answer update to email store");
+                                            }
+                                        });
+
+                                        resolve();
+
+                                    } else {
+                                        EmailStoreModel.create({
+                                            userid: formauthorid,
+                                            questions: [],
+                                            community: [],
+                                            network: [],
+                                            shared: [{ formid: req.params.id, question: receivedData.title || receivedData.questions[0].body, senderName: userName, senderPic: user.pic, link: questionLink }]
+                                        }, function (err, k) {
+                                            if (err) {
+                                                console.log("Failed to create emailstore object", err);
+                                                reject();
+                                            } else {
+                                                resolve();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }).catch(err => {
+                            console.log("emailstore form answer promise rejected", err);
+                        });
+
+
                         else
                             newEmailAddresses.push(x);
                         resolve();
@@ -465,7 +511,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                                     userid: formauthorid,
                                                                     questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink }],
                                                                     community: [],
-                                                                    network: []
+                                                                    network: [],
+                                                                    shared: []
                                                                 }, function (err, k) {
                                                                     if (err) {
                                                                         console.log("Failed to create emailstore object", err);
@@ -608,7 +655,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                             userid: formauthorid,
                                                             questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink }],
                                                             community: [],
-                                                            network: []
+                                                            network: [],
+                                                            shared: []
                                                         }, function (err, k) {
                                                             if (err) {
                                                                 console.log("Failed to create emailstore object", err);

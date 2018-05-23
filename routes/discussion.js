@@ -114,7 +114,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                                         userid: authorid,
                                                                         questions: [{ formid: formid, question: firstquestion, commentCount: 1, responseCount: 0, link: questionLink }],
                                                                         community: [],
-                                                                        network: []  
+                                                                        network: [],
+                                                                        shared: []  
                                                                     }, function (err, k) {
                                                                         if (err) {
                                                                             console.log("Failed to create emailstore object");

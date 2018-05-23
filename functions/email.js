@@ -49,6 +49,10 @@ function getUserDisplayName(user) {
     return name;
 }
 
+function getUserGender(user) {
+    return user.gender;
+}
+
 function getUserPic(user) {
     if (user.fb) {
         return `https://graph.facebook.com/${user.fbid}/picture?width=80&height=80`;
@@ -178,10 +182,8 @@ exports.sendNotificationDiscussionFollowUp = function sendNotificationDiscussion
 
 
 exports.sendNotificationFormActivity = function sendNotificationFormActivity(email, user, question, link) {
-    var subject = "People are answering your question";
+    var subject = "Questionsly - " + getUserDisplayName(user) + " has requested you to answer a question!";
     var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
-    var dateString = new Date();
-    dateString = dateString.toDateString();
 
     console.log("User:", user, "pic:", getUserPic(user));
 
@@ -189,8 +191,8 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
         subject: subject,
         userPic: getUserPic(user),
         userName: getUserDisplayName(user),
+        userGender: getUserGender(user),
         question: question,
-        date: dateString,
         link: `https://www.questionsly.com/feed;survey=${link}`
     }).then(function(html) {
         // exports.sendEmail(email, subject, html, messagesafe);
@@ -234,36 +236,43 @@ exports.sendSummary = function sendSummary() {
     var dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
     var date = date.toLocaleDateString('en-US', dateOptions);
 
+    // Goes through email store to send summary emails to whoever has received any notification in the past day
     EmailStoreModel.find({}, function (err, updates) {
         if (err) {
             console.log("Error sending out summary email.");
             return;
         } 
 
-        console.log("Called in here", updates);
-
+        // Does this for each person: Each entry in the email store represents one user.
         updates.forEach(function(update) {
             var email = "";
             var networkString = "";
             var communityString = "";
             var questionsString = "";
+            var sharedString = "";
             var ifNetworkString = "";
             var ifCommunityString = "";
             var ifQuestionsString = "";
+            var ifSharedString = "";
 
             if (update.network.length > 0) ifNetworkString = `
                 <mj-section padding-left="20px" padding-bottom="5px">
-                    <mj-text font-size="22" color="#BBB"font-family="Karla">People Who Added You</mj-text>  
+                    <mj-text font-size="22" color="#2b2b2b"font-family="Karla">People Who Added You</mj-text>  
                 </mj-section>
             `;
             if (update.community.length > 0) ifCommunityString = `
                 <mj-section padding-left="20px" padding-bottom="5px">
-                    <mj-text font-size="22" color="#BBB"font-family="Karla">Community Requests</mj-text>  
+                    <mj-text font-size="22" color="#2b2b2b"font-family="Karla">Community Requests</mj-text>  
                 </mj-section>
             `;
             if (update.questions.length > 0) ifQuestionsString = `
                 <mj-section padding-left="20px" padding-bottom="5px">
-                    <mj-text font-size="22" color="#BBB"font-family="Karla">Question Updates</mj-text>  
+                    <mj-text font-size="22" color="#2b2b2b"font-family="Karla">Question Updates</mj-text>  
+                </mj-section>
+            `;
+            if (update.shared.length > 0) ifSharedString = `
+                <mj-section padding-left="20px" padding-bottom="5px">
+                    <mj-text font-size="22" color="#2b2b2b"font-family="Karla">Questions Shared With You</mj-text>  
                 </mj-section>
             `;
 
@@ -276,7 +285,7 @@ exports.sendSummary = function sendSummary() {
                             
                             <mj-column>
                             <mj-text color="#818181" font-size="15" font-family="Karla">
-                            <a style="text-decoration: none; color: #818181" href="${person.link}">
+                            <a style="color: #007bff" href="${person.link}">
                                 ${person.name}
                             </a>
                             </mj-text>
@@ -295,7 +304,7 @@ exports.sendSummary = function sendSummary() {
                             
                             <mj-column>
                             <mj-text color="#818181" font-size="15" font-family="Karla">
-                                <a style="text-decoration: none; color: #818181" href="${community.link}">
+                                <a style="color: #007bff" href="${community.link}">
                                 ${community.senderName} invited you to join the community ${community.communityTitle}
                                 </a>
                             </mj-text>
@@ -309,7 +318,7 @@ exports.sendSummary = function sendSummary() {
                 questionsString += `
                     <mj-section border="0px" padding-left="25px" padding-bottom="0px">
                         <mj-text color="#818181" font-size="15" font-family="Karla">
-                            <a style="text-decoration: none; color: #818181" href="${question.link}">${question.question}</a>
+                            <a style="color: #007bff" href="${question.link}">${question.question}</a>
                         </mj-text>
                     </mj-section>
                     <mj-section border="0px" padding-left="40px" padding-top="10px">
@@ -321,6 +330,27 @@ exports.sendSummary = function sendSummary() {
                         </a>
                         </mj-text>
                     </mj-section>
+
+                `
+            });
+
+            update.shared.forEach(function(question) {
+                sharedString += `
+                    <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="10px">
+                        <mj-column>
+                            <mj-text color="#818181" font-size="15" font-family="Karla">
+                            <a style="color: #007bff" href="${question.link}">
+                                ${question.question}
+                            </a>
+                            </mj-text>
+                        </mj-column>
+                        <mj-column width="100px">
+                            <mj-image width="80px" src="${question.senderPic}" href="${question.link}"/>
+                            <mj-text color="#818181" font-size="15" font-family="Karla">
+                                Shared by ${question.senderName}
+                            </mj-text>
+                        </mj-column>
+                    </mj-section> 
 
                 `
             });
@@ -341,10 +371,12 @@ exports.sendSummary = function sendSummary() {
                     fecha: date,
                     ifNetworkRequests: ifNetworkString,
                     ifCommunityRequests: ifCommunityString,
-                    ifQuestionsRequests: ifQuestionsString,      
+                    ifQuestionsRequests: ifQuestionsString,
+                    ifSharedRequests: ifSharedString,
                     networkRequests: networkString,
                     communityRequests: communityString,
-                    questionsRequests: questionsString      
+                    questionsRequests: questionsString,      
+                    sharedRequests: sharedString      
                 }).then(function (html) {
                     console.log("SUMMARY SENT OUT");
                     exports.sendEmail(email, subject, html, messagesafe);

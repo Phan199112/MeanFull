@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
+// Sub Schemas
 var NetSchema = mongoose.Schema({ 
     name: String,
     pic: String,
@@ -14,6 +14,7 @@ var CommSchema = mongoose.Schema({
     communityPic: String,
     communityTitle: String
 });
+
 var QstnSchema = mongoose.Schema({ 
     formid: String,
     link: String,
@@ -22,13 +23,23 @@ var QstnSchema = mongoose.Schema({
     responseCount: Number
 });
 
+var SharedSchema = mongoose.Schema({ 
+    formid: String,
+    link: String,
+    question: String,
+    senderName: String,
+    senderPic: String
+});
 
 
+
+// Main Schema
 var EmailStoreSchema = new Schema({
     userid: String,
     network: [NetSchema],
     community: [CommSchema],
-    questions: [QstnSchema]
+    questions: [QstnSchema],
+    shared: [SharedSchema]
 });
 
 // Compile model from schema

@@ -88,7 +88,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                                     userid: currentAdmin,
                                                                     community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title, link: communityLink }],
                                                                     questions:[],
-                                                                    network: []                                                                
+                                                                    network: [],
+                                                                    shared: []                                                                
                                                                 }, function (err, k) {
                                                                     if (err) {
                                                                         console.log("Failed to create emailstore object");
@@ -208,7 +209,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                         userid: unhashedAdmins[i],
                                                         community: [{ senderName: senderName, communityPic: receivedData.pic, communityTitle: receivedData.title, link: communityLink }],
                                                         questions: [],
-                                                        network: []  
+                                                        network: [],
+                                                        shared: []  
                                                     }, function (err, k) {
                                                         if (err) {
                                                             console.log("Failed to create emailstore object");
@@ -307,7 +309,8 @@ module.exports = function(app, passport, manager, hashids) {
                                                             userid: seluserid,
                                                             community: [{ senderName: senderName, communityPic: commpic, communityTitle: commtitle, link: communityLink }],
                                                             questions: [],
-                                                            network: []  
+                                                            network: [],
+                                                            shared: []  
                                                         }, function (err, k) {
                                                             if (err) {
                                                                 console.log("Failed to create emailstore object");
