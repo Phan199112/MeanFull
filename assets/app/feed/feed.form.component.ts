@@ -9,6 +9,10 @@ import { PopupService } from "../popup.service";
 import { ConfirmationPopupComponent } from "../confirmationPopup/confirmationPopup.component";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ENGINE_METHOD_DIGESTS } from "constants";
+import * as html2canvas from "html2canvas";
+import * as jsPDF from 'jspdf';
+
+
 
 @Component({
     selector: 'feed-form-component',
@@ -822,4 +826,69 @@ export class FeedFormComponent implements OnInit {
     }
 
 
+    exportPDF() {
+
+            // Breakdown long lines since jsPDF doesn't wrap the lines
+            function multipleLine(s) {
+                var index = [];
+                var words = 0;
+                var finalString = [];
+
+                for (let i=0; i<s.length; i++) {
+                    if (s[i] === " ") {
+                        words++;
+                    }
+                    
+                    if (words == 12) {
+                        words = 0;
+                        index.push(i);
+                    }
+                }
+
+                if (index.length > 0) {
+                    var prevValue;
+                    index.forEach(((x,i) => {
+                        if (i == 0) {
+                            // console.log(s.substr(0,x), "OKOKO", x);
+                            finalString.push(s.substr(0, x));
+                            prevValue = x;
+                        } else {
+                            finalString.push(s.substr(prevValue + 1, x - prevValue - 1));
+                            prevValue = x;
+                        }
+                    });
+                    finalString.push(s.substr(prevValue + 1, s.length - prevValue - 1));
+                }
+                return finalString.join('\n');
+            }
+
+
+            var yOffset = 25;
+
+            var doc = new jsPDF();
+
+            doc.setTextColor(40, 171, 100);
+            doc.setFontSize(28);
+
+        doc.text('Questionsly', 20, yOffset);
+
+            yOffset += 15;
+            
+            this.form.questions.forEach( (q,i) => {
+                doc.setTextColor(0,0,0);
+                doc.setFontSize(12);
+                doc.text((i+1) +'. ' + multipleLine(q.body), 20, yOffset, );
+                yOffset += 10;
+                doc.addImage(q.pic, 'JPEG', 20, yOffset);
+                yOffset += 50;
+                doc.setFontSize(10);
+                q.options.forEach(option => {
+                    yOffset += 8;
+                    doc.text(`${option.label}. ${option.body}`, 20, yOffset);
+                })
+            });
+            
+            doc.save(`${this.form.questions[0].body.substr(20)}.pdf`);
+        }
+        
 }

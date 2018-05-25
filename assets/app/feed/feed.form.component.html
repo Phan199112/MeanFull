@@ -52,6 +52,7 @@
                     <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
                     <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
                     <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
+                    <a class="dropdown-item" (click)="exportPDF()" *ngIf="form.admin || form.answered">Export PDF</a>
                 </div>
             </div>
         </div>
