@@ -44,7 +44,7 @@ export class PieChart implements OnInit {
                     name: 'Results',
                     center: ['50%', '50%'],
                     type: 'pie',
-                    radius: '65%',
+                    radius: '55%',
                     // minAngle: 180,
                     data: this.newData,
                     // roseType: 'area',
@@ -63,7 +63,7 @@ export class PieChart implements OnInit {
                             },
                             smooth: 0.2,
                             length: 8,
-                            length2: 10
+                            length2: 8
                         }
                     },
                     // itemStyle: {

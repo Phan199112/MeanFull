@@ -18,7 +18,10 @@ import * as jsPDF from 'jspdf';
     selector: 'feed-form-component',
     templateUrl: './feed.form.component.html',
     styleUrls: ['./feed.form.component.scss'],
-    providers: [PopupService]
+    providers: [PopupService],
+    host: {
+        '(document:click)': 'onDocClick($event)',
+    }
 })
 export class FeedFormComponent implements OnInit {
     @Input() form: FeedForm;
@@ -289,6 +292,36 @@ export class FeedFormComponent implements OnInit {
         // console.log(items);
     }
 
+
+    onDocClick(event) {
+        // event.preventDefault();
+        // console.log(event.target);
+        // Auto Scroll for Filters in Feed Post
+        // if ($(event.target).hasClass('filterButton')) {
+        //     window.setTimeout(() => {
+        //         var target = $(event.target).closest('.fBody').find('#analysisContainer');
+        //         if (target.length) {
+        //             $('html, body').animate({
+        //                 scrollTop: Math.ceil(target.offset().top - 100)
+        //             }, 700);
+        //             return;
+        //         }
+        //     }, 50);
+
+        //     return;
+        // }
+
+
+        // if ($(event.target).hasClass('navbar-toggler') || $(event.target).hasClass('navbar-toggler-icon')) {
+        //     return;
+        // }
+
+
+        // if (!$(event.target).parents('.navbar-collapse').length) {
+        //     $('#navbarSupportedContent').removeClass('show');
+        // }
+
+    }
 
     // NEW: ONLY THING I CARE ABOUT HERE IS THE INITIAL PLOT INFORMATION RECEIVED ON LINE 271
     isFilledIn() {
@@ -826,7 +859,26 @@ export class FeedFormComponent implements OnInit {
     }
 
 
-    exportPDF() {
+    exportPDF(e) {
+        // TODO: Text responses
+
+        // Map pie charts to right questions
+        var pieChartsIndexes = $(event.target).parents('.fBody').find('[formarrayname]').find('pie-chart');
+        var pieCharts = $(event.target).parents('.fBody').find('[formarrayname]').find('canvas');
+        var indexes = [];
+
+        for (let i=0; i< pieChartsIndexes.length; i++) {
+            indexes.push(pieChartsIndexes[i].id);
+        }
+
+        // Extract the index from id and make it a number
+        indexes = indexes.map(x => {
+            return Number(x.substr(x.indexOf('-') + 1));
+        });
+
+
+        var saved = false;
+        
 
             // Breakdown long lines since jsPDF doesn't wrap the lines
             function multipleLine(s) {
@@ -863,32 +915,87 @@ export class FeedFormComponent implements OnInit {
             }
 
 
-            var yOffset = 25;
-
+            // Create PDF
             var doc = new jsPDF();
-
-            doc.setTextColor(40, 171, 100);
-            doc.setFontSize(28);
-
-        doc.text('Questionsly', 20, yOffset);
-
-            yOffset += 15;
             
             this.form.questions.forEach( (q,i) => {
-                doc.setTextColor(0,0,0);
+
+                // Reset yOffset for new pages
+                var yOffset = 25;
+                
+                // Heading
+                doc.setTextColor(40, 171, 100);
+                doc.setFontSize(28);
+                doc.text('Questionsly', 20, yOffset);
+                doc.setLineWidth(0.3)
+                yOffset += 4;
+                doc.line(20, yOffset, 180, yOffset)
+                yOffset += 10;
+                
+                // Response Count
+                doc.setTextColor(96,96,96);
+                doc.setFontSize(18);
+                doc.text(`${this.count} Responses`, 80, yOffset);
+                yOffset += 15;
+                
+
+                // Survey Title
+                if (i == 0 && this.form.title) {
+                    doc.setTextColor(0,0,0);
+                    doc.setFontSize(14);
+                    doc.text((i+1) +'. ' + multipleLine(q.body), 20, yOffset, );
+                    yOffset += 10;
+                }
+
+                // Question
+                doc.setTextColor(32,32,32);
                 doc.setFontSize(12);
                 doc.text((i+1) +'. ' + multipleLine(q.body), 20, yOffset, );
                 yOffset += 10;
-                doc.addImage(q.pic, 'JPEG', 20, yOffset);
-                yOffset += 50;
-                doc.setFontSize(10);
-                q.options.forEach(option => {
-                    yOffset += 8;
-                    doc.text(`${option.label}. ${option.body}`, 20, yOffset);
-                })
+                
+                // Question image
+                if (q.pic) {
+                    doc.addImage(q.pic, 'JPEG', 20, yOffset, 100, 50);
+                    yOffset += 50;
+                }
+
+                //Question options
+                if (q.options && q.options.length > 0) {
+                    doc.setFontSize(10);
+                    q.options.forEach(option => {
+                        yOffset += 8;
+                        doc.text(`${option.label}. ${option.body}`, 20, yOffset);
+                    })
+                } 
+                yOffset += 20;
+
+                // Check to see if this question has a pie chart
+                var hasChart = indexes.indexOf(i);
+
+                // Add Pie Charts
+                if (pieCharts.length > 0 && hasChart !== -1) {
+                    saved = true;
+                    html2canvas(pieCharts[hasChart]).then(canvas => {
+                        var img = canvas.toDataURL("image/png");                    
+                        doc.addImage(img, 'JPEG', 20, yOffset, 70,60);
+
+                        // save once done rendering html
+                        if (this.form.questions.length == (i+1)) {
+                            doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
+                        } else {
+                            saved = false;
+                        }
+                    })
+                }
+
+                // Add Page if more questions
+                if (this.form.questions.length > (i+1) ) {
+                    doc.addPage();
+                }
             });
             
-            doc.save(`${this.form.questions[0].body.substr(20)}.pdf`);
-        }
-        
+            // Save if not saved in piechart's returned promise or if no pie charts
+            if (!saved) {
+                doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
+            }
 }

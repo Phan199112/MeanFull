@@ -70,7 +70,7 @@
                              
                     <!-- ********** Chart ************ -->
                     <div *ngIf="(data.answerCount > 0) && (i == 0 || !data.contracted) && data.viewGraphsbool">
-                        <pie-chart [qKind]="question.kind" [dataLabels]="data?.plotdata[i][0]" [dataValues]="data?.plotdata[i][1]" [dataCounts]="data?.plotdata[i][2]" [count]="count" ></pie-chart>
+                        <pie-chart  id="{{ 'piechart-' + i}}" [qKind]="question.kind" [dataLabels]="data?.plotdata[i][0]" [dataValues]="data?.plotdata[i][1]" [dataCounts]="data?.plotdata[i][2]" [count]="count" ></pie-chart>
                     </div>
                     <div *ngIf="(data.answerCount > 0) && ((i == 0 && data.contracted) || (i == data.questions.length - 1 && !data.contracted) ) && data.viewGraphsbool" style="display: flex; width: 100%; justify-content: center">
                         <a class="submitButton smaller filterButton" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Filter Responses'}}</a>

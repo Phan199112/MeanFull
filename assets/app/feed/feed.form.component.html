@@ -52,7 +52,7 @@
                     <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
                     <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
                     <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
-                    <a class="dropdown-item" (click)="exportPDF()" *ngIf="form.admin || form.answered">Export PDF</a>
+                    <a class="dropdown-item" (click)="exportPDF($event)" *ngIf="form.admin || form.answered">Export PDF</a>
                 </div>
             </div>
         </div>
@@ -60,25 +60,6 @@
 
 
     <div *ngIf="false" class="topContainer">
-            <!-- Emoticons -->
-        <!-- <div class="emoContainer">
-            <div class="emoAndText"  (click)="chooseReaction('great')">
-                <img class="emoticon" src="/images/emoticons/thumbsup.gif"/>
-                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'great'}">{{reactionData.great || 0}}%</span>
-                <span class="emoText">Great Question!</span>
-            </div>
-            <div class="emoAndText" (click)="chooseReaction('wtf')">
-                <img class="emoticon" src="/images/emoticons/wtf.gif" />
-                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'wtf'}">{{reactionData.wtf || 0}}%</span>
-                <span class="emoText">WTF..</span>
-            </div>
-            <div class="emoAndText" (click)="chooseReaction('angry')">
-                <img class="emoticon" src="/images/emoticons/angry.gif" />
-                <span *ngIf="hasReacted" class="emoText emoPercent" [ngClass]="{selectedPercent: reaction === 'angry'}">{{reactionData.angry || 0}}%</span>
-                <span class="emoText">Really?!</span>
-            </div>
-        </div> -->
-
         <div id="completedBlock" *ngIf="submitted">
             <!-- <span id="qCompleted">Completed</span> -->
             <span id="answerCount">Answered {{count ? count : '<5'}} {{count > 1 ? 'Times' : 'Time'}}</span>
