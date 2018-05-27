@@ -60,12 +60,12 @@
 
                 <div class="row" *ngIf="!hidefeed && !genericSubsection" class="toggleRow">
                     <p *ngIf="!showAnsweredQuestions">
-                        Asked questions •
-                        <a [routerLink]="['/profile', id, 'answered']">Answered</a>
+                        Questions asked •
+                        <a [routerLink]="['/profile', id, 'answered']">Questions answered</a>
                     </p>
                     <p *ngIf="showAnsweredQuestions">
-                        Answered questions •
-                        <a [routerLink]="['/profile', id]">Asked</a>
+                        Questions answered •
+                        <a [routerLink]="['/profile', id]">Questions asked</a>
                     </p>
                 </div>
 
