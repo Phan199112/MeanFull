@@ -849,8 +849,28 @@ export class FeedFormComponent implements OnInit {
         this.showFilter = e;
     }
 
+    beginPDF(save = true) {
+        // Calling this function to expand form first if needed, so it can capture all pie charts
+        var exportPDF = this.exportPDF.bind(this);
+        if (this.form.contracted ) {
+            this.form.contracted = false;
 
-    exportPDF(e) {
+            if (save) {
+                window.setTimeout(()=>{this.exportPDF();}, 1000);
+            } else {
+                window.setTimeout(()=>{this.exportPDF(false);}, 1000);
+            }
+        } else {
+            if (save) {
+                this.exportPDF();
+            } else {
+                this.exportPDF(false);
+            }
+        }
+        
+    }
+
+    exportPDF(save = true) {
         var doc = new jsPDF();
         var shortAnswerCounter = 0;
         var yOffset;
@@ -872,6 +892,8 @@ export class FeedFormComponent implements OnInit {
         });
 
         // Start Creating PDF Here
+        var pdf;
+
         renderPieCharts().then(() => {
     
         // Create page per question in survey
@@ -882,7 +904,7 @@ export class FeedFormComponent implements OnInit {
             
             // Heading
             doc.setTextColor(40, 171, 100);
-            doc.setFontSize(28);
+            doc.setFontSize(12);
             doc.text('Questionsly', 20, yOffset);
             doc.setLineWidth(0.3)
             yOffset += 4;
@@ -906,9 +928,9 @@ export class FeedFormComponent implements OnInit {
 
             // Question Body
             doc.setTextColor(32,32,32);
-            doc.setFontSize(12);
-            doc.text((i+1) +'. ' + multipleLine(q.body).text, 20, yOffset);
-            yOffset += Math.max(10, 4 * multipleLine(q.body).lines);
+            doc.setFontSize(14);
+            doc.text((i+1) +'. ' + multipleLine(q.body, 12).text, 20, yOffset);
+            yOffset += Math.max(10, 6 * multipleLine(q.body).lines);
             
             // Question Image
             if (q.pic) {
@@ -916,6 +938,7 @@ export class FeedFormComponent implements OnInit {
                     doc.addImage(q.pic, 'JPEG', 20, yOffset, 100, 50);
                     yOffset += 50;
                 } catch {
+                    yOffset += 10;
                     console.log("COULD NOT EXPORT QUESTION IMAGE TO PDF.\n");
                 }
             }
@@ -928,7 +951,7 @@ export class FeedFormComponent implements OnInit {
                     yOffset += 8;
                 })
             } 
-            yOffset += 20;
+            // yOffset += 20;
 
             // Check to see if this question has a pie chart
             var hasChart = indexes.indexOf(i);
@@ -994,10 +1017,20 @@ export class FeedFormComponent implements OnInit {
             }
         });
         
-        // Save PDF
-        doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
-
-    });
+        // Save or Share PDF
+        if (save) {
+            doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
+            return;            
+        } else {       
+            //Output for sharing               
+            return doc.output();             
+        }
+        }).then(pdf => {
+            if (pdf) {                
+                this.sendPDF(pdf);
+            }
+        });
+    
 
 
         // Aux Functions
@@ -1016,6 +1049,7 @@ export class FeedFormComponent implements OnInit {
                 }
 
                 return Promise.all(pieChartPromises);
+                debugger;
 
             } else {
                 return Promise.resolve;
@@ -1059,9 +1093,21 @@ export class FeedFormComponent implements OnInit {
                         finalString.push(s.substr(prevValue + 1, x - prevValue - 1));
                         prevValue = x;
                     }
-                });
+                });)
                 finalString.push(s.substr(prevValue + 1, s.length - prevValue - 1));
             }
             return finalString.length === 0 ? {text: s, lines: 1} : {text: finalString.join('\n'), lines: finalString.length};
         }
+
+
+    }
+
+
+    sendPDF(pdf) {
+            // TODO: Stream file since payload is too big right now.
+            this.http.post(`/forms/sharePDF`, { doc: pdf }).toPromise()
+            .then(res => {
+                console.log('Worked.');
+            });
+    }
 }
