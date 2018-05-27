@@ -86,7 +86,6 @@ export class FeedFormComponent implements OnInit {
     alllocationsarray: FormArray = new FormArray([]);
 
     defaultages: string[] = [];
-    // NEW: THIS IS THE DATA FED INTO THE FILTERS
     plotselection: Object = {age: this.defaultages, location: [], gender: ['male', 'female', 'unknown']};
 
     //ages
@@ -340,16 +339,9 @@ export class FeedFormComponent implements OnInit {
                 let responsedata = response.json().data;              
                
                 this.shortAnswers = response.json().shortAnswers;
-                let responsestatus = response.json().status;
-                this.loggedin = response.json().loggedin;
-                                                    
                 
-                //deal with reaction
-                // let responsereaction = response.json().reaction;
-                // if (responsereaction.reacted) {
-                //     this.hasReacted = true;
-                //     this.reaction = responsereaction.userreaction;
-                // }
+                let responsestatus = response.json().status;
+                this.loggedin = response.json().loggedin;                                            
 
                 // set parameters for visualising the results
                 if (responsestatus == 2) {
@@ -650,7 +642,7 @@ export class FeedFormComponent implements OnInit {
             }
 
         }
-        // -----------BREAKS HERE -------
+
         this.executePlotDataRetrieval();
     }
 
@@ -667,7 +659,6 @@ export class FeedFormComponent implements OnInit {
                     // make sure the plot is given the data
                     this.form.setAnswered(true);
 
-                    // window.console.log("New Plot Data", responsedata);
                     this.form.setPlotData(responsedata);
                     this.submitted = true;
                     this.showsubmit = false;
@@ -858,14 +849,38 @@ export class FeedFormComponent implements OnInit {
         this.showFilter = e;
     }
 
+    beginPDF(save = true) {
+        // Calling this function to expand form first if needed, so it can capture all pie charts
+        var exportPDF = this.exportPDF.bind(this);
+        if (this.form.contracted ) {
+            this.form.contracted = false;
 
-    exportPDF(e) {
-        // TODO: Text responses
+            if (save) {
+                window.setTimeout(()=>{this.exportPDF();}, 1000);
+            } else {
+                window.setTimeout(()=>{this.exportPDF(false);}, 1000);
+            }
+        } else {
+            if (save) {
+                this.exportPDF();
+            } else {
+                this.exportPDF(false);
+            }
+        }
+        
+    }
 
+    exportPDF(save = true) {
+        var doc = new jsPDF();
+        var shortAnswerCounter = 0;
+        var yOffset;
+        
         // Map pie charts to right questions
         var pieChartsIndexes = $(event.target).parents('.fBody').find('[formarrayname]').find('pie-chart');
         var pieCharts = $(event.target).parents('.fBody').find('[formarrayname]').find('canvas');
         var indexes = [];
+        var pieChartPromises = [];
+        var pieImages = [];
 
         for (let i=0; i< pieChartsIndexes.length; i++) {
             indexes.push(pieChartsIndexes[i].id);
@@ -876,126 +891,223 @@ export class FeedFormComponent implements OnInit {
             return Number(x.substr(x.indexOf('-') + 1));
         });
 
+        // Start Creating PDF Here
+        var pdf;
 
-        var saved = false;
-        
+        renderPieCharts().then(() => {
+    
+        // Create page per question in survey
+        this.form.questions.forEach( (q,i) => {
 
-            // Breakdown long lines since jsPDF doesn't wrap the lines
-            function multipleLine(s) {
-                var index = [];
-                var words = 0;
-                var finalString = [];
+            // Reset yOffset for new pages
+            yOffset = 25;
+            
+            // Heading
+            doc.setTextColor(40, 171, 100);
+            doc.setFontSize(12);
+            doc.text('Questionsly', 20, yOffset);
+            doc.setLineWidth(0.3)
+            yOffset += 4;
+            doc.line(20, yOffset, 180, yOffset)
+            yOffset += 10;
+            
+            // Response Count
+            doc.setTextColor(96,96,96);
+            doc.setFontSize(18);
+            doc.text(`${this.count} Responses`, 80, yOffset);
+            yOffset += 15;
+            
 
-                for (let i=0; i<s.length; i++) {
-                    if (s[i] === " ") {
-                        words++;
-                    }
-                    
-                    if (words == 12) {
-                        words = 0;
-                        index.push(i);
-                    }
-                }
-
-                if (index.length > 0) {
-                    var prevValue;
-                    index.forEach(((x,i) => {
-                        if (i == 0) {
-                            // console.log(s.substr(0,x), "OKOKO", x);
-                            finalString.push(s.substr(0, x));
-                            prevValue = x;
-                        } else {
-                            finalString.push(s.substr(prevValue + 1, x - prevValue - 1));
-                            prevValue = x;
-                        }
-                    });
-                    finalString.push(s.substr(prevValue + 1, s.length - prevValue - 1));
-                }
-                return finalString.join('\n');
+            // Survey Title
+            if (i == 0 && this.form.title) {
+                doc.setTextColor(0,0,0);
+                doc.setFontSize(16);
+                doc.text(this.form.title, 20, yOffset);
+                yOffset += 15;
             }
 
-
-            // Create PDF
-            var doc = new jsPDF();
+            // Question Body
+            doc.setTextColor(32,32,32);
+            doc.setFontSize(14);
+            doc.text((i+1) +'. ' + multipleLine(q.body, 12).text, 20, yOffset);
+            yOffset += Math.max(10, 6 * multipleLine(q.body).lines);
             
-            this.form.questions.forEach( (q,i) => {
-
-                // Reset yOffset for new pages
-                var yOffset = 25;
-                
-                // Heading
-                doc.setTextColor(40, 171, 100);
-                doc.setFontSize(28);
-                doc.text('Questionsly', 20, yOffset);
-                doc.setLineWidth(0.3)
-                yOffset += 4;
-                doc.line(20, yOffset, 180, yOffset)
-                yOffset += 10;
-                
-                // Response Count
-                doc.setTextColor(96,96,96);
-                doc.setFontSize(18);
-                doc.text(`${this.count} Responses`, 80, yOffset);
-                yOffset += 15;
-                
-
-                // Survey Title
-                if (i == 0 && this.form.title) {
-                    doc.setTextColor(0,0,0);
-                    doc.setFontSize(14);
-                    doc.text((i+1) +'. ' + multipleLine(q.body), 20, yOffset, );
-                    yOffset += 10;
-                }
-
-                // Question
-                doc.setTextColor(32,32,32);
-                doc.setFontSize(12);
-                doc.text((i+1) +'. ' + multipleLine(q.body), 20, yOffset, );
-                yOffset += 10;
-                
-                // Question image
-                if (q.pic) {
+            // Question Image
+            if (q.pic) {
+                try {                    
                     doc.addImage(q.pic, 'JPEG', 20, yOffset, 100, 50);
                     yOffset += 50;
+                } catch {
+                    yOffset += 10;
+                    console.log("COULD NOT EXPORT QUESTION IMAGE TO PDF.\n");
                 }
-
-                //Question options
-                if (q.options && q.options.length > 0) {
-                    doc.setFontSize(10);
-                    q.options.forEach(option => {
-                        yOffset += 8;
-                        doc.text(`${option.label}. ${option.body}`, 20, yOffset);
-                    })
-                } 
-                yOffset += 20;
-
-                // Check to see if this question has a pie chart
-                var hasChart = indexes.indexOf(i);
-
-                // Add Pie Charts
-                if (pieCharts.length > 0 && hasChart !== -1) {
-                    saved = true;
-                    html2canvas(pieCharts[hasChart]).then(canvas => {
-                        var img = canvas.toDataURL("image/png");                    
-                        doc.addImage(img, 'JPEG', 20, yOffset, 70,60);
-
-                        // save once done rendering html
-                        if (this.form.questions.length == (i+1)) {
-                            doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
-                        } else {
-                            saved = false;
-                        }
-                    })
-                }
-
-                // Add Page if more questions
-                if (this.form.questions.length > (i+1) ) {
-                    doc.addPage();
-                }
-            });
-            
-            // Save if not saved in piechart's returned promise or if no pie charts
-            if (!saved) {
-                doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
             }
+
+            //Question options
+            if (q.options && q.options.length > 0) {
+                doc.setFontSize(10);
+                q.options.forEach(option => {
+                    doc.text(`${option.label}. ${option.body}`, 20, yOffset);
+                    yOffset += 8;
+                })
+            } 
+            // yOffset += 20;
+
+            // Check to see if this question has a pie chart
+            var hasChart = indexes.indexOf(i);
+
+            // Add Pie Charts
+            if (pieCharts.length > 0 && hasChart !== -1) {
+                var width = pieCharts[hasChart].clientWidth / 2.5;
+                var height = pieCharts[hasChart].clientHeight / 2.5;
+                                    
+                doc.addImage(pieImages[hasChart], 'JPEG', 20, yOffset, width, height);
+            }
+
+            // Add Text Responses if Short Answer Question
+            if (this.form.questions[i].kind == "Short Answer") {
+                // Response array
+                var ans = this.shortAnswers;
+                // Index to find user name and pic object
+                var usrInd = ans[0].length - 1;
+
+                // Heading
+                doc.setTextColor(32, 32, 32);
+                doc.setFontSize(12);
+                doc.text("Responses", 20, yOffset);
+                yOffset += 2;
+                doc.setLineWidth(0.1)
+                doc.line(20, yOffset, 43, yOffset)
+                yOffset += 5;
+            
+                ans.forEach((res,i) => {
+                    // Move to new page if necessary
+                    yOffset = overflowCheck(yOffset);
+
+                    // Add User Image if possible
+                    try{
+                        doc.addImage(res[usrInd].pic, 'JPEG', 20, yOffset, 12, 12);                        
+                    } catch (err) {
+                        console.log("COULD NOT SAVE USER IMAGE TO PDF. USING DEFAULT.\n");
+                        doc.addImage('/images/male.png', 'PNG', 20, yOffset, 12, 12);                                                
+                    }
+
+                    yOffset += 6;
+
+                    // User Name
+                    doc.setFontSize(10);
+                    doc.text(`${res[usrInd].name}`, 35, yOffset);
+                    yOffset += 4;
+
+                    // Response
+                    doc.setTextColor(32, 32, 32);
+                    doc.setFontSize(8);
+                    doc.text(`${multipleLine(res[shortAnswerCounter], 16).text}`, 40, yOffset);
+
+                    yOffset += (4 * multipleLine(res[shortAnswerCounter], 16).lines);
+                });    
+
+                // Makes sure we get the right set of answers for the case of several text response questions
+                shortAnswerCounter++;
+            }
+
+            // Add Page if more questions
+            if (this.form.questions.length > (i+1) ) {
+                doc.addPage();
+            }
+        });
+        
+        // Save or Share PDF
+        if (save) {
+            doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
+            return;            
+        } else {       
+            //Output for sharing               
+            return doc.output();             
+        }
+        }).then(pdf => {
+            if (pdf) {                
+                this.sendPDF(pdf);
+            }
+        });
+    
+
+
+        // Aux Functions
+
+        // Need to render pie charts before because they are async and will be appended randomly throughout the page if not loaded first
+        function renderPieCharts() {
+            if (pieCharts.length > 0) {
+                for (let i = 0; i < pieCharts.length; i++) {
+                    pieChartPromises.push(new Promise((resolve, reject) => {
+                        html2canvas(pieCharts[i]).then(canvas => {
+                            var img = canvas.toDataURL("image/png");
+                            pieImages.push(img);
+                            resolve();
+                        });
+                    }));
+                }
+
+                return Promise.all(pieChartPromises);
+                debugger;
+
+            } else {
+                return Promise.resolve;
+            }
+        }
+        
+        //Create New Page if Overflow
+        function overflowCheck(yOffset) {
+            if (yOffset >= 260) {
+                doc.addPage();
+                yOffset = 25;
+            }
+            return yOffset;
+        } 
+
+        // Breakdown long lines since jsPDF doesn't wrap the lines. Wordcount is words per line
+        function multipleLine(s, wordCount = 14) {
+            var index = [];
+            var words = 0;
+            var finalString = [];
+
+            for (let i = 0; i < s.length; i++) {
+                if (s[i] === " ") {
+                    words++;
+                }
+
+                if (words == wordCount) {
+                    words = 0;
+                    index.push(i);
+                }
+            }
+
+            if (index.length > 0) {
+                var prevValue;
+                index.forEach(((x, i) => {
+                    if (i == 0) {
+                        // console.log(s.substr(0,x), "OKOKO", x);
+                        finalString.push(s.substr(0, x));
+                        prevValue = x;
+                    } else {
+                        finalString.push(s.substr(prevValue + 1, x - prevValue - 1));
+                        prevValue = x;
+                    }
+                });)
+                finalString.push(s.substr(prevValue + 1, s.length - prevValue - 1));
+            }
+            return finalString.length === 0 ? {text: s, lines: 1} : {text: finalString.join('\n'), lines: finalString.length};
+        }
+
+
+    }
+
+
+    sendPDF(pdf) {
+            // TODO: Stream file since payload is too big right now.
+            this.http.post(`/forms/sharePDF`, { doc: pdf }).toPromise()
+            .then(res => {
+                console.log('Worked.');
+            });
+    }
 }
