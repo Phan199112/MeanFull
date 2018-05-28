@@ -342,9 +342,9 @@ exports.sendSummary = function sendSummary() {
                         question.commentCount + ' new ' + commentPlural;
                 }
 
-                if (question.responseProfilePics.length > 0) {
-                    question.responseProfilePics.slice(0, 5).forEach(function (profilePic) {
-                        picsHTML += '<img src="' + profilePic + '" style="height: 30px">';
+                if (question.responseProfiles.length > 0) {
+                    question.responseProfiles.slice(0, 5).forEach(function (profile) {
+                        picsHTML += '<img src="' + profile.profilePic + '" style="height: 30px">';
                     });
                 }
 

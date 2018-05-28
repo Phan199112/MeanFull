@@ -82,7 +82,7 @@ function recordNewResponseOrComment(userMakingCommentId, survey, counterField, h
                 commentCount: 0,
                 responseCount: 0,
                 link: "https://www.questionsly.com/feed;survey=" + hashids.encodeHex(survey._id),
-                responseProfilePics: []
+                responseProfiles: []
             };
         }
 
@@ -91,9 +91,13 @@ function recordNewResponseOrComment(userMakingCommentId, survey, counterField, h
         emailStoreSurveyItem[counterField] ++;
 
         if (userMakingComment) {
-            var profilePicUrl = usersfunctions.getProfilePic(userMakingComment);
-            if (emailStoreSurveyItem.responseProfilePics.indexOf(profilePicUrl) == -1) {
-                emailStoreSurveyItem.responseProfilePics.push(profilePicUrl);
+            var userMakingCommentName = userMakingComment.name.first + " " + userMakingComment.name.last;
+            var profileIndex = emailStoreSurveyItem.responseProfiles.findIndex(i => i.name == userMakingCommentName);
+            if (profileIndex == -1) {
+                emailStoreSurveyItem.responseProfiles.push({
+                    name: userMakingCommentName,
+                    profilePic: usersfunctions.getProfilePic(userMakingComment),
+                });
             }
         }
 

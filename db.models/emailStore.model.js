@@ -15,13 +15,18 @@ var CommSchema = mongoose.Schema({
     communityTitle: String
 });
 
+var QuestionResponseProfileSchema = mongoose.Schema({
+    profilePic: String,
+    name: String
+});
+
 var QstnSchema = mongoose.Schema({ 
     formid: String,
     link: String,
     question: String,
     commentCount: Number,
     responseCount: Number,
-    responseProfilePics: [{type: String}],
+    responseProfiles: [QuestionResponseProfileSchema],
 });
 
 var SharedSchema = mongoose.Schema({ 
