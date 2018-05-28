@@ -344,23 +344,28 @@ exports.sendSummary = function sendSummary() {
 
                 if (question.responseProfiles.length > 0) {
                     question.responseProfiles.slice(0, 5).forEach(function (profile) {
-                        picsHTML += '<img src="' + profile.profilePic + '" style="height: 30px">';
+                        picsHTML += `
+                            <p style="padding-left: 25px; margin: 4px 0">
+                                <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
+                                    <img src="${profile.profilePic}" style="height: 30px; vertical-align: middle; padding-right: 8px;">
+                                </a>
+                                <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
+                                    ${profile.name}
+                                </a>
+                            </p>
+                        `
                     });
                 }
 
                 questionsString += `
-                    <mj-section border="0px" padding-left="25px" padding-bottom="0px">
+                    <mj-section border="0px" padding-left="25px">
                         <mj-text font-size="15" font-family="Karla">
                             <a style="color: #007bff" href="${question.link}">${question.question}</a>
-                        </mj-text>
-
-                        <mj-text font-size="15" font-family="Karla" line-height="24px" border="0px" padding-left="40px" padding-top="10px">
-                            <a style="text-decoration: none; color: #A0A0A0" href="${question.link}">${text}</a>
                             <br>
-                            <a style="text-decoration: none; color" href="${question.link}">${picsHTML}</a>
+                            <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">${text}</a>
+                            ${picsHTML}
                         </mj-text>
                     </mj-section>
-
                 `
             });
 
