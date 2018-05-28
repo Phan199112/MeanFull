@@ -517,6 +517,7 @@ hr {
     width: 100%;
     color: #999;
     font-size: .8rem;
+    
 }
 
 .submitButton {
@@ -544,6 +545,16 @@ hr {
         cursor: pointer;
         color: #2b2b2b !important;
         border: solid 1px #2b2b2b;
+    }
+
+    &.positive {
+      background: $primaryColor;
+      border: $primaryColor 1px solid;
+      color: #FFF !important;
+
+      &:hover {
+        background: lighten($primaryColor, 14);
+      }
     }
 }
 
@@ -612,4 +623,39 @@ hr {
 
 .filterDropdownText .cuppa-dropdown {
   background: $primaryColor !important;
+}
+
+.sharePdfMenu {
+  width: 200px;
+  height: 200px;
+}
+
+.headline {
+  text-align: center;
+  color: #2b2b2b;
+  font: {
+    family: Karla;
+    size: 1.2rem;
+  }
+}
+
+.emailInput {
+  width: 90%;
+  padding: 3px 6px;
+  margin-bottom: 16px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.shareEmailContainer {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  position: relative;
+  border: 1px solid $borderColor;
+  border-radius: 8px;
 }

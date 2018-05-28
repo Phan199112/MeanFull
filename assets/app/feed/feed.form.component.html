@@ -45,7 +45,6 @@
                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                 </a>
                 <div ngbDropdownMenu aria-labelledby="form-menu">
-
                     <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share</a>
                     <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
                     <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
@@ -53,19 +52,33 @@
                     <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
                     <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
                     <a class="dropdown-item" (click)="beginPDF()" *ngIf="form.admin || form.answered">Export PDF</a>
-                    <!-- <a class="dropdown-item" (click)="beginPDF(false)" *ngIf="form.admin || form.answered">Share Report</a> -->
+                    <a class="dropdown-item" (click)="beginPDF(false)" *ngIf="form.admin || form.answered">Share Report</a>
                 </div>
             </div>
         </div>
     </div>
 
-
+    <!-- Response Count -->
     <div *ngIf="false" class="topContainer">
         <div id="completedBlock" *ngIf="submitted">
             <!-- <span id="qCompleted">Completed</span> -->
             <span id="answerCount">Answered {{count ? count : '<5'}} {{count > 1 ? 'Times' : 'Time'}}</span>
         </div>
     </div>
+    
+
+    <!-- Share Report Email Field -->
+    <div *ngIf="shareEmails" class="flex">
+        <div class="shareEmailContainer">
+            <p class="headline">Enter Recipient Email(s)</p>
+            <input class="emailInput" type="text" placeholder="Seperate emails with a comma" />
+            <div>
+                <a class="submitButton" (click)="toggleShareEmails()">Cancel</a>
+                <a class="submitButton positive" style="margin-left: 12px">Send</a>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Divider -->
     <!-- <div class="flex" style="margin-top: 25px;">

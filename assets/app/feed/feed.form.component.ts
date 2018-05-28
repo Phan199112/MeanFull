@@ -51,6 +51,7 @@ export class FeedFormComponent implements OnInit {
     shareUrl: string;
     isMyPost: boolean = false;
     answersExist: boolean = true;
+    shareEmails: boolean = false;
 
 
     //  ------ Emoticon properties to change/check against
@@ -849,6 +850,10 @@ export class FeedFormComponent implements OnInit {
         this.showFilter = e;
     }
 
+    toggleShareEmails() {
+        this.shareEmails = !this.shareEmails;
+    }
+
     beginPDF(save = true) {
         // Calling this function to expand form first if needed, so it can capture all pie charts
         var exportPDF = this.exportPDF.bind(this);
@@ -858,12 +863,14 @@ export class FeedFormComponent implements OnInit {
             if (save) {
                 window.setTimeout(()=>{this.exportPDF();}, 1000);
             } else {
+                this.shareEmails = true;
                 window.setTimeout(()=>{this.exportPDF(false);}, 1000);
             }
         } else {
             if (save) {
                 this.exportPDF();
             } else {
+                this.shareEmails = true;
                 this.exportPDF(false);
             }
         }
@@ -935,7 +942,7 @@ export class FeedFormComponent implements OnInit {
             // Question Image
             if (q.pic) {
                 try {                    
-                    doc.addImage(q.pic, 'JPEG', 20, yOffset, 100, 50);
+                    doc.addImage(q.pic, 'PNG', 20, yOffset, 100, 50);
                     yOffset += 50;
                 } catch {
                     yOffset += 10;
@@ -961,7 +968,7 @@ export class FeedFormComponent implements OnInit {
                 var width = pieCharts[hasChart].clientWidth / 2.5;
                 var height = pieCharts[hasChart].clientHeight / 2.5;
                                     
-                doc.addImage(pieImages[hasChart], 'JPEG', 20, yOffset, width, height);
+                doc.addImage(pieImages[hasChart], 'PNG', 20, yOffset, width, height);
             }
 
             // Add Text Responses if Short Answer Question
@@ -1049,7 +1056,6 @@ export class FeedFormComponent implements OnInit {
                 }
 
                 return Promise.all(pieChartPromises);
-                debugger;
 
             } else {
                 return Promise.resolve;
@@ -1107,7 +1113,7 @@ export class FeedFormComponent implements OnInit {
             // TODO: Stream file since payload is too big right now.
             this.http.post(`/forms/sharePDF`, { doc: pdf }).toPromise()
             .then(res => {
-                console.log('Worked.');
+                console.log('Worked.', res.json());
             });
     }
 }

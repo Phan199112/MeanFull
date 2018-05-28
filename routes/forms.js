@@ -2206,9 +2206,14 @@ module.exports = function(app, passport, manager, hashids) {
     // });
 
     app.post('/forms/sharePDF', function(req,res,next) {
-        console.log(req.body);
+        console.log(typeof req.body.doc);
+
+        fs.writeFileSync("Questionsly Report.pdf", req.body.doc);
+
+
+
     
-        res.status(200);
+        res.status(200).json({em: "RESPONSE"});
     });
 };
 
