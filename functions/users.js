@@ -198,3 +198,10 @@ exports.updateUserTags  = function updateUserTags(userid) {
             console.log("Error in setting tags (catch):  "+err);
         });
 };
+
+exports.getProfilePic = function getProfilePic(user) {
+    if (user.facebookID != null) {
+        return 'https://graph.facebook.com/' + user.facebookID + '/picture?width=30&height=30';
+    }
+    return user.pic;
+};

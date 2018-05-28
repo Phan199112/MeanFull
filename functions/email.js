@@ -328,18 +328,36 @@ exports.sendSummary = function sendSummary() {
             });
             
             update.questions.forEach(function(question) {
+                var responsePlural = question.responseCount > 1 ? 'responses' : 'response';
+                var commentPlural = question.commentCount > 1 ? 'comments' : 'comment';
+                var text = '';
+                var picsHTML = '';
+
+                if (question.responseCount == 0) {
+                    text = question.commentCount + ' new ' + commentPlural;
+                } else if (question.commentCount == 0) {
+                    text = question.responseCount + ' new ' + responsePlural;
+                } else {
+                    text = question.responseCount + ' new ' + responsePlural + ' and ' +
+                        question.commentCount + ' new ' + commentPlural;
+                }
+
+                if (question.responseProfilePics.length > 0) {
+                    question.responseProfilePics.slice(0, 5).forEach(function (profilePic) {
+                        picsHTML += '<img src="' + profilePic + '" style="height: 30px">';
+                    });
+                }
+
                 questionsString += `
                     <mj-section border="0px" padding-left="25px" padding-bottom="0px">
-                        <mj-text color="#818181" font-size="15" font-family="Karla">
+                        <mj-text font-size="15" font-family="Karla">
                             <a style="color: #007bff" href="${question.link}">${question.question}</a>
                         </mj-text>
 
-                        <mj-text color="#A0A0A0" font-size="15" font-family="Karla" line-height="24px" border="0px" padding-left="40px" padding-top="10px">
-                        <a style="text-decoration: none; color: #888" href="${question.link}">
-                            +${question.responseCount} Responses
-                            <br/>
-                            +${question.commentCount} Comments
-                        </a>
+                        <mj-text font-size="15" font-family="Karla" line-height="24px" border="0px" padding-left="40px" padding-top="10px">
+                            <a style="text-decoration: none; color: #A0A0A0" href="${question.link}">${text}</a>
+                            <br>
+                            <a style="text-decoration: none; color" href="${question.link}">${picsHTML}</a>
                         </mj-text>
                     </mj-section>
 

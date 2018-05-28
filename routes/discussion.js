@@ -1,16 +1,16 @@
 var DiscussionModel = require('../db.models/discussion.model');
 var FormModel = require('../db.models/form.model');
 var UserModel = require('../db.models/user.model');
-var EmailStoreModel = require('../db.models/emailStore.model');
 var log = require("../functions/logs");
 var emailfunctions 	= require("../functions/email");
 var notifications = require("../functions/notifications");
 var usersfunctions = require('../functions/users');
+var emailstoresfunctions = require('../functions/emailstores');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
 
-    // save a new community
+    // save a new short answer
     app.post('/discussions/new', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var receivedData =  req.body;
         var pc = receivedData.previousCommenters;
@@ -30,8 +30,8 @@ module.exports = function(app, passport, manager, hashids) {
 
                 var authorid = null;
                 var formid = hashids.decodeHex(receivedData.formid);
-                var firstquestion;
                 var questionLink = `https://www.questionsly.com/feed;survey=${receivedData.formid}`;
+                var loadedFormModel;
 
                 return new Promise(function(resolve, reject) {
                     FormModel.findById(formid, function (err, form) {
@@ -41,7 +41,7 @@ module.exports = function(app, passport, manager, hashids) {
                             if (form) {
                                 // look up the author of the form
                                 authorid = form.userid;
-                                firstquestion = form.questions[0].body;
+                                loadedFormModel = form;
                             }
                             resolve();
                         }
@@ -63,136 +63,10 @@ module.exports = function(app, passport, manager, hashids) {
                                 messageid: hashids.encodeHex(k._id)
                             });
 
-                            // email notification
-                            // check the notification settings of this user
-                            UserModel.findById(authorid, function(err, authr) {
-                                if (err) {
-                                    // no email
-                                    res.json({status: 1});
-
-                                } else {
-                                    if (authr) {
-
-
-                                        UserModel.findById(req.session.userid, function (err, sndr) {
-                                            if (err) {
-                                                // no email
-                                                res.json({ status: 1 });
-
-                                            } else {
-                                                new Promise(function (resolve, reject) {
-                                                    EmailStoreModel.findOne({ userid: authorid }, function (err, e) {
-                                                        if (err) {
-                                                            console.log("Error fetching emailstore in discussion");
-                                                            reject();
-                                                        }
-
-                                                        UserModel.findById(authorid, function (err, me) {
-                                                            if (err) {
-                                                                console.log("Error fetching user!");
-                                                                reject();
-                                                            } else {
-
-                                                                if (e) {
-                                                                    var questionNotifications = e.questions;
-                                                                    var qInd = questionNotifications.findIndex(q => q.formid === formid);
-                                                                    if (qInd != -1) {
-                                                                        questionNotifications[qInd].commentCount += 1;
-                                                                    } else {
-                                                                        questionNotifications.push({formid: formid, question: firstquestion, commentCount: 1, responseCount: 0, link: questionLink});
-                                                                    }
-
-                                                                    e.save(function (err) {
-                                                                        if (err) {
-                                                                            console.log("Problem pushing discussion update to email store");
-                                                                        }
-                                                                    });
-                                                                    resolve();
-
-                                                                } else {
-                                                                    EmailStoreModel.create({
-                                                                        userid: authorid,
-                                                                        questions: [{ formid: formid, question: firstquestion, commentCount: 1, responseCount: 0, link: questionLink }],
-                                                                        community: [],
-                                                                        network: [],
-                                                                        shared: []  
-                                                                    }, function (err, k) {
-                                                                        if (err) {
-                                                                            console.log("Failed to create emailstore object");
-                                                                            reject();
-                                                                        } else {
-                                                                            resolve();
-                                                                        }
-                                                                    });
-                                                                }
-
-                                                            }
-                                                        });
-                                                    });
-                                                }).catch(err => {
-                                                    console.log("emailstore discussion promise rejected");
-                                                });
-
-                                                res.json({status: 1});
-
-
-
-
-                                                // send
-                                                // if (Object.keys(authr.notifications).length === 0) {
-                                                //     if (authr.notifications.discussion === true) {
-                                                //         emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
-
-                                                //         if (pc.length > 0) {
-                                                //             for (let z=0; z < pc.length; z++) {
-                                                //                 UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
-                                                //                     if (err) {
-                                                //                         // no email
-                                                //                         res.json({ status: 1 });
-                                                //                     } else {
-                                                //                         emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
-                                                //                     }
-                                                //                 });
-                                                //             }
-                                                //         }
-
-                                                //         res.json({status: 1});
-                                                //     } else {
-                                                //         // no email
-                                                //         res.json({status: 1});
-                                                //     }
-                                                // } else {
-                                                //     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                                //     emailfunctions.sendNotificationDiscussion(authr.email, sndr, receivedData.formid, receivedData.firstquestion);
-
-                                                //     if (pc.length > 0) {
-                                                //         for (let z = 0; z < pc.length; z++) {
-                                                //             UserModel.findById(hashids.decodeHex(pc[z]), function (err, o) {
-                                                //                 if (err) {
-                                                //                     // no email
-                                                //                 } else {
-                                                //                     emailfunctions.sendNotificationDiscussionFollowUp(o.email, sndr, authr, receivedData.firstquestion, receivedData.formid);
-                                                //                 }
-                                                //             });
-                                                //         }
-                                                //     }
-
-                                                //     res.json({status: 1});
-                                                // }
-                                            }
-                                        });
-
-                                    } else {
-                                        //no user found
-                                        res.json({status: 1});
-                                    }
-
-                                }
-                            });
-                        } else {
-                            // no email though
-                            res.json({status: 1});
+                            emailstoresfunctions.recordNewComment(req.session.userid, loadedFormModel, hashids);
                         }
+
+                        res.json({status: 1});
                     })
                     .catch(function () {
                         // no email though

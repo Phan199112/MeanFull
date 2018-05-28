@@ -15,6 +15,7 @@ var exportfunctions = require('../functions/export');
 var emailfunctions 	= require("../functions/email");
 var fs = require('fs');
 var emailAddress = require("email-addresses");
+var emailstoresfunctions = require('../functions/emailstores');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -399,6 +400,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
         };
 
+        var loadedFormModel;
         var formauthorfunction = function (x) {
             return new Promise(function (resolve, reject) {
                 FormModel.findById(x, function (err, form) {
@@ -406,6 +408,7 @@ module.exports = function(app, passport, manager, hashids) {
                         reject();
                     } else {
                         if (form) {
+                            loadedFormModel = form;
                             // look up the author of the form
                             formauthorid = form.userid;
                             activityEmailSent = form.activityEmailSent;
@@ -467,97 +470,8 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // email notification
                             // check the notification settings of this user
-
-
-                            UserModel.findById(formauthorid, function (err, l) {
-                                if (err) {
-                                    // no email
-                                    res.json({status: 1});
-
-                                } else {
-                                    if (l) {
-                                        // send
-
-                                        UserModel.findById(req.session.userid, function (err, q) {
-                                            if (err) {
-                                                // no email
-                                                res.json({ status: 1 });
-                                            } else {
-                                                // if (Object.keys(l.notifications).length === 0) {
-                                                //     if (l.notifications.formactivity === true) {
-                                                //         if (!activityEmailSent) {
-                                                //             emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
-                                                //         }
-                                                //         res.json({status: 1});
-                                                //     } else {
-                                                //         // no email
-                                                //         res.json({status: 1});
-                                                //     }
-                                                // } else {
-                                                //     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                                //     if (!activityEmailSent) {
-                                                //         emailfunctions.sendNotificationFormActivity(l.email, q, firstQuestion, hashids.encodeHex(answerformid));
-                                                //     }
-                                                //     res.json({status: 1});
-                                                // }
-
-                                                new Promise(function (resolve, reject) {
-                                                    EmailStoreModel.findOne({ userid: formauthorid }, function (err, e) {
-                                                        if (err) {
-                                                            console.log("Error fetching emailstore in form answer");
-                                                            reject();
-                                                        } else {                                                                
-                                                            if (e) {                                                                
-                                                                var questionNotifications = e.questions;
-                                                                var qInd = questionNotifications.findIndex(q => q.formid === answerformid);
-
-                                                                if (qInd != -1) {
-                                                                    questionNotifications[qInd].responseCount += 1;
-                                                                } else {
-                                                                    questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink });
-                                                                }
-    
-                                                                e.save(function (err) {
-                                                                    if (err) {
-                                                                        console.log("Problem pushing form answer update to email store");
-                                                                    }
-                                                                });
-                                                                resolve();
-    
-                                                            } else {    
-                                                                EmailStoreModel.create({
-                                                                    userid: formauthorid,
-                                                                    questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink }],
-                                                                    community: [],
-                                                                    network: [],
-                                                                    shared: []
-                                                                }, function (err, k) {
-                                                                    if (err) {
-                                                                        console.log("Failed to create emailstore object", err);
-                                                                        reject();
-                                                                    } else {
-                                                                        resolve();
-                                                                    }
-                                                                });
-                                                            }
-                                                        }
-                                                    });
-                                                }).catch(err => {
-                                                    console.log("emailstore form answer promise rejected", err);
-                                                });
-                                                
-                                                res.json({status: 1});
-
-                                            }})
-                                    } else {
-                                        //no user found
-                                        res.json({status: 1});
-                                    }
-
-                                }
-                            });
-                            
-
+                            emailstoresfunctions.recordNewResponse(req.session.userid, loadedFormModel, hashids);
+                            res.json({status: 1});
                         })
                             .catch(function () {
                                 res.json({status: 0});
@@ -619,87 +533,8 @@ module.exports = function(app, passport, manager, hashids) {
                             // email notification
                             // check the notification settings of this user
 
-                            UserModel.findById(formauthorid, function (err, l) {
-                                if (err) {
-                                    // no email
-                                    res.json({status: 1});
-
-                                } else {
-                                    if (l) {
-                                        // send
-                                        // if (Object.keys(l.notifications).length === 0) {
-
-                                        //     if (l.notifications.formactivity === true) {
-                                        //         if (!activityEmailSent) {
-                                        //             emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
-                                        //         }
-                                        //         res.json({status: 1});
-                                        //     } else {
-                                        //         // no email
-                                        //         res.json({status: 1});
-                                        //     }
-                                        // } else {
-                                        //     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                        //     if (!activityEmailSent) {
-                                        //         emailfunctions.sendNotificationFormActivity(l.email, anon, firstQuestion, hashids.encodeHex(answerformid));
-                                        //     }
-                                        //     res.json({status: 1});
-                                        // }
-                                        new Promise(function (resolve, reject) {
-                                            EmailStoreModel.findOne({ userid: formauthorid }, function (err, e) {
-                                                if (err) {
-                                                    console.log("Error fetching emailstore in form answer");
-                                                    reject();
-                                                } else {
-                                                    if (e) {
-                                                        var questionNotifications = e.questions;
-                                                        var qInd = questionNotifications.findIndex(q => q.formid === answerformid);
-
-                                                        if (qInd != -1) {
-                                                            questionNotifications[qInd].responseCount += 1;
-                                                        } else {
-                                                            questionNotifications.push({ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink });
-                                                        }
-
-                                                        e.save(function (err) {
-                                                            if (err) {
-                                                                console.log("Problem pushing form answer update to email store");
-                                                            }
-                                                        });
-                                                        resolve();
-
-                                                    } else {
-                                                        EmailStoreModel.create({
-                                                            userid: formauthorid,
-                                                            questions: [{ formid: answerformid, question: firstQuestion, commentCount: 0, responseCount: 1, link: questionLink }],
-                                                            community: [],
-                                                            network: [],
-                                                            shared: []
-                                                        }, function (err, k) {
-                                                            if (err) {
-                                                                console.log("Failed to create emailstore object", err);
-                                                                reject();
-                                                            } else {
-                                                                resolve();
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            });
-                                        }).catch(err => {
-                                            console.log("emailstore form answer promise rejected", err);
-                                        });
-
-                                        res.json({status: 1});
-
-                                    } else {
-                                        //no user found
-                                        res.json({status: 1});
-                                    }
-
-                                }
-                            });
-
+                            emailstoresfunctions.recordNewResponse(null, loadedFormModel, hashids);
+                            res.json({status: 1});
                         })
                             .catch(function () {
                                 res.json({status: 0});
