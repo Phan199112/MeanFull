@@ -22,29 +22,34 @@
       <mj-section>
         <mj-column>
           
-          <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center" padding-bottom="20px">
+          <mj-text font-size="25px" color="#28ab64" font-family="Karla" align="center" padding-bottom="20px">
             <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
           </mj-text>
           
-          <mj-text font-size="20" color="#666"font-family="Karla" align="center" padding-bottom="15px">Hello There.</mj-text>
+          <mj-text font-size="20px" color="#333"font-family="Karla" align="center" padding-bottom="15px">Hello There.</mj-text>
         
           <mj-image width="120px" src="{{userPic}}" href="{{link}}" align="center" padding-bottom="20px"/>
           
-          <mj-text font-size="24" color="#28ab64" font-family="Karla" align="center">
+          <mj-text font-size="24px" color="#28ab64" font-family="Karla" align="center">
             {{userName}}
           </mj-text>
           
-          <mj-text font-size="18px" color="#666" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4">
+          <mj-text font-size="18px" color="#333" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4">
             ..has requested you to answer {{userGender}} survey on Questionsly!
           </mj-text>
 
-          <mj-text font-size="18px" color="#000" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4">
+          <mj-text font-size="20px" color="#333" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4" font-weight="600">
             {{question}}
           </mj-text>
           
-          <mj-button font-family="Karla" font-size="18"  background-color="#28ab64" color="white">
+          <mj-button font-family="Karla" font-size="18" background-color="#28ab64" color="white" padding-bottom="20px">
             <a class="link-nostyle" href="{{link}}">Answer Question!</a>
           </mj-button>
+
+          <mj-text font-size="14px" color="#777" font-family="Karla" align="center" padding-bottom="20px">
+            <a href="https://www.questionsly.com/users/login" class="link-nostyle" style="color: #28ab64">Sign up</a>
+            for Questionsly, the new place to ask questions.
+          </mj-text>
 
         </mj-column>
       </mj-section>
