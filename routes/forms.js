@@ -2205,4 +2205,11 @@ module.exports = function(app, passport, manager, hashids) {
     //     console.log("Summary Sent");
     // });
 
+    app.post('/forms/sharePDF', function(req,res,next) {
+        console.log(req.body);
+    
+        res.status(200);
+    });
 };
+
+
