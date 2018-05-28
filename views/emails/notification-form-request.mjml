@@ -17,30 +17,9 @@
   <mj-body>
 
 
-    <mj-container background-color="#f6f6f6">
-      <mj-section background-color="#fff">
-        <mj-group>
-          <mj-column>
-            <mj-text font-size="10" color="#818181" font-family="Karla" align="center">
-              <a class="link-nostyle-nobold" color="#818181" href="https://twitter.com/questionsly">twitter</a>
-            </mj-text>
+    <mj-container background-color="#fff">
 
-          </mj-column>
-          <mj-column>
-            <mj-text font-size="10" color="#818181" font-family="Karla" align="center">
-              <a class="link-nostyle-nobold" color="#818181" href="https://www.facebook.com/questionsly/">facebook</a>
-            </mj-text>
-          </mj-column>
-          <mj-column>
-            <mj-text font-style="italic" font-size="12" font-family="Karla" color="#818181" align="center">
-              Connect with us
-            </mj-text>
-          </mj-column>
-        </mj-group>
-      </mj-section>
-
-
-      <mj-section background-color="#fff">
+      <mj-section>
         <mj-column>
           
           <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center" padding-bottom="20px">
