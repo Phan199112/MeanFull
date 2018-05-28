@@ -20,7 +20,8 @@ var QstnSchema = mongoose.Schema({
     link: String,
     question: String,
     commentCount: Number,
-    responseCount: Number
+    responseCount: Number,
+    responseProfilePics: [{type: String}],
 });
 
 var SharedSchema = mongoose.Schema({ 
