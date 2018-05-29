@@ -454,8 +454,7 @@ exports.sendEmail = function sendEmail(email, subject, html, messagesafe, report
         subject: subject,
         attachment:
             [
-                { data: html, alternative:true },
-                { path: `/${reportName}`, type: "application/pdf", name: "Questionsly Report.pdf" }
+                { data: html, alternative:true }
             ]
     }, function(err) {
         console.log(err);
