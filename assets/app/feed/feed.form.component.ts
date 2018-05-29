@@ -51,6 +51,7 @@ export class FeedFormComponent implements OnInit {
     showFilter: boolean = false;
     startingTime: any;
     shortAnswers: any = [];
+    shortAnswers2: any = [];
     shareUrl: string;
     isMyPost: boolean = false;
     answersExist: boolean = true;
@@ -344,6 +345,7 @@ export class FeedFormComponent implements OnInit {
                 let responsedata = response.json().data;              
                
                 this.shortAnswers = response.json().shortAnswers;
+                this.shortAnswers2 = response.json().shortAnswers2;
                 
                 let responsestatus = response.json().status;
                 this.loggedin = response.json().loggedin;                                            
