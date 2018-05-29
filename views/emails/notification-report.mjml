@@ -1,0 +1,62 @@
+<mjml>
+  
+  <mj-head>
+    <mj-font name="Karla" href="https://fonts.googleapis.com/css?family=Karla" />
+    <!--<mj-style>-->
+    <!--  @media all and (max-width: 480px) { div[style*="color:#F45e46;"] { text-align: center !important } }-->
+    <!--</mj-style>-->
+    <mj-style inline="inline">
+      .link-nostyle { color: inherit; text-decoration: none ; font-weight:bold; align: center }
+    </mj-style>
+    <mj-style inline="inline">
+      .link-nostyle-nobold { color: inherit; text-decoration: none; align: center }
+    </mj-style>
+  </mj-head>
+  
+  
+  <mj-body>
+
+
+    <mj-container background-color="#fff">
+
+      <mj-section>
+        <mj-column>
+          
+          <mj-text font-size="25px" color="#28ab64" font-family="Karla" align="center" padding-bottom="20px">
+            <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
+          </mj-text>
+          
+          <mj-text font-size="20px" color="#333"font-family="Karla" align="center" padding-bottom="15px">Hello There.</mj-text>
+        
+          <mj-image width="120px" src="{{userPic}}" href="{{link}}" align="center" padding-bottom="20px"/>
+          
+          <mj-text font-size="24px" color="#28ab64" font-family="Karla" align="center">
+            {{userName}}
+          </mj-text>
+          
+          <mj-text font-size="18px" color="#333" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4">
+            ..has shared a PDF report with you from Questionsly!
+          </mj-text>
+
+          <mj-text font-size="22px" color="#111" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4" font-weight="600">
+            {{title}}
+          </mj-text>
+
+          <mj-text font-size="20px" color="#333" font-family="Karla" align="center" padding-bottom="20px" line-height="1.4" font-weight="600">
+            {{question}}
+          </mj-text>
+
+          <mj-text font-size="14px" color="#777" font-family="Karla" align="center" padding-bottom="20px">
+            <a href="https://www.questionsly.com/users/login" class="link-nostyle" style="color: #28ab64">Sign up</a>
+            for Questionsly, an online platform for getting data to all of your questions from a large community of users.
+          </mj-text>
+
+        </mj-column>
+      </mj-section>
+
+
+
+    </mj-container>
+  </mj-body>
+  
+</mjml>

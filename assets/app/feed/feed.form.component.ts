@@ -11,6 +11,9 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ENGINE_METHOD_DIGESTS } from "constants";
 import * as html2canvas from "html2canvas";
 import * as jsPDF from 'jspdf';
+import * as $ from 'jquery';
+import { VariableAst } from "@angular/compiler";
+
 
 
 
@@ -52,6 +55,7 @@ export class FeedFormComponent implements OnInit {
     isMyPost: boolean = false;
     answersExist: boolean = true;
     shareEmails: boolean = false;
+    shareEmailStatus: string = null;
 
 
     //  ------ Emoticon properties to change/check against
@@ -854,6 +858,11 @@ export class FeedFormComponent implements OnInit {
         this.shareEmails = !this.shareEmails;
     }
 
+    sendEmails(emails) {
+        var emailList = emails;
+        this.exportPDF(false);
+    }
+
     beginPDF(save = true) {
         // Calling this function to expand form first if needed, so it can capture all pie charts
         var exportPDF = this.exportPDF.bind(this);
@@ -877,7 +886,11 @@ export class FeedFormComponent implements OnInit {
         
     }
 
-    exportPDF(save = true) {
+    exportPDF(save = true, list = "") {
+        if (!save) {
+            this.shareEmailStatus = "Sending...";
+        }
+
         var doc = new jsPDF();
         var shortAnswerCounter = 0;
         var yOffset;
@@ -943,7 +956,7 @@ export class FeedFormComponent implements OnInit {
             if (q.pic) {
                 try {                    
                     doc.addImage(q.pic, 'PNG', 20, yOffset, 100, 50);
-                    yOffset += 50;
+                    yOffset += 60;
                 } catch {
                     yOffset += 10;
                     console.log("COULD NOT EXPORT QUESTION IMAGE TO PDF.\n");
@@ -993,7 +1006,7 @@ export class FeedFormComponent implements OnInit {
 
                     // Add User Image if possible
                     try{
-                        doc.addImage(res[usrInd].pic, 'JPEG', 20, yOffset, 12, 12);                        
+                        doc.addImage(res[usrInd].pic, 'PNG', 20, yOffset, 12, 12);                        
                     } catch (err) {
                         console.log("COULD NOT SAVE USER IMAGE TO PDF. USING DEFAULT.\n");
                         doc.addImage('/images/male.png', 'PNG', 20, yOffset, 12, 12);                                                
@@ -1029,12 +1042,15 @@ export class FeedFormComponent implements OnInit {
             doc.save(`${this.form.questions[0].body.substr(0, 20)}.pdf`);
             return;            
         } else {       
-            //Output for sharing               
-            return doc.output();             
+            //Output for sharing 
+
+            return doc.output('blob');
+
+            // return doc.output('blob');             
         }
         }).then(pdf => {
-            if (pdf) {                
-                this.sendPDF(pdf);
+            if (pdf) {      
+                this.sendPDF(pdf, list);
             }
         });
     
@@ -1109,11 +1125,51 @@ export class FeedFormComponent implements OnInit {
     }
 
 
-    sendPDF(pdf) {
-            // TODO: Stream file since payload is too big right now.
-            this.http.post(`/forms/sharePDF`, { doc: pdf }).toPromise()
-            .then(res => {
-                console.log('Worked.', res.json());
-            });
+    sendPDF(pdf, list) {
+        // Get pdf
+        // get email list
+
+        var data = new FormData();
+        data.append('survey' , pdf);
+
+        var xhr = new XMLHttpRequest();
+
+        var sendlist = () => {
+            this.http.post(`/forms/sendOutPDF`, { emails: list, title: this.form.title, firstQuestion: this.form.questions[0].body }).toPromise()
+                .then(res => {
+                    if (res) {
+                    }
+                }); 
+        }
+
+        
+        var done = () => {
+            this.toggleShareEmails();
+            this.shareEmailStatus = null;
+        }
+
+        var completed = () => {
+            this.shareEmailStatus = "Report Sent!";
+            window.setTimeout(done, 1800)
+        }
+
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status !== 200) {
+                    // handle error
+                } else {
+                    sendlist();
+                    completed();   
+                }
+            }
+        
+        }
+
+        xhr.open('POST', '/forms/generatePDF', true);
+        xhr.send(data);
     }
+
+
+
 }

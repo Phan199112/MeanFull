@@ -18,6 +18,7 @@ export class MiniShowFormComponent implements OnInit {
     showFilters: boolean = false;
     startingTime: any;
     saIndexes: number[] = [];
+    lastMcQuestionIndex = null;
 
     @Input() data: FeedForm;
     @Input() shortAnswers: any;
@@ -58,7 +59,12 @@ export class MiniShowFormComponent implements OnInit {
                 if (q.kind == "Short Answer") {
                     this.saIndexes.push(i);
                 }
+                if (q.kind == "Multiple Choice") {
+                    this.lastMcQuestionIndex = i;                    
+                }
             });
+
+            
 
         }
 

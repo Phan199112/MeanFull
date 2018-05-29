@@ -213,6 +213,23 @@ exports.sendNotificationFormActivity = function sendNotificationFormActivity(ema
     });
 };
 
+exports.sendReport = function sendReport(email, user, title, question, reportName) {
+    var subject = "Questionsly - " + getUserDisplayName(user) + " has shared a document with you!";
+    var messagesafe = "Hello! Users are completing your form on Questionsly. Please review the notifications page to review your pending requests. https://www.questionsly.com/settings;page=notifications";
+    // console.log('EXPORTED:', email, user, question, title, reportName );
+
+    renderTemplate("notification-report", {
+        subject: subject,
+        userPic: getUserPic(user),
+        userName: getUserDisplayName(user),
+        userGender: getUserGender(user),
+        question: question,
+        title: title
+    }).then(function(html) {
+        exports.sendReportEmail(email, subject, html, messagesafe, reportName);
+    });
+};
+
 
 exports.sendNotificationError = function sendNotificationError(error) {
     var subject = "Error report Questionsly";
@@ -226,8 +243,6 @@ exports.sendNotificationError = function sendNotificationError(error) {
         // exports.sendEmail(email, subject, html, messagesafe);
     });
 };
-
-
 
 
 
@@ -431,7 +446,7 @@ exports.sendSummary = function sendSummary() {
 };
 
 
-exports.sendEmail = function sendEmail(email, subject, html, messagesafe) {
+exports.sendEmail = function sendEmail(email, subject, html, messagesafe, reportName = "") {
     server.send({
         text:    messagesafe,
         from:    "Questionsly <cw@arnebruyneel.be>",
@@ -439,7 +454,24 @@ exports.sendEmail = function sendEmail(email, subject, html, messagesafe) {
         subject: subject,
         attachment:
             [
-                { data: html, alternative:true }
+                { data: html, alternative:true },
+                { path: `/${reportName}`, type: "application/pdf", name: "Questionsly Report.pdf" }
+            ]
+    }, function(err) {
+        console.log(err);
+    });
+};
+
+exports.sendReportEmail = function sendEmail(email, subject, html, messagesafe, reportPath = "") {    
+    server.send({
+        text:    messagesafe,
+        from:    "Questionsly <cw@arnebruyneel.be>",
+        to:      "<"+email+">",
+        subject: subject,
+        attachment:
+            [
+                { data: html, alternative:true },
+                { path: reportPath, type: "application/pdf", name: "Questionsly Report.pdf" }
             ]
     }, function(err) {
         console.log(err);

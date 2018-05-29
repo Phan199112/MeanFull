@@ -14,8 +14,10 @@ var formfunctions = require('../functions/forms');
 var exportfunctions = require('../functions/export');
 var emailfunctions 	= require("../functions/email");
 var fs = require('fs');
+var atob = require('atob');
 var emailAddress = require("email-addresses");
 var emailstoresfunctions = require('../functions/emailstores');
+var formidable = require('formidable');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -2205,16 +2207,54 @@ module.exports = function(app, passport, manager, hashids) {
     //     console.log("Summary Sent");
     // });
 
-    app.post('/forms/sharePDF', function(req,res,next) {
-        console.log(typeof req.body.doc);
+    app.post('/forms/generatePDF', function(req,res,next) {
+        var form = new formidable.IncomingForm();        
+        form.parse(req, function(err, fields, files) {
 
-        fs.writeFileSync("Questionsly Report.pdf", req.body.doc);
+            // console.log({fields: fields, files: files});
+            
+            var reportName = `${req.user.name.first}${req.user.name.last}Report.pdf`;
+
+            fs.writeFileSync(reportName, fs.readFileSync(files.survey.path));
+            // https://github.com/felixge/node-formidable
+
+            res.status(200).json({});
+        });
+    });
+    
+    
+    
+    app.post('/forms/sendOutPDF', function (req, res) {        
+        // Email list
+        var emails = req.body.emails;
+        var surveyTitle = req.body.title;
+        var firstQuestion = req.body.firstQuestion;
+
+        const REPORT_NAME = `${req.user.name.first}${req.user.name.last}Report.pdf`;
+        const ROOT_APP_PATH = fs.realpathSync('.'); 
+        const REPORT_PATH = ROOT_APP_PATH + '/' + REPORT_NAME;
 
 
+        var tmp = emailAddress.parseAddressList(emails);              
 
     
-        res.status(200).json({em: "RESPONSE"});
+        tmp.forEach(email => {
+            emailfunctions.sendReport(email.address, req.user, surveyTitle, firstQuestion, REPORT_PATH);
+        });
+
+        setTimeout(()=> {
+            fs.unlink(REPORT_PATH, () => {
+                console.log('Report Deleted.'); 
+            })
+        }, 10000);
+
+        res.status(200);
+
     });
-};
+
+};    
+
+
+// --------------------------------------------------------------------------
 
 
