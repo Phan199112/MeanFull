@@ -130,6 +130,8 @@ export class NavbarComponent implements OnInit {
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
+            this.networkNotifications.sort((a, b) => Number(a.timestamp) > Number(b.timestamp));
+
         }
 
         if (notification.type === 'comm' || notification.type === 'comm-admin' || notification.type === "comm-request") {
@@ -137,6 +139,7 @@ export class NavbarComponent implements OnInit {
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
+            this.communityNotifications.sort((a, b) => Number(a.timestamp) > Number(b.timestamp));
         }
 
         if (notification.type === 'form' || notification.type === 'form-shared' || notification.type === 'form-answer' || notification.type === 'form-discussion') {
@@ -144,6 +147,10 @@ export class NavbarComponent implements OnInit {
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
+            this.notifications.sort((a, b) => Number(a.timestamp) > Number(b.timestamp));
+            // console.log('BLAH', notification, Number(notification.timestamp));
+            
+
         }
     }
 
@@ -166,6 +173,8 @@ export class NavbarComponent implements OnInit {
                                 this.addNotification(e);
                             }
                         }
+
+                        this.events.sort((a,b) => Number(a.timestamp) > Number(b.timestamp));
                     });
             }
         });
@@ -248,6 +257,7 @@ export class NavbarComponent implements OnInit {
             name = "Someone";
             pronoun = "their";
         }
+        
         
         switch (notification.type) {
             case "form":

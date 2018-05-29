@@ -16,7 +16,8 @@ module.exports = function (app, passport, manager, hashids) {
         new Promise(function (resolve, reject) {
             EventModel.find({ userid: req.session.userid }).cursor()
                 .on('data', function (event) {
-
+                    console.log('EVENTS EVENTS EVENTS: ', event.type);
+                    
                     var formdata = {};
                     var commdata = {};
                     var decryptedId = "";
@@ -102,7 +103,7 @@ module.exports = function (app, passport, manager, hashids) {
 
                                         if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
 
-                                            if (event.type === "form-discussion") decryptedId = hashids.decodeHex(event.data.formid);
+                                            if (event.type === "form-discussion" || (event.type === "form" && event.data.comm) ) decryptedId = hashids.decodeHex(event.data.formid);
                                             FormModel.findById(decryptedId, function (err, formInfo) {
                                                 if (err) {
                                                     reject();
@@ -236,10 +237,8 @@ module.exports = function (app, passport, manager, hashids) {
         }
         EventModel.update(criteria, { seen: true }, { multi: true }, function (err) {
             if (err) {
-                console.log("5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,,5,5,5");
                 res.json({ status: 0 });
             } else {
-                console.log("8=8=8=8=8=8=8=8=8=8==8=8=8=8=8=8=8=8=8==8=8");
                 res.json({ status: 1 });
             }
         });
