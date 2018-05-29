@@ -589,7 +589,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
         };
 
-        var writeanswerfunction = function (x, y, a) {
+        var writereactionfunction = function (x, y, a) {
             return new Promise(function (resolve, reject) {
                 ReactionsModel.create({
                     userid: a,
@@ -653,7 +653,7 @@ module.exports = function(app, passport, manager, hashids) {
             .then(function () {
                 if (proceed === true) {
                     // add the answer
-                    promises.push(writeanswerfunction(answerformid, receivedData.reaction, req.session.userid));
+                    promises.push(writereactionfunction(answerformid, receivedData.reaction, req.session.userid));
                     promises.push(updateformfunction(answerformid, receivedData.reaction));
 
                     return Promise.all(promises).then(function () {
@@ -1542,6 +1542,7 @@ module.exports = function(app, passport, manager, hashids) {
         var promises = [];
         // output variables
         var shortAnswers = [];
+        var shortAnswers2 = [];
         var shortAnswersAndAuthor = [];
         var exportdata;
         var answercount;
@@ -1639,6 +1640,39 @@ module.exports = function(app, passport, manager, hashids) {
 
                                 });
                             }
+
+                            allanswers.map(surveyAnsw => {
+                                surveyAnsw.answers.map((questionAnsw, i) => {
+                                    if (shortAnswers2.length < i + 1) shortAnswers2.push([]);
+
+                                    if (questionAnsw.kind == 'Short Answer') {
+                                        if (surveyAnsw.userid !== "anonymous" && questionAnsw.answerAnonymously !== true) {
+                                            authorPromises.push(
+                                                new Promise ((resolve, reject) => {
+                                                    UserModel.findById(surveyAnsw.userid, function (err, usr) {
+                                                        if (err) {
+                                                            reject();
+                                                        } else {
+                                                            shortAnswers2[i].push({
+                                                                name: `${usr.name.first} ${usr.name.last}`,
+                                                                pic: usersfunctions.getProfilePic(usr),
+                                                                answer: questionAnsw.answer
+                                                            });
+                                                            resolve();
+                                                        }
+                                                    });
+                                                })
+                                            );
+                                        } else {
+                                            shortAnswers2[i].push({
+                                                name: "Anonymous",
+                                                pic: "/images/male.png",
+                                                answer: questionAnsw.answer
+                                            });
+                                        }
+                                    }
+                                });
+                            });
 
                             Promise.all(authorPromises).then(() => {                            
                                 resolve();
@@ -1743,6 +1777,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     res.json({
                                         data: exportdata,
                                         shortAnswers: shortAnswers,
+                                        shortAnswers2: shortAnswers2,
                                         count: answercount,
                                         reaction: {reacted: formreacted, userreaction: userreaction},
                                         status: 2,
@@ -1755,6 +1790,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         res.json({
                                             data: null,
                                             shortAnswers: [],
+                                            shortAnswers2: [],
                                             status: 1,
                                             count: null,
                                             reaction: {reacted: false, userreaction: null},
@@ -1768,6 +1804,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 res.json({
                                     data: '',
                                     shortAnswers: [],
+                                    shortAnswers2: [],
                                     status: 0,
                                     count: null,
                                     reaction: {reacted: formreacted, userreaction: userreaction},
@@ -1783,6 +1820,7 @@ module.exports = function(app, passport, manager, hashids) {
                             res.json({
                                 data: '',
                                 shortAnswers: [],
+                                shortAnswers2: [],
                                 status: 1,
                                 count: null,
                                 reaction: {reacted: false, userreaction: null},
@@ -1795,6 +1833,7 @@ module.exports = function(app, passport, manager, hashids) {
                         res.json({
                             data: '',
                             shortAnswers: [],
+                            shortAnswers2: [],
                             reaction: {reacted: false, userreaction: null},
                             status: 3,
                             count: null,
@@ -1808,6 +1847,7 @@ module.exports = function(app, passport, manager, hashids) {
                     res.json({
                         data: '',
                         shortAnswers: [],
+                        shortAnswers2: [],
                         status: 1,
                         count: null,
                         reaction: {reacted: false, userreaction: null},
@@ -1897,7 +1937,6 @@ module.exports = function(app, passport, manager, hashids) {
                         return new Promise(function(resolve, reject){
                             if (x.userid === "anonymous") {
                                 authorprofiles[x.userid] = {type: false};
-                                shortAnswersAndAuthor.push({author: 'Anonymous'})
                                 resolve();
 
                             } else {

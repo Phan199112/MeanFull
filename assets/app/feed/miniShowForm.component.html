@@ -14,16 +14,16 @@
                     <!-- <label class="wAnswerOpts">Data is currently unavailable for text-based responses</label> -->
                     <div style="display: flex; flex-direction: column;">
                         <label class="wAnswerOpts" style="margin-bottom: 5px">Responses</label>
-                        <div *ngFor="let ans of shortAnswers; let x = index;" style="margin-bottom: 4px; margin-left: 6px;">
-                            <p *ngIf="x < 2 " class="response-container">
-                                <img class="response-image" src="{{ans[ans.length -1]?.pic}}"/>
-                                <span><strong>{{ans[ans.length -1].name}}: </strong>{{ans[0]}}</span>
+
+                        <div *ngFor="let ans of shortAnswers2[i]; let x = index;" style="margin-bottom: 4px; margin-left: 6px;">
+                            <p *ngIf="x < 2" class="response-container">
+                                <img class="response-image" src="{{ans.pic}}"/>
+                                <span><strong>{{ans.name}}: </strong>{{ans.answer}}</span>
                             </p>
-                        </div>                            
+                        </div>
                     </div>
 
-                    <!-- <p *ngIf="shortAnswers.length > 2" style="margin-bottom: 4px; margin-left: 6px;">...</p> -->
-                    <p *ngIf="shortAnswers.length > 2" style="margin-bottom: 4px; margin-top: 12px; margin-left: 6px; width: max-content" class="submitButton smaller" (click)="shortAnswersModal.open(returnIndex(i))">See All</p>
+                    <p *ngIf="shortAnswers2.length > 0 && shortAnswers2[i].length > 2" style="margin-bottom: 4px; margin-top: 12px; margin-left: 6px; width: max-content" class="submitButton smaller" (click)="shortAnswersModal.open(returnIndex(i))">See All</p>
 
                 </div>
 
@@ -106,14 +106,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div *ngIf="question.kind == 'Rank'" formGroupName="answer">
-                                <div [dragula]="'bag'" [dragulaModel]="questionnaire.get('questions').controls[i].get('answer').value">
-                                    <div *ngFor="let option of questionnaire.get('questions').controls[i].get('answer').value; let j = index" class="formChoices">
-                                        <span class="rank">{{j + 1}}</span>
-                                        <label>{{option.body}}</label>
-                                    </div>
-                                </div>
-                            </div> -->
 
                         </div>
 
@@ -122,7 +114,22 @@
                         <input (click)="loginPopup.check(data.loginRequired)" type="number" min="question.lowerBoundary" max="question.upperBoundary"
                             class="formChoices num" formControlName="answer" *ngIf="question.kind == 'Number'" />
 
-                        <textarea class="formChoices sa txtarea" formControlName="answer" *ngIf="question.kind == 'Short Answer'"></textarea>
+                        <!-- Short Answer entry -->
+                        <label *ngIf="question.kind == 'Short Answer' && me != null">
+
+                            <input type="checkbox"
+                                class="formChoices sa" style="width: 20px"
+                                formControlName="answerAnonymously"
+                                (click)="loginPopup.check(data.loginRequired)">
+                            Answer anonymously?
+                        </label>
+                        <textarea
+                            class="formChoices sa txtarea"
+                            formControlName="answer"
+                            *ngIf="question.kind == 'Short Answer'"
+                            (click)="loginPopup.check(data.loginRequired)"
+                            ></textarea>
+
                         <div *ngIf="isInvalid(i)" class="invalid-feedback">
                             Option is required
                         </div>

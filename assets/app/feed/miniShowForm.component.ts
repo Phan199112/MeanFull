@@ -22,6 +22,7 @@ export class MiniShowFormComponent implements OnInit {
 
     @Input() data: FeedForm;
     @Input() shortAnswers: any;
+    @Input() shortAnswers2: any;
 
     @Input() count: number;
 
@@ -33,6 +34,7 @@ export class MiniShowFormComponent implements OnInit {
 
     @Input() expired: boolean = false;
     @Input() isMyPost: boolean = false;
+    @Input() me: string; // Currently only used to determine if logged-in or not
 
     @Output() submitForm: EventEmitter<Object> = new EventEmitter<Object>();
     @Output() toggleFilters: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -134,8 +136,11 @@ export class MiniShowFormComponent implements OnInit {
                     }
                 }
                 groupObject.answer = this.fb.group(groupObject.answer);                
-            } else {
+            } else { // Short Answer or Multiple Choice
                 groupObject.answer = "";
+                if (question.kind === 'Short Answer') {
+                    groupObject.answerAnonymously = false;
+                }
                 if (question.required) {
                     groupObject.answer = [groupObject.answer, Validators.required];
                 }
