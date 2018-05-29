@@ -913,6 +913,7 @@ export class FeedFormComponent implements OnInit {
 
         // Start Creating PDF Here
         var pdf;
+        
 
         renderPieCharts().then(() => {
     
@@ -1059,7 +1060,7 @@ export class FeedFormComponent implements OnInit {
         // Aux Functions
 
         // Need to render pie charts before because they are async and will be appended randomly throughout the page if not loaded first
-        function renderPieCharts() {
+        function renderPieCharts() {        
             if (pieCharts.length > 0) {
                 for (let i = 0; i < pieCharts.length; i++) {
                     pieChartPromises.push(new Promise((resolve, reject) => {
@@ -1073,8 +1074,8 @@ export class FeedFormComponent implements OnInit {
 
                 return Promise.all(pieChartPromises);
 
-            } else {
-                return Promise.resolve;
+            } else {                
+                return new Promise((resolve) => resolve());
             }
         }
         

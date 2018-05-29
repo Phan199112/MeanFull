@@ -42,7 +42,7 @@ module.exports = function(app, passport, manager, hashids) {
         var userName, userPic, questionLink;
 
         if (receivedData.sharedWithCommunities != null) {
-            for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {
+            for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {                
                 unhashedCommunities.push(hashids.decodeHex(receivedData.sharedWithCommunities[i].value));
             }
         }
@@ -109,7 +109,7 @@ module.exports = function(app, passport, manager, hashids) {
                         reject(err);
                     } else {
                         if (c.members !== null) {
-                            for (l=0; l < c.members.length; l++) {
+                            for (let l=0; l < c.members.length; l++) {                                
                                 unhashedUsers.push(c.members[l]);
                             }
 
@@ -199,12 +199,13 @@ module.exports = function(app, passport, manager, hashids) {
                     if (seen[unhashedUsers[i]]) continue;
                     seen[unhashedUsers[i]] = true;
 
+                    // Sending only first community shared with..
                     notifications.createNotification(
                         unhashedUsers[i],
                         receivedData.anonymous === true ? null : req.session.userid,
                         "form",
                         "New survey",
-                        hashids.encodeHex(formid)
+                        { formid: hashids.encodeHex(formid), comm: receivedData.sharedWithCommunities[0]}
                     );
                 }
             }

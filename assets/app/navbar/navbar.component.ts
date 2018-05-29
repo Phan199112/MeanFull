@@ -190,8 +190,14 @@ export class NavbarComponent implements OnInit {
     }
 
     notificationLink(notification) {
+
         switch (notification.type) {
             case "form":
+                if (notification.data.comm) {
+                    return ['/community', notification.data.comm.value, { 'survey': notification.data.formid }];
+                } else {
+                    return ['/feed', { 'survey': notification.data.formid }];
+                }
             case "form-answer":
                 return ['/feed', { 'survey': notification.data }];
             case "form-shared":
@@ -245,7 +251,11 @@ export class NavbarComponent implements OnInit {
         
         switch (notification.type) {
             case "form":
-                return { name: name, message: ` asked '${notification.qTitle}'`};
+                if (notification.data.comm) {
+                    return { name: name, message: ` asked '${notification.qTitle}' in ${notification.data.comm.display}`};
+                } else {
+                    return { name: name, message: ` asked '${notification.qTitle}'` };
+                }
             case "form-shared":
                 return { name: name, message: ` has shared '${notification.qTitle}' in `, community: notification.commTitle };
             case "form-answer":
