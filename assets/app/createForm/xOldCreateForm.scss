@@ -32,12 +32,6 @@ $navBarColor:  #1E824C;
     cursor: hand;
 }
 
-#buttonATag {
-    color: $navBarColor;
-    background-color: $whiteColor;
-    border:none;
-}
-
 a.btn {
     color: $navBarColor;
 }
@@ -82,10 +76,6 @@ a.btn:hover {
 
 #questions {
     margin-bottom: 20px;
-}
-
-#addOptionBtn{
-    margin-bottom: 10px;
 }
 
 .question {
