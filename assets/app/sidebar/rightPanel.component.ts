@@ -90,14 +90,6 @@ export class RightPanel implements OnInit {
         }
     }
 
-    chooseReaction(reaction: string): void {
-        if (this.currentEmo === reaction) {
-            this.currentEmo = null;
-            return;
-        }
-        this.currentEmo = reaction;
-    }
-
     toggleTag(tag: string): void {
         if (this.currentTag === tag) {
             this.currentTag = null;

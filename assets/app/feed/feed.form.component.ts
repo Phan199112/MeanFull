@@ -748,27 +748,6 @@ export class FeedFormComponent implements OnInit {
 
     }
 
-    // retrieveEventData() {
-    //     this.http.post(`/forms/resultstable`, {formid: this.form.id}).toPromise()
-    //         .then(res => {
-    //             if (res.json().status == '1') {
-    //                 this.eventdatatable = res.json().data;
-    //                 this.form.eventdatatotals = res.json().totals;
-    //                 this.form.eventplot = true;
-    //             }
-    //         });
-    // }
-
-    // retrieveEventDataTotals() {
-    //     this.http.post(`/forms/resultstabletotals`, {formid: this.form.id}).toPromise()
-    //         .then(res => {
-    //             if (res.json().status == '1') {
-    //                 this.form.eventdatatotals = res.json().totals;
-    //                 this.form.viewTablesbool = true;
-    //             }
-    //         });
-    // }
-
     ResetDataForm() {
         //
         this.form.viewGraphs(false);
@@ -805,29 +784,6 @@ export class FeedFormComponent implements OnInit {
             .catch(error => {
                 this.form.setAnswered(false);
             });
-    }
-
-
-
-    //Emoticon functions
-    chooseReaction(reaction: string) : void {
-        if (this.hasReacted) return;
-
-        this.http.post('/forms/react', {id: this.form.id, reaction: reaction})
-            .toPromise()
-            .then(response => {
-                if (this.intReactionData) {
-                    if (!this.intReactionData[reaction]) this.intReactionData[reaction] = 0;
-                    this.intReactionData[reaction] = this.intReactionData[reaction] + 1;
-                } else {
-                    this.intReactionData = {};
-                    this.intReactionData[reaction] = 1;
-                }
-                this.reactionData = this.reactionssummary(this.intReactionData);
-                this.hasReacted = true;
-                this.reaction = reaction;
-            });
-
     }
 
     reactionssummary(reactions) {
