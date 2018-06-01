@@ -27,6 +27,7 @@ import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 
 import {CreateFormComponent} from "./createForm/createForm.component";
 import {ShowFormComponent} from "./showForm/showForm.component";
+import {PreviewFormComponent} from "./previewForm/previewForm.component";
 import {ShareFormComponent} from "./shareForm/shareForm.component";
 import {TakeFormComponent} from "./takeForm/takeForm.component";
 import {FocusDirective} from "./focus.directive";
@@ -86,6 +87,7 @@ import { ShareService } from "./share.service";
         AppComponent,
         CreateFormComponent,
         ShowFormComponent,
+        PreviewFormComponent,
         ShareFormComponent,
         TakeFormComponent,
         FocusDirective,
