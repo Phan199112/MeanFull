@@ -283,16 +283,16 @@ export class NavbarComponent implements OnInit {
         switch (notification.type) {
             case "form":
                 if (notification.data.comm) {
-                    return { name: name, message: ` asked '${trimMessage(notification.qTitle)}' in `, community: `${notification.data.comm.display.substr(1)}`};
+                    return { name: name, action: ` asked`, message: `'${trimMessage(notification.qTitle)}'`, action2: ` in `, community: `${notification.data.comm.display.substr(1)}`};
                 } else {
-                    return { name: name, message: ` asked '${trimMessage(notification.qTitle)}'` };
+                    return { name: name, action: ` asked`, message: `'${trimMessage(notification.qTitle)}'` };
                 }
             case "form-shared":
-                return { name: name, message: ` has shared '${trimMessage(notification.qTitle)}' in `, community: notification.commTitle };
+                return { name: name, action: ` has shared `, message: `'${trimMessage(notification.qTitle)}'`, action2: ` in `, community: notification.commTitle };
             case "form-answer":
-                return { name: name, message: ` has answered your question '${trimMessage(notification.qTitle)}'` };
+                return { name: name, action: ` has answered your question '${trimMessage(notification.qTitle)}'` };
             case "form-discussion":
-                return { name: name, message: ` has commented on your question '${trimMessage(notification.qTitle)}'` };
+                return { name: name, action: ` has commented on your question '${trimMessage(notification.qTitle)}'` };
             case "network":
                 return { name: name, message: ` invited you to be a part of ${pronoun} network` };
             case "comm-request":
