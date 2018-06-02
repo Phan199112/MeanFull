@@ -1,11 +1,11 @@
 <div class="pageLayout">
      <div class="row" >
 
-        <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
-            <sidebar [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
+        <div class="col-md-3 col-sm-12 col-12 order-1 order-md-1">
+            <sidebar *ngIf="!mobileWidth" [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
         </div>
 
-        <div class="col-md-6 col-12 order-1 order-md-2">
+        <div class="col-md-6 col-12 order-2 order-md-2">
             <div id="profileContainer" *ngIf="loadsuccessful">
 
                 <!-- Header container with user info -->
@@ -57,6 +57,9 @@
                         </div>
                     </div>
                 </div>
+
+                <sidebar *ngIf="mobileWidth" [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
+
 
                 <div class="row" *ngIf="!hidefeed && !genericSubsection" class="toggleRow">
                     <p *ngIf="!showAnsweredQuestions">

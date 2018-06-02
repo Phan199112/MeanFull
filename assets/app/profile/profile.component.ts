@@ -45,6 +45,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     genericSubsection: any = null;
     subsectionList: any[] = [];
     subsectionResource: string;
+    mobileWidth: boolean;
 
     showAnsweredQuestions: boolean = false;
 
@@ -78,6 +79,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // load new data
         this.loading = true;
         this.loadProfile();
+
+        var recalculate = (event) => {
+            this.mobileWidth = window.document.body.clientWidth < 768 ? true : false ;
+        }
+
+        window.addEventListener('resize', function (event) {
+            recalculate();
+        });
+
     }
 
     loadProfile() {

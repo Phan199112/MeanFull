@@ -14,7 +14,7 @@ module.exports = function (app, passport, manager, hashids) {
 
 
         new Promise(function (resolve, reject) {
-            EventModel.find({ userid: req.session.userid }).cursor()
+            EventModel.find({ userid: req.session.userid }).sort({ 'timestamp': 'desc' }).cursor()
                 .on('data', function (event) {
                     console.log('EVENTS EVENTS EVENTS: ', event.type);
                     
@@ -76,8 +76,6 @@ module.exports = function (app, passport, manager, hashids) {
                                             console.log("NOTIFICATION BREAKING THIS DOWN: ", event._id);
                                             resolve();
                                         }
-
-                                        console.log("Username");
                                         
                                         // eventdata.fromuser = {
                                         //     fb: userinfo.facebookID,

@@ -124,13 +124,14 @@ export class NavbarComponent implements OnInit {
         this.communityNotifications = [];
     }
 
+
     addNotification(notification) {
         if (notification.type === 'network') {
             this.networkNotifications.push(notification);
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
-            this.networkNotifications.sort((a, b) => Number(a.timestamp) > Number(b.timestamp));
+            this.networkNotifications.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
 
         }
 
@@ -139,7 +140,7 @@ export class NavbarComponent implements OnInit {
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
-            this.communityNotifications.sort((a, b) => Number(a.timestamp) > Number(b.timestamp));
+            this.communityNotifications.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
         }
 
         if (notification.type === 'form' || notification.type === 'form-shared' || notification.type === 'form-answer' || notification.type === 'form-discussion') {
@@ -147,34 +148,28 @@ export class NavbarComponent implements OnInit {
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
-            this.notifications.sort((a, b) => Number(a.timestamp) > Number(b.timestamp));
-            // console.log('BLAH', notification, Number(notification.timestamp));
-            
-
+            this.notifications.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));            
         }
     }
 
     getEventsList() {
-        
+        // console.log('Getting Notifications.\n');        
         this.userService.afterLoginCheck().then(response => {
             // request eventslist
             if (response != '0') {
                 this.http.get('/events/list').toPromise()
                 .then(eventsdata => {
                     this.events = eventsdata.json().events; // array of objects
-                        
                         // clear the current list
                         this.clearNotifications();
-
+                        
                         // add new data
                         if (this.events != null) {
                             for (let e of this.events) {
                                 // window.console.log(e);
                                 this.addNotification(e);
                             }
-                        }
-
-                        this.events.sort((a,b) => Number(a.timestamp) > Number(b.timestamp));
+                        }                                                
                     });
             }
         });
@@ -243,6 +238,32 @@ export class NavbarComponent implements OnInit {
     notificationMessage(notification) {
         var name;
         var pronoun;
+        
+
+        // trim message
+        function trimMessage(string, wordCount = 12) {
+            var index = 0;
+            var words = 0;
+            var finalString = [];
+
+            for (let i = 0; i < string.length; i++) {
+                if (string[i] === " ") {
+                    words++;
+                }
+
+                if (words == wordCount) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (!index) {
+                return string;
+            } else {
+                return string.substr(0,index) + '...';
+            }
+
+        }
 
         if (notification.fromuser) {
             name = notification.fromuser.name;
@@ -262,16 +283,16 @@ export class NavbarComponent implements OnInit {
         switch (notification.type) {
             case "form":
                 if (notification.data.comm) {
-                    return { name: name, message: ` asked '${notification.qTitle}' in ${notification.data.comm.display}`};
+                    return { name: name, message: ` asked '${trimMessage(notification.qTitle)}' in `, community: `${notification.data.comm.display.substr(1)}`};
                 } else {
-                    return { name: name, message: ` asked '${notification.qTitle}'` };
+                    return { name: name, message: ` asked '${trimMessage(notification.qTitle)}'` };
                 }
             case "form-shared":
-                return { name: name, message: ` has shared '${notification.qTitle}' in `, community: notification.commTitle };
+                return { name: name, message: ` has shared '${trimMessage(notification.qTitle)}' in `, community: notification.commTitle };
             case "form-answer":
-                return { name: name, message: ` has answered your question '${notification.qTitle}'` };
+                return { name: name, message: ` has answered your question '${trimMessage(notification.qTitle)}'` };
             case "form-discussion":
-                return { name: name, message: ` has commented on your question '${notification.qTitle}'` };
+                return { name: name, message: ` has commented on your question '${trimMessage(notification.qTitle)}'` };
             case "network":
                 return { name: name, message: ` invited you to be a part of ${pronoun} network` };
             case "comm-request":
