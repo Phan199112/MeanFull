@@ -37,6 +37,7 @@ export class NavbarComponent implements OnInit {
     notifShowCount: number = 10;
     startingTime: any;
 
+
     navExpanded: boolean = false;
     @ViewChild('toggler') toggler;
     private obs: any;
@@ -199,10 +200,10 @@ export class NavbarComponent implements OnInit {
             case "form":
                 if (notification.data.comm) {
                     return ['/community', notification.data.comm.value, { 'survey': notification.data.formid }];
-                } else {
+                } else {                        
                     return ['/feed', { 'survey': notification.data.formid }];
                 }
-            case "form-answer":
+            case "form-answer":                
                 return ['/feed', { 'survey': notification.data }];
             case "form-shared":
                 return ['/community', notification.data.commid ]

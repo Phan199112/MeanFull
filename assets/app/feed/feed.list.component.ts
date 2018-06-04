@@ -29,6 +29,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     
     me: string;
     formselected: any;
+    topSurveyChanged: boolean = false;
 
     constructor(private http: Http, 
                 private userService: UserService,
@@ -36,29 +37,30 @@ export class FeedListComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
+        this.formselected = this.route.params.value.survey;        
+
         this.route.params.subscribe(params => {
-            // this.formselected = params.survey;
-            // this.tag = params['tag'];
+            if (this.formselected !== params.survey) {
+                // console.log('Changed from: ',this.formselected, ' to ', params.survey, '\n' );
+                this.formselected = params.survey;
+                this.topSurveyChanged = true;
+                this.refreshFeed();
+            }
         });
-
-
+        
         this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
                 this.me = userData.dbid;
             }
         });
 
-        var loadMorePosts = this.loadMorePosts.bind(this);
+        const loadMorePosts = this.loadMorePosts.bind(this);
 
         window.setTimeout(loadMorePosts, 3000);
     }
 
     ngOnChanges() {
-        this.route.params.subscribe(params => {
-            // this.tag = params['tag'];
-            this.formselected = params.survey;
-            // this.refreshFeed();
-        });
+        this.formselected = this.route.params.value.survey;
         this.refreshFeed();
     }
 
@@ -97,6 +99,8 @@ export class FeedListComponent implements OnInit, OnChanges {
         var route;
         var requestBody;
 
+        console.log('Top survey for refresh : ', this.formselected);
+
         if (this.showAnsweredQuestions) {
             route = `/forms/feed/answered`;
             requestBody = {
@@ -106,7 +110,8 @@ export class FeedListComponent implements OnInit, OnChanges {
                 limit: this.formids.length + 10
             };
         } else {
-            route = `/forms/feed`;
+            route = `/forms/feed`;      
+                  
             requestBody = {
                 tag: this.tag,
                 user: this.user,
@@ -115,6 +120,13 @@ export class FeedListComponent implements OnInit, OnChanges {
                 pref: this.pref,
                 currentPosts: this.formids
             };
+
+            // Clear list if fetching new Top Survey from notification
+            if (this.topSurveyChanged) {
+                this.feedlist = [];
+                this.formids = [];
+                this.topSurveyChanged = false;
+            }
         }
 
         this.http
