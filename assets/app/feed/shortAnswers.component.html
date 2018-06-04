@@ -1,23 +1,11 @@
 <ng-template #content let-c="close" let-d="dismiss" class="display:flex; justify-content: center; align-items: center;">
-    <!-- <div class="modal-header">
-        <h4 class="modal-title">Not Logged In</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true" style="font-size:30px;">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div>Please log in to continue.</div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" routerLink="/users/login" (click)="c(true)">Log In</button>
-    </div> -->
     <div class="modal-container">
-        <p class="question">All Responses <span>({{answers.length}})</span></p>
+        <p class="question qslyGray">All Responses <span>({{answers.length}})</span></p>
         <div class="response-container" *ngFor="let ans of answers; let x = index;">
             <div>
                 <img class="response-image" src="{{ans[ans.length -1].pic}}" />
-                <span class="author">{{ans[ans.length -1].name}}:</span>
-                <span class="response">{{ans[index]}}</span>
+                <span class="author qslyGray">{{ans[ans.length -1].name}}:</span>
+                <span class="response qslyBlack">{{ans[index]}}</span>
             </div>
             <hr>
         </div>

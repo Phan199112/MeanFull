@@ -1,7 +1,5 @@
 <div class="fBody" *ngIf="!hide && form.found" [ngClass]="{highlightedForm: form.highlight}">
-    <!-- <div class="bg"> -->
-    <!-- <div class="userImagePos"> -->
-        <div class="topContainer">
+    <div class="topContainer">
         <div class="imageContainer">
             <a [routerLink]="form.authorlinkdisabled ? null : ['/profile', form.authorlink]" >
                 <div *ngIf="form.pictype == 'fb'">
@@ -20,21 +18,17 @@
             </a>
             <div class="userInfoBox">
                 <p class="nameTitle" style="margin-bottom:0px"><b>{{name.first}} {{name.last}}</b></p>
-                <p class="locationTitle" style="margin-bottom:-4px" *ngIf="location.country">{{location.city}}, {{location.state}}, {{location.country}}</p>
-                <!-- <p class="locationTitle" style="margin-bottom:0px" *ngIf="location.country == '' && location.city == ''  && location.state == '' ">Unknown</p> -->
-                <!-- <i class="partTitle fa fa-pencil-square-o" aria-hidden="true">&nbsp;<span>{{nocreated}}</span></i>
-                <i class="partTitle fa fa-pencil" aria-hidden="true">&nbsp;<span>{{notaken}}</span></i>
-                <i class="partTitle fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion}}</span></i> -->
-                <span class="partTitle">Asked: {{nocreated}}</span>
-                <span class="partTitle">Taken: {{notaken}}</span>
-                <span class="partTitle">Comments: {{nodiscussion}}</span>
+                <p class="locationTitle qslyGray" style="margin-bottom:-4px" *ngIf="location.country">{{location.city}}, {{location.state}}, {{location.country}}</p>
+                <span class="partTitle qslyGray">Asked: {{nocreated}}</span>
+                <span class="partTitle qslyGray">Taken: {{notaken}}</span>
+                <span class="partTitle qslyGray">Comments: {{nodiscussion}}</span>
             </div>
 
         </div>
 
         <!-- Categories -->
         <div *ngIf="form.hashtags" class="cTagContainer">
-            <span class="cTag" *ngFor="let tag of form.hashtags; let i = index">{{tag}}</span>
+            <span class="cTag qslyGray" *ngFor="let tag of form.hashtags; let i = index">{{tag}}</span>
         </div>
     </div>
 
@@ -61,8 +55,7 @@
     <!-- Response Count -->
     <div *ngIf="false" class="topContainer">
         <div id="completedBlock" *ngIf="submitted">
-            <!-- <span id="qCompleted">Completed</span> -->
-            <span id="answerCount">Answered {{count ? count : '<5'}} {{count > 1 ? 'Times' : 'Time'}}</span>
+            <span id="answerCount" class="qslyGray">Answered {{count ? count : '<5'}} {{count > 1 ? 'Times' : 'Time'}}</span>
         </div>
     </div>
     
@@ -70,28 +63,20 @@
     <!-- Share Report Email Field -->
     <div *ngIf="shareEmails" class="flex">
         <div *ngIf="!shareEmailStatus" class="shareEmailContainer">
-            <p class="headline">Enter Recipient Email(s)</p>
+            <p class="headline qslyBlack">Enter Recipient Email(s)</p>
             <input class="emailInput" type="text" #shareEmails placeholder="Seperate emails with a comma" />
             <div>
-                <a class="submitButton" (click)="toggleShareEmails()">Cancel</a>
-                <a class="submitButton positive" style="margin-left: 12px" (click)="exportPDF(false, shareEmails.value)">Send</a>
+                <a class="submitButton qslyGray" (click)="toggleShareEmails()">Cancel</a>
+                <a class="submitButton qslyGray positive" style="margin-left: 12px" (click)="exportPDF(false, shareEmails.value)">Send</a>
             </div>
         </div>
 
         <div *ngIf="shareEmailStatus" class="shareEmailContainer">
-            <p class="headline" style="margin: 10px; color: #999;">{{shareEmailStatus}}</p>
+            <p class="headline qslyGray" style="margin: 10px">{{shareEmailStatus}}</p>
         </div>
 
 
     </div>
-
-
-    <!-- Divider -->
-    <!-- <div class="flex" style="margin-top: 25px;">
-        <div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div>
-    </div> -->
-
-
 
     <!-- QUESTIONS CONTAINER -->
     <div class="responseBox">
@@ -118,14 +103,14 @@
         <div id="analysisContainer">
 
             <div class="filterBox">
-                <p class="filterCategory">Gender</p>
+                <p class="filterCategory qslyGray">Gender</p>
                 <angular2-multiselect style="width: 110px" [data]="genderList" [settings]="genderSettings" [(ngModel)]="genderSelected" (onSelect)="onItemSelect($event)"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" formControlName="gender">
                 </angular2-multiselect>
             </div>
 
             <div class="filterBox">
-                <p class="filterCategory">Age</p>
+                <p class="filterCategory qslyGray">Age</p>
                 <angular2-multiselect style="width: 110px" [data]="ageList" [settings]="ageSettings" (onSelect)="onItemSelect($event)" [(ngModel)]="ageSelected"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="age">
@@ -133,16 +118,12 @@
             </div>
 
             <div class="filterBox">
-                <p class="filterCategory">Location</p>
+                <p class="filterCategory qslyGray">Location</p>
                 <angular2-multiselect style="width: 160px" [data]="locationList" [settings]="locationSettings" [(ngModel)]="locationSelected"
                     (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                     formControlName="locations">
                 </angular2-multiselect>
             </div>
-
-
-            <!--<a class="resetButton filterCategory">Reset</a>-->
-            <!-- <button (click)="ResetDataForm()" style="margin-bottom: 10px" class="expand-button btn btn-outline-secondary mouseChangeToHand">Reset graphs</button> -->
         </div>
         <div *ngIf="!form.loginRequired" class="flex" style="justify-content: flex-start; padding-left: 25px;">
             <span class="partTitle" style="color: #CCC">*Unknown = Responses made without an account</span>
@@ -155,20 +136,10 @@
 
 
     <div class="flex" *ngIf="form.contracted" style="padding-top: 0px">
-            <button (click)="expand()" class="submitButton">
-                See More
-            </button>
+        <button (click)="expand()" class="submitButton qslyGray">
+            See More
+        </button>
     </div>
-
-
-    <!-- <div class="container-fluid formContainer" *ngIf="!form.found" [ngStyle]="{'border': '5px solid red'}">
-        <h4>Oops this form could not be found!</h4>
-    </div> -->
-
-    <!-- Divider -->
-    <!-- <div class="flex"><div style="background: white; height:1px; border-top: 1px solid #CCC; width: 75%;"></div></div> -->
-
-    <!-- <div *ngIf="form.hashtags" class="line"></div> -->
 </div>
 
 
@@ -182,38 +153,22 @@
 
 <confirmation-popup></confirmation-popup>
 <ng-template #shareModal let-c="close" let-d="dismiss">
-    <!--<div class="modal-header" [formGroup]="inviteForm">
-        <h4 class="modal-title">Invite your friends to this community</h4>
-                        <yourcomm-list [link]="form.id"></yourcomm-list>
-    </div>-->
     <div class="shareContainer">
-        <!-- <div class="row">
-            <div class="col"> -->
-                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true" style="font-size:30px;">&times;</span>
-                </button>
-            <!-- </div>
-        </div> -->
-        <!-- <div class="row"> -->
-            <h3 style="font-family:karla; text-align: center; color:#AAA">Share</h3>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true" style="font-size:30px;">&times;</span>
+        </button>
+        <h3 style="font-family:karla; text-align: center; color:#AAA">Share</h3>
 
-            <!-- <share-button [theme]="'default'" [button]="'copy'" [showText]="false" [size]="1" [url]="'www.google.com'" style="margin-top:1px">Link</share-button> -->
-                <div style="margin-bottom:12px">
-                       <h6 style="font-family:karla; margin-bottom:5px; font-weight:bold; color: #CCC;"> Share link
-                    </h6>
-                    <a href="{{shareUrl}}" style="font-size:0.7rem" target="_blank">{{shareUrl}}</a>
-                </div>
+        <div style="margin-bottom:12px">
+               <h6 style="font-family:karla; margin-bottom:5px; font-weight:bold; color: #CCC;"> Share link
+            </h6>
+            <a href="{{shareUrl}}" style="font-size:0.7rem" target="_blank">{{shareUrl}}</a>
+        </div>
 
-            <div *ngIf="loggedin">
-                <h6 style="font-family:karla; font-weight:bold; color: #CCC;">Community</h6>
+        <div *ngIf="loggedin">
+            <h6 style="font-family:karla; font-weight:bold; color: #CCC;">Community</h6>
 
-                <yourcomm-list [link]="form.id"></yourcomm-list>
-
-            </div>
-
-        <!-- </div> -->
+            <yourcomm-list [link]="form.id"></yourcomm-list>
+        </div>
     </div>
-    <!--<div class="modal-footer" style="justify-content: center">
-        <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>
-    </div>-->
 </ng-template>
