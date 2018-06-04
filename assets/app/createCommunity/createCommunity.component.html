@@ -13,7 +13,7 @@
         
         <div class="col-lg-6">
             <div class="aboutContainer">
-                <h3 class="name" style="margin-bottom: 25px">Create Community</h3>
+                <h3 class="name qslyGray" style="margin-bottom: 25px">Create Community</h3>
                     
                 
                 <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
@@ -22,7 +22,7 @@
                         <h6 class="title firstTitle">Community Title</h6>
                         <div style="display: flex; align-items: center; width: 100%">
                             <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
-                            <input class="niceTextInput" formControlName="title" autofocus />
+                            <input class="niceTextInput qslyGray" formControlName="title" autofocus />
                         </div>
                     </div>
 
@@ -30,7 +30,7 @@
                         <h6 class="title firstTitle">Description</h6>
                         <div style="display: flex; align-items: center; width: 100%">
                             <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
-                            <textarea placeholder="Enter a short description.." class="niceTextAreaInput" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
+                            <textarea placeholder="Enter a short description.." class="niceTextAreaInput qslyGray" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@
                         </div>
                 
                         <div>
-                            <p id="orText">or</p>
+                            <p id="orText" class="qslyGray">or</p>
                         </div>
                 
                         <div id="urlImage" class="input-group" style="width: 100%">
@@ -144,137 +144,3 @@
 
 
 <image-editor #imgEditor [imgChangedEvent]="imgChangedEvent" (done)="getSignedRequest($event)"></image-editor>
-
-
-
-<!--<div id="comm-title" class="form-group">
-                            <input type="text" style="width: 400px" formControlName="title" class="form-control" placeholder="Enter Your Community Title" />
-                        </div>-->
-
-<!-- <div class="form-group">
-                            <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'underlined-input': true, 'active': showHashtags == true}">
-                                <div 
-                                    [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
-                                    class="tag-placeholder text-muted" 
-                                    (click)="showHashtags = true; focusTagInput(hashtags)">
-                                    hashtag #coffee #ucla #stanford
-                                </div>
-                                <tag-input
-                                    #hashtags
-                                    [ngClass]="{'d-none': !showHashtags && fgCreateCommunity.get('hashtags').value === null}"
-                                    [onAdding]="transformHashtag"
-                                    placeholder="#hashtag"
-                                    secondaryPlaceholder="#hashtag"
-                                    (onBlur)="showHashtags = false"
-                                    [separatorKeyCodes]="[32, 13, 188]"
-                                    formControlName="hashtags"
-                                    id="tags">
-                                    <tag-input-dropdown [matchingFn]="acMatching" [focusFirstElement]="true" [autocompleteObservable]="observableSourceTag.bind(this)">
-                                    </tag-input-dropdown>
-                                </tag-input>
-                            </div>
-                        </div> -->
-
-<!--<div class="row form-group form-control">-->
-<!--<div class="tag-input-wrapper form-control" style="margin-bottom: 16px">
-                                <div
-                                        [ngClass]="{'d-none': showHashtags || fgCreateCommunity.get('hashtags').value}"
-                                        class="tag-placeholder text-muted"
-                                        (click)="showHashtags = true; focusTagInput(hashtags)">
-                                    Hashtag the community so people can discover them. You can hashtag anything. <i class="emoji emoji-wink" aria-hidden="true"></i> eg: #coffee #coffeelovers #startups #ucla #stanford
-                                </div>
-                                <tag-input
-                                        #hashtags
-                                        [ngClass]="{'d-none': !showHashtags && fgCreateCommunity.get('hashtags').value === null}"
-                                        [onAdding]="transformHashtag"
-                                        placeholder="#hashtag"
-                                        secondaryPlaceholder="#hashtag"
-                                        (onBlur)="showHashtags = false"
-                                        [separatorKeyCodes]="[32, 13]"
-                                        formControlName="hashtags">
-                                    <tag-input-dropdown [identifyBy]="" [displayBy]="" [autocompleteObservable]="observableSourceTag.bind(this)">
-                                    </tag-input-dropdown>
-                                </tag-input>
-                            </div>-->
-<!--</div>-->
-
-<!-- <div id="comm-picture" class="row form-group">
-                            <label class="lead col-lg-5">
-                                Add a picture for the community
-                            </label>
-                            <div id="pic-input" class="col align-middle">
-                                <div id="url-input">
-                                    <div class="input-group">
-                                        <input #imgUrl type="text" class="form-control" placeholder="Enter an image URL"/>
-                                        <div class="input-group-append">
-                                            <button (click)="commPicURL = imgUrl.value" class="btn btn-outline-secondary">
-                                                <i class="fa fa-check"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="d-inline-block">OR</span>
-                                <div class="input-group image-preview d-inline-block">
-                                    <span class="input-group-btn">
-                                        <div class="btn btn-default image-preview-input">
-                                            <span><i class="fa fa-folder-open" aria-hidden="true"></i></span>
-                                            <span class="image-preview-input-title">Browse</span>
-                                            <input (change)="imgChangedEvent = $event; imgEditor.open()" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col text-center">
-                                <img *ngIf="commPicURL" style="border:1px solid gray;width:100px;" id="preview" [src]="commPicURL">
-                            </div>
-                        </div> -->
-
-
-
-
-
-<!--<div class="row form-group form-control" style="margin-left: 2px">
-                            <p>Bring life to the community! Upload a picture!</p>
-                            <div id="survey-picture" class="form-group">
-                                <div class="col-md-3" *ngIf="commPicURL">
-                                    <img style="border:1px solid gray;width:100px;"  id="preview" [src]="commPicURL">
-                                </div>
-                                <div class="input-group image-preview">
-                                            <span class="input-group-btn">
-                                            <div class="btn btn-default image-preview-input">
-                                                <span><i class="fa fa-folder-open" aria-hidden="true"></i></span>
-                                                <span class="image-preview-input-title">Browse</span>
-                                                <input (change)="onPicChange($event)" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
-                                            </div>
-                                        </span>
-                                </div>
-                            </div>
-                        </div>-->
-
-
-
-    <!-- <div id="privacy" class="row form-group">
-                                <label class="col-lg-3 col-md-5 lead align">Privacy settings</label>
-                                <div ngbDropdown class="col dropdown p-0">
-                                    <button class="form-control dropdown-toggle" ngbDropdownToggle>
-                                        <i class="fa fa-{{privacyOptions[privacyOption].icon}}"></i>
-                                        <div class="option-body d-inline-block">
-                                            <span>{{privacyOptions[privacyOption].label}}</span>
-                                            <div class="text-muted">{{privacyOptions[privacyOption].description}}</div>
-                                        </div>
-                                    </button>
-                                    <div ngbDropdownMenu class="select-kind-dropdown">
-                                        <button 
-                                            *ngFor="let option of privacyOptions; let i = index" 
-                                            (click)="privacyOption = i; fgCreateCommunity.get('public').setValue(option.value)"
-                                            class="dropdown-item"
-                                        >
-                                            <i class="fa fa-{{option.icon}}"></i>
-                                            <div class="option-body d-inline-block">
-                                                <span>{{option.label}}</span>
-                                                <div class="text-muted">{{option.description}}</div>
-                                            </div>
-                                        </button>                                                
-                                    </div>
-                                </div>
-                            </div> -->

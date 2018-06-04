@@ -1,32 +1,27 @@
 <div style="width: 100%;">
-    <form [formGroup]="question" novalidate >    
+    <form [formGroup]="question" novalidate >
         <div class="multipleChoice">
-            <h6 class="title firstTitle">What is your question?</h6>
+            <h6 class="title firstTitle qslyBlack">What is your question?</h6>
             <div style="display: flex; align-items: center; width: 100%">
                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                 <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
             </div>
-            <!-- <a formControlName="required">Required</a> -->
 
-
-            <!-- <div class="titleWithButton"> -->
-                <h6 class="title">Choices</h6>
-            <!-- </div> -->
+            <h6 class="title qslyBlack">Choices</h6>
 
             <div class="responseContainer" formArrayName="options">
                 <div class="responseRow" *ngFor="let x of question.get('options').controls; let i = index">
                     <div class="flex" [formGroupName]="i">
-                        <div style="margin-right: 2px"><label class="subtleText">- </label></div>
+                        <div style="margin-right: 2px"><label class="subtleText qslyGray">- </label></div>
                         <input placeholder="Enter response choice" class="niceTextInput" type="text" formControlName="body" #f (keyup.enter)="enterMcOption(f);" />
                         <button *ngIf="question.get('options').length === i +1" id="focusLastBtn" style="display:none" (click)="focusLast(f)"></button>
                         <i *ngIf="question.get('options').length > 1" class="fa fa-times cross" (click)="removeOption(i)"></i>
                     </div>
                 </div>
             </div>
-            <!-- <a class="addButton" (click)="addMcOption()">Add</a> -->
 
             <div>
-                <h6 class="title">Allow User to Select Multiple Choices?</h6>
+                <h6 class="title qslyBlack">Allow User to Select Multiple Choices?</h6>
                 <div style="display:flex; justify-content: flex-start;">
                     <switch-buttons [active]="question.get('canSelectMultiple').value" [option]="false" [title]="'No'" (selected)="toggleMultiple($event)"
                         formControlName="canSelectMultiple"></switch-buttons>
@@ -35,22 +30,9 @@
                 </div>
             </div>
 
-            <!-- REQUIRED START -->
-            <!-- <div *ngIf="qLength !== 0">
-                <h6 class="title">Answer Required?</h6>
-                <div style="display:flex; justify-content: flex-start;">
-                    <switch-buttons [active]="question.get('required').value" [option]="false" [title]="'No'" (selected)="toggleRequired($event)"
-                        formControlName="required"></switch-buttons>
-                    <switch-buttons [active]="question.get('required').value" [option]="true" [title]="'Yes'" (selected)="toggleRequired($event)"
-                        formControlName="required"></switch-buttons>
-                </div>
-            </div> -->
-            <!-- REQUIRED END -->
-
-
             <!-- IMAGE START -->
             <div class="imgContainer">
-                <h6 class="title">Add an image</h6>
+                <h6 class="title qslyBlack">Add an image</h6>
                 <div class="inner">
                    
                     <div id="uploadBtn">
@@ -58,7 +40,7 @@
                         <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
                     </div>
                     
-                    <div><p id="orText">or</p></div>
+                    <div><p id="orText qslyGray">or</p></div>
                     
                     <div id="urlImage" class="input-group" style="width: 100%">
                         <input type="text" formControlName="pic" #imgUrl class="form-control" style="font-size: .5rem" placeholder="Enter image URL">

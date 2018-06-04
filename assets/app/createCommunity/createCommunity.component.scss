@@ -61,40 +61,6 @@ $color1: #28ab64;
   }
 }
 
-#privacy {
-  .dropdown {
-    $font-size: 18px;
-    font-size: $font-size;
-
-    i {
-      color: rgb(155, 154, 154);
-      font-size: 35px;
-      vertical-align: middle;
-      width: 40px;
-      text-align: center;
-    }
-    .option-body {
-      vertical-align: middle;
-      span {
-        font-size: $font-size;        
-        font-weight: bold;
-        color: #000;
-      }
-    }
-    .dropdown-toggle {
-      width: auto;
-      text-align: left;
-      vertical-align: middle;
-      &:after {
-        vertical-align: middle;
-      }
-    }
-    .dropdown-item {
-      padding: .25rem 15px;
-    }
-  }
-}
-
 .fa-heart {
   color: $navBarColor;
 }
@@ -240,17 +206,8 @@ input.option-input.is-invalid {
   font-family: Karla;
   font-size: 1.6rem;
   font-weight: 300;
-  color: #999;
   text-align: center;
   width: 100%;
-}
-
-.description {
-  margin-bottom: 12px;
-  font-family: Karla;
-  font-size: 1.15rem;
-  font-weight: 300;
-  color: #AAA;
 }
 
 .stats {
@@ -330,7 +287,6 @@ input.option-input.is-invalid {
     padding: 2px;
     width: 100%;
     font-size: 1rem;
-    color: #666;
 }
 
 
@@ -398,7 +354,6 @@ input.option-input.is-invalid {
     margin: 0px;
     font-weight:700;
     font-family: Karla;
-    color: #999; 
 }
 
 #urlImage {
