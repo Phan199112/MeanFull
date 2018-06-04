@@ -1,28 +1,9 @@
 $formContainerColor: #fff;
 $whiteColor: #fff;
-//$insideColor: #e6f7ff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
 $color1: #28ab64;
 $borderColor: rgb(226,226,226);
-
-#takeFormContainer {
-    background-color: $whiteColor;
-    min-height: 100%;
-    padding-top: 20px;
-    overflow:auto;
-    border-radius: 1%;
-    margin-top: 30px;
-}
-
-#topJumbo {
-    border: 10px;
-    background: $insideColor;
-}
-
-.fa-heart {
-    color: $navBarColor;
-}
 
 .mtop {
     margin-top: 20px;
@@ -31,15 +12,10 @@ $borderColor: rgb(226,226,226);
     }
 }
 
-.mouseChangeToHand{
-    cursor: pointer;
-    cursor: hand;
-}
-
 .thanksText {
     text-align: center;
     line-height: 2;
-    color: #999;
+    color: #666;
     font-size: 1rem;
     font-family: Karla;
     margin-top: 25px;

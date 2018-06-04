@@ -2,10 +2,9 @@ a {
   font-weight: bold;
 }
 .imageSize{
- height:  36px;
- width: 36px;
- border-radius: 18px;
- //radius
+  height:  36px;
+  width: 36px;
+  border-radius: 18px;
 }
 
 .submitButton {
@@ -16,13 +15,12 @@ a {
   width: auto;
   text-align: center;
   border: none;
-  border: solid 1px #999;
+  border: solid 1px #666;
   
 
   font-size: .7rem;
   font-family: Karla;
-  // color: #FFF !important;
-  color: #999 !important;
+  color: #666 !important;
   outline-style: none;
   margin-top: 0px;
 
@@ -32,8 +30,8 @@ a {
 
   &:hover {
       cursor: pointer;
-      color: #2b2b2b !important;
-      border: solid 1px #2b2b2b;
+      color: #333 !important;
+      border: solid 1px #333;
   }
 }
 
