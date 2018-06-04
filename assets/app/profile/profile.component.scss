@@ -23,11 +23,6 @@ $borderColor: rgb(226,226,226);
   background: $insideColor;
 }
 
-.fa-heart {
-  color: $navBarColor;
-;
-}
-
 .mouseChangeToHand{
   cursor: pointer;
   cursor: hand;
@@ -133,7 +128,7 @@ canvas {
   font-family: Karla;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #2b2b2b;
+  color: #333;
 
   @media (max-width: 767px) {
     font-size: 1.2rem;
@@ -145,7 +140,7 @@ canvas {
   font-family: Karla;
   font-size: 1.15rem;
   font-weight: 300;
-  color: #AAA;
+  color: #666;
 
   @media (max-width: 767px) {
     font-size: .8rem;
@@ -153,7 +148,7 @@ canvas {
 }
 
 .stats {
-  color: #777;
+  color: #666;
   font-size: .8rem;
   font-weight: 400;
   display: block;
@@ -215,11 +210,6 @@ canvas {
   top: 20px;
   right: 20px;
   display: flex;
-
-  // @media (max-width: 767px) {
-  //     position: static;
-  //     margin-top: 10px;
-  // }
 }
 
 .toggleRow p {

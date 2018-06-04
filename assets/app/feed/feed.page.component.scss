@@ -1,4 +1,3 @@
-$formContainerColor: #fff;
 $whiteColor: #fff;
 $insideColor: #F6F6F6;
 $navBarColor:  #0088cc;
@@ -28,7 +27,6 @@ $primaryColor: #28ab64;
   font-weight: 400;
   color: white;
   background-color: $primaryColor;
-  // border: 3px solid $primaryColor;
   border-radius: 10px;
 
   &:hover {
@@ -39,16 +37,6 @@ $primaryColor: #28ab64;
     margin-top: 8px;
   }
 
-}
-
-.fa-heart {
-  color: $navBarColor;
-;
-}
-
-.mouseChangeToHand{
-  cursor: pointer;
-  cursor: hand;
 }
 
 .statusMessage {

@@ -17,7 +17,7 @@ a {
     font-size: .75rem;
     padding: auto 5px;
     margin-top: 2px;
-    color: #2b2b2b;
+    color: #333;
 
    &:hover {
     cursor: pointer;
@@ -28,7 +28,6 @@ a {
   width: 52px;
   margin: 0px 5px;
   border-radius: 6px;
-  // background: linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,.3) 100%);
 
   &:hover {
     cursor: pointer;

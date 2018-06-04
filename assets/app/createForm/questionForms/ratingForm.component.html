@@ -1,7 +1,7 @@
 <div style="width: 100%">
     <form [formGroup]="question" novalidate (ngSubmit)=submitQuestion()>    
         <div class="multipleChoice">
-            <h6 class="title firstTitle">What is your question?</h6>
+            <h6 class="title qslyBlack firstTitle">What is your question?</h6>
             <div style="display: flex; align-items: center; width: 100%">
                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                 <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
@@ -9,7 +9,7 @@
             <!-- <a formControlName="required">Required</a> -->
 
             <div>
-                <h6 class="title">Select a Rating Scale</h6>    
+                <h6 class="title qslyBlack">Select a Rating Scale</h6>    
                 <div class='starArray'>
                     <div *ngFor="let x of temp">
                      <img src="/images/icons/star.svg" class="starIcon" />
@@ -23,7 +23,7 @@
 
             <!-- IMAGE START -->
             <div class="imgContainer">
-                <h6 class="title">Add an image</h6>
+                <h6 class="title qslyBlack">Add an image</h6>
                 <div class="inner">
             
                     <div id="uploadBtn">
@@ -32,7 +32,7 @@
                     </div>
             
                     <div>
-                        <p id="orText">or</p>
+                        <p id="orText" class="qslyGray">or</p>
                     </div>
             
                     <div id="urlImage" class="input-group" style="width: 100%">

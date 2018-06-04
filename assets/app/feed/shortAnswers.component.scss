@@ -33,7 +33,6 @@ $navBarColor:  #1E824C;
 .modal-container {
   display: flex;
   flex-direction: column;
-  // min-width: 800px;
   width: auto;
   max-height: 80vh;
   height: auto;
@@ -54,11 +53,9 @@ $navBarColor:  #1E824C;
     size: 1.4rem;
     family: Karla;
   }
-  color: #999999;
   margin: 25px 0;
 
   span {
-    color: #CCC;
     font-size: 1.2rem;
   }
 }
@@ -73,7 +70,6 @@ $navBarColor:  #1E824C;
     size: 1.2rem;
     family: Karla;
   }
-  color: #666;
   margin-right: 8px;
 }
 
@@ -82,7 +78,6 @@ $navBarColor:  #1E824C;
     size: 1rem;
     family: Karla;
   }
-  color: #333;
 }
 
 .response-image {

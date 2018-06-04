@@ -102,8 +102,7 @@ $commentBackground: #f0f6f0;
   display: block;
   padding: 2px 8px;
   background: #FFF;
-  color: #AAA;
-  border: solid 1px #AAA;
+  border: solid 1px #666;
   border-radius: 4px;
   margin: 4px;
   font-family: Karla;
@@ -112,8 +111,8 @@ $commentBackground: #f0f6f0;
 
   &:hover {
     cursor: pointer;
-    color: #666;
-    border: solid 1px #666;
+    color: #333;
+    border: solid 1px #333;
   }
 
   @media (max-width: 767px) {
@@ -172,7 +171,6 @@ $commentBackground: #f0f6f0;
 
 .locationTitle {
   font-family: Karla;
-  color: #AAA;
   font-size: .7rem;
   font-weight: 400;
 
@@ -186,7 +184,6 @@ $commentBackground: #f0f6f0;
 }
 
 .partTitle {
-  color: #777;
   font-size: .6rem;
   font-weight: 400;
 
@@ -264,7 +261,6 @@ $navBarColor:  #0088cc;
   font-family: Karla;
   font-size: .9rem;
   font-weight: 300;
-  color: #999;
   // flex: 0 0 25%;
   text-align: center;
   margin-bottom: 4px;
@@ -313,18 +309,6 @@ $navBarColor:  #0088cc;
   margin-bottom: 20px;
 }
 
-#authorDetails {
-  a {
-    color: black;
-  }
-
-  h3 {
-    @media (max-width: 768px) {
-      margin-top: -10px;
-    }  
-  }
-}
-
 hr {
     margin-bottom: 2px;
     margin-top: 2px;
@@ -370,31 +354,6 @@ hr {
     }
   
   }
-}
-
-.emoticon {
-  height: 32px;
-}
-
-
-.emoText {
-  font-family: Karla;
-  font-size: .6rem;
-  text-align: center;
-  width: 50px;
-  color: $primaryColor;
-  font-weight: 700;
-  margin-top: 2px;
-}
-
-.emoPercent {
-  background: #FFF;
-  color: $primaryColor;
-  border-radius: 100px;
-  border: 1px solid $primaryColor;
-  padding: 1px 3px;
-  width: 40px;
-  margin: 2px auto;
 }
 
 .selectedPercent {
@@ -450,10 +409,6 @@ hr {
   }
 }
 
-#divider {
-  color: #c0e0ce;
-}
-
 .userComCont {
   display: flex;
   justify-content: flex-start;
@@ -491,34 +446,10 @@ hr {
   margin-bottom: 10px;
 }
 
-.commentText {
-  font-family: Karla;
-  font-size: .9rem;
-  color: #999;
-  background: lighten($commentBackground, 5);
-  border-radius: 8px;
-  padding: 4px 6px;
-  margin-bottom: 0px;
-}
-
 .reverse {
   flex-direction: row-reverse;
 }
 
-
-
-
-
-.niceTextInput {
-    background: none;
-    outline-style: none;
-    border: none;
-    border-bottom: solid 1px $primaryColor;
-    width: 100%;
-    color: #999;
-    font-size: .8rem;
-    
-}
 
 .submitButton {
     background: #FFF;
@@ -528,12 +459,10 @@ hr {
     width: auto;
     text-align: center;
     border: none;
-    border: solid 1px #999;
+    border: solid 1px #666;
 
     font-size: 1rem;
     font-family: Karla;
-    // color: #FFF !important;
-    color: #999 !important;
     outline-style: none;
     margin-top: 0px;
 
@@ -543,8 +472,8 @@ hr {
 
     &:hover {
         cursor: pointer;
-        color: #2b2b2b !important;
-        border: solid 1px #2b2b2b;
+        color: #333 !important;
+        border: solid 1px #333;
     }
 
     &.positive {
@@ -599,7 +528,6 @@ hr {
   display: block;
   font-family: Karla;
   font-size: 1rem;
-  color: #999;
   padding: 0px;
   margin-top: 8px;
 }
@@ -617,8 +545,6 @@ hr {
 .filterDropdownText {
   font-family: Karla;
   font-weight: 400;
-  // color: #999;
-  // background-color: $primaryColor;
 }
 
 .filterDropdownText .cuppa-dropdown {
@@ -632,7 +558,6 @@ hr {
 
 .headline {
   text-align: center;
-  color: #2b2b2b;
   font: {
     family: Karla;
     size: 1.2rem;

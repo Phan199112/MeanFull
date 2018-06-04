@@ -1,14 +1,8 @@
-//@import "compass/css3";
 @import url(https://fonts.googleapis.com/css?family=Merriweather+Sans);
 
 $lightGray: #848484;
 
 $navBarColor:  #0077b3;
-//rgb(0, 119, 179)
-
-.signupTextColor {
-  color: $lightGray;
-}
 
 #mainLoginPageContainer{
   margin-top: 40px;
@@ -26,7 +20,7 @@ $navBarColor:  #0077b3;
   .top {
     background-color: #fff;
     padding: 0 25px 15px 25px;
-    color: rgb(132, 132, 132);
+    color: #666;
     border-radius: 4px 4px 0 0;
     text-align: left;
 
@@ -45,15 +39,6 @@ $navBarColor:  #0077b3;
         margin: 0 0 10px;
       }
     }
-    .right {
-      float: left;
-      width: 23%;
-      padding-top: 20px;
-      font-size: 66px;
-      color: #ddd;
-      line-height: 100px;
-      text-align: right;
-    }
   }
   .bottom {
     background-color: #eee;
@@ -65,13 +50,11 @@ $navBarColor:  #0077b3;
       margin: 0;
 
       .form-control {
-        //border: 3px solid #ddd;
         font-size: inherit;
       }
 
       button {
         cursor: hand;
-        //width: 100%;
         color: #fff;
         font-size: inherit;
       }

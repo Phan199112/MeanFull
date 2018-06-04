@@ -1,5 +1,5 @@
 $primaryColor:  #28ab64;
-$lightGrey: #a2a2a2;
+$lightGrey: #666;
 $borderColor: rgb(226,226,226);
 
 h3 {
@@ -88,7 +88,7 @@ h3 {
 
 .catIcon {
   width: 12px !important;
-  color: #a2a2a2 !important;
+  color: #333 !important;
   margin-right: 10px;
 
   @media (max-width: 768px) {
@@ -181,7 +181,7 @@ h3 {
 
 .title {
   font-family: Karla;
-  color: #999;
+  color: #666;
   font-size: 1rem;
   margin: 5px auto;
 }
@@ -198,7 +198,7 @@ h3 {
 .medium {
   font-size: 1rem;
   margin-top: 20px;
-  color: #CCCCCC;
+  color: #666;
 }
 
 .submitButton {
@@ -231,7 +231,7 @@ h3 {
 
 
 p {
-  color: #CCC;
+  color: #666;
   font-size: .8rem;
   font-weight: 700;
   font-family: Karla;
@@ -244,7 +244,7 @@ p {
   margin-bottom: 3px;
 
   label {
-    color: #AAA;
+    color: #666;
     font-size: .65rem;
     margin-right: 6px;
     margin-bottom: 0;
