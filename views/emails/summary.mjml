@@ -24,7 +24,7 @@
           <mj-text font-size="25" color="#28ab64"font-family="Karla" align="center">
             <a href="https://www.questionsly.com/" class="link-nostyle">Questionsly</a>
           </mj-text>
-          <mj-text font-size="16" color="#2b2b2b"font-family="Karla" align="center">Your Summary for fecha </mj-text>
+          <mj-text font-size="16" color="#333"font-family="Karla" align="center">Your Summary for fecha </mj-text>
         </mj-column>
       </mj-section>
 
@@ -47,18 +47,18 @@
         
 
         <mj-section padding-bottom="0" padding-left="40px">
-          <mj-text color="#2b2b2b" font-size="14" font-family="Karla" >
+          <mj-text color="#333" font-size="14" font-family="Karla" >
               With love,
           </mj-text>
         </mj-section>
         <mj-section padding-top="6px" padding-left="40px">
-          <mj-text color="#2b2b2b" font-size="15" font-family="Karla" >
+          <mj-text color="#333" font-size="15" font-family="Karla" >
               Team Questionsly!
           </mj-text>
         </mj-section>
 
         <mj-section padding-top="30px">
-          <mj-text font-size="14" color="#777" font-family="Karla" align="center" padding-bottom="20px">
+          <mj-text font-size="14" color="#666" font-family="Karla" align="center" padding-bottom="20px">
             <a href="https://www.questionsly.com/" class="link-nostyle" style="color: #28ab64">Browse</a>
             Questionsly, an online platform for getting data to all your questions from a large community of users.
           </mj-text>

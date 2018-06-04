@@ -2,9 +2,6 @@
   
   <mj-head>
     <mj-font name="Karla" href="https://fonts.googleapis.com/css?family=Karla" />
-    <!--<mj-style>-->
-    <!--  @media all and (max-width: 480px) { div[style*="color:#F45e46;"] { text-align: center !important } }-->
-    <!--</mj-style>-->
     <mj-style inline="inline">
       .link-nostyle { color: inherit; text-decoration: none ; font-weight:bold; align: center }
     </mj-style>
@@ -46,7 +43,7 @@
             <a class="link-nostyle" href="{{link}}">Answer Question!</a>
           </mj-button>
 
-          <mj-text font-size="14px" color="#777" font-family="Karla" align="center" padding-bottom="20px">
+          <mj-text font-size="14px" color="#666" font-family="Karla" align="center" padding-bottom="20px">
             <a href="https://www.questionsly.com/users/login" class="link-nostyle" style="color: #28ab64">Sign up</a>
             for Questionsly, an online platform for getting data to all your questions from a large community of users. Helping you make data-driven decisions.
           </mj-text>
