@@ -39,14 +39,14 @@
                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                 </a>
                 <div ngbDropdownMenu aria-labelledby="form-menu">
-                    <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share</a>
+                    <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share Link</a>
                     <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
                     <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
                     <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
                     <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
                     <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
-                    <a class="dropdown-item" (click)="beginPDF()" *ngIf="form.admin || form.answered">Export PDF</a>
-                    <a class="dropdown-item" (click)="toggleShareEmails()" *ngIf="form.admin || form.answered">Share Report</a>
+                    <a class="dropdown-item" (click)="beginPDF()" *ngIf="form.admin || form.answered">Export as PDF</a>
+                    <a class="dropdown-item" (click)="toggleShareEmails()" *ngIf="form.admin || form.answered">Email PDF Report</a>
                 </div>
             </div>
         </div>

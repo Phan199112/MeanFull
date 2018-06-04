@@ -241,13 +241,13 @@ module.exports = app;
 // Multiple Community Addition Fix
 // (function() {
 //     if (CommunityModel) {
-//         CommunityModel.findById("5ae62c8a93627a0014880ba3", function(err, comm) {
+//         CommunityModel.findById("communityID", function(err, comm) {
 //         var members = comm.members;
 //         var gotFirstAlready = false;
 //         var firstIndex = 0;
 //         var lastIndex = 0;
 //         members.forEach((m,i) => {
-//             if (m === "") {
+//             if (m === "userID") {
 //                 if (!gotFirstAlready) {
 //                     gotFirstAlready = true; 
 //                     firstIndex = i;
@@ -268,11 +268,36 @@ module.exports = app;
 //         comm.save(function(err) {
 //             console.log("OOPS", err);
 //         })
-//         console.log(members);
+//         // console.log(members);
 //     })
 
 // }}
 // )();
+
+
+
+// Find Duplicates within a community
+// (function() {
+//     if (CommunityModel) {
+//         CommunityModel.findById("community", function(err, comm) {
+//         var members = comm.members;
+//         var duplicates = [];
+
+//         members.forEach((m,i) => {
+//             members.forEach((n,j) => {
+//                 if (m == n && i!=j) {
+//                     duplicates.push([m,j]);
+//                 }
+//             })
+//         })
+
+//         console.log('Duplicates: \n', duplicates);
+//     })
+// }}
+// )();
+
+
+
 
 // Decode hash
 // console.log("Unhashed:", hashids.decodeHex(""));

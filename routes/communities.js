@@ -816,31 +816,6 @@ module.exports = function(app, passport, manager, hashids) {
             var userId = req.session.userid;
         }
 
-        CommunityModel.findById(commid, function (err, comm) {
-            if (err) {
-                console.log("Could not join community at signup");
-            } else {
-                if (comm) {
-                    var members = comm.members;
-                    var mInd = members.findIndex(m => m == userId);
-                    if (mInd != -1) {
-                        members.push(userId);
-                    } 
-                    
-                    var requests = comm.requests;
-                    var rInd = requests.findIndex(r => r == memid);
-                    if (rInd != -1) {
-                        requests.splice(rInd,1);
-                    }
-
-                    comm.save(function (err) {
-                        if (err) console.log("Error saving community in login");
-                    });
-                }
-            }
-        });
-
-
         CommunityModel.findByIdAndUpdate(commid, { $push: { members: userId }, $pull: { requests: memid } }, function (err, k) {
             if (err) {
                 res.json({status: 0})

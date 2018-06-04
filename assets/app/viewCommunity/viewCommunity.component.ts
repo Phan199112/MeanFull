@@ -52,8 +52,7 @@ export class ViewCommunityComponent implements OnInit {
 
     loadData() {
         this.route.params.subscribe(params => {
-            this.id = params.id;
-            
+            this.id = params.id;          
 
             this.http.get(`/community/retrieve/${params.id}`).toPromise()
                 .then(res => {
@@ -69,16 +68,12 @@ export class ViewCommunityComponent implements OnInit {
                         this.loadsuccessful = true;
 
 
-                        if (params['access']) {
+                        if (params.access) {
                             this.communityToJoin = this.id;
-                            this.verifyAccess = params['access'];
+                            this.verifyAccess = params.access;
 
                             if (this.loggedin && !this.data.ismember) {
                                 this.forceJoinPrivateCommunity(this.id);
-                                // window.setTimeout(() => { this.router.navigate(['/community', this.id]); }, 2000);
-                                // this.loadData();
-                                window.setTimeout(() => { this.loadData(); }, 100);
-                                // return;
                             }
 
                             // Setting local storage so people are automatically added once they sign up or log in
@@ -98,16 +93,12 @@ export class ViewCommunityComponent implements OnInit {
                         this.loadsuccessful = true;
 
 
-                        if (params['access']) {
+                        if (params.access) {
                             this.communityToJoin = this.id;
-                            this.verifyAccess = params['access'];
+                            this.verifyAccess = params.access;
 
-                            if (this.loggedin && !this.data.ismember) {
+                            if (this.loggedin && !this.data.ismember) {                                
                                 this.forceJoinPrivateCommunity(this.id);
-                                // window.setTimeout(() => { this.router.navigate(['/community', this.id]); }, 2000);
-                                // window.setTimeout(() => {this.loadData();}, 100);
-                                this.loadData();
-                                // return;
                             }
                         
                             if (!this.loggedin) {
@@ -300,6 +291,7 @@ export class ViewCommunityComponent implements OnInit {
         this.http.post('/community/accept', { commid: commid }).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
+                    this.loadData();
                     this.data.ismember = true;
                 } else {
                     this.addfailed = true;

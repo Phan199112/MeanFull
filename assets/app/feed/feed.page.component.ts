@@ -77,6 +77,7 @@ export class FeedPageComponent implements OnInit  {
                 }
 
                 var commid = localStorage.getItem("comm");
+                
                 if (commid) {
                     this.http.post('/community/accept', { commid: commid }).toPromise()
                         .then(response => {
