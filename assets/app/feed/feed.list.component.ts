@@ -44,7 +44,7 @@ export class FeedListComponent implements OnInit, OnChanges {
                 // console.log('Changed from: ',this.formselected, ' to ', params.survey, '\n' );
                 this.formselected = params.survey;
                 this.topSurveyChanged = true;
-                this.refreshFeed();
+                this.getTopPost();
             }
         });
         
@@ -99,8 +99,6 @@ export class FeedListComponent implements OnInit, OnChanges {
         var route;
         var requestBody;
 
-        console.log('Top survey for refresh : ', this.formselected);
-
         if (this.showAnsweredQuestions) {
             route = `/forms/feed/answered`;
             requestBody = {
@@ -111,7 +109,7 @@ export class FeedListComponent implements OnInit, OnChanges {
             };
         } else {
             route = `/forms/feed`;      
-                  
+
             requestBody = {
                 tag: this.tag,
                 user: this.user,
@@ -140,17 +138,49 @@ export class FeedListComponent implements OnInit, OnChanges {
                     for (let obj of this.data) {
                         if (this.formids.indexOf(obj.id) == -1) {
                             // Push forms into feedlist if not there already
+                            // console.log('PREBODY: ', obj);
+                            
                             this.feedlist.push(new FeedForm(obj));
                             
                             // Populate array full of id's of questions currently shown on feed
                             // Sending this to the backend so it can skip over these when fetching for more questions
-                            this.formids.push(obj.id);
+                            this.formids.push(obj.id);                            
                         }
-                    }
+                    }                   
 
 
                     if (this.feedlist.length == 0) this.emptyMessage = "No questions have been asked yet"
 
+                }
+            })
+            .catch(error => alert("Error retrieving form: " + error));
+    }
+
+    getTopPost() {
+
+        var route = `/forms/topSurvey`;
+
+        var requestBody = {
+            topsurvey: this.formselected,
+        };
+
+        this.http
+            .post(route, requestBody)
+            .toPromise()
+            .then(res => {
+                if (res.json().status == 1) {
+                    // add to list
+
+                    // remove current top survey
+                    const removedPost = this.feedlist.shift();
+                    var rmvIndex = this.formids.indexOf(removedPost.id);
+                    this.formids.splice(rmvIndex,1);
+
+                    // Add new top survey
+                    this.feedlist.unshift(new FeedForm(res.json().formdata))
+                    this.formids.push(this.formselected);
+                    console.log(this.formids.length);
+                    
                 }
             })
             .catch(error => alert("Error retrieving form: " + error));

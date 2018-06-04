@@ -22,7 +22,6 @@ var formidable = require('formidable');
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
 
-
     // update the form
     app.put('/forms/:id', manager.ensureLoggedIn('/users/login'), function(req, res) {
         // this is after page 2
@@ -753,6 +752,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
     });
 
+
     app.post('/forms/feed',function (req, res, next) {
         // this function retrieved the feed
         // limits to x posts
@@ -770,9 +770,6 @@ module.exports = function(app, passport, manager, hashids) {
         } else {
             postlimit = 12 + req.body.currentPosts.length
         }
-
-
-
 
 
 
@@ -1087,6 +1084,67 @@ module.exports = function(app, passport, manager, hashids) {
                 res.json({status: 0});
             });
     });
+
+    app.post('/forms/topSurvey', function (req, res, next) {
+        var topsurvey = hashids.decodeHex(req.body.topsurvey);
+        var loggedin = req.isAuthenticated();
+        var formData, authorProfile, finalOutput;
+
+        FormModel.findById(topsurvey, function (err, form) {
+            if (err) {
+                res.json({ status: 0 });
+            } else {
+                if (form) {
+                    var adminrights = false;
+                    if (loggedin) {
+                        if (req.session.userid === form.userid) {
+                            // yes
+                            adminrights = true;
+                        }
+                    }
+                    // prepare the data
+                    formData = {
+                        hashtags: form.hashtags, questions: form.questions, expired: form.expired,
+                        shared: form.shared, loginRequired: form.loginRequired,
+                        timestamp: form.timestamp, description: form.description,
+                        title: form.title, admin: adminrights, public: form.public,
+                        typeevent: form.typeevent, categories: form.categories
+                    };
+
+                    return new Promise((resolve, reject) => {
+                        if (form.anonymous === false) {
+                            UserModel.findById(form.userid, function (err, k) {
+                                if (err) {
+                                    res.json({ status: 0 });
+                                } else {
+                                    authorProfile = { anonymous: false, facebookID: k.facebookID, pic: k.pic, name: k.name.first + " " + k.name.last, link: hashids.encodeHex(k._id), gender: k.gender, location: k.location };
+                                    resolve();                                                                  
+                                }
+                            });
+                        } else {
+                            authorProfile = { anonymous: true };
+                            resolve();                        
+                        }
+                    })
+                    .then(() => {
+                        finalOutput = { formdata: formData, id: hashids.encodeHex(form._id), author: authorProfile, highlight: true, found: true };
+
+                        res.json({
+                            status: 1,
+                            loggedin: loggedin,
+                            formdata: finalOutput
+                        });
+                    })
+                    .catch(() => {
+                        res.json({ status: 0 });                        
+                    })
+                } else {
+                    res.json({ status: 0 });
+                }
+            }
+        });  
+    });
+
 
     app.post('/forms/report', manager.ensureLoggedIn('/users/login'), function(req,res) {
 
