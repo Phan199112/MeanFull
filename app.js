@@ -275,5 +275,29 @@ module.exports = app;
 // )();
 
 
+
+// Find Duplicates within a community
+// (function() {
+//     if (CommunityModel) {
+//         CommunityModel.findById("community", function(err, comm) {
+//         var members = comm.members;
+//         var duplicates = [];
+
+//         members.forEach((m,i) => {
+//             members.forEach((n,j) => {
+//                 if (m == n && i!=j) {
+//                     duplicates.push([m,j]);
+//                 }
+//             })
+//         })
+
+//         console.log('Duplicates: \n', duplicates);
+//     })
+// }}
+// )();
+
+
+
+
 // Decode hash
 // console.log("Unhashed:", hashids.decodeHex(""));
