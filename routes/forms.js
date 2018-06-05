@@ -1531,7 +1531,6 @@ module.exports = function(app, passport, manager, hashids) {
                                     //
                                     res.json({
                                         data: exportdata,
-                                        shortAnswers: shortAnswers,
                                         shortAnswers2: shortAnswers2,
                                         count: answercount,
                                         reaction: {reacted: formreacted, userreaction: userreaction},
@@ -1544,7 +1543,6 @@ module.exports = function(app, passport, manager, hashids) {
                                         // error
                                         res.json({
                                             data: null,
-                                            shortAnswers: [],
                                             shortAnswers2: [],
                                             status: 1,
                                             count: null,
@@ -1558,7 +1556,6 @@ module.exports = function(app, passport, manager, hashids) {
                                 // user did not complete this form
                                 res.json({
                                     data: '',
-                                    shortAnswers: [],
                                     shortAnswers2: [],
                                     status: 0,
                                     count: null,
@@ -1574,7 +1571,6 @@ module.exports = function(app, passport, manager, hashids) {
                             // error
                             res.json({
                                 data: '',
-                                shortAnswers: [],
                                 shortAnswers2: [],
                                 status: 1,
                                 count: null,
@@ -1587,7 +1583,6 @@ module.exports = function(app, passport, manager, hashids) {
                     } else {
                         res.json({
                             data: '',
-                            shortAnswers: [],
                             shortAnswers2: [],
                             reaction: {reacted: false, userreaction: null},
                             status: 3,
@@ -1601,7 +1596,6 @@ module.exports = function(app, passport, manager, hashids) {
                     // error
                     res.json({
                         data: '',
-                        shortAnswers: [],
                         shortAnswers2: [],
                         status: 1,
                         count: null,

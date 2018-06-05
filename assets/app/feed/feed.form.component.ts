@@ -344,7 +344,7 @@ export class FeedFormComponent implements OnInit {
 
                 let responsedata = response.json().data;              
                
-                this.shortAnswers = response.json().shortAnswers;
+                this.shortAnswers = [];
                 this.shortAnswers2 = response.json().shortAnswers2;
                 
                 let responsestatus = response.json().status;
@@ -850,7 +850,6 @@ export class FeedFormComponent implements OnInit {
         }
 
         var doc = new jsPDF();
-        var shortAnswerCounter = 0;
         var yOffset;
         
         // Map pie charts to right questions
@@ -922,7 +921,7 @@ export class FeedFormComponent implements OnInit {
                 }
             }
 
-            //Question options
+            // Question options
             if (q.options && q.options.length > 0) {
                 doc.setFontSize(10);
                 q.options.forEach(option => {
@@ -945,11 +944,6 @@ export class FeedFormComponent implements OnInit {
 
             // Add Text Responses if Short Answer Question
             if (this.form.questions[i].kind == "Short Answer") {
-                // Response array
-                var ans = this.shortAnswers;
-                // Index to find user name and pic object
-                var usrInd = ans[0].length - 1;
-
                 // Heading
                 doc.setTextColor(32, 32, 32);
                 doc.setFontSize(12);
@@ -959,35 +953,32 @@ export class FeedFormComponent implements OnInit {
                 doc.line(20, yOffset, 43, yOffset)
                 yOffset += 5;
             
-                ans.forEach((res,i) => {
+                this.shortAnswers2[i].forEach((res) => {
                     // Move to new page if necessary
                     yOffset = overflowCheck(yOffset);
 
                     // Add User Image if possible
                     try{
-                        doc.addImage(res[usrInd].pic, 'PNG', 20, yOffset, 12, 12);                        
+                        doc.addImage(res.pic, 'PNG', 20, yOffset, 12, 12);
                     } catch (err) {
                         console.log("COULD NOT SAVE USER IMAGE TO PDF. USING DEFAULT.\n");
-                        doc.addImage('/images/male.png', 'PNG', 20, yOffset, 12, 12);                                                
+                        doc.addImage('/images/male.png', 'PNG', 20, yOffset, 12, 12);
                     }
 
                     yOffset += 6;
 
                     // User Name
                     doc.setFontSize(10);
-                    doc.text(`${res[usrInd].name}`, 35, yOffset);
+                    doc.text(`${res.name}`, 35, yOffset);
                     yOffset += 4;
 
                     // Response
                     doc.setTextColor(32, 32, 32);
                     doc.setFontSize(8);
-                    doc.text(`${multipleLine(res[shortAnswerCounter], 16).text}`, 40, yOffset);
+                    doc.text(`${multipleLine(res.answer, 16).text}`, 40, yOffset);
 
-                    yOffset += (4 * multipleLine(res[shortAnswerCounter], 16).lines);
-                });    
-
-                // Makes sure we get the right set of answers for the case of several text response questions
-                shortAnswerCounter++;
+                    yOffset += (4 * multipleLine(res.answer, 16).lines);
+                });
             }
 
             // Add Page if more questions
