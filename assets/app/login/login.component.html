@@ -53,6 +53,7 @@
                     <form [formGroup]="pwdReset">
                         <div class="form-group">
                             <input
+                                *ngIf="!statusresetok"
                                 formControlName="email"
                                 placeholder="Email..."
                                 type="email"

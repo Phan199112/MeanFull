@@ -79,7 +79,7 @@ exports.sendEmailVerification = function sendEmailVerification(email, link, firs
 
 exports.sendNewPassword = function sendNewPassword(email, pw) {
     var messagesafe = "new password: "+pw;
-    var subject = "New password requested";
+    var subject = "Questionsly - New Password Requested";
     
     renderTemplate("new-password", {subject: subject, password: pw}).then(function(html) {
         exports.sendEmail(email, subject, html, messagesafe);

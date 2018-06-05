@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
     checkSubmit(form, name) {
         this.setAsTouched(form);
         if (form.invalid) {
-            form.wasChecked = true;
+            form.wasChecked = true;            
         } else {
             if (name == 'signup') {
                 this.submitSignup();
@@ -103,6 +103,8 @@ export class LoginComponent implements OnInit {
 
     submitPwdReset() {
         let data = this.pwdReset.value;
+        console.log('PwdData: ', data);
+
 
         this.http.post('/users/pwdReset', data).toPromise()
              .then(k => {
@@ -110,6 +112,8 @@ export class LoginComponent implements OnInit {
                     this.statusresetok = true;
                 } else {
                     this.statusresetfailed = true;
+                    var resetField = () => {this.statusresetfailed = false};
+                    window.setTimeout(resetField, 1800);
                 }
 
             })

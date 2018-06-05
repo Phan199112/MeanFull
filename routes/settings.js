@@ -21,13 +21,14 @@ module.exports = function(app, passport, manager, hashids) {
         new Promise(function(resolve, reject) {
             UserModel.findOne({'local.email': req.body.email}, function (err, user) {
                 if (err) {
-                    reject(err);
+                    reject(err);                    
                 } else {
                     if (user != null) {
                         userid = user._id;
                         resolve();
                     } else {
                         reject();
+
                     }
                 }
             })
@@ -50,6 +51,9 @@ module.exports = function(app, passport, manager, hashids) {
                 res.json({status: 0});
             });
     });
+
+
+
 
     app.get('/users/settings/confirmemail/:id', function(req,res) {
         //

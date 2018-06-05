@@ -23,16 +23,35 @@ $commentBackground: #f0f6f0;
     display:flex;
     justify-content: space-between;
     background-color: $navBarColor !important;
-    padding: 0px 20%;
     border-bottom: 1px solid $borderColor;
     
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
+    padding: 0px 20%;
+    height: 52px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+
+  @media (min-width: 768px) and (max-width: 991px) {
       height: 52px;
+      max-width: 100%;
+      width: 100%;
+      padding: 8px 0;
   }
 
   @media (max-width: 767px) {
     padding: 2px 5%;
-    // height: 50px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar-collapse.show, .navbar-collapse.collapsing {
+    display: flex;
+    width: 100%;
+    background: white;
+    padding: 0 10%;
   }
 }
 
@@ -44,7 +63,19 @@ $commentBackground: #f0f6f0;
 
 .navbar-brand {
   @media (max-width: 767px) {
-    padding: 4px 0px;
+    margin: 4px 0px;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    margin: 0px 10%;
+  }
+}
+
+.navbar-toggler {
+  outline: none;
+  
+  @media (min-width: 768px) and (max-width: 991px) {
+    margin: 0px 10%;
   }
 }
 
