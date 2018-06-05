@@ -26,7 +26,7 @@ $commentBackground: #f0f6f0;
     border-bottom: 1px solid $borderColor;
     
   @media (min-width: 992px) {
-    padding: 0px 20%;
+    padding: 0px 12%;
     height: 52px;
     max-width: 100%;
     width: 100%;
@@ -99,7 +99,7 @@ $commentBackground: #f0f6f0;
 }
 
 .bordTop {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     border-top: 1px solid $borderColor;
   }
 }
