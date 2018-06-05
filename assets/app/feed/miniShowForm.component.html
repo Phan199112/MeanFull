@@ -22,7 +22,7 @@
                         </div>
                     </div>
 
-                    <p *ngIf="shortAnswers2.length > 0 && shortAnswers2[i].length > 2" style="margin-bottom: 4px; margin-top: 12px; margin-left: 6px; width: max-content" class="submitButton smaller qslyGray" (click)="shortAnswersModal.open(returnIndex(i))">See All</p>
+                    <p *ngIf="shortAnswers2.length > 0 && shortAnswers2[i].length > 2" style="margin-bottom: 4px; margin-top: 12px; margin-left: 6px; width: max-content" class="submitButton smaller qslyGray" (click)="shortAnswersModal.open(i)">See All</p>
 
                 </div>
 
@@ -146,4 +146,4 @@
 </form>
 
 <login-popup #loginPopup></login-popup>
-<short-answers [answers]="shortAnswers" #shortAnswersModal></short-answers>
+<short-answers [answers]="shortAnswers2" #shortAnswersModal></short-answers>

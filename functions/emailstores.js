@@ -82,7 +82,8 @@ function recordNewResponseOrComment(userMakingCommentId, survey, counterField, h
                 commentCount: 0,
                 responseCount: 0,
                 link: "https://www.questionsly.com/feed;survey=" + hashids.encodeHex(survey._id),
-                responseProfiles: []
+                responseProfiles: [],
+                anonymousCount: 0
             };
         }
 
@@ -99,6 +100,8 @@ function recordNewResponseOrComment(userMakingCommentId, survey, counterField, h
                     profilePic: usersfunctions.getProfilePic(userMakingComment),
                 });
             }
+        } else {
+            emailStoreSurveyItem.anonymousCount++;
         }
 
         return new Promise(function (resolve, reject) {

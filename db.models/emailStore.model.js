@@ -27,6 +27,7 @@ var QstnSchema = mongoose.Schema({
     commentCount: Number,
     responseCount: Number,
     responseProfiles: [QuestionResponseProfileSchema],
+    anonymousCount: 0
 });
 
 var SharedSchema = mongoose.Schema({ 

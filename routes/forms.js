@@ -40,6 +40,13 @@ module.exports = function(app, passport, manager, hashids) {
         // Author info for emails
         var userName, userPic, questionLink;
 
+        var sharedWithEmailAddresses = emailAddress.parseAddressList(receivedData.sharedWithEmailAddresses);
+
+        // Limit to how many email addresses you can share to
+        if (sharedWithEmailAddresses && sharedWithEmailAddresses.length > 1000) {
+            sharedWithEmailAddresses = sharedWithEmailAddresses.slice(0, 1000);
+        }
+
         if (receivedData.sharedWithCommunities != null) {
             for (var i = 0; i < receivedData.sharedWithCommunities.length; i++) {                
                 unhashedCommunities.push(hashids.decodeHex(receivedData.sharedWithCommunities[i].value));
@@ -184,9 +191,8 @@ module.exports = function(app, passport, manager, hashids) {
                 });
             });
         };
-        var tmp = emailAddress.parseAddressList(receivedData.sharedWithEmailAddresses);
-        if (tmp)
-            tmp.forEach(function (x) {
+        if (sharedWithEmailAddresses)
+            sharedWithEmailAddresses.forEach(function (x) {
                 promises.push(getUserByEmailAddress(x.address));
             });
 
@@ -331,6 +337,12 @@ module.exports = function(app, passport, manager, hashids) {
         var promises = [];
         var promiseschecks = [];
 
+        var areAllAnswersAnonymous = true;
+        receivedData.questions.forEach(function (answer) {
+            if (!answer.answerAnonymously)
+                areAllAnswersAnonymous = false;
+        });
+
         // functions
         var fcheckedfordouble = function () {
             return new Promise(function (resolve, reject) {
@@ -468,11 +480,11 @@ module.exports = function(app, passport, manager, hashids) {
                             usersfunctions.incrementNoTaken(req.session.userid);
 
                             // insite notification
-                            notifications.createNotification(formauthorid, req.session.userid, "form-answer", "New answer", hashids.encodeHex(answerformid));
+                            notifications.createNotification(formauthorid, areAllAnswersAnonymous ? 'anonymous' : req.session.userid, "form-answer", "New answer", hashids.encodeHex(answerformid));
 
                             // email notification
                             // check the notification settings of this user
-                            emailstoresfunctions.recordNewResponse(req.session.userid, loadedFormModel, hashids);
+                            emailstoresfunctions.recordNewResponse(areAllAnswersAnonymous ? null : req.session.userid, loadedFormModel, hashids);
                             res.json({status: 1});
                         })
                             .catch(function () {

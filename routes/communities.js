@@ -20,6 +20,11 @@ module.exports = function(app, passport, manager, hashids) {
         var receivedData =  req.body;
         var unhashedAdmins = [];
 
+        if (!receivedData.title) {
+            res.json({status: 0});
+            return;
+        }
+
         if (receivedData.admins != null) {
             for (var i = 0; i < receivedData.admins.length; i++) {
                 // save value

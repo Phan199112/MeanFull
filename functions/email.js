@@ -244,20 +244,25 @@ exports.sendSummary = function sendSummary() {
                         question.commentCount + ' new ' + commentPlural;
                 }
 
-                if (question.responseProfiles.length > 0) {
-                    question.responseProfiles.slice(0, 5).forEach(function (profile) {
-                        picsHTML += `
-                            <p style="padding-left: 25px; margin: 4px 0">
-                                <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
-                                    <img src="${profile.profilePic}" style="height: 30px; vertical-align: middle; padding-right: 8px;">
-                                </a>
-                                <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
-                                    ${profile.name}
-                                </a>
-                            </p>
-                        `
+                var profiles = question.responseProfiles.slice(0, 5);
+                for (var i = 0; i < question.anonymousCount && profiles.length < 5; i++) {
+                    profiles.push({
+                        name: 'Anonymous',
+                        profilePic: 'https://www.questionsly.com/images/male.png'
                     });
                 }
+                profiles.forEach(function (profile) {
+                    picsHTML += `
+                        <p style="padding-left: 25px; margin: 4px 0">
+                            <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
+                                <img src="${profile.profilePic}" style="height: 50px; vertical-align: middle; padding-right: 8px;">
+                            </a>
+                            <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
+                                ${profile.name}
+                            </a>
+                        </p>
+                    `
+                });
 
                 questionsString += `
                     <mj-section border="0px" padding-left="25px">

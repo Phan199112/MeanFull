@@ -86,13 +86,6 @@ export class MiniShowFormComponent implements OnInit {
             });
     }
 
-    returnIndex(i: number) : number {
-        // This function feeds the right index to the short answer modal to load the question "See All" was clicked for
-        var ind = this.saIndexes.findIndex(x => x === i);
-
-        return ind;
-    }
-
     createForm() {
         //
         let tempf = function(x) {

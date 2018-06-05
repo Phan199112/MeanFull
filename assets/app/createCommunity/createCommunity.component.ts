@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import { Router } from "@angular/router";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
-import {FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import {FormService} from "../form.service";
 import {UserService} from "../user.service";
 
@@ -53,7 +53,7 @@ export class CreateCommunityComponent  {
 
     createForm() {
         this.fgCreateCommunity = this.fb.group({
-            title: '',
+            title: new FormControl('', Validators.minLength(1)),
             description: '',
             public: true,
             admins: null,

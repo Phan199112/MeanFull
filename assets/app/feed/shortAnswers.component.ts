@@ -23,14 +23,4 @@ export class ShortAnswers {
     this.index = i;
     this.modalService.open(this.content);
   }
-
-//   check(loginRequired) {
-//     if (loginRequired === true) {
-//         this.userService.afterLoginCheck().then(response => {
-//             if (response === 0) {
-//                 this.open();
-//             }
-//         });
-//     }
-//   }
-// }
+}
