@@ -38,6 +38,6 @@ export class YourCommunityListComponent implements OnInit {
                     this.visible = false;
                 }
             })
-            .catch(error => alert("Error retrieving form: " + error));
+            .catch(error => console.log("Error retrieving form: " + error));
     }
 }

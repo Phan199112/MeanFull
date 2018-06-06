@@ -27,9 +27,12 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pref: string;
     @Input() showAnsweredQuestions: boolean; // when true, `user` must be given, and `comm` / `tag` do not apply
     
+    
     me: string;
     formselected: any;
     topSurveyChanged: boolean = false;
+    prevTag: string;
+    tagChanged: boolean = false;
 
     constructor(private http: Http, 
                 private userService: UserService,
@@ -37,7 +40,8 @@ export class FeedListComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.formselected = this.route.params.value.survey;        
+        this.formselected = this.route.params.value.survey;       
+        this.prevTag = this.tag;        
 
         this.route.params.subscribe(params => {
             if (this.formselected !== params.survey) {
@@ -61,6 +65,13 @@ export class FeedListComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         this.formselected = this.route.params.value.survey;
+        
+        // Check if changes came from tag
+        if (this.prevTag !== this.tag) {
+            this.tagChanged = true;
+            this.prevTag = this.tag;            
+        }
+        
         this.refreshFeed();
     }
 
@@ -120,10 +131,11 @@ export class FeedListComponent implements OnInit, OnChanges {
             };
 
             // Clear list if fetching new Top Survey from notification
-            if (this.topSurveyChanged) {
+            if (this.topSurveyChanged || this.tagChanged) {
                 this.feedlist = [];
                 this.formids = [];
                 this.topSurveyChanged = false;
+                this.tagChanged = false;
             }
         }
 
@@ -153,7 +165,7 @@ export class FeedListComponent implements OnInit, OnChanges {
 
                 }
             })
-            .catch(error => alert("Error retrieving form: " + error));
+            .catch(error => console.log("Error retrieving form: " + error));
     }
 
     getTopPost() {
@@ -183,6 +195,6 @@ export class FeedListComponent implements OnInit, OnChanges {
                     
                 }
             })
-            .catch(error => alert("Error retrieving form: " + error));
+            .catch(error => console.log("Error retrieving form: " + error));
     }
 }

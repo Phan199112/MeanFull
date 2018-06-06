@@ -105,7 +105,7 @@ var EmailStoreModel = require('./db.models/emailStore.model');
 getSearchAndTags();
 
 // crons for tags
-cron.schedule('*/2 * * * *', getSearchAndTags);
+cron.schedule('*/1 * * * *', getSearchAndTags);
 
 function getSearchAndTags() {
     var tags = [];

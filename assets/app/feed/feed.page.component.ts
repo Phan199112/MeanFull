@@ -122,7 +122,7 @@ export class FeedPageComponent implements OnInit  {
     
 
     setTag(tag: string) : void {
-        this.tag = tag;
+        this.tag = tag;                
     }
 
     askQuestion() {
