@@ -16,8 +16,6 @@ module.exports = function (app, passport, manager, hashids) {
         new Promise(function (resolve, reject) {
             EventModel.find({ userid: req.session.userid }).sort({ 'timestamp': 'desc' }).cursor()
                 .on('data', function (event) {
-                    console.log('EVENTS EVENTS EVENTS: ', event.type);
-                    
                     var formdata = {};
                     var commdata = {};
                     var decryptedId = "";
