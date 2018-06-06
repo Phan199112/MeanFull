@@ -1296,9 +1296,7 @@ module.exports = function(app, passport, manager, hashids) {
         // promises array
         var promises = [];
         // output variables
-        var shortAnswers = [];
         var shortAnswers2 = [];
-        var shortAnswersAndAuthor = [];
         var exportdata;
         var answercount;
         var formcompleted = false;
@@ -1356,45 +1354,7 @@ module.exports = function(app, passport, manager, hashids) {
                             tempallanswers = allanswers;
                             answercount = allanswers.length;
 
-                            allanswers.map(surveyAnsw => {
-                                shortAnswers.push(surveyAnsw.answers.filter(ans => {
-                                    if (ans.kind === 'Short Answer') return true;
-                                }).map(z => z.answer))
-                            });
-
-
                             var authorPromises = []
-
-                            if (shortAnswers[0] && shortAnswers[0].length !== 0) {
-                                allanswers.map((surveyAnsw, i) => {
-                                    if (surveyAnsw.userid !== "anonymous") {
-                                        authorPromises.push(
-                                            new Promise ((resolve, reject) => {
-                                                UserModel.findById(surveyAnsw.userid, function (err, usr) {
-                                                    if (err) {
-                                                        reject();
-                                                    } else {
-                                                        var pic;
-                                                        if (usr.pic) {
-                                                            pic = usr.pic
-                                                        } else if (usr.facebookID) {
-                                                            pic = `https://graph.facebook.com/${usr.facebookID}/picture?width=40&height=40`;
-                                                        } else {
-                                                            pic = "/images/male.png";
-                                                        }
-                                                        shortAnswers[i].push({name: `${usr.name.first} ${usr.name.last}`, pic: pic});
-                                                        resolve();
-                                                    }
-                                                });
-                                            })
-                                        );
-
-                                    } else {
-                                        shortAnswers[i].push({ name: "Anonymous", pic: "/images/male.png" })
-                                    }
-
-                                });
-                            }
 
                             allanswers.map(surveyAnsw => {
                                 surveyAnsw.answers.map((questionAnsw, i) => {

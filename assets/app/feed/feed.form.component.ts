@@ -50,7 +50,6 @@ export class FeedFormComponent implements OnInit {
     location: any;
     showFilter: boolean = false;
     startingTime: any;
-    shortAnswers: any = [];
     shortAnswers2: any = [];
     shareUrl: string;
     isMyPost: boolean = false;
@@ -342,9 +341,8 @@ export class FeedFormComponent implements OnInit {
             .toPromise()
             .then(response => {
 
-                let responsedata = response.json().data;              
-               
-                this.shortAnswers = [];
+                let responsedata = response.json().data;
+
                 this.shortAnswers2 = response.json().shortAnswers2;
                 
                 let responsestatus = response.json().status;

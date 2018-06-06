@@ -21,7 +21,6 @@ export class MiniShowFormComponent implements OnInit {
     lastMcQuestionIndex = null;
 
     @Input() data: FeedForm;
-    @Input() shortAnswers: any;
     @Input() shortAnswers2: any;
 
     @Input() count: number;
