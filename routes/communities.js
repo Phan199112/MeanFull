@@ -371,7 +371,8 @@ module.exports = function(app, passport, manager, hashids) {
                     var isadmin = false;
                     var isPending = false;
                     var adminId = hashids.encodeHex(comm.adminuserid[0]);
-                    var memberCount = comm.members.length;
+                    // Admins are members in the UI but not in the DB
+                    var memberCount = comm.members.length + comm.adminuserid.length;
 
                     if (req.session.userid) {
                         var encryptedUser = hashids.encodeHex(req.session.userid);
@@ -400,21 +401,18 @@ module.exports = function(app, passport, manager, hashids) {
                     var memberlist = [];
 
                     if (comm.members !== null) {
-                        for (l=0; l < comm.members.length; l++) {
-                            var newval = math.getRandomInt(0, comm.members.length);
-                            if (randomints.indexOf(newval) === -1) {
-                                randomints.push(newval);
+                        // Picks up to 9 random users to show from members + admins
+                        // Note: removes items from comm.members and comm.adminuserid; they are not used below
+                        for (var l = 0; l < 9 && comm.members.length + comm.adminuserid.length; l++) {
+                            var newval = math.getRandomInt(0, comm.members.length + comm.adminuserid.length - 1);
+                            if (newval < comm.members.length) {
+                                memberlisttemp.push(comm.members[newval]);
+                                comm.members.splice(newval, 1);
+                            } else {
+                                newval -= comm.members.length;
+                                memberlisttemp.push(comm.adminuserid[newval]);
+                                comm.adminuserid.splice(newval, 1);
                             }
-                        }
-
-                        // add some random members
-                        for (j in randomints) {
-                            memberlisttemp.push(comm.members[j]);
-                        }
-
-                        // add the admins
-                        for (k=0; k < comm.adminuserid.length; k++) {
-                            memberlisttemp.push(comm.adminuserid[k]);
                         }
                     }
 
@@ -466,18 +464,52 @@ module.exports = function(app, passport, manager, hashids) {
                         // public status
                         if (comm.public === true) {
                             // send back data
-                            sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId, memberCount: memberCount};
+                            sendcomm = {
+                                title: comm.title,
+                                timestamp: comm.timestamp,
+                                public: comm.public,
+                                description: comm.description,
+                                pic: comm.pic,
+                                ismember: ismember,
+                                isadmin: isadmin,
+                                members: memberlist,
+                                adminId: adminId,
+                                memberCount: memberCount
+                            };
                             res.json({status: 1, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
 
                         } else {
                             if (ismember === true) {
                                 // send back data
-                                sendcomm = { title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: memberlist, adminId: adminId, memberCount: memberCount};
+                                sendcomm = {
+                                    title: comm.title,
+                                    timestamp: comm.timestamp,
+                                    public: comm.public,
+                                    description: comm.description,
+                                    pic: comm.pic,
+                                    ismember: ismember,
+                                    isadmin: isadmin,
+                                    members: memberlist,
+                                    adminId: adminId,
+                                    memberCount: memberCount
+                                };
                                 res.json({status: 1, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
 
                             } else {
                                 // send back data
-                                sendcomm = {title: comm.title, timestamp: comm.timestamp, public: comm.public, description: comm.description, pic: comm.pic, ismember: ismember, isadmin: isadmin, members: null, isPending: isPending, adminId: adminId, memberCount: memberCount};
+                                sendcomm = {
+                                    title: comm.title,
+                                    timestamp: comm.timestamp,
+                                    public: comm.public,
+                                    description: comm.description,
+                                    pic: comm.pic,
+                                    ismember: ismember,
+                                    isadmin: isadmin,
+                                    members: null,
+                                    isPending: isPending,
+                                    adminId: adminId,
+                                    memberCount: memberCount
+                                };
                                 res.json({status: 2, data: sendcomm, loggedin: req.isAuthenticated() ? '1' : '0'});
                             }
                         }
