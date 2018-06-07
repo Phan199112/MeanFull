@@ -67,7 +67,7 @@ export class RightPanel implements OnInit {
                 if (res.json().status == 1) {
                     this.communities = res.json().data;
                 }
-            }).catch(error => alert("Error retrieving form: " + error));
+            }).catch(error => console.log("Error retrieving form: " + error));
     }
 
     checkLocation() {
@@ -93,7 +93,7 @@ export class RightPanel implements OnInit {
     toggleTag(tag: string): void {
         if (this.currentTag === tag) {
             this.currentTag = null;
-            this.toggledTag.emit(null);
+            this.toggledTag.emit(null);            
         } else {
             this.currentTag = tag;
             this.toggledTag.emit(tag);

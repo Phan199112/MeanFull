@@ -114,7 +114,7 @@ export class TakeFormComponent implements OnInit {
 
 
                 })
-                .catch(error => alert("Error retrieving form: " + error));
+                .catch(error => console.log("Error retrieving form: " + error));
         })
 
         this.startTime = new Date();

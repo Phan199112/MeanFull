@@ -53,7 +53,7 @@ export class TagListComponent implements OnInit, OnDestroy {
                     }
                 }
             })
-            .catch(error => alert("Error retrieving form: " + error));
+            .catch(error => console.log("Error retrieving form: " + error));
     }
 
 
