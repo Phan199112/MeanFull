@@ -14,7 +14,7 @@ module.exports = function (app, passport, manager, hashids) {
 
 
         new Promise(function (resolve, reject) {
-            EventModel.find({ userid: req.session.userid }).sort({ 'timestamp': 'desc' }).cursor()
+            EventModel.find({ userid: req.session.userid }).sort({ '_id': 'desc' }).limit(20).cursor()
                 .on('data', function (event) {
                     var formdata = {};
                     var commdata = {};
@@ -29,6 +29,12 @@ module.exports = function (app, passport, manager, hashids) {
                         timestamp: event.timestamp
                     };
 
+                    // If a notification is invalid (references a deleted user, etc.) just delete it
+                    // Otherwise when we load 20 notifications, we could be loading a bunch of invalid ones
+                    var deleteInvalidNotification = function () {
+                        console.log("Deleting invalid notification", event);
+                        EventModel.remove({ '_id': event._id }, function (err, res) {});
+                    };
 
                     if (typeof event.data === 'string') {
                         decryptedId = hashids.decodeHex(event.data);
@@ -71,7 +77,7 @@ module.exports = function (app, passport, manager, hashids) {
                                     } else {
 
                                         if (!userinfo) {
-                                            console.log("NOTIFICATION BREAKING THIS DOWN: ", event._id);
+                                            deleteInvalidNotification();
                                             resolve();
                                         }
                                         
@@ -109,6 +115,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                     outputevents.push(eventdata);
                                                     resolve();
                                                 } else {
+                                                    deleteInvalidNotification();
                                                     resolve();
                                                 };
                                             });
@@ -122,6 +129,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                     outputevents.push(eventdata);
                                                     resolve();
                                                 } else {
+                                                    deleteInvalidNotification();
                                                     resolve();
                                                 }
                                             });
@@ -139,6 +147,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                         outputevents.push(eventdata);
                                                         resolve();
                                                     } else {
+                                                        deleteInvalidNotification();
                                                         resolve();
                                                     };
                                                 });
@@ -163,15 +172,18 @@ module.exports = function (app, passport, manager, hashids) {
 
                                                                 resolve();
                                                             } else {
+                                                                deleteInvalidNotification();
                                                                 resolve();
                                                             }
                                                         });
                                                     } else {
+                                                        deleteInvalidNotification();
                                                         resolve();
                                                     }
                                                 });
                                             }
                                         } else {
+                                            deleteInvalidNotification();
                                             resolve();
                                         }
 
