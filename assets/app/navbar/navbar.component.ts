@@ -247,6 +247,9 @@ export class NavbarComponent implements OnInit {
             var words = 0;
             var finalString = [];
 
+            if (!string)
+                return '';
+
             for (let i = 0; i < string.length; i++) {
                 if (string[i] === " ") {
                     words++;
