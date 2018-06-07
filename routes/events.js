@@ -101,6 +101,7 @@ module.exports = function (app, passport, manager, hashids) {
                                             eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                             outputevents.push(eventdata);
                                             resolve();
+                                            return;
                                         }
 
                                         if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
