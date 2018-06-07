@@ -7,6 +7,7 @@ var EmailStoreModel = require('../db.models/emailStore.model');
 var randommod = require("../functions/random");
 var commfunctions = require('../functions/communities');
 var emailfunctions 	= require("../functions/email");
+var usersfunctions = require('../functions/users');
 
 
 // expose this function to our app using module.exports
@@ -626,7 +627,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                                                 if (e) {
                                                     var networkNotifications = e.network;
-                                                        networkNotifications.push({ name: senderName, pic: me.pic, link: networkLink});
+                                                    networkNotifications.push({ name: senderName, pic: usersfunctions.getProfilePic(me), link: networkLink});
                                                     
 
                                                     e.save(function (err) {
@@ -642,7 +643,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                         userid: targetuserid,
                                                         questions: [],
                                                         community: [],
-                                                        network: [{ name: senderName, pic: me.pic, link: networkLink}],
+                                                        network: [{ name: senderName, pic: usersfunctions.getProfilePic(me), link: networkLink}],
                                                         shared: []
                                                     }, function (err, k) {
                                                         if (err) {

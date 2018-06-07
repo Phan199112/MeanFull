@@ -75,7 +75,7 @@ module.exports = function(app, passport, manager, hashids) {
                 if (user) {
                     unhashedUsers.push(user._id);
                     userName = user.name.first + " " + user.name.last;
-                    userPic = user.pic;
+                    userPic = usersfunctions.getProfilePic(user);
                     questionLink = `https://www.questionsly.com/feed;survey=${req.params.id}`;
                 } else {
                     reject();
