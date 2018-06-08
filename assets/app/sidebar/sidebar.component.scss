@@ -153,11 +153,22 @@ h3 {
 }
 
 .moreLink {
-  text-align: right; width: 100%;
+  text-align: right; 
+  width: 100%;
 }
 
 .moreLink a {
-  font-size: smaller;
+    color: #AAA;
+    border: solid 1px #999;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: .7rem;
+    text-decoration: none;
+
+    &:hover {
+      border-color: #333;
+      color: #444;
+    }
 }
 
 .submitButton {

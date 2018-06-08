@@ -1,7 +1,7 @@
 <div style="width: 100%">
     <form [formGroup]="question" novalidate (ngSubmit)=submitQuestion()>    
         <div class="multipleChoice">
-            <h6 class="title qslyBlack firstTitle">What is your question?</h6>
+            <h6 class="title qslyBlack firstTitle">What is your question? <span class="valError" *ngIf="errors.question">*Question cannot be empty.</span></h6>
             <div style="display: flex; align-items: center; width: 100%">
                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                 <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>

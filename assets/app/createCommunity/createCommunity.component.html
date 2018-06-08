@@ -19,7 +19,7 @@
                 <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
 
                     <div class="flexContainer fdColumn faStart">  
-                        <h6 class="title firstTitle">Community Title</h6>
+                        <h6 class="title firstTitle">Community Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
                         <div style="display: flex; align-items: center; width: 100%">
                             <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                             <input class="niceTextInput qslyGray" formControlName="title" autofocus />
@@ -125,9 +125,7 @@
                 </div>
                        
                        
-                        <div *ngIf="submissionfailed">
-                            Submission failed!
-                        </div>
+                        <p class="valError" style="text-align: center" *ngIf="errors.title">Uh oh, there has been an error creating the group. Check for errors above.</p>
                         <!-- <div *ngIf="visitbutton" class="float-right">
                             <button class="btn btn-outline-success mouseChangeToHand" [routerLink]="['/community', commurl]">Visit community</button>
                         </div> -->

@@ -25,6 +25,9 @@ export class RatingQuestionForm implements OnInit {
 
     question: FormGroup;
     updateView: boolean = false;
+    errors: any = {
+        question: false,
+    }
 
     temp: string[];
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
@@ -61,7 +64,7 @@ export class RatingQuestionForm implements OnInit {
             this.temp = Array(Number(this.updateData.scale));
 
             this.question = this.fb.group({
-                body: [this.updateData.body, Validators.required],
+                body: [this.updateData.body, [Validators.required, Validators.minLength(1)]],
                 kind: ['Rating', Validators.required],
                 options: this.fb.array([]),
                 required: this.updateData.required,
@@ -72,7 +75,7 @@ export class RatingQuestionForm implements OnInit {
             })
         } else {
             this.question = this.fb.group({
-                body: ['', Validators.required],
+                body: ['', [Validators.required, Validators.minLength(1)]],
                 kind: ['Rating', Validators.required],
                 options: this.fb.array([]),
                 required: true,
@@ -106,6 +109,8 @@ export class RatingQuestionForm implements OnInit {
 
     submitQuestion() {
         if (this.question.valid) {
+            this.errors.question = false;
+
             // window.console.log('Submitted!', this.question.value);
 
             if (this.updateView) {
@@ -118,6 +123,8 @@ export class RatingQuestionForm implements OnInit {
                 this.questionData.emit(this.question.value);
             }
             this.purgeForm();         
+        } else {
+            this.errors.question = !this.question.get('body').valid
         }
     }
 

@@ -28,6 +28,10 @@ export class MultipleChoiceQuestionForm implements OnInit {
     
     question: FormGroup;
     updateView: boolean = false;
+    errors: any = {
+        question: false,
+        choices: false
+    }
 
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
@@ -59,7 +63,7 @@ export class MultipleChoiceQuestionForm implements OnInit {
 
 
             this.question = this.fb.group({
-                body: [this.updateData.body, Validators.required],
+                body: [this.updateData.body, [Validators.required, Validators.minLength(1)]],
                 kind: ['Multiple Choice', Validators.required],
                 options: this.fb.array([]),
                 required: this.updateData.required,
@@ -77,7 +81,7 @@ export class MultipleChoiceQuestionForm implements OnInit {
 
         } else {
             this.question = this.fb.group({
-                body: ['', Validators.required],
+                body: ['', [Validators.required, Validators.minLength(1)]],
                 kind: ['Multiple Choice', Validators.required],
                 options: this.fb.array([]),
                 required: true,
@@ -115,7 +119,7 @@ export class MultipleChoiceQuestionForm implements OnInit {
 
     createOption(val: string = ""): FormGroup {
         return this.fb.group({
-            body: val
+            body: [val, [Validators.required, Validators.minLength(1)]]
         });
     }
 
@@ -158,7 +162,19 @@ export class MultipleChoiceQuestionForm implements OnInit {
     }
 
     submitQuestion() {
-        if (this.question.valid) {
+
+        //Remove empty option at end if more than 2 choices entered to make choices valid
+        if (this.question.get('options').length > 2) {
+            const cont = this.question.get('options') as FormArray;
+            var lg = cont.at(cont.length - 1) as FormGroup;
+            if (!lg.value.body)  this.removeOption(cont.length-1);
+        }
+
+        
+        if (this.question.valid && this.question.get('options').length > 1) {
+            this.errors.question = false;
+            this.errors.choices = false;
+
             const empty = /^\s*$/;
 
             var arrayControl = this.question.get('options') as FormArray;
@@ -184,6 +200,14 @@ export class MultipleChoiceQuestionForm implements OnInit {
             }
 
             this.purgeForm();
+        } else {
+            this.errors.question = !this.question.get('body').valid
+            this.errors.choices = !this.question.get('options').valid
+            
+            if (this.question.get('options').length < 2) {
+                this.errors.choices = true;
+                
+            }
         }
     }
 

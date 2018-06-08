@@ -24,6 +24,9 @@ export class CreateCommunityComponent  {
     reject: any = null;
     privacyOption = 0;
     friends: any[] = [];
+    errors: any = {
+        title: false
+    }
 
     constructor(
         private fb: FormBuilder,
@@ -53,7 +56,7 @@ export class CreateCommunityComponent  {
 
     createForm() {
         this.fgCreateCommunity = this.fb.group({
-            title: new FormControl('', Validators.minLength(1)),
+            title: new FormControl('', [Validators.required, Validators.minLength(1)]),
             description: '',
             public: true,
             admins: null,
@@ -74,8 +77,9 @@ export class CreateCommunityComponent  {
 
     checkSubmit() {
         this.setAsTouched(this.fgCreateCommunity);
-        if (this.fgCreateCommunity.invalid) {
+        if (this.fgCreateCommunity.invalid) {            
             this.fgCreateCommunity.wasChecked = true;
+            this.errors.title = true;
         } else {
             this.submitted = true;
             this.submitForm();

@@ -184,6 +184,7 @@ input.option-input.is-invalid {
   justify-content: center;
   background: #FFF;
   margin: 0px;
+  margin-top: 6%;
   border-radius: 4px;
   border: 1px solid $borderColor;
   position: relative;
@@ -366,4 +367,10 @@ input.option-input.is-invalid {
     border-radius: 8px;
     outline-style: none;
     outline: none;
+}
+
+.valError {
+  color: #ff6969;
+  font-size: .8rem;
+  margin-left: 8px;
 }

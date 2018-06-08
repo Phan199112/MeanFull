@@ -24,8 +24,8 @@
         </div>
 
         <div *ngIf="networklist.length !== 0" class="moreLink">
-            <a [routerLink]="['/profile', user, 'network']">
-                More...
+            <a [routerLink]="['/profile', user, 'network']" class="viewAllBtn">
+                View All
             </a>
         </div>
     </div>
@@ -52,7 +52,7 @@
 
         <div *ngIf="communitylist.length !== 0" class="moreLink">
             <a [routerLink]="['/profile', user, 'communities']">
-                More...
+                View All
             </a>
         </div>
     </div>

@@ -302,9 +302,15 @@ exports.sendSummary = function sendSummary() {
                         reject();
                     }
                     email = recipient.email;
+
+                    // Don't send email to people who have opted out
+                    if (recipient.notifications.summary !== undefined && !recipient.notifications.summary) {
+                        reject()
+                    }
+
                     resolve();
                 });
-            }).then(function() {
+            }).then(function(x = true) {
                 renderTemplateLoopFix("summary", {
                     subject: subject,
                     fecha: date,
@@ -329,7 +335,7 @@ exports.sendSummary = function sendSummary() {
                 });
             })
             .catch(function(err) {
-                console.log("Error in summary promise.", err);
+                console.log("Error in summary promise or user opted out of summary email.", err);
             })
         });
         return;

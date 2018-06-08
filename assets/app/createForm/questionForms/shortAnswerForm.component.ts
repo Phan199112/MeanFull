@@ -26,6 +26,9 @@ export class ShortAnswerQuestionForm implements OnInit {
 
     question: FormGroup;
     updateView: boolean = false;
+    errors: any = {
+        question: false,
+    }
 
     @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
     @ViewChildren("imgTooltipToggle") imgTooltipToggles; 
@@ -61,7 +64,7 @@ export class ShortAnswerQuestionForm implements OnInit {
 
 
             this.question = this.fb.group({
-                body: [this.updateData.body, Validators.required],
+                body: [this.updateData.body, [Validators.required, Validators.minLength(1)]],
                 kind: ['Short Answer', Validators.required],
                 options: this.fb.array([]),
                 required: this.updateData.required,
@@ -71,7 +74,7 @@ export class ShortAnswerQuestionForm implements OnInit {
             })
         } else {
             this.question = this.fb.group({
-                body: ['', Validators.required],
+                body: ['', [Validators.required, Validators.minLength(1)]],
                 kind: ['Short Answer', Validators.required],
                 options: this.fb.array([]),
                 required: true,
@@ -92,6 +95,7 @@ export class ShortAnswerQuestionForm implements OnInit {
 
     submitQuestion() {
         if (this.question.valid) {
+            this.errors.question = false;
 
             if (this.updateView) {
                 this.outputUpdateData.emit(this.question.value);
@@ -104,6 +108,8 @@ export class ShortAnswerQuestionForm implements OnInit {
             }
 
             this.purgeForm();
+        } else {
+            this.errors.question = !this.question.get('body').valid
         }
     }
 

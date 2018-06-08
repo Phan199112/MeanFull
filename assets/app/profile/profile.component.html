@@ -61,15 +61,13 @@
                 <sidebar *ngIf="mobileWidth" [friends]="network" [loggedin]="loggedin" [user]="id" [context]="'profile'" [name]="name" [me]="me"></sidebar>
 
 
-                <div class="row" *ngIf="!hidefeed && !genericSubsection" class="toggleRow">
-                    <p *ngIf="!showAnsweredQuestions">
-                        Questions asked •
-                        <a [routerLink]="['/profile', id, 'answered']">Questions answered</a>
-                    </p>
-                    <p *ngIf="showAnsweredQuestions">
-                        Questions answered •
-                        <a [routerLink]="['/profile', id]">Questions asked</a>
-                    </p>
+                <div *ngIf="!hidefeed && !genericSubsection" class="feedRow">
+                    <a [routerLink]="['/profile', id]" [ngClass]="{currentFeed: !showAnsweredQuestions, notCurrentFeed: showAnsweredQuestions}">
+                        Asked
+                    </a>
+                    <a [routerLink]="['/profile', id, 'answered']" [ngClass]="{currentFeed: showAnsweredQuestions, notCurrentFeed: !showAnsweredQuestions}">
+                        Answered
+                    </a>
                 </div>
 
                 <!-- Feed content or other info -->

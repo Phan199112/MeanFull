@@ -31,20 +31,21 @@
                 <div class="qDataScroll">
                     <h3 class="containerTitle abs qslyGreen">Overview</h3>
 
-                    <h3 *ngIf="!questionData.length" class="containerTitle">Your Completed Questions Will Appear Here</h3>
+                    <h3 *ngIf="!questionData.length" class="containerTitle" style="color: #999; padding: 0 12px">Your Completed Questions Will Appear Here</h3>
 
                     <div class="surveyTitle">
                         <a
                             href="#"
-                            onClick="$('.surveyTitle a').hide(); $('.surveyTitle fieldset').show(); $('.surveyTitle textarea').focus(); return false">
-                            Click to add a title for your questions
+                            onClick="$('.surveyTitle a').hide(); $('.surveyTitle fieldset').show(); $('.surveyTitle textarea').focus(); return false"
+                            class="titleLink">
+                            + Add a Title
                         </a>
                         <fieldset>
-                            <textarea
+                            <input
                                 formControlName="title"
-                                rows="1"
-                                placeholder="Title">
-                            </textarea>
+                                placeholder="Enter a Title" 
+                                id="titleInput"
+                                />
                         </fieldset>
                     </div>
 
@@ -207,9 +208,9 @@
                     <h6 class="settingTitle qslyBlack">Share with email addresses</h6>
                     <div>
                         <input type="text" name="shareEmailAddresses" placeholder="Emails">
-                        <a href="#" onClick="$('#secretUploadBox').toggle(); return false">Upload .XLS...</a>
+                        <a href="#" onClick="$('#secretUploadBox').toggle(); return false" class="xlsBtn">Upload .XLS</a>
                         <fieldset id="secretUploadBox">
-                            <p>Upload an Excel file (.XLS) to extract email addresses</p>
+                            <p style="font-size: .75rem">Upload an Excel file (.XLS) to extract email addresses</p>
                             <input type="file" name="shareEmailAddressesFile" accept=".xls,.xlsx">
                             <button (click)="uploadShareEmailAddresses()">Upload</button>
                         </fieldset>

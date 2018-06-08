@@ -69,7 +69,7 @@ h3 {
     @media (max-width: 767px) {
         margin-bottom: 12px !important;
         margin-top: 10px;
-        font-size: .9rem;
+        font-size: 1.2rem;
     }
 }
 
@@ -752,7 +752,6 @@ h3 {
         line-height: 1.8rem;
         padding: 0 10px;
     }
-    a {font-size: .75rem; display: block; float: right; line-height: 1.8rem;}
     fieldset {display: none; margin-top: 1em;}
     fieldset input {width: 60%;}
     fieldset button {
@@ -768,13 +767,48 @@ h3 {
 
     fieldset {display: none;}
 
-    textarea {
-        border: none;
-        font-size: 1.25rem;
-        text-align: center;
+    @media (max-width: 767px) {
+        margin-bottom: 25px;
+    }
+    
+}
 
-        @media (max-width: 767px) {
-            font-size: .9rem;
-        }
+
+.titleLink {
+    color: #FFF;
+    border: solid 1px #47d487;
+    background-color: #47d487;
+    padding: 4px 32px;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-decoration: none;
+
+    &:hover {
+      border-color: darken(#47d487, 8);
+      background-color: darken(#47d487, 8);
+    }
+}
+
+#titleInput {
+    border: none;
+    border-bottom: 1px solid #999;
+    color: #000;
+    outline: none;
+    width: 80%;
+    padding: 4px 8px;
+}
+
+.xlsBtn {
+    color: #AAA;
+    border: solid 1px #999;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: .7rem;
+    text-decoration: none;
+    float: right;
+
+    &:hover {
+      border-color: #333;
+      color: #444;
     }
 }

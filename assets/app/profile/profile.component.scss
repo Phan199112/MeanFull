@@ -212,10 +212,43 @@ canvas {
   display: flex;
 }
 
-.toggleRow p {
-    text-align:  center;
-    width: 100%;
-    margin: 12px 0 6px 0;
-    font-size: .75rem;
-    a {font-size: .75rem;}
+.feedRow {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+
+  a {
+    display: block;
+  }
 }
+
+
+.currentFeed {
+  color: #FFF;
+  font-size: .75rem;
+  padding: 4px 12px;
+  border: 1px solid #666;
+  background: #666;
+  margin: 0 6px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.notCurrentFeed {
+  color: #999;
+  font-size: .75rem;
+  padding: 4px 12px;
+  border: 1px solid #999;
+  margin: 0 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #333;
+    color: #666;
+  }
+  
+}
+

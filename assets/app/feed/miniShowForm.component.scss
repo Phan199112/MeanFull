@@ -9,6 +9,13 @@ $primaryColor: #28ab64;
 .formChoices {
   font-weight: 500;
   width: 95%;
+  display: flex;
+
+  
+    input {
+      margin-top: 3px;
+      cursor: pointer;
+    }
 
   & label {
     font-size: 1rem;
