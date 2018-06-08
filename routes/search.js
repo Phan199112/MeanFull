@@ -73,6 +73,7 @@ module.exports = function(app, passport, manager, hashids) {
         var type = req.body.type;
 
         if (type === 'tag') {
+            if (!TagsAutoComplete) {res.json({status: 0}); return;}
             TagsAutoComplete.getResults(keyword, function (err, words) {
                 if (err) {
                     console.log(err);
@@ -88,6 +89,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
 
         } else if (type === 'comm') {
+            if (!CommunityAutoComplete) {res.json({status: 0}); return;}
             CommunityAutoComplete.getResults(keyword, function (err, words) {
                 if (err) {
                     console.log(err);
@@ -103,6 +105,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
 
         } else if (type === 'user') {
+            if (!UserAutoComplete) {res.json({status: 0}); return;}
             UserAutoComplete.getResults(keyword, function (err, words) {
                 if (err) {
                     console.log(err);

@@ -12,7 +12,8 @@ var usersfunctions = require('../functions/users');
 var commfunctions = require('../functions/communities');
 var formfunctions = require('../functions/forms');
 var exportfunctions = require('../functions/export');
-var emailfunctions 	= require("../functions/email");
+var emailfunctions  = require("../functions/email");
+var uploadfunctions  = require("../functions/upload");
 var fs = require('fs');
 var atob = require('atob');
 var emailAddress = require("email-addresses");
@@ -74,7 +75,7 @@ module.exports = function(app, passport, manager, hashids) {
                 if (user) {
                     unhashedUsers.push(user._id);
                     userName = user.name.first + " " + user.name.last;
-                    userPic = user.pic;
+                    userPic = usersfunctions.getProfilePic(user);
                     questionLink = `https://www.questionsly.com/feed;survey=${req.params.id}`;
                 } else {
                     reject();
@@ -85,8 +86,9 @@ module.exports = function(app, passport, manager, hashids) {
         // update survey
         var saveSurvey = function() {
             return new Promise(function (resolve, reject) {
+                // Note: receivedData contains questions, but it's outdated (has non-S3 URLs) & has no new information
                 FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
-                    {$set: {questions: receivedData.questions, title: receivedData.title, categories: categories,
+                    {$set: { title: receivedData.title, categories: categories,
                             description: receivedData.description, anonymous: receivedData.anonymous,
                             hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
                             public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers,
@@ -284,33 +286,64 @@ module.exports = function(app, passport, manager, hashids) {
     // save new form
     app.post('/forms/create', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // input
-        var receivedData =  req.body;
-        // mongodb create
-        FormModel.create({userid: req.session.userid,
-            // title: receivedData.title,
-            // description: receivedData.description,
-            questions: receivedData.questions,
-            anonymous: receivedData.anonymous,
-            hashtags: receivedData.hashtags,
-            categories: receivedData.categories,
-            public: false,
-            shared: false,
-            resultsPublic: true,
-            expired: false,
-            activityEmailSent: false,
-            typeevent: receivedData.typeevent,
-            timestamp: Date.now()}, function(err, k) {
-            if (err) {
-                // Error in writing new form
-                res.json({status: 0});
-            } else {
-                // log
-                log.writeLog(req.session.userid, 'create form', req.ip);
-                // update user stats
-                usersfunctions.incrementNoCreated(req.session.userid);
-                // return
-                res.json({id: hashids.encodeHex(k._id), status: 1});
+        var receivedData = req.body;
+
+        var promisesToUploadMedia = [];
+        receivedData.questions.forEach(function (question) {
+            if (question.pic) {
+                if (question.pic.indexOf("questionsly") == -1) { // URL not already in our s3 bucket
+                    promisesToUploadMedia.push(
+                        new Promise(function (resolve, reject) {
+                            uploadfunctions.uploadFromUrlToS3(question.pic, function (err, res, newUrl) {
+                                if (err) {
+                                    // Instead of totally failing (a case that the frontend doesn't handle), just keep the original URL in there
+                                    // reject();
+                                    resolve();
+                                } else {
+                                    question.pic = newUrl;
+                                    resolve();
+                                }
+                            });
+                        })
+                    );
+                }
             }
+        });
+
+        Promise.all(promisesToUploadMedia)
+        .then(function () {
+            // mongodb create
+            FormModel.create(
+                {
+                    userid: req.session.userid,
+                    questions: receivedData.questions,
+                    anonymous: receivedData.anonymous,
+                    hashtags: receivedData.hashtags,
+                    categories: receivedData.categories,
+                    public: false,
+                    shared: false,
+                    resultsPublic: true,
+                    expired: false,
+                    activityEmailSent: false,
+                    typeevent: receivedData.typeevent,
+                    timestamp: Date.now()
+                }, function(err, k) {
+                    if (err) {
+                        // Error in writing new form
+                        res.json({status: 0});
+                    } else {
+                        // log
+                        log.writeLog(req.session.userid, 'create form', req.ip);
+                        // update user stats
+                        usersfunctions.incrementNoCreated(req.session.userid);
+                        // return
+                        res.json({id: hashids.encodeHex(k._id), status: 1});
+                    }
+                }
+            );
+        })
+        .catch(function () {
+            res.json({status: 0});
         });
     });
 
@@ -593,6 +626,7 @@ module.exports = function(app, passport, manager, hashids) {
                 log.writeLog(req.session.userid, 'form deleted', req.ip);
                 // user stats
                 usersfunctions.decrementNoCreated(req.session.userid);
+                emailstoresfunctions.surveyDeleted(formid);
                 // return
                 res.json({status: 1});
             }

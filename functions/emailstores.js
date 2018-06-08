@@ -128,3 +128,12 @@ exports.recordNewResponse = function recordNewComment(userMakingCommentId, surve
 exports.recordNewComment = function recordNewComment(userMakingCommentId, survey, hashids) {
     recordNewResponseOrComment(userMakingCommentId, survey, 'commentCount', hashids);
 };
+
+exports.surveyDeleted = function surveyDeleted(surveyId) {
+    EmailStoreModel.update(
+        {},
+        { $pull: {questions: {formid: surveyId} } },
+        { multi: true },
+        function (err, result) {}
+    );
+};

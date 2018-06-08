@@ -8,14 +8,17 @@ var emailfunctions = require("../functions/email");
 // expose this function to our app using module.exports
 module.exports = function (app, passport, manager, hashids) {
 
-    app.get('/events/list', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/events/list', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var promises = [];
         var outputevents = [];
 
 
         new Promise(function (resolve, reject) {
-            EventModel.find({ userid: req.session.userid }).sort({ 'timestamp': 'desc' }).cursor()
-                .on('data', function (event) {                    
+            var findFilter = req.body.since
+                ? { userid: req.session.userid, _id: { $gt: hashids.decodeHex(req.body.since) } }
+                : { userid: req.session.userid };
+            EventModel.find(findFilter).sort({ '_id': 'desc' }).limit(50).cursor()
+                .on('data', function (event) {
                     var formdata = {};
                     var commdata = {};
                     var decryptedId = "";
@@ -29,6 +32,12 @@ module.exports = function (app, passport, manager, hashids) {
                         timestamp: event.timestamp
                     };
 
+                    // If a notification is invalid (references a deleted user, etc.) just delete it
+                    // Otherwise when we load n notifications, we could be loading a bunch of invalid ones
+                    var deleteInvalidNotification = function () {
+                        console.log("Deleting invalid notification", event);
+                        EventModel.remove({ '_id': event._id }, function (err, res) {});
+                    };
 
                     if (typeof event.data === 'string') {
                         decryptedId = hashids.decodeHex(event.data);
@@ -71,7 +80,7 @@ module.exports = function (app, passport, manager, hashids) {
                                     } else {
 
                                         if (!userinfo) {
-                                            console.log("NOTIFICATION BREAKING THIS DOWN: ", event._id);
+                                            deleteInvalidNotification();
                                             resolve();
                                         }
                                         
@@ -95,6 +104,7 @@ module.exports = function (app, passport, manager, hashids) {
                                             eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                             outputevents.push(eventdata);
                                             resolve();
+                                            return;
                                         }
 
                                         if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
@@ -109,6 +119,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                     outputevents.push(eventdata);
                                                     resolve();
                                                 } else {
+                                                    deleteInvalidNotification();
                                                     resolve();
                                                 };
                                             });
@@ -122,6 +133,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                     outputevents.push(eventdata);
                                                     resolve();
                                                 } else {
+                                                    deleteInvalidNotification();
                                                     resolve();
                                                 }
                                             });
@@ -139,6 +151,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                         outputevents.push(eventdata);
                                                         resolve();
                                                     } else {
+                                                        deleteInvalidNotification();
                                                         resolve();
                                                     };
                                                 });
@@ -163,15 +176,18 @@ module.exports = function (app, passport, manager, hashids) {
 
                                                                 resolve();
                                                             } else {
+                                                                deleteInvalidNotification();
                                                                 resolve();
                                                             }
                                                         });
                                                     } else {
+                                                        deleteInvalidNotification();
                                                         resolve();
                                                     }
                                                 });
                                             }
                                         } else {
+                                            deleteInvalidNotification();
                                             resolve();
                                         }
 
@@ -197,10 +213,16 @@ module.exports = function (app, passport, manager, hashids) {
                 });
         }).then(function () {
             Promise.all(promises).then(function () {
+                var sortedEvents = outputevents.sort(function (a, b) {
+                    return a.timestamp > b.timestamp;
+                });
                 res.json({
-                    status: 1, events: outputevents.sort(function (a, b) {
-                        return a.timestamp > b.timestamp;
-                    })
+                    status: 1,
+                    events: sortedEvents,
+                    newestEvent: sortedEvents.length > 0
+                        ? sortedEvents[sortedEvents.length - 1].id
+                        : null,
+                    isFullList: !req.body.since // are we returning all the notifications?
                 });
             }).catch(function (err) {
                 res.json({ status: 0 });

@@ -36,6 +36,7 @@ export class NavbarComponent implements OnInit {
     showNotifications: boolean = false;
     notifShowCount: number = 10;
     startingTime: any;
+    newestNotificationId: any = null;
 
 
     navExpanded: boolean = false;
@@ -154,25 +155,38 @@ export class NavbarComponent implements OnInit {
     }
 
     getEventsList() {
-        // console.log('Getting Notifications.\n');        
         this.userService.afterLoginCheck().then(response => {
-            // request eventslist
-            if (response != '0') {
-                this.http.get('/events/list').toPromise()
-                .then(eventsdata => {
-                    this.events = eventsdata.json().events; // array of objects
-                        // clear the current list
-                        this.clearNotifications();
-                        
-                        // add new data
-                        if (this.events != null) {
-                            for (let e of this.events) {
-                                // window.console.log(e);
-                                this.addNotification(e);
-                            }
-                        }                                                
-                    });
-            }
+            if (response == '0')
+                return;
+            var onlyGetNewNotifications = !!this.newestNotificationId;
+
+            this.http.post('/events/list', {since: this.newestNotificationId})
+            .toPromise()
+            .then(eventsdata => {
+                var eventsList = eventsdata.json();
+
+                // nothing new so don't render / rerender
+                if (!eventsList.events)
+                    return;
+
+                if (onlyGetNewNotifications) {
+                    // we already have this.events and just need to append to it
+                    Array.prototype.push.apply(this.events, eventsList.events);
+                } else {
+                    // array of objects
+                    this.events = eventsList.events;
+                }
+
+                // clear the current list and add new data
+                this.clearNotifications();
+                for (let e of this.events) {
+                    // window.console.log(e);
+                    this.addNotification(e);
+                }
+
+                if (eventsList.newestEvent)
+                    this.newestNotificationId = eventsList.newestEvent;
+            });
         });
     }
 
@@ -246,6 +260,9 @@ export class NavbarComponent implements OnInit {
             var index = 0;
             var words = 0;
             var finalString = [];
+
+            if (!string)
+                return '';
 
             for (let i = 0; i < string.length; i++) {
                 if (string[i] === " ") {
