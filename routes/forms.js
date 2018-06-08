@@ -626,6 +626,7 @@ module.exports = function(app, passport, manager, hashids) {
                 log.writeLog(req.session.userid, 'form deleted', req.ip);
                 // user stats
                 usersfunctions.decrementNoCreated(req.session.userid);
+                emailstoresfunctions.surveyDeleted(formid);
                 // return
                 res.json({status: 1});
             }
