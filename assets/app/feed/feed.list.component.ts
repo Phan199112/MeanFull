@@ -30,9 +30,9 @@ export class FeedListComponent implements OnInit, OnChanges {
     
     me: string;
     formselected: any;
-    topSurveyChanged: boolean = false;
+    somethingChanged: boolean = false;
     prevTag: string;
-    tagChanged: boolean = false;
+    prevComm: string;
 
     constructor(private http: Http, 
                 private userService: UserService,
@@ -47,7 +47,7 @@ export class FeedListComponent implements OnInit, OnChanges {
             if (this.formselected !== params.survey) {
                 // console.log('Changed from: ',this.formselected, ' to ', params.survey, '\n' );
                 this.formselected = params.survey;
-                this.topSurveyChanged = true;
+                this.somethingChanged = true;
                 this.getTopPost();
             }
         });
@@ -65,11 +65,15 @@ export class FeedListComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         this.formselected = this.route.params.value.survey;
-        
-        // Check if changes came from tag
+
+        // Check if changes came from tag or community
         if (this.prevTag !== this.tag) {
-            this.tagChanged = true;
-            this.prevTag = this.tag;            
+            this.somethingChanged = true;
+            this.prevTag = this.tag;
+        }
+        if (this.prevComm !== this.comm) {
+            this.somethingChanged = true;
+            this.prevComm = this.comm;
         }
         
         this.refreshFeed();
@@ -131,11 +135,10 @@ export class FeedListComponent implements OnInit, OnChanges {
             };
 
             // Clear list if fetching new Top Survey from notification
-            if (this.topSurveyChanged || this.tagChanged) {
+            if (this.somethingChanged) {
                 this.feedlist = [];
                 this.formids = [];
-                this.topSurveyChanged = false;
-                this.tagChanged = false;
+                this.somethingChanged = false;
             }
         }
 
