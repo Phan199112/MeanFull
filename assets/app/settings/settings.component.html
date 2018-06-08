@@ -1,7 +1,13 @@
 <div class="container main-container" *ngIf="reject">
-    <h2>You are not authorized to view settings. Please login first.</h2>
+    <h2 style="text-align: center; color: #999; margin-top: 20%;">Please login to access this page.</h2>
 </div>
-<div class="container main-container" *ngIf="!reject">
+
+<div class="container main-container" *ngIf="!reject && !loaded">
+    <h2 style="text-align: center; color: #999; margin-top: 20%;">Loading Your Settings...</h2>
+</div>
+
+
+<div class="container main-container" *ngIf="!reject && loaded">
     <div class="row">
         <div class="col-lg-2 col-sm-3 tab-list">
             <div class="container secondary-container">
@@ -414,9 +420,8 @@
                         <ng-template ngbTabContent>
                             <h5 class="tab-title">Notifications</h5>
                             <div class="settings-box">
-                                <h6>Settings</h6>
                                 <form class="edit" [formGroup]="notificationsettings.form">
-                                    <div class="row field" *ngFor="let field of notificationsettings.question">
+                                    <div class="row field" *ngFor="let field of notificationsettings.question" style="margin-bottom: 16px; margin-top: 8px">
                                         <div class="col-sm-2">
                                             <div class="field-name">{{field.label}}</div>
                                         </div>
@@ -432,124 +437,8 @@
                                                 </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" [disabled]="notificationsettings.form.invalid && notificationsettings.form.wasChecked" (click)="submitNotificationSettingsField()">Save</button>
+                                    <button class="btn btn-primary" [disabled]="notificationsettings.form.invalid && notificationsettings.form.wasChecked" (click)="submitNotificationSettingsField()" style="margin-bottom: 20px">{{settingsSaved ? "Saved!" : "Save"}}</button>
                                 </form>
-
-                                <!-- <div *ngIf="notifications.length > 0">
-                                    <hr>
-                                    <h6>List</h6>
-                                    <div *ngFor="let notification of notifications">
-                                        <div class="row" *ngIf="notification.type == 'network'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                Network request from <a [routerLink]="['/profile', notification.details.link]">{{notification.details.name}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptConnectionRequest(notification.id)" *ngIf="!notification.acted">Accept request</button>
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteConnectionRequest(notification.data,notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
-                                            </div>
-                                        </div>
-                                        <div class="row" *ngIf="notification.type == 'comm'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                Community invitation: <a [routerLink]="['/community', notification.details.link]">{{notification.details.name}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptCommunityRequest(notification.id)" *ngIf="!notification.acted">Accept request</button>
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteCommunityRequest(notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
-                                            </div>
-                                        </div>
-                                        <div class="row" *ngIf="notification.type == 'comm-admin'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                Community invitation (as admin): <a [routerLink]="['/community', notification.details.link]">{{notification.details.name}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="acceptCommunityRequest(notification.id, true)" *ngIf="!notification.acted">Accept request</button>
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteCommunityRequest(notification.id)" *ngIf="!notification.acted">Delete and refuse request</button>
-                                            </div>
-                                        </div>
-                                        <div class="row"  *ngIf="notification.type == 'form'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                New survey:
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" *ngIf="notification.seen">{{notification.details.title}}</a>
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
-                                            </div>
-                                        </div>
-                                        <div class="row"  *ngIf="notification.type == 'form-discussion'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                New message:
-                                                <a [routerLink]="['/feed', {'survey': notification.data.formid}]" *ngIf="notification.seen">{{notification.details.title}}</a>
-                                                <a [routerLink]="['/feed', {'survey': notification.data.formid}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
-                                            </div>
-                                        </div>
-                                        <div class="row"  *ngIf="notification.type == 'form-answer'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                New response:
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" *ngIf="notification.seen">{{notification.details.title}}</a>
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
-                                            </div>
-                                        </div>
-                                        <div class="row"  *ngIf="notification.type == 'form-shared'">
-                                            <div class="col-md-1">
-                                                <div *ngIf="!notification.seen">NEW</div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                {{notification.timestamp | date}}
-                                            </div>
-                                            <div class="col-md-5">
-                                                New response:
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" *ngIf="notification.seen">{{notification.details.title}}</a>
-                                                <a [routerLink]="['/feed', {'survey': notification.data}]" (click)="setAsSeen(notification.id)" *ngIf="!notification.seen">{{notification.details.title}}</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button class="btn btn-primary" style="margin-top: 5px; margin-bottom: 5px;" (click)="deleteNotification(notification.id)">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                         </ng-template>
                     </ngb-tab>
@@ -619,7 +508,7 @@
                         <ng-template ngbTabContent>
                             <h5 class="tab-title">Privacy</h5>
                             <div class="settings-box">
-                                <div class="row field">
+                                <div class="row field" style="margin-top: 8px; margin-bottom: 16px">
                                     <div class="col-sm-2">
                                         <div class="field-name">Profile visibility</div>
                                     </div>
@@ -634,10 +523,10 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                            <button class="btn btn-primary" [disabled]="profilepublic.form.invalid && profilepublic.form.wasChecked" (click)="submitPublicField()">Save</button>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
+                                    <button class="btn btn-primary" [disabled]="profilepublic.form.invalid && profilepublic.form.wasChecked" (click)="submitPublicField()" style="margin: 20px;">Save</button>
                             </div>
                         </ng-template>
                     </ngb-tab>
@@ -672,7 +561,7 @@
                             <div class="settings-box">
                                 <div *ngIf="comm.length > 0">
                                     <div class="col" *ngFor="let data of comm">
-                                        <div class="row">
+                                        <div class="row" style="margin: 8px 0;">
                                             <div class="col-md-2">
                                                 <img *ngIf="data.pic" src="{{data.pic}}" height="30" width="30">
                                             </div>
