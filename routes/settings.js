@@ -130,19 +130,15 @@ module.exports = function(app, passport, manager, hashids) {
     app.put('/users/settings/changenotifications', manager.ensureLoggedIn('/users/login'), function(req, res) {
         // notification settings, ie should emails be send?
         // reformat the data
-        var updateddate = {"notifications.networkrequest": req.body.networkrequest,
-            "notifications.formrequest": req.body.formrequest,
-            "notifications.commrequest": req.body.commrequest,
-            "notifications.discussion": req.body.discussion,
-            "notifications.formactivity": req.body.formactivity};
-
+        var updateddate = {"notifications.summary": req.body.summary};
+        
         // update db
-        UserModel.findByIdAndUpdate(req.session.userid,
-            {$set: updateddate}, function(err, k) {
+        UserModel.findByIdAndUpdate(req.session.userid, { $set: updateddate},
+            function(err, k) {
                 if (err) {
                     res.json({status: 0});
                 } else {
-                    res.json({status: 1});
+                    res.json({status: 1})
                 }
             });
     });
@@ -289,7 +285,7 @@ module.exports = function(app, passport, manager, hashids) {
                             notifications: userinfo.notifications};
 
                         if (datauserinfo.notifications === null) {
-                            datauserinfo.notifications = {networkrequest: true, formrequest: true};
+                            datauserinfo.notifications = {networkrequest: true, formrequest: true, summary: true};
                         }
 
                         resolve();

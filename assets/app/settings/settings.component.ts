@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from "@angular/http";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserService } from "../user.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { NgbTabset} from "@ng-bootstrap/ng-bootstrap";
 import { ShareService } from "../share.service";
 
@@ -16,7 +16,7 @@ let UsaSchools = require("../data/US-schools.json");
     providers: [UserService]
 })
 export class SettingsComponent implements OnInit {
-    profile: any;
+    profile: any = {};
     comm: any;
     profileFields: any[];
     passwordNotFB: boolean = false;
@@ -33,6 +33,8 @@ export class SettingsComponent implements OnInit {
     notifications: any[];
     reject: boolean = false;
     picture: Object = {edit: false, formValue: null, current: null, newurl: null, success: false, failure: false};
+    loaded: boolean = false;
+    settingsSaved: boolean = false;
 
     @ViewChild('tabs')
     private tabs:NgbTabset;
@@ -41,6 +43,7 @@ export class SettingsComponent implements OnInit {
         private http: Http,
         private fb: FormBuilder,
         private route: ActivatedRoute,
+        private router: Router,
         private userService: UserService,
         private shareService: ShareService
     ) {}
@@ -55,6 +58,7 @@ export class SettingsComponent implements OnInit {
                 this.retrieveData();
             } else {
                 this.reject = true;
+                window.setTimeout(() => { this.router.navigate(['/']); }, 1800);
             }
         });
     }
@@ -87,6 +91,7 @@ export class SettingsComponent implements OnInit {
                     //
                     this.passwordNotFB = (this.profile.facebookID == null);
                     this.constructProfileFields();
+                    this.loaded = true;
 
                     this.passwordForm = this.fb.group({
                         current: ['', Validators.required],
@@ -101,7 +106,7 @@ export class SettingsComponent implements OnInit {
                         public: [this.profile.public, Validators.required]});
 
                     this.profilepublic.question = {
-                        body: "Would you like your profile to be visible to anyone visiting CrowdWorks?",
+                        body: "Would you like your profile to be visible to anyone visiting Questionsly?",
                         name: "public",
                         type: "radio",
                         options: [
@@ -111,57 +116,18 @@ export class SettingsComponent implements OnInit {
 
                     // notification settings
                     this.notificationsettings.form = this.fb.group({
-                        networkrequest: [this.profile.notifications.networkrequest, Validators.required],
-                        formrequest: [this.profile.notifications.formrequest, Validators.required],
-                        commrequest: [this.profile.notifications.commrequest, Validators.required],
-                        discussion: [this.profile.notifications.discussion, Validators.required],
-                        formactivity: [this.profile.notifications.formactivity, Validators.required]});
+                        summary: [this.profile.notifications.summary, Validators.required]
+                    });
 
                     this.notificationsettings.question = [{
-                        label: "Network requests",
-                        body: "Would you like to receive emails with networking requests?",
-                        name: "networkrequest",
+                        label: "Daily Summary",
+                        body: "Would you like to receive emails summarizing your daily activity?",
+                        name: "summary",
                         type: "radio",
                         options: [
                             {value: true, label: "Yes"},
                             {value: false, label: "No"}]
-                    },
-                        {
-                            label: "Community requests",
-                            body: "Would you like to receive emails with community invitation requests?",
-                            name: "commrequest",
-                            type: "radio",
-                            options: [
-                                {value: true, label: "Yes"},
-                                {value: false, label: "No"}]
-                        },
-                        {
-                            label: "Form requests",
-                            body: "Would you like to receive emails with form completion requests?",
-                            name: "formrequest",
-                            type: "radio",
-                            options: [
-                                {value: true, label: "Yes"},
-                                {value: false, label: "No"}]
-                        },
-                        {
-                            label: "Discussions",
-                            body: "Would you like to receive emails when users comment on your forms?",
-                            name: "discussion",
-                            type: "radio",
-                            options: [
-                                {value: true, label: "Yes"},
-                                {value: false, label: "No"}]
-                        },
-                        {
-                            label: "Form activity",
-                            body: "Would you like to receive emails when users complete your forms?",
-                            name: "formactivity",
-                            type: "radio",
-                            options: [
-                                {value: true, label: "Yes"},
-                                {value: false, label: "No"}]
-                        }];
+                    }];
 
                     // which page should be opened
                     this.route.params.subscribe(params => {
@@ -439,6 +405,160 @@ export class SettingsComponent implements OnInit {
         ];
     }
 
+
+    initProfileFields() {
+        // check for blank location.
+        this.profile.location = { city: "NA", state: "NA", country: "NA" };
+        
+        this.profile.dob = { year: "1900", month: "1", date: "1" };
+    
+
+        return [
+            {
+                label: "Name",
+                name: "name",
+                value: ` `,
+                edit: false,
+                inputs: [
+                    {
+                        label: "First name",
+                        name: "first",
+                        type: "text",
+                        value: ""
+                    },
+                    {
+                        label: "Last name",
+                        name: "last",
+                        type: "text",
+                        value: ""
+                    }
+                ]
+            },
+            {
+                label: "Email",
+                name: "email",
+                value: "",
+                edit: false,
+                inputs: [
+                    {
+                        name: "email",
+                        type: "text"
+                    }
+                ]
+            },
+            {
+                label: "Gender",
+                name: "gender",
+                value: "",
+                edit: false,
+                inputs: [
+                    {
+                        type: "radio",
+                        name: "gender",
+                        options: [
+                            {
+                                label: "Male",
+                                value: "male",
+                            },
+                            {
+                                label: "Female",
+                                value: "female",
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                label: "DOB",
+                name: "dob",
+                value: (new Date().toDateString()),
+                edit: false,
+                formatValue(value) {
+                    value = value.dob;
+
+                    //control wraps the value in array sometimes
+                    if (value.length) {
+                        value = value[0]
+                    }
+
+                    return {
+                        dob: {
+                            year: value.getFullYear(),
+                            month: value.getMonth(),
+                            date: value.getDate()
+                        }
+                    };
+                },
+                inputs: [
+                    {
+                        name: "dob",
+                        type: "date",
+                        config: {
+                            defaultDate: new Date(),
+                            altInput: true,
+                            altInputClass: 'form-control'
+                        }
+                    }
+                ]
+            },
+            {
+                label: "City",
+                name: "city",
+                value: "",
+                edit: false,
+                formatValue: (value) => {
+                    return {
+                        location: Object.assign({}, this.profile.location, value)
+                    };
+                },
+                inputs: [
+                    {
+                        name: "city",
+                        type: "text"
+                    }
+                ]
+            },
+            {
+                label: "State",
+                name: "state",
+                value: "",
+                edit: false,
+                formatValue: (value) => {
+                    return {
+                        location: Object.assign({}, this.profile.location, value)
+                    };
+                },
+                inputs: [
+                    {
+                        name: "state",
+                        type: "text"
+                    }
+                ]
+            },
+            {
+                label: "Country",
+                name: "country",
+                value: "",
+                edit: false,
+                formatValue: (value) => {
+                    return {
+                        location: Object.assign({}, this.profile.location, value)
+                    };
+                },
+                inputs: [
+                    {
+                        name: "country",
+                        type: "country"
+                    }
+                ]
+            }
+        ];
+
+        // this.constructProfileFields();
+    }
+
+
+
     constructProfileFields() {
         this.profileFields = this.getProfileFields();
 
@@ -531,12 +651,18 @@ export class SettingsComponent implements OnInit {
     }
 
     submitNotificationSettingsField() {
+        const changeSaved = () => {this.settingsSaved = !this.settingsSaved};
         this.checkSubmit(this.notificationsettings.form, () => {
             let formValue = this.notificationsettings.form.value;
+            
 
             this.http.put(`/users/settings/changenotifications`, formValue).toPromise()
                 .then(res => {
-
+                    if(res.json().status == 1) {
+                        changeSaved();
+                        window.setTimeout(changeSaved, 2000);
+                    } else {
+                    }
                 })
                 .catch(error => alert("Error submitting settings: " + error));
         });

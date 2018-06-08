@@ -245,7 +245,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     pic: null,
                                     facebookID: req.user.id,
                                     facebookProfile: req.user,
-                                    notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true},
+                                    notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true, summary: true},
                                     public: true}, function(err, k) {
                                     if (!err) {
                                         req.session.userid = k._id;
@@ -333,7 +333,7 @@ module.exports = function(app, passport, manager, hashids) {
                         },
                         facebookID: null,
                         facebookProfile: null,
-                        notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true},
+                        notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true, summary: true},
                         public: true,
                         timestamp: Date.now()
                     }, function (err, k) {

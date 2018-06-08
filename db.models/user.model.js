@@ -14,7 +14,7 @@ var UserSchema = new Schema({
     email: String,
     emailConfirmed: {value: Boolean, key: String},
     location: Object,
-    notifications: {networkrequest: Boolean, commrequest: Boolean, formrequest: Boolean, discussion: Boolean, formactivity: Boolean},
+    notifications: {networkrequest: Boolean, commrequest: Boolean, formrequest: Boolean, discussion: Boolean, formactivity: Boolean, summary: Boolean},
     gender: String,
     public: Boolean,
     dob: Object,
