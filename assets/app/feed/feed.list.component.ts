@@ -125,6 +125,12 @@ export class FeedListComponent implements OnInit, OnChanges {
         } else {
             route = `/forms/feed`;      
 
+            // Clear list if fetching new Top Survey from notification
+            if (this.somethingChanged) {
+                this.feedlist = [];
+                this.formids = [];
+                this.somethingChanged = false;
+            }
             requestBody = {
                 tag: this.tag,
                 user: this.user,
@@ -134,12 +140,6 @@ export class FeedListComponent implements OnInit, OnChanges {
                 currentPosts: this.formids
             };
 
-            // Clear list if fetching new Top Survey from notification
-            if (this.somethingChanged) {
-                this.feedlist = [];
-                this.formids = [];
-                this.somethingChanged = false;
-            }
         }
 
         this.http
@@ -188,8 +188,10 @@ export class FeedListComponent implements OnInit, OnChanges {
 
                     // remove current top survey
                     const removedPost = this.feedlist.shift();
-                    var rmvIndex = this.formids.indexOf(removedPost.id);
-                    this.formids.splice(rmvIndex,1);
+                    if (removedPost) {
+                        var rmvIndex = this.formids.indexOf(removedPost.id);
+                        this.formids.splice(rmvIndex,1);
+                    }
 
                     // Add new top survey
                     this.feedlist.unshift(new FeedForm(res.json().formdata))
