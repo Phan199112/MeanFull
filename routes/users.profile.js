@@ -114,7 +114,20 @@ module.exports = function(app, passport, manager, hashids) {
 
         // mongoDB query
         new Promise(function(resolve, reject) {
-            UserModel.find({public: true}).limit(100).exec(function (err, k) {
+            UserModel
+            .find({
+                public: true,
+                // No generic gender pics, those don't look good
+                pic: {
+                    $nin: [
+                        'https://questionsly1.s3.amazonaws.com/Z9fJ4Q7sEdsGCjInkXvpJtnlKfmieFPGftrK8E3nJFCI9d7CXl.jpg',
+                        'https://questionsly1.s3.amazonaws.com/0y0PSn8KAPutNjxuyYpxLsW3sAbxiUsRUBHQxPdo6EICGeaxfv.jpg'
+                    ]
+                }
+            })
+            .sort({ '_id': 'desc' })
+            .limit(100)
+            .exec(function (err, k) {
                 if (err) {
                     reject(err);
                 } else {
@@ -132,7 +145,6 @@ module.exports = function(app, passport, manager, hashids) {
                             }
 
                         } else {
-                            // get some random communities
                             var randomints = [];
                             var nmale = 0;
                             var nfemale = 0;
@@ -176,7 +188,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // add some random members
                             for (j in randomints) {
-                                var user = k[j];
+                                var user = k[randomints[j]];
                                 usersdata.push({
                                     name: user.name.first+" "+user.name.last,
                                     link: hashids.encodeHex(user._id),
