@@ -178,7 +178,7 @@ exports.sendSummary = function sendSummary() {
             `;
             if (update.community.length > 0) ifCommunityString = `
                 <mj-section padding-left="20px" padding-bottom="5px">
-                    <mj-text font-size="22" color="#2b2b2b"font-family="Karla">Community Requests</mj-text>  
+                    <mj-text font-size="22" color="#2b2b2b"font-family="Karla">Group Requests</mj-text>  
                 </mj-section>
             `;
             if (update.questions.length > 0) ifQuestionsString = `
@@ -223,7 +223,7 @@ exports.sendSummary = function sendSummary() {
                         <mj-column>
                             <mj-text font-size="15" font-family="Karla">
                                 <a style="color: #007bff" href="${community.link}">
-                                ${community.senderName} invited you to join the community ${community.communityTitle}
+                                ${community.senderName} invited you to join the group ${community.communityTitle}
                                 </a>
                             </mj-text>
                         </mj-column>
