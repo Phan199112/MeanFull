@@ -63,6 +63,13 @@
             Questionsly, an online platform for getting data to all your questions from a large community of users.
           </mj-text>
         </mj-section>
+
+        <mj-section padding-top="20px">
+          <mj-text font-size="12" color="#BBB" font-family="Karla" align="center" padding-bottom="20px">
+            Wish to unsubscribe from these emails? 
+            <a href="https://www.questionsly.com/settings" class="link-nostyle" style="color: #AAA">Click Here.</a>
+          </mj-text>
+        </mj-section>
       </mj-wrapper>
 
     </mj-container>
