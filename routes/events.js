@@ -14,10 +14,12 @@ module.exports = function (app, passport, manager, hashids) {
 
 
         new Promise(function (resolve, reject) {
+            var sinceLastWeek = { $gt: new Date() - 1000 * 3600 * 24 * 7  };
             var findFilter = req.body.since
-                ? { userid: req.session.userid, _id: { $gt: hashids.decodeHex(req.body.since) } }
-                : { userid: req.session.userid };
-            EventModel.find(findFilter).sort({ '_id': 'desc' }).limit(50).cursor()
+                ? { userid: req.session.userid, timestamp: sinceLastWeek, _id: { $gt: hashids.decodeHex(req.body.since) } }
+                : { userid: req.session.userid, timestamp: sinceLastWeek };
+
+            EventModel.find(findFilter).sort({ '_id': 'desc' }).cursor()
                 .on('data', function (event) {
                     var formdata = {};
                     var commdata = {};
