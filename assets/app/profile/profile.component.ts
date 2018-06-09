@@ -103,7 +103,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             }
 
             switch (this.genericSubsection) {
-                case "network":
+                case "friends":
                     this.http.get("/users/network", {params: {user: params.id}}).toPromise().then(res => {
                         this.subsectionList = res.json().data;
                         this.subsectionResource = "user";

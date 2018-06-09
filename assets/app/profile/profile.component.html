@@ -33,7 +33,7 @@
                             <i class="stats fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion ? nodiscussion : '0'}}</span></i>
                         </div>
                         <div *ngIf="(loggedin && !innetwork && !pending && !me) || pending" style="margin-top: 8px">
-                            <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add To Network</a>
+                            <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add Friend</a>
                             <a class="submitButton" *ngIf="pending">Request Pending</a>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                     <i class="fa fa-bars" aria-hidden="true"></i>
                                 </a>
                                 <div ngbDropdownMenu aria-labelledby="profile-menu">
-                                    <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork && !me" >Remove from my network</a>
+                                    <a class="dropdown-item" (click)="removeFromNetwork(id)" *ngIf="innetwork && !me" >Remove friend</a>
                                     <a class="dropdown-item" (click)="reportUser(id)" *ngIf="!me" >Report user</a>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                 <!-- Feed content or other info -->
                 <div class="">
                     <div *ngIf="!genericSubsection"  style="margin-top:20px">
-                        <div *ngIf="status == '2'" class="aboutContainer"><h6 class="location" style="text-align: center; width: 100%;">{{name}} has a private profile.<br/>Only individuals in {{pronoun}} network can see further details.</h6></div>
+                        <div *ngIf="status == '2'" class="aboutContainer"><h6 class="location" style="text-align: center; width: 100%;">{{name}} has a private profile.<br/>Only {{pronoun}} friends can see further details.</h6></div>
                         <feed-list
                             [emptyMessage]="noPostsMessage"
                             [user]="id"

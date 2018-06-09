@@ -1,9 +1,9 @@
 <div class="container main-container" id="tagsListComponent">
     <div class="secondary-container">
-        <a *ngIf="user" routerLink="/profile/{{user}}/network">
-            <h5 class="title">Network</h5>
+        <a *ngIf="user" routerLink="/profile/{{user}}/friends">
+            <h5 class="title">Friends</h5>
         </a>
-        <h5 *ngIf="!user" class="title">Network</h5>        
+        <h5 *ngIf="!user" class="title">Friends</h5>        
         <div class="adaptable-matrix">
             <network-item class="adaptable-matrix-unit" [data]="item" *ngFor="let item of networklist"> </network-item>
         </div>

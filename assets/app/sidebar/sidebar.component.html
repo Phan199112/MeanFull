@@ -5,11 +5,11 @@
 
     <div class="sContainer">
         <h6 *ngIf="networklist.length == 0" class="lpText">
-            {{me ? 'Your' : userName + "'s"}} network is empty.<br/>
+            {{me ? 'Your' : userName + "'s"}} friends list is empty.<br/>
             Discover other members!
         </h6>
         <h6 *ngIf="networklist.length !== 0" class="lpText">
-            {{me ? 'My' : userName + "'s"}} Network
+            {{me ? 'My' : userName + "'s"}} Friends
         </h6>
 
         <div *ngIf="networklist.length != 0" class="peopleContainer">
@@ -24,7 +24,7 @@
         </div>
 
         <div *ngIf="networklist.length !== 0" class="moreLink">
-            <a [routerLink]="['/profile', user, 'network']" class="viewAllBtn">
+            <a [routerLink]="['/profile', user, 'friends']" class="viewAllBtn">
                 View All
             </a>
         </div>
