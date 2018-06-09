@@ -213,15 +213,15 @@ export class NavbarComponent implements OnInit {
         switch (notification.type) {
             case "form":
                 if (notification.data.comm) {
-                    return ['/community', notification.data.comm.value, { 'survey': notification.data.formid }];
+                    return ['/group', notification.data.comm.value, { 'survey': notification.data.formid }];
                 } else {                        
                     return ['/feed', { 'survey': notification.data.formid }];
                 }
             case "form-answer":                
                 return ['/feed', { 'survey': notification.data }];
             case "form-shared":
-                return ['/community', notification.data.commid ]
-                // return ['/community', notification.data.commid, { 'survey': notification.data.formid } ]
+                return ['/group', notification.data.commid ]
+                // return ['/group', notification.data.commid, { 'survey': notification.data.formid } ]
             case "form-discussion":
                 return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
             case "network":
@@ -229,7 +229,7 @@ export class NavbarComponent implements OnInit {
                 return ['/profile', notification.fromUserId]
             case "comm":
             case "comm-admin":
-                return ['/community', notification.data];
+                return ['/group', notification.data];
         }
     }
 

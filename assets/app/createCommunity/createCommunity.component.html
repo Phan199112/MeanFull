@@ -1,5 +1,5 @@
 <div class="pageLayout" *ngIf="reject">
-    <h2>You are not authorised to create a new community. Please login first!</h2>
+    <h2>You are not authorised to create a new group. Please login first!</h2>
 </div>
 
 
@@ -13,13 +13,13 @@
         
         <div class="col-lg-6">
             <div class="aboutContainer">
-                <h3 class="name qslyGray" style="margin-bottom: 25px">Create Community</h3>
+                <h3 class="name qslyGray" style="margin-bottom: 25px">Create Group</h3>
                     
                 
                 <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
 
                     <div class="flexContainer fdColumn faStart">  
-                        <h6 class="title firstTitle">Community Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
+                        <h6 class="title firstTitle">Group Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
                         <div style="display: flex; align-items: center; width: 100%">
                             <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                             <input class="niceTextInput qslyGray" formControlName="title" autofocus />
@@ -38,9 +38,9 @@
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="title firstTitle">Privacy</h6>
                     <div style="display:flex; justify-content: flex-start;">
-                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this community'"
+                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
                             (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
-                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this community'"
+                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
                             (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
 
 
                 <div class="flexContainer faStart fdColumn">
-                    <h6 class="title firstTitle">Add Other Community Admins</h6>
+                    <h6 class="title firstTitle">Add Other Group Admins</h6>
                     <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
                         <div 
                             [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}"
@@ -126,9 +126,6 @@
                        
                        
                         <p class="valError" style="text-align: center" *ngIf="errors.title">Uh oh, there has been an error creating the group. Check for errors above.</p>
-                        <!-- <div *ngIf="visitbutton" class="float-right">
-                            <button class="btn btn-outline-success mouseChangeToHand" [routerLink]="['/community', commurl]">Visit community</button>
-                        </div> -->
 
                     </form>
                 </div>

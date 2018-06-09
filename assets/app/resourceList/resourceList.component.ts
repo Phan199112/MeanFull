@@ -38,7 +38,7 @@ export class ResourceListComponent {
             case "user":
                 return `/profile/${item.id}`;
             case "community":
-                return `/community/${item.id}`;
+                return `/group/${item.id}`;
             case "form":
                 return ['/feed', {'survey': item.id}];
 

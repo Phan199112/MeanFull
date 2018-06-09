@@ -33,7 +33,7 @@
                 </div>
                 <div [ngClass]="{'row': true, 'tab-nav': true, 'active': activeTab == 'communities'}">
                     <i class="fa fa-users" aria-hidden="true"></i>
-                    <a (click)="tabs.select('communities-tab'); activeTab = 'communities'">Communities</a>
+                    <a (click)="tabs.select('communities-tab'); activeTab = 'communities'">Groups</a>
                 </div>
             </div>
         </div>
@@ -555,9 +555,9 @@
                             </div>
                         </ng-template>
                     </ngb-tab>
-                    <ngb-tab id="communities-tab" title="Communities">
+                    <ngb-tab id="communities-tab" title="Groups">
                         <ng-template ngbTabContent>
-                            <h5 class="tab-title">Your communities</h5>
+                            <h5 class="tab-title">Your groups</h5>
                             <div class="settings-box">
                                 <div *ngIf="comm.length > 0">
                                     <div class="col" *ngFor="let data of comm">
@@ -566,7 +566,7 @@
                                                 <img *ngIf="data.pic" src="{{data.pic}}" height="30" width="30">
                                             </div>
                                             <div class="col-md-5">
-                                                <a [routerLink]="['/community', data.link]">{{data.title}}</a>
+                                                <a [routerLink]="['/group', data.link]">{{data.title}}</a>
                                             </div>
                                             <div class="col-md-3">
                                             </div>

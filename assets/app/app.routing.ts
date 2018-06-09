@@ -22,8 +22,8 @@ const APP_ROUTES: Routes = [
     {path: 'profile/:id', component: ProfileComponent},    
     {path: 'profile/:id/:subsection', component: ProfileComponent},
     {path: 'settings', component: SettingsComponent},
-    {path: 'createCommunity', component: CreateCommunityComponent},
-    {path: 'community/:id', component: ViewCommunityComponent},
+    {path: 'createGroup', component: CreateCommunityComponent},
+    {path: 'group/:id', component: ViewCommunityComponent},
     {path: 'searchresults', component: SearchPageComponent}
 ];
 

@@ -32,11 +32,11 @@
 
     <div class="sContainer">
         <h6 *ngIf="communitylist.length == 0" class="lpText">
-            {{me ? "You haven't" : userName + " hasn't"}} joined a community yet.<br/>
-            Discover other communities!
+            {{me ? "You haven't" : userName + " hasn't"}} joined a group yet.<br/>
+            Discover other groups!
         </h6>
         <h6 *ngIf="communitylist.length !== 0" class="lpText">
-            {{me ? 'My' : userName + "'s"}} Communities
+            {{me ? 'My' : userName + "'s"}} Groups
         </h6>
 
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
@@ -51,7 +51,7 @@
         </div>
 
         <div *ngIf="communitylist.length !== 0" class="moreLink">
-            <a [routerLink]="['/profile', user, 'communities']">
+            <a [routerLink]="['/profile', user, 'groups']">
                 View All
             </a>
         </div>
@@ -75,7 +75,7 @@
     </div>
 
     <div class="sContainer comPadding rhs">
-        <h3 class="lpText">Discover Communities</h3>
+        <h3 class="lpText">Discover Groups</h3>
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist" style="flex-basis:33%;">
                 <community-image [data]="c"> </community-image>
@@ -86,7 +86,7 @@
                 <community-image [data]="c"> </community-image>
             </div>
         </div>
-        <a class="submitButton" [routerLink]="['/createCommunity']">Create Community</a>
+        <a class="submitButton" [routerLink]="['/createGroup']">Create Group</a>
     </div>
 </div>
 
@@ -102,7 +102,7 @@
     </div>
 
     <div class="sContainer comPadding rhs">
-        <h3 class="lpText">Discover Communities</h3>
+        <h3 class="lpText">Discover Groups</h3>
         <div *ngIf="communitylist.length != 0" class="peopleContainer">
             <div *ngFor="let c of communitylist" style="flex-basis:33%;">
                 <community-image [data]="c"> </community-image>
@@ -113,7 +113,7 @@
                 <community-image [data]="c"> </community-image>
             </div>
         </div>
-        <a class="submitButton" [routerLink]="['/createCommunity']">Create Community</a>
+        <a class="submitButton" [routerLink]="['/createGroup']">Create Group</a>
     </div>
 </div>
 
