@@ -197,13 +197,16 @@ exports.sendSummary = function sendSummary() {
                     <mj-section border="0px" text-align="left" padding-left="20px"  padding-top="10px">
                         <mj-column width="100px">
                             <mj-image width="80px" src="${person.pic}" href="${person.link}"/>
-                            </mj-column>
+                        </mj-column>
                             
-                            <mj-column>
-                            <mj-text color="#818181" font-size="15" font-family="Karla">
-                            <a style="color: #007bff" href="${person.link}">
-                                ${person.name}
-                            </a>
+                        <mj-column width="350px">
+                            <mj-text font-size="15" font-family="Karla">
+                                <a style="color: #007bff" href="${person.link}">${person.name}</a>
+                                added you as a friend
+                                <br>
+                                <a class="link-nostyle" style="color: #28ab64" href="${person.link}">Accept</a>
+                                or
+                                <a class="link-nostyle" style="color: #28ab64" href="${person.link}">decline</a>
                             </mj-text>
                         </mj-column>
                     </mj-section> 
@@ -218,7 +221,7 @@ exports.sendSummary = function sendSummary() {
                             <mj-image width="80px" src="${community.communityPic || 'https://kehillah.org/wp-content/uploads/2016/11/community-icon-1.png'}" href="${community.link}"/>
                         </mj-column>
                         <mj-column>
-                            <mj-text color="#818181" font-size="15" font-family="Karla">
+                            <mj-text font-size="15" font-family="Karla">
                                 <a style="color: #007bff" href="${community.link}">
                                 ${community.senderName} invited you to join the community ${community.communityTitle}
                                 </a>
@@ -254,10 +257,10 @@ exports.sendSummary = function sendSummary() {
                 profiles.forEach(function (profile) {
                     picsHTML += `
                         <p style="padding-left: 25px; margin: 4px 0">
-                            <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
+                            <a style="text-decoration: none" href="${question.link}">
                                 <img src="${profile.profilePic}" style="height: 50px; vertical-align: middle; padding-right: 8px;">
                             </a>
-                            <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">
+                            <a style="text-decoration: none; color: #333" href="${question.link}">
                                 ${profile.name}
                             </a>
                         </p>
@@ -269,7 +272,7 @@ exports.sendSummary = function sendSummary() {
                         <mj-text font-size="15" font-family="Karla">
                             <a style="color: #007bff" href="${question.link}">${question.question}</a>
                             <br>
-                            <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">${text}</a>
+                            <a style="text-decoration: none; color: #333" href="${question.link}">${text}</a>
                             ${picsHTML}
                         </mj-text>
                     </mj-section>
@@ -283,8 +286,8 @@ exports.sendSummary = function sendSummary() {
                             <mj-image width="100px" src="${question.senderPic}" href="${question.link}"/>
                         </mj-column>
                         <mj-column>
-                            <mj-text color="#818181" font-size="15" font-family="Karla">
-                                <a style="text-decoration: none; color: #2b2b2b" href="${question.link}">${question.senderName} requested your answer to: </a>
+                            <mj-text font-size="15" font-family="Karla">
+                                <a style="text-decoration: none; color: #333" href="${question.link}">${question.senderName} requested your answer to: </a>
                                 <br/>
                                  <a style="color: #007bff" href="${question.link}">${question.question}</a>
                             </mj-text>
