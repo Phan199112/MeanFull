@@ -89,14 +89,17 @@
                             <div *ngIf="question.kind == 'Multiple Choice'">
                                 <div *ngIf="!question.canSelectMultiple">
                                     <div *ngFor="let option of question.options" class="formChoices">
-                                        <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio" />
-                                        <label>{{option.body}}</label>
+                                        <label>
+                                            <input (click)="loginPopup.check(data.loginRequired)" formControlName="answer" [value]="option.label" type="radio" />
+                                            <span>{{option.body}}</span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div *ngIf="question.canSelectMultiple" formGroupName="answer">
                                     <div *ngFor="let option of question.options" class="formChoices">
                                         <label>
-                                            <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox" /> {{option.body}}
+                                            <input (click)="loginPopup.check(data.loginRequired)" [formControlName]="option.label" type="checkbox" /> 
+                                            <span>{{option.body}}</span>
                                         </label>
                                     </div>
                                 </div>

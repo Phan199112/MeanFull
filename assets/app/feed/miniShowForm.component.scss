@@ -14,13 +14,21 @@ $primaryColor: #28ab64;
   
     input {
       margin-top: 3px;
-      cursor: pointer;
     }
 
-  & label {
+   label {
     font-size: 1rem;
     font-family: Karla;
     padding-left: 8px;
+    display: flex;
+    cursor: pointer;
+
+    span {
+      display: block;
+      margin-left: 6px;
+      color: #2b2b2b;
+      font-size: 1rem;
+    }
   }
 
   &.sa, &.num {
@@ -207,3 +215,4 @@ $warningColor: rgb(234, 122, 133);
   text-align: center;
   width: 100%;
 }
+
