@@ -242,7 +242,7 @@ module.exports = function(app, passport, manager, hashids) {
         var nodiscussion = 0;
         var me = false;
         var loggedin = req.isAuthenticated();
-        var innetworktemp = {status: false, found: false};
+        var innetworktemp = {status: false, found: false, pendingRequestFromLoggedInUser: false};
 
         var tempfunctionUser = function() {
             return new Promise(function(resolve, reject){
@@ -267,7 +267,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
                                     facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
                                     pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
-                                    nodiscussion: userinfo.nodiscussion};
+                                    nodiscussion: userinfo.nodiscussion, pendingRequestFromLoggedInUser: false};
                                 resolve();
 
                             } else if (userinfo.public === true) {
@@ -275,7 +275,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
                                     facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
                                     pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
-                                    nodiscussion: userinfo.nodiscussion};
+                                    nodiscussion: userinfo.nodiscussion, pendingRequestFromLoggedInUser: false};
                                 resolve();
 
                             } else {
@@ -284,7 +284,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 userdata = {gender: userinfo.gender, name: userinfo.name, pic: userinfo.pic,
                                     facebookID: userinfo.facebookID, location: userinfo.location, me: me, innetwork: false,
                                     pending: false, nocreated: userinfo.nocreated, notaken: userinfo.notaken,
-                                    nodiscussion: userinfo.nodiscussion};
+                                    nodiscussion: userinfo.nodiscussion, pendingRequestFromLoggedInUser: false};
                                 status = 2;
                                 resolve();
                             }
@@ -315,6 +315,7 @@ module.exports = function(app, passport, manager, hashids) {
                             if (edge.userid[0] === req.session.userid || edge.userid[1] === req.session.userid) {
                                 innetworktemp.status = edge.status;
                                 innetworktemp.found = true;
+                                innetworktemp.pendingRequestFromLoggedInUser = (edge.userid[1] === req.session.userid);
                             }
                         }
                     })
@@ -412,6 +413,7 @@ module.exports = function(app, passport, manager, hashids) {
                 userdata.innetwork = true;
             } else if (innetworktemp.found === true && innetworktemp.status === false && me === false) {
                 userdata.pending = true;
+                userdata.pendingRequestFromLoggedInUser = innetworktemp.pendingRequestFromLoggedInUser;
             } else {
                 userdata.innetwork = false;
                 userdata.pending = false;

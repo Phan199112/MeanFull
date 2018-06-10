@@ -760,6 +760,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
     });
 
+    // Can be used for pending requests too
     app.post('/users/settings/removefromnetwork', manager.ensureLoggedIn('/users/login'), function(req,res) {
 
         var targetuserid = hashids.decodeHex(req.body.targetid);
@@ -770,7 +771,7 @@ module.exports = function(app, passport, manager, hashids) {
         var promises = [];
 
         new Promise(function(resolve, reject){
-            NetworkEdgesModel.find({userid: req.session.userid, status: true}).cursor()
+            NetworkEdgesModel.find({userid: req.session.userid}).cursor()
                 .on('data', function(edge){
                     // edge.userid will contain two IDs, we want the other one (not userdbid)
                     if (edge.userid[0] == targetuserid || edge.userid[1] == targetuserid) {

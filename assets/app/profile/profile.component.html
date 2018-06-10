@@ -33,8 +33,12 @@
                             <i class="stats fa fa-comments" aria-hidden="true">&nbsp;<span>{{nodiscussion ? nodiscussion : '0'}}</span></i>
                         </div>
                         <div *ngIf="(loggedin && !innetwork && !pending && !me) || pending" style="margin-top: 8px">
-                            <a class="submitButton" (click)="onAddToNetwork(id)" *ngIf="loggedin && !innetwork && !pending && !me">Add Friend</a>
-                            <a class="submitButton" *ngIf="pending">Request Pending</a>
+                            <a class="submitButton" (click)="onAddToNetwork(id)"
+                                *ngIf="loggedin && !innetwork && !pending && !me">Add Friend</a>
+                            <a class="submitButton" (click)="removeFromNetwork(id)"
+                                *ngIf="pending && pendingRequestFromLoggedInUser">Cancel Friend Request</a>
+                            <a class="submitButton" (click)="onAcceptFriendRequest(id)"
+                                *ngIf="pending && !pendingRequestFromLoggedInUser">Accept Friend Request</a>
                         </div>
                     </div>
 

@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     nocreated: string;
     nodiscussion: string;
     pending: boolean = false;
+    pendingRequestFromLoggedInUser: boolean = false;
     noPostsMessage: string;
     status: string = 0;
 
@@ -136,6 +137,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         this.me = this.userprofile.me;
                         this.innetwork = this.userprofile.innetwork;
                         this.pending = this.userprofile.pending;
+                        this.pendingRequestFromLoggedInUser = this.userprofile.pendingRequestFromLoggedInUser;
                         this.name = this.userprofile.name.first+" "+this.userprofile.name.last;
                         this.firstname = this.userprofile.name.first;
                         this.gender = this.userprofile.gender;
@@ -211,6 +213,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         //
                         this.innetwork = this.userprofile.innetwork;
                         this.pending = this.userprofile.pending;
+                        this.pendingRequestFromLoggedInUser = this.userprofile.pendingRequestFromLoggedInUser;
                         this.name = this.userprofile.name.first+" "+this.userprofile.name.last;
                         this.firstname = this.userprofile.name.first;
                         this.gender = this.userprofile.gender;
@@ -282,6 +285,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 this.loading = false;
                 if (response.json().status == 1) {
                     this.innetwork = false;
+                    this.pending = false;
                 } else {
                     this.addfailed = true;
                 }
@@ -291,6 +295,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 this.addfailed = true;
                 this.loading = false;
             });
+    };
+
+    onAcceptFriendRequest(x) {
+
     };
 
     reportUser(x) {
