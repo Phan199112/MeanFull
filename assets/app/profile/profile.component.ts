@@ -262,6 +262,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     onAddToNetwork(x) {
+        if (this.loading) return false; // prevent double-click
         this.loading = true;
         this.http.post('/users/settings/addtonetwork', {targetid: x}).toPromise()
             .then(response => {
@@ -280,6 +281,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     };
 
     removeFriendOrRequest(x) {
+        if (this.loading) return false; // prevent double-click
         this.loading = true;
         this.http.post('/users/settings/removefromnetwork', {targetid: x}).toPromise()
             .then(response => {
@@ -298,6 +300,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     };
 
     onAcceptFriendRequest(x) {
+        if (this.loading) return false; // prevent double-click
         this.loading = true;
         this.http.post('/users/settings/acceptfriendrequest', {targetid: x}).toPromise()
             .then(response => {

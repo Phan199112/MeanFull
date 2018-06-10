@@ -830,9 +830,18 @@ module.exports = function(app, passport, manager, hashids) {
         new Promise(function(resolve, reject){
             NetworkEdgesModel.find({userid: req.session.userid, status: false}).cursor()
                 .on('data', function(edge){
-                    // edge.userid will contain two IDs, we want the other one (not userdbid)
-                    if (edge.userid[0] == targetuserid || edge.userid[1] == targetuserid) {
-                        edgeid.push(edge._id);
+                    if (edge.status) {
+                        // friends
+                        // edge.userid will contain two IDs, we want the other one (not userdbid)
+                        if (edge.userid[0] == targetuserid || edge.userid[1] == targetuserid) {
+                            edgeid.push(edge._id);
+                        }
+                    } else {
+                        // pending friend request
+                        // cannot accept friend requests that were initiated by the logged in user
+                        if (edge.userid[1] == targetuserid) {
+                            edgeid.push(edge._id);
+                        }
                     }
                 })
                 .on('error', function(err){
