@@ -215,7 +215,10 @@ module.exports = function(app, passport, manager, hashids) {
                             receivedData.anonymous === true ? null : req.session.userid,
                             "form",
                             "New survey",
-                            { formid: hashids.encodeHex(formid), comm: receivedData.sharedWithCommunities[0]}
+                            {
+                                formid: hashids.encodeHex(formid),
+                                comm: receivedData.sharedWithCommunities ? receivedData.sharedWithCommunities[0] : null
+                            }
                         );
                 }
             }
