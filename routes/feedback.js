@@ -1,16 +1,23 @@
 var FeedbackModel = require('../db.models/feedback.model');
 var log = require("../functions/logs");
+var emailfunctions = require("../functions/email");
+
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
 
     // save a new community
-    app.post('/savefeedback', manager.ensureLoggedIn('/users/login'), function (req, res, next) {
-        var receivedData =  req.body;
+    // app.post('/savefeedback', manager.ensureLoggedIn('/users/login'), function (req, res, next) {
+    app.post('/savefeedback', function (req, res, next) {
+        var feedback =  req.body.feedback;
+        var user = req.session.userid || "anonymous";
+
+        emailfunctions.sendFeedback(feedback);
+
 
         // mongodb
-        FeedbackModel.create({userid: req.session.userid,
-            message: receivedData.feedback, timestamp: Date.now()}, function(err, k) {
+        FeedbackModel.create({userid: user,
+            message: feedback, timestamp: Date.now()}, function(err, k) {
             if (err) {
                 res.json({status: 0});
             } else {

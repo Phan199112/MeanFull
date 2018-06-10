@@ -145,6 +145,24 @@ function renderTemplateLoopFix(template, context) {
     });
 }
 
+exports.sendFeedback = function (feedback) {
+    const subject = "Questionsly - Feedback Received";
+    const messagesafe = "";
+    const emails = ['ffunes59@ucla.edu', 'dadwal.kartik@gmail.com', 'kristopherwindsor@gmail.com'];
+
+    renderTemplate("email-feedback", {
+        subject: subject,
+        feedback: feedback
+    }).then(function (html) {
+        emails.forEach(x => {
+            console.log('Sent email to myself!!!!', feedback,x);
+            
+            exports.sendEmail(x, subject, html);
+        });
+    });
+
+}
+
 exports.sendSummary = function sendSummary() {
     var subject = "Your Daily Questionsly Summary";
     var messagesafe = "";

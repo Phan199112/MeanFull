@@ -23,8 +23,12 @@ export class RightPanel implements OnInit {
     currentEmo: string = null;
     topTags: Array<string> = [];
     locationForm: FormGroup;
+    feedbackForm: FormGroup;
     noLocation: boolean = false;
     submittedLocation = false;
+    showFeedbackForm: boolean = false;
+    sentFeedback: boolean = false;
+    fbError: boolean = false;
 
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private userService: UserService) {
@@ -39,6 +43,10 @@ export class RightPanel implements OnInit {
             city: ["", Validators.required],
             state: ["", Validators.required],
             country: ["", Validators.required]
+        })  
+
+        this.feedbackForm = this.fb.group({
+            feedback: ["", [Validators.required, Validators.minLength(1)]]
         })  
 
         this.http.post('/tags/list')
@@ -120,4 +128,41 @@ export class RightPanel implements OnInit {
         
     }
 
+    toggleFb() {
+        this.showFeedbackForm = !this.showFeedbackForm;
+        this.fbError = false;
+    }
+
+
+    sendFeedback() {
+        // console.log('Feedback:', this.feedbackForm.value.feedback);
+        const feedback = this.feedbackForm.value.feedback;
+
+        if(this.feedbackForm.valid) {
+            this.fbError = false;
+            this.sentFeedback = true;
+    
+            // Reset Feedback form
+            const resetFb = () => {
+                this.toggleFb();
+                this.sentFeedback = false;
+                this.feedbackForm.get('feedback').setValue("");
+            }
+    
+            window.setTimeout(resetFb, 2000);
+    
+            this.http.post('/savefeedback', { feedback })
+                .toPromise()
+                .then(response => {
+                })
+
+
+        } else {
+            this.fbError = true;
+        }
+
+
+
+        
+    }
 }
