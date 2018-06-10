@@ -48,8 +48,7 @@ module.exports = function(app, passport, manager, hashids) {
     };
 
     // crons for search
-    cron.schedule('*/5 * * * *', function(){
-        // run
+    var indexerCron = function () {
         TagsAutoComplete = new autocomplete.AutoComplete(configurationTag, function () {
             //any calls required after the initialization
             console.log("Tags Loaded " + TagsAutoComplete.getCacheSize() + " words in auto complete");
@@ -64,9 +63,9 @@ module.exports = function(app, passport, manager, hashids) {
             //any calls required after the initialization
             console.log("User Loaded " + UserAutoComplete.getCacheSize() + " words in auto complete");
         });
-
-    });
-
+    };
+    cron.schedule('*/5 * * * *', indexerCron);
+    indexerCron(); // index immediately when we start
 
     app.post('/search', function (req, res) {
         var keyword = req.body.keyword;

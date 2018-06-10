@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     nocreated: string;
     nodiscussion: string;
     pending: boolean = false;
+    pendingRequestFromLoggedInUser: boolean = false;
     noPostsMessage: string;
     status: string = 0;
 
@@ -103,13 +104,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
             }
 
             switch (this.genericSubsection) {
-                case "network":
+                case "friends":
                     this.http.get("/users/network", {params: {user: params.id}}).toPromise().then(res => {
                         this.subsectionList = res.json().data;
                         this.subsectionResource = "user";
                     });
                     break;
-                case "communities":
+                case "groups":
                     this.http.post("/community/list", {user: params.id, userCommunitiesLimit: 100}).toPromise().then(res => {
                         this.subsectionList = res.json().data;
                         this.subsectionResource = "community";
@@ -136,6 +137,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         this.me = this.userprofile.me;
                         this.innetwork = this.userprofile.innetwork;
                         this.pending = this.userprofile.pending;
+                        this.pendingRequestFromLoggedInUser = this.userprofile.pendingRequestFromLoggedInUser;
                         this.name = this.userprofile.name.first+" "+this.userprofile.name.last;
                         this.firstname = this.userprofile.name.first;
                         this.gender = this.userprofile.gender;
@@ -211,6 +213,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         //
                         this.innetwork = this.userprofile.innetwork;
                         this.pending = this.userprofile.pending;
+                        this.pendingRequestFromLoggedInUser = this.userprofile.pendingRequestFromLoggedInUser;
                         this.name = this.userprofile.name.first+" "+this.userprofile.name.last;
                         this.firstname = this.userprofile.name.first;
                         this.gender = this.userprofile.gender;
@@ -259,12 +262,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     onAddToNetwork(x) {
+        if (this.loading) return false; // prevent double-click
         this.loading = true;
         this.http.post('/users/settings/addtonetwork', {targetid: x}).toPromise()
             .then(response => {
                 this.loading = false;
                 if (response.json().status == 1) {
                     this.pending = true;
+                    this.pendingRequestFromLoggedInUser = true;
                 } else {
                     this.addfailed = true;
                 }
@@ -275,17 +280,37 @@ export class ProfileComponent implements OnInit, OnDestroy {
             });
     };
 
-    removeFromNetwork(x) {
+    removeFriendOrRequest(x) {
+        if (this.loading) return false; // prevent double-click
         this.loading = true;
         this.http.post('/users/settings/removefromnetwork', {targetid: x}).toPromise()
             .then(response => {
                 this.loading = false;
                 if (response.json().status == 1) {
                     this.innetwork = false;
+                    this.pending = false;
                 } else {
                     this.addfailed = true;
                 }
-                //
+            })
+            .catch(error => function () {
+                this.addfailed = true;
+                this.loading = false;
+            });
+    };
+
+    onAcceptFriendRequest(x) {
+        if (this.loading) return false; // prevent double-click
+        this.loading = true;
+        this.http.post('/users/settings/acceptfriendrequest', {targetid: x}).toPromise()
+            .then(response => {
+                this.loading = false;
+                if (response.json().status == 1) {
+                    this.innetwork = true;
+                    this.pending = false;
+                } else {
+                    this.addfailed = true;
+                }
             })
             .catch(error => function () {
                 this.addfailed = true;

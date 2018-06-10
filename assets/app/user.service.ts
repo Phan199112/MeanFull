@@ -5,9 +5,11 @@ let data: any = null;
 let checkedLogin: boolean = false;
 let loggedin: boolean = false;
 let loginCheckPromise: Promise = null;
+let callbacksForLogin: Array = [];
 
 @Injectable()
 export class UserService {
+
     constructor(private http: Http) {}
 
     getData() {
@@ -60,9 +62,15 @@ export class UserService {
             });
     }
 
-    afterLoginReload() {
+    acknowledgeLogin() {
         checkedLogin = false;
         loginCheckPromise = null;
-        return this.afterLoginCheck();
+        callbacksForLogin.forEach(function (callback) {
+            callback();
+        });
+    }
+
+    listenForLogin(callback) {
+        callbacksForLogin.push(callback);
     }
 }

@@ -113,6 +113,7 @@ export class NavbarComponent implements OnInit {
                 });
             } else {
                 this.loggedin = false;
+                this.userService.listenForLogin(this.checkLoggedin.bind(this));
             }
         });
     };
@@ -213,15 +214,15 @@ export class NavbarComponent implements OnInit {
         switch (notification.type) {
             case "form":
                 if (notification.data.comm) {
-                    return ['/community', notification.data.comm.value, { 'survey': notification.data.formid }];
+                    return ['/group', notification.data.comm.value, { 'survey': notification.data.formid }];
                 } else {                        
                     return ['/feed', { 'survey': notification.data.formid }];
                 }
             case "form-answer":                
                 return ['/feed', { 'survey': notification.data }];
             case "form-shared":
-                return ['/community', notification.data.commid ]
-                // return ['/community', notification.data.commid, { 'survey': notification.data.formid } ]
+                return ['/group', notification.data.commid ]
+                // return ['/group', notification.data.commid, { 'survey': notification.data.formid } ]
             case "form-discussion":
                 return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
             case "network":
@@ -229,7 +230,7 @@ export class NavbarComponent implements OnInit {
                 return ['/profile', notification.fromUserId]
             case "comm":
             case "comm-admin":
-                return ['/community', notification.data];
+                return ['/group', notification.data];
         }
     }
 
@@ -430,26 +431,14 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
-    deleteConnectionRequest(x, y) {
-        // this.http.post(`/users/settings/deletenetworkrequest`, { edgeid: x, eventid: y }).toPromise()
-        //     .then(() => {
-
-        this.http.post(`/events/delete`, { id: y }).toPromise()
+    deleteConnectionRequest(fromuserid, notificationid) {
+console.log('deleteConnectionRequest',fromuserid, notificationid);
+        // Note: it might be better to mark the request as declined rather than deleting it
+        this.http.post(`/users/settings/removefromnetwork`, {targetid: fromuserid}).toPromise()
             .then(() => {
-                let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
+                let ind = this.networkNotifications.findIndex((obj) => obj.id === notificationid);
                 this.networkNotifications.splice(ind, 1);
             })
-
-            // })
-            .catch(error => alert("Error: " + error));
-
-        this.http.post(`/events/delete`, { id: y }).toPromise()
-            .then(() => {
-                let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
-                this.networkNotifications.splice(ind, 1);
-        })
-
-        // })
             .catch(error => alert("Error: " + error));
     }
 

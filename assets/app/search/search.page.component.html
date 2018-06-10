@@ -15,9 +15,9 @@
                     <resource-list *ngIf="usersearchresultsList && usersearchresultsList.length !== 0" [resource]="'user'" [list]="usersearchresultsList"></resource-list>
                     <h3 *ngIf="!usersearchresultsList || usersearchresultsList.length === 0" class="noResults">No users found matching this search</h3>
 
-                    <h3 class="titles">Communities</h3>
+                    <h3 class="titles">Groups</h3>
                     <resource-list *ngIf="communitysearchresultsList && communitysearchresultsList.length !== 0" [resource]="'community'" [list]="communitysearchresultsList"></resource-list>
-                    <h3 *ngIf="!communitysearchresultsList || communitysearchresultsList.length === 0" class="noResults">No communities found matching this search</h3>
+                    <h3 *ngIf="!communitysearchresultsList || communitysearchresultsList.length === 0" class="noResults">No groups found matching this search</h3>
 
                     <h3 class="titles">Questions</h3>
                     <resource-list *ngIf="formsearchresultsList && formsearchresultsList.length !== 0" [resource]="'form'" [list]="formsearchresultsList"></resource-list>

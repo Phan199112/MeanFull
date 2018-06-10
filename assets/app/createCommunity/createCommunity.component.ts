@@ -100,7 +100,7 @@ export class CreateCommunityComponent  {
                 if (response.json().status == 1) {
                     this.commurl = response.json().id;
                     this.visitbutton = true;
-                    this.router.navigate(['/community', this.commurl]);
+                    this.router.navigate(['/group', this.commurl]);
 
                 } else {
                     this.submissionfailed = true;

@@ -31,13 +31,13 @@
                             </a>
                             <div ngbDropdownMenu aria-labelledby="community-menu">
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="toggleEdit()">Edit</a>
-                                <a class="dropdown-item" *ngIf="!data.ismember && status != '2'" (click)="joinCommunity(id)">Join Community</a>
+                                <a class="dropdown-item" *ngIf="!data.ismember && status != '2'" (click)="joinCommunity(id)">Join Group</a>
                                 <a class="dropdown-item" *ngIf="!data.public && !data.ismember && !data.isPending" (click)="joinCommunity(id)">Request to Join</a> 
                                 <a class="dropdown-item" *ngIf="data.isPending && !data.public">Request Pending</a> 
-                                <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Community</a>
+                                <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Group</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="inviteToCommunity(id)">Invite others to join</a>
-                                <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Community</a>
-                                <a class="dropdown-item" *ngIf="!data.isadmin" (click)="reportCommunity(id)">Report Community</a>
+                                <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Group</a>
+                                <a class="dropdown-item" *ngIf="!data.isadmin" (click)="reportCommunity(id)">Report Group</a>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
 
                 <!-- Feed list and private community message -->
                 <div class="" *ngIf="!showEdit">
-                    <div *ngIf="status == '2'" class="aboutContainer" style="flex-direction: column"><h6 class="description center">{{data.title}} is a private community.</h6><h6 class="description center">Only members can see the content of this community.</h6></div>
+                    <div *ngIf="status == '2'" class="aboutContainer" style="flex-direction: column"><h6 class="description center">{{data.title}} is a private group.</h6><h6 class="description center">Only members can see the content of this group.</h6></div>
                     <feed-list *ngIf="data.public || data.ismember" [comm]="id"></feed-list>
                 </div>
 
@@ -62,14 +62,14 @@
                 <!-- Edit Community -->
                 <div class="aboutContainer" *ngIf="data.isadmin && showEdit" style="margin-bottom: 18px !important; flex-direction: column;">
                     <div class="flexContainer" style="justify-content: center; padding-bottom: 0;">
-                        <h3 class="description" style="margin-bottom: 25px">Edit Community</h3>
+                        <h3 class="description" style="margin-bottom: 25px">Edit Group</h3>
                     </div>
                     
                     
                     <form id="main-form" [formGroup]="fgCreateCommunity">
                     
                         <div class="flexContainer fdColumn faStart">
-                            <h6 class="title firstTitle">Community Title</h6>
+                            <h6 class="title firstTitle">Group Title</h6>
                             <div style="display: flex; align-items: center; width: 100%">
                                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                                 <input class="niceTextInput" formControlName="title" autofocus />
@@ -88,9 +88,9 @@
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Privacy</h6>
                             <div style="display:flex; justify-content: flex-start;">
-                                <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this community'"
+                                <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
                                     (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
-                                <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this community'"
+                                <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
                                     (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
                             </div>
                         </div>
@@ -176,7 +176,7 @@
 
         <div class="col-md-6 order-2 order-sm-3" *ngIf="!loadsuccessful && !loading">
             <div class="aboutContainer">
-                <h2 style="overflow: auto" class="location">Uh oh. This community could not be found.</h2>
+                <h2 style="overflow: auto" class="location">Uh oh. This group could not be found.</h2>
             </div>
         </div>
 

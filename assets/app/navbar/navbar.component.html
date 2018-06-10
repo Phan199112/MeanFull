@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="flex">
                                                 <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
-                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a>
+                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.fromUserId, notification.id)">Deny</a>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
             
                             <div *ngIf="communityNotifications.length > 0">
                                 <div class="notifTextCont" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': networkNotifications.length == 0}">
-                                    <p class="notifLabel">Community Requests</p>
+                                    <p class="notifLabel">Group Requests</p>
                                     <p class="notifLabel markAll" [ngClass]="{'notVisible': networkNotifications.length != 0}" (click)="markAllRead()">Mark all as read</p>
                                 </div>
 
@@ -108,11 +108,11 @@
                                         <img src="{{notificationPic(notification)}}" class="notifImage" />
                                         <div class="flex fCol" style="max-width: 300px; ">
                                             <p style="color: #555; margin: 0; font-size: .8rem; line-height: 1.25">
-                                                <span style="font-weight: 700; font-size: .8rem; color: #2b2b2b">{{notificationMessage(notification).name}}</span> 
+                                                <span style="font-weight: 700; font-size: .8rem; color: #333">{{notificationMessage(notification).name}}</span> 
                                                 {{notificationMessage(notification).action}}
-                                                <span style="font-weight: 700; font-size: .75rem; color: #2b2b2b">{{notificationMessage(notification).message}}</span>
+                                                <span style="font-weight: 700; font-size: .75rem; color: #333">{{notificationMessage(notification).message}}</span>
                                                 {{notificationMessage(notification)?.action2}}
-                                                <span style="font-weight: 700; font-size: .8rem; color: #2b2b2b">{{notificationMessage(notification)?.community}}</span>
+                                                <span style="font-weight: 700; font-size: .8rem; color: #333">{{notificationMessage(notification)?.community}}</span>
                                             </p>
                                             <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mma"}}</p>
                                         </div>
@@ -170,3 +170,11 @@
 
     </div>
 </nav>
+
+
+<!-- could be its own component later -->
+<p class="signupBanner" *ngIf="!loggedin">
+    Questionsly &mdash; connecting the world to share information and helping people make better decisions
+
+    <button *ngIf="router.url != '/users/login'" style="font-family: Karla" class="btn btn-outline-success" routerLink="/users/login">Please Log in or Sign Up!</button>
+</p>

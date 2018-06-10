@@ -120,7 +120,9 @@ module.exports = function(app, passport, manager, hashids) {
                             for (let l=0; l < c.members.length; l++) {                                
                                 unhashedUsers.push(c.members[l]);
                             }
-
+                        }
+                        for (let l=0; l < c.adminuserid.length; l++) {
+                            unhashedUsers.push(c.adminuserid[l]);
                         }
                         resolve();
                     }
@@ -207,13 +209,17 @@ module.exports = function(app, passport, manager, hashids) {
                     seen[unhashedUsers[i]] = true;
 
                     // Sending only first community shared with..
-                    notifications.createNotification(
-                        unhashedUsers[i],
-                        receivedData.anonymous === true ? null : req.session.userid,
-                        "form",
-                        "New survey",
-                        { formid: hashids.encodeHex(formid), comm: receivedData.sharedWithCommunities[0]}
-                    );
+                    if (unhashedUsers[i] != req.session.userid)
+                        notifications.createNotification(
+                            unhashedUsers[i],
+                            receivedData.anonymous === true ? null : req.session.userid,
+                            "form",
+                            "New survey",
+                            {
+                                formid: hashids.encodeHex(formid),
+                                comm: receivedData.sharedWithCommunities ? receivedData.sharedWithCommunities[0] : null
+                            }
+                        );
                 }
             }
 

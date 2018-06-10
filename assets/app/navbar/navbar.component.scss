@@ -407,3 +407,28 @@ img {
     width: 20px;
   }
 }
+
+.signupBanner {
+  width: 100%; text-align: center; margin: .9rem 0 0.3rem 0; padding: 0 2rem; font-size: larger;
+
+  button {
+    display: block;
+    margin: 0px auto;
+    margin-top: 15px;
+    min-width: 250px;
+    padding: 4px 10px;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+    background-color: $primaryColor;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: lighten($primaryColor, 10);
+    }
+
+    @media (max-width: 767px) {
+      margin-top: 8px;
+    }
+  }
+}

@@ -621,7 +621,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
         this.http.post('/forms/create', formData).toPromise()
             .then(response => {
                 formData.id = response.json().id;
-                this.shareLink = `https://www.questionsly.com/takeForm/${formData.id}`;
+                this.shareLink = `https://www.questionsly.com/feed;survey=${formData.id}`;
                 this.formService.setData(formData);
                 this.step = 2;
             })

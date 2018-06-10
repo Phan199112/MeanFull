@@ -131,13 +131,9 @@ export class LoginComponent implements OnInit {
                     if (data.status == 1) {
 
                         // reload userservice
-                        this.userService.afterLoginReload();
+                        this.userService.acknowledgeLogin();
                         // navigate to feed
-                        this.router.navigate(['/'])
-                            .then(function() {
-                                // reload the page
-                                location.reload(true);
-                            });
+                        this.router.navigate(['/']);
 
                     } else {
                         this.status = false;
@@ -179,7 +175,7 @@ export class LoginComponent implements OnInit {
                                 // Handle response here
                                 if (data.status == 1) {
                                     // reload userservice
-                                    this.userService.afterLoginReload();
+                                    this.userService.acknowledgeLogin();
                                     // navigate to feed
                                     this.router.navigate(['/'])
                                         .then(function () {

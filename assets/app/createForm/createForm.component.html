@@ -187,12 +187,12 @@
                 </div>
 
                 <div class="flexContainer fdColumn faStart">
-                    <h6 class="settingTitle qslyBlack">Share with a community</h6>
+                    <h6 class="settingTitle qslyBlack">Share with a group</h6>
                     <div style="display:flex; justify-content: flex-start; width: 100%">
                         <div class="tag-input-wrapper form-control" style="margin-left: 10px;">
                             <div [ngClass]="{'d-none': showPublicShares || questionnaire.get('sharedWithCommunities').value}" class="tag-placeholder text-muted"
                                 (click)="showPublicShares = true; focusTagInput(sharedWith)">
-                                Community name
+                                Group name
                             </div>
                             <tag-input #sharedWith [ngClass]="{'d-none': !showPublicShares && questionnaire.get('sharedWithCommunities').value === null}"
                                 id="public-shares" placeholder="Name" secondaryPlaceholder="Name" [onAdding]="transformName" (onBlur)="showPublicShares = false"

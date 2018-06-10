@@ -137,7 +137,7 @@ export class FeedFormComponent implements OnInit {
         this.startingTime = Date.now();
 
         if (this.inComm) {
-            this.shareUrl = `https://www.questionsly.com/community/${this.inComm};survey=${this.form.id}`;
+            this.shareUrl = `https://www.questionsly.com/group/${this.inComm};survey=${this.form.id}`;
         } else {
             this.shareUrl = `https://www.questionsly.com/feed;survey=${this.form.id}`
         }
