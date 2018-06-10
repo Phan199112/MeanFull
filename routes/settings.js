@@ -703,6 +703,8 @@ module.exports = function(app, passport, manager, hashids) {
 
     });
 
+    // This should be retired, use /users/settings/removefromnetwork instead
+    // This one is too specific - the client says delete edge X and notification Y. Backend should manage notification cleanup.
     app.post('/users/settings/deletenetworkrequest', manager.ensureLoggedIn('/users/login'), function(req,res) {
         var targetid = hashids.decodeHex(req.body.edgeid);
         var eventid = hashids.decodeHex(req.body.eventid);
@@ -760,7 +762,8 @@ module.exports = function(app, passport, manager, hashids) {
             });
     });
 
-    // Can be used for pending requests too
+    // Remove a friend or pending friend request
+    // Also deletes all notifications that reference the deleted edge
     app.post('/users/settings/removefromnetwork', manager.ensureLoggedIn('/users/login'), function(req,res) {
 
         var targetuserid = hashids.decodeHex(req.body.targetid);

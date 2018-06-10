@@ -278,7 +278,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             });
     };
 
-    removeFromNetwork(x) {
+    removeFriendOrRequest(x) {
         this.loading = true;
         this.http.post('/users/settings/removefromnetwork', {targetid: x}).toPromise()
             .then(response => {
@@ -289,7 +289,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 } else {
                     this.addfailed = true;
                 }
-                //
             })
             .catch(error => function () {
                 this.addfailed = true;
