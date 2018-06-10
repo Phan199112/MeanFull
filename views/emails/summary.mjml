@@ -59,8 +59,8 @@
 
         <mj-section padding-top="30px">
           <mj-text font-size="14" color="#666" font-family="Karla" align="center" padding-bottom="20px">
-            <a href="https://www.questionsly.com/" class="link-nostyle" style="color: #28ab64">Browse</a>
-            Questionsly, an online platform for getting data to all your questions from a large community of users.
+            <a href="https://www.questionsly.com/" class="link-nostyle" style="color: #28ab64">Questionsly</a>
+            — connecting the world to share information and helping people make better decisions
           </mj-text>
         </mj-section>
 
