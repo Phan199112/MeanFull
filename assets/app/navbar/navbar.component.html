@@ -170,3 +170,11 @@
 
     </div>
 </nav>
+
+
+<!-- could be its own component later -->
+<p class="signupBanner" *ngIf="!loggedin">
+    Questionsly &mdash; connecting the world to share information and helping people make better decisions
+
+    <button *ngIf="router.url != '/users/login'" style="font-family: Karla" class="btn btn-outline-success" routerLink="/users/login">Please Log in or Sign Up!</button>
+</p>
