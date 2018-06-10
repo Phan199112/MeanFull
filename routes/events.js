@@ -14,7 +14,10 @@ module.exports = function (app, passport, manager, hashids) {
 
 
         new Promise(function (resolve, reject) {
-            var sinceLastWeek = { $gt: new Date() - 1000 * 3600 * 24 * 7  };
+            // I want to only provide 1 week of notifications or 50 notifications
+            // But this is the only way to see your friend request, so we need to return
+            // even old or buried notifications
+            var sinceLastWeek = { $gt: new Date() - 1000 * 3600 * 24 * 365  };
             var findFilter = req.body.since
                 ? { userid: req.session.userid, timestamp: sinceLastWeek, _id: { $gt: hashids.decodeHex(req.body.since) } }
                 : { userid: req.session.userid, timestamp: sinceLastWeek };
