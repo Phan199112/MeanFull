@@ -113,6 +113,7 @@ export class NavbarComponent implements OnInit {
                 });
             } else {
                 this.loggedin = false;
+                this.userService.listenForLogin(this.checkLoggedin.bind(this));
             }
         });
     };
