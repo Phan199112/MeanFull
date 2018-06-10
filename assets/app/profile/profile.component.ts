@@ -268,6 +268,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 this.loading = false;
                 if (response.json().status == 1) {
                     this.pending = true;
+                    this.pendingRequestFromLoggedInUser = true;
                 } else {
                     this.addfailed = true;
                 }
@@ -297,7 +298,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
     };
 
     onAcceptFriendRequest(x) {
-
+        this.loading = true;
+        this.http.post('/users/settings/acceptfriendrequest', {targetid: x}).toPromise()
+            .then(response => {
+                this.loading = false;
+                if (response.json().status == 1) {
+                    this.innetwork = true;
+                    this.pending = false;
+                } else {
+                    this.addfailed = true;
+                }
+            })
+            .catch(error => function () {
+                this.addfailed = true;
+                this.loading = false;
+            });
     };
 
     reportUser(x) {

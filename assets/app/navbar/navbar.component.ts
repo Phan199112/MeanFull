@@ -431,26 +431,14 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
-    deleteConnectionRequest(x, y) {
-        // this.http.post(`/users/settings/deletenetworkrequest`, { edgeid: x, eventid: y }).toPromise()
-        //     .then(() => {
-
-        this.http.post(`/events/delete`, { id: y }).toPromise()
+    deleteConnectionRequest(fromuserid, notificationid) {
+console.log('deleteConnectionRequest',fromuserid, notificationid);
+        // Note: it might be better to mark the request as declined rather than deleting it
+        this.http.post(`/users/settings/removefromnetwork`, {targetid: fromuserid}).toPromise()
             .then(() => {
-                let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
+                let ind = this.networkNotifications.findIndex((obj) => obj.id === notificationid);
                 this.networkNotifications.splice(ind, 1);
             })
-
-            // })
-            .catch(error => alert("Error: " + error));
-
-        this.http.post(`/events/delete`, { id: y }).toPromise()
-            .then(() => {
-                let ind = this.networkNotifications.findIndex((obj) => obj.id === y);
-                this.networkNotifications.splice(ind, 1);
-        })
-
-        // })
             .catch(error => alert("Error: " + error));
     }
 

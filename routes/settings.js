@@ -669,6 +669,8 @@ module.exports = function(app, passport, manager, hashids) {
             });
     });
 
+    // This API should be retired; use /users/settings/acceptfriendrequest instead
+    // This API takes a notification ID, but a good API would take the user ID because notifications are not the real entity
     app.post('/users/settings/acceptnetworkrequest', manager.ensureLoggedIn('/users/login'), function(req,res) {
         var eventid = hashids.decodeHex(req.body.eventid);
         var targetid;
@@ -699,8 +701,10 @@ module.exports = function(app, passport, manager, hashids) {
                     }
                 });
 
+            })
+            .catch(function () {
+                res.json({status: 0});
             });
-
     });
 
     // This should be retired, use /users/settings/removefromnetwork instead
@@ -730,6 +734,8 @@ module.exports = function(app, passport, manager, hashids) {
             });
     });
 
+    // This API is hard to use because it takes an edge ID; usually the frontend has the user ID instead
+    // Suggest removing and using /users/settings/removefromnetwork instead
     app.post('/users/settings/deletenetwork', manager.ensureLoggedIn('/users/login'), function(req,res) {
         var targetid = hashids.decodeHex(req.body.edgeid);
 
@@ -765,11 +771,8 @@ module.exports = function(app, passport, manager, hashids) {
     // Remove a friend or pending friend request
     // Also deletes all notifications that reference the deleted edge
     app.post('/users/settings/removefromnetwork', manager.ensureLoggedIn('/users/login'), function(req,res) {
-
         var targetuserid = hashids.decodeHex(req.body.targetid);
-        console.log("remove from network request "+targetuserid+" "+req.session.userid);
 
-        //
         var edgeid = [];
         var promises = [];
 
@@ -790,28 +793,15 @@ module.exports = function(app, passport, manager, hashids) {
         })
         .then(function () {
             var tempfunctionDeleteEdge = function(x) {
-                var promise = new Promise(function(resolve, reject){
-                    NetworkEdgesModel.remove({_id: x, userid: req.session.userid}, function(err) {
-                        if (!err) {
-                            // ok
-                            resolve();
-                        }
-                        else {
-                            reject();
-                        }
+                return new Promise(function(resolve, reject){
+                    NetworkEdgesModel.remove({_id: x}, function(err) {
+                        if (err) reject(); else resolve();
                     });
                 })
                     .then(function () {
                         EventModel.remove({data: hashids.encodeHex(x)}, function(err) {
-                            if (!err) {
-                                // ok
-                            } else {
-                                //
-                            }
                         });
-
                     });
-                return promise;
             };
 
             edgeid.forEach(function(id) {
@@ -819,7 +809,6 @@ module.exports = function(app, passport, manager, hashids) {
             });
 
             return Promise.all(promises).then(function () {
-                console.log("promise all completed delete edge");
             });
         })
         .then(function () {
@@ -828,8 +817,59 @@ module.exports = function(app, passport, manager, hashids) {
         .catch(function () {
             res.json({status: 0});
         });
-
     });
+
+    // Accept a friend request
+    // Will delete the notification for the request
+    app.post('/users/settings/acceptfriendrequest', manager.ensureLoggedIn('/users/login'), function(req,res) {
+        var targetuserid = hashids.decodeHex(req.body.targetid);
+
+        var edgeid = [];
+        var promises = [];
+
+        new Promise(function(resolve, reject){
+            NetworkEdgesModel.find({userid: req.session.userid, status: false}).cursor()
+                .on('data', function(edge){
+                    // edge.userid will contain two IDs, we want the other one (not userdbid)
+                    if (edge.userid[0] == targetuserid || edge.userid[1] == targetuserid) {
+                        edgeid.push(edge._id);
+                    }
+                })
+                .on('error', function(err){
+                    reject(err);
+                })
+                .on('end', function(){
+                    resolve();
+                });
+        })
+        .then(function () {
+            var tempfunctionAcceptEdge = function(x) {
+                return new Promise(function(resolve, reject){
+                    NetworkEdgesModel.update({_id: x}, {status: true}, function(err) {
+                        if (err) reject(); else resolve();
+                    });
+                })
+                    .then(function () {
+                        EventModel.remove({data: hashids.encodeHex(x)}, function(err) {
+                        });
+                    });
+            };
+
+            edgeid.forEach(function(id) {
+                promises.push(tempfunctionAcceptEdge(id));
+            });
+
+            return Promise.all(promises).then(function () {
+            });
+        })
+        .then(function () {
+            res.json({status: 1});
+        })
+        .catch(function () {
+            res.json({status: 0});
+        });
+    });
+
 
     app.post('/users/settings/report', manager.ensureLoggedIn('/users/login'), function(req,res) {
 

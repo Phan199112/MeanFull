@@ -701,16 +701,6 @@ export class SettingsComponent implements OnInit {
 
     //// accept or reject
 
-    acceptConnectionRequest(x) {
-        this.http.post(`/users/settings/acceptnetworkrequest`, {eventid: x}).toPromise()
-            .then(() => {
-                //
-                this.retrieveData();
-            })
-            .catch(error => alert("Error: " + error));
-
-    }
-
     deleteConnectionRequest(x, y) {
         this.http.post(`/users/settings/deletenetworkrequest`, {edgeid: x, eventid: y}).toPromise()
             .then(() => {

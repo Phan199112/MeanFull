@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="flex">
                                                 <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
-                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.data,notification.id)">Deny</a>
+                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.fromUserId, notification.id)">Deny</a>
                                             </div>
                                         </div>
                                     </div>

@@ -40,6 +40,9 @@
                             <a class="submitButton" (click)="onAcceptFriendRequest(id)"
                                 *ngIf="pending && !pendingRequestFromLoggedInUser">Accept Friend Request</a>
                         </div>
+                        <div *ngIf="innetwork && !me" style="margin-top: 8px">
+                            Friends
+                        </div>
                     </div>
 
                     <div class="profileMenu">
