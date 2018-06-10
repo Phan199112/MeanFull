@@ -185,6 +185,13 @@ export class LoginComponent implements OnInit {
                                         .then(function () {
                                             // reload the page
                                             location.reload(true);
+
+                                            // Track signup
+                                            window.mixpanel.track("User Signed Up", {
+                                                "email": signupData.email,
+                                                "name": `${signupData.name.firstname} ${signupData.name.lastname}`,
+                                                "timestamp": Date.now()
+                                            });
                                         });
 
                                 } else {
