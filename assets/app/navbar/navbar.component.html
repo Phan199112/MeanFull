@@ -57,8 +57,8 @@
                                                 <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
                                             </div>
                                             <div class="flex">
-                                                <a class="acceptButton" (click)="acceptConnectionRequest(notification.id)">Accept</a>
-                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.fromUserId, notification.id)">Deny</a>
+                                                <a class="acceptButton" (click)="acceptConnectionRequest(notification); $event.stopPropagation();">Accept</a>
+                                                <a class="denyButton" (click)="deleteConnectionRequest(notification.fromUserId, notification.id); $event.stopPropagation();">Deny</a>
                                             </div>
                                         </div>
                                     </div>

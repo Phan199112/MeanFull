@@ -418,26 +418,23 @@ export class NavbarComponent implements OnInit {
     }
 
 
-    acceptConnectionRequest(x) {
-        this.http.post(`/users/settings/acceptnetworkrequest`, { eventid: x }).toPromise()
+    acceptConnectionRequest(notification) {
+        this.http.post(`/users/settings/acceptnetworkrequest`, { eventid: notification.id }).toPromise()
             .then(() => {
-                
-                this.http.post(`/events/delete`, { id: x }).toPromise()
+                this.http.post(`/events/delete`, { id: notification.id }).toPromise()
                 .then(() => {
-                    let ind = this.networkNotifications.findIndex((obj) => obj.id === x);
-                    this.networkNotifications.splice(ind,1);
+                    this.reloadFullNotificationsList();
+                    this.router.navigate(['/profile', notification.fromUserId]);
                 })
             })
             .catch(error => alert("Error: " + error));
     }
 
     deleteConnectionRequest(fromuserid, notificationid) {
-console.log('deleteConnectionRequest',fromuserid, notificationid);
         // Note: it might be better to mark the request as declined rather than deleting it
         this.http.post(`/users/settings/removefromnetwork`, {targetid: fromuserid}).toPromise()
             .then(() => {
-                let ind = this.networkNotifications.findIndex((obj) => obj.id === notificationid);
-                this.networkNotifications.splice(ind, 1);
+                this.reloadFullNotificationsList();
             })
             .catch(error => alert("Error: " + error));
     }
@@ -445,11 +442,9 @@ console.log('deleteConnectionRequest',fromuserid, notificationid);
     acceptCommunityRequest(x, asAdmin = false) {
         this.http.post(`/users/settings/acceptcommrequest`, { eventid: x, asadmin: asAdmin }).toPromise()
             .then(() => {
-
                 this.http.post(`/events/delete`, { id: x }).toPromise()
                     .then(() => {
-                        let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
-                        this.networkNotifications.splice(ind, 1);
+                        this.reloadFullNotificationsList();
                     })
 
             })
@@ -459,16 +454,12 @@ console.log('deleteConnectionRequest',fromuserid, notificationid);
     acceptNewCommMemberRequest(x, commId, memberId) {
         this.http.post(`/community/accept`, { commid: commId, memberid: memberId }).toPromise()
             .then(() => {
-
-
                 //delete event for all admins once one of them makes a decision
 
                 this.http.post(`/events/delete`, { id: x }).toPromise()
                     .then(() => {
-                        let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
-                        this.communityNotifications.splice(ind, 1);
-                    })
-
+                        this.reloadFullNotificationsList();
+                    });
             })
             .catch(error => alert("Error: " + error));
     }
@@ -476,8 +467,7 @@ console.log('deleteConnectionRequest',fromuserid, notificationid);
     rejectNewCommMemberRequest(x, commId, memberId) {
         this.http.post(`/community/reject`, { commid: commId, memberid: memberId }).toPromise()
             .then(() => {
-                let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
-                this.communityNotifications.splice(ind, 1);
+                this.reloadFullNotificationsList();
             })
             .catch(error => alert("Error: " + error));
     }
@@ -487,8 +477,7 @@ console.log('deleteConnectionRequest',fromuserid, notificationid);
     deleteCommunityRequest(x) {
         this.http.post(`/users/settings/deletecommrequest`, { eventid: x }).toPromise()
             .then(() => {
-                let ind = this.communityNotifications.findIndex((obj) => obj.id === x);
-                this.communityNotifications.splice(ind, 1);
+                this.reloadFullNotificationsList();
             })
             .catch(error => alert("Error: " + error));
     }
@@ -514,6 +503,13 @@ console.log('deleteConnectionRequest',fromuserid, notificationid);
             })
             .catch(error => alert("Error: " + error));
 
+    }
+
+    // Use this if you know this.events is now out-of-date
+    reloadFullNotificationsList() {
+        this.newestNotificationId = null;
+        this.events = [];
+        this.getEventsList();
     }
 
     clickedLogin() {
