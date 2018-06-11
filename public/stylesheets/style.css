@@ -38,6 +38,11 @@ div, p, span, li, label, input, textarea, select, option, button, a {
   margin: 0 auto;
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .qslyBlack {color: #333 !important;}
 .qslyGray {color: #666 !important;}
 .qslyGreen {color: #28ab64 !important;}

@@ -40,7 +40,7 @@ $commentBackground: #f0f6f0;
   }
 
   @media (max-width: 767px) {
-    padding: 5px 0;
+    padding: 4px 0;
   }
 }
 
@@ -61,19 +61,15 @@ $commentBackground: #f0f6f0;
 
 .navbar-brand {
   @media (max-width: 767px) {
-    margin: 4px 0px;
+    margin: 4px 5%;
   }
 
   @media (min-width: 768px) and (max-width: 991px) {
     margin: 0px 10%;
   }
-  
-  @media (max-width: 767px) {
-    margin: 0 5%;
-  }
 }
 
-.navbar-toggler {
+.navbar-toggler, .navbar-login {
   outline: none;
   
   @media (min-width: 768px) and (max-width: 991px) {
@@ -82,6 +78,12 @@ $commentBackground: #f0f6f0;
 
   @media (max-width: 767px) {
     margin: 0 5%;
+  }
+}
+
+.navbar-login {
+  @media (max-width: 991px) {
+    margin: 0 10% !important;
   }
 }
 
@@ -409,7 +411,14 @@ img {
 }
 
 .signupBanner {
-  width: 100%; text-align: center; margin: .9rem 0 0.3rem 0; padding: 0 2rem; font-size: larger;
+  width: 100%; 
+  text-align: center; 
+  margin: .9rem 0 0.5rem 0; 
+  padding: 0 2rem; 
+  font-size: larger;
+  font-family: karla;
+  font-weight: 300;
+  color: #999;
 
   button {
     display: block;

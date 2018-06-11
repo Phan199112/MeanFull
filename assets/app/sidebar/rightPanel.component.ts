@@ -135,7 +135,6 @@ export class RightPanel implements OnInit {
 
 
     sendFeedback() {
-        // console.log('Feedback:', this.feedbackForm.value.feedback);
         const feedback = this.feedbackForm.value.feedback;
 
         if(this.feedbackForm.valid) {
@@ -156,13 +155,8 @@ export class RightPanel implements OnInit {
                 .then(response => {
                 })
 
-
         } else {
             this.fbError = true;
         }
-
-
-
-        
     }
 }
