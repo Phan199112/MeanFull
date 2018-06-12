@@ -625,7 +625,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
                 this.formService.setData(formData);
                 this.step = 2;
             })
-            .catch(error => alert("Error posting form: " + error));
+            .catch(error => this.router.navigate(['/users/login']));
     }
 
     updateForm() {

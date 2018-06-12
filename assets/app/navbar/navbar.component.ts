@@ -164,7 +164,15 @@ export class NavbarComponent implements OnInit {
             this.http.post('/events/list', {since: this.newestNotificationId})
             .toPromise()
             .then(eventsdata => {
-                var eventsList = eventsdata.json();
+                var eventsList;
+                try {
+                    eventsList = eventsdata.json();
+                } catch (err) {
+                    // Since we poll for events every few seconds, this will handle the
+                    // case of an idle browser tab that becomes logged out
+                    this.router.navigate(['/users/login']);
+                    return;
+                }
 
                 // nothing new so don't render / rerender
                 if (!eventsList.events)
