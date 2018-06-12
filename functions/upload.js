@@ -21,12 +21,22 @@ function put_from_url(s3, url, bucket, key, callback) {
     })
 }
 
+function getFileExtensionFromUrl(url) {
+    var lastPart = url.split('.').pop();
+    var allowed = [
+        'jpg', 'jpeg', 'gif', 'png', 'tiff'
+    ];
+    if (allowed.indexOf(lastPart) < 0)
+        return '';
+    return '.' + lastPart;
+}
+
 exports.uploadFromUrlToS3 = function uploadFromUrlToS3(url, callback) {
     AWS.config.region = 'us-west-1';
 
     var s3 = new AWS.S3();
     var bucket = process.env.S3_BUCKET;
-    var key = randommod.makeRandomFilename() + '.' + url.split('.').pop();
+    var key = randommod.makeRandomFilename() + getFileExtensionFromUrl(url);
 
     // console.log('uploadFromUrlToS3', url, bucket, key);
 
