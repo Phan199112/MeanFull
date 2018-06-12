@@ -121,7 +121,7 @@ function recordNewResponseOrComment(userMakingCommentId, survey, counterField, h
     });
 }
 
-exports.recordNewResponse = function recordNewComment(userMakingCommentId, survey, hashids) {
+exports.recordNewResponse = function recordNewResponse(userMakingCommentId, survey, hashids) {
     recordNewResponseOrComment(userMakingCommentId, survey, 'responseCount', hashids);
 };
 

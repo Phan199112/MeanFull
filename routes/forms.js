@@ -17,7 +17,7 @@ var uploadfunctions  = require("../functions/upload");
 var fs = require('fs');
 var atob = require('atob');
 var emailAddress = require("email-addresses");
-var emailstoresfunctions = require('../functions/emailstores');
+var publishEvent = require('../functions/eventpubsub');
 var formidable = require('formidable');
 
 // expose this function to our app using module.exports
@@ -523,7 +523,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // email notification
                             // check the notification settings of this user
-                            emailstoresfunctions.recordNewResponse(areAllAnswersAnonymous ? null : req.session.userid, loadedFormModel, hashids);
+                            publishEvent.surveyCommentAdded(areAllAnswersAnonymous ? null : req.session.userid, loadedFormModel, hashids);
                             res.json({status: 1});
                         })
                             .catch(function () {
@@ -586,7 +586,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // email notification
                             // check the notification settings of this user
 
-                            emailstoresfunctions.recordNewResponse(null, loadedFormModel, hashids);
+                            eventpubsub.surveyAnswered(null, loadedFormModel, hashids);
                             res.json({status: 1});
                         })
                             .catch(function () {
@@ -632,7 +632,7 @@ module.exports = function(app, passport, manager, hashids) {
                 log.writeLog(req.session.userid, 'form deleted', req.ip);
                 // user stats
                 usersfunctions.decrementNoCreated(req.session.userid);
-                emailstoresfunctions.surveyDeleted(formid);
+                publishEvent.surveyDeleted(formid);
                 // return
                 res.json({status: 1});
             }
