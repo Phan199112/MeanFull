@@ -149,7 +149,7 @@ module.exports = function(app, passport, manager, hashids) {
         var newpublic = receivedData.public;
         var newpic = receivedData.pic;
         var newdescription = receivedData.description;
-        var communityLink = `www.questionsly.com/community/${receivedData.commid}`;
+        var communityLink = `www.questionsly.com/group/${receivedData.commid}`;
 
         
         if (receivedData.admins != null) {
@@ -252,7 +252,7 @@ module.exports = function(app, passport, manager, hashids) {
         var commid = hashids.decodeHex(req.body.commid);
         var commtitle = req.body.commtitle;
         var commpic = req.body.commpic;
-        var communityLink = `www.questionsly.com/community/${req.body.commid}`;
+        var communityLink = `www.questionsly.com/group/${req.body.commid}`;
 
 
         commfunctions.commAdmin(commid, req.session.userid).then(function(result) {
