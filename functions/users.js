@@ -205,3 +205,11 @@ exports.getProfilePic = function getProfilePic(user) {
     }
     return user.pic;
 };
+
+exports.getDisplayName = function (user) {
+    if (user.provider === "facebook") {
+        return user.displayName;
+    } else {
+        return user.name.first + ' ' + user.name.last;
+    }
+};

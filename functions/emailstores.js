@@ -4,6 +4,39 @@ var UserModel = require('../db.models/user.model');
 
 var usersfunctions = require('../functions/users');
 
+// Add an item (questions/community/etc) to the email store for the given user, and
+// create the email store if it does not already exist
+function putItem(user, itemType, item) {
+    var addToSet = function () {
+        var updateToMake = {};
+        updateToMake[itemType] = item;
+        EmailStoreModel.update(
+            {userid: user._id},
+            {$addToSet : updateToMake},
+            function (err, result) {}
+        );
+    };
+
+    EmailStoreModel.findOne({ userid: user._id }, function (err, emailStore) {
+        if (err) return;
+
+        if (!emailStore) {
+            EmailStoreModel.create({
+                userid: user._id,
+                questions: [],
+                community: [],
+                network: [],
+                shared: []
+            }, function (err, k) {
+                if (err) return;
+                addToSet();
+            });
+        } else {
+            addToSet();
+        }
+    });
+}
+
 /**
  * Updates emailstores when a response or comment is made
  * userMakingCommentId - user ID or null for anonymous
@@ -120,6 +153,15 @@ function recordNewResponseOrComment(userMakingCommentId, survey, counterField, h
         console.log("recordNewResponseOrComment failed", err);
     });
 }
+
+exports.recordFriendRequest = function (userMakingRequest, userRequested, requestId, hashids) {
+    var networkItem = {
+        name: usersfunctions.getDisplayName(userMakingRequest),
+        pic: usersfunctions.getProfilePic(userMakingRequest),
+        link: `https://www.questionsly.com/profile/${hashids.encodeHex(userMakingRequest._id)}`
+    };
+    putItem(userRequested, "network", networkItem);
+};
 
 exports.recordNewResponse = function recordNewResponse(userMakingCommentId, survey, hashids) {
     recordNewResponseOrComment(userMakingCommentId, survey, 'responseCount', hashids);

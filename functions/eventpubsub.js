@@ -18,8 +18,21 @@ var usersfunctions = require('../functions/users');
 var emailstoresfunctions = require('../functions/emailstores');
 var notificationsfunctions = require('../functions/notifications');
 
-exports.friendRequestMade = function () {
+function loadUserAndThen(userId, callback) {
+    UserModel.findById(userId, function (err, user) {
+        if (err || !user)
+            console.log('Event cannot be published because user is not found', userId, err);
+        else
+            callback(user);
+    });
+}
 
+exports.friendRequestMade = function (userMakingRequestId, userRequested, requestId, hashids) {
+    console.log('Event:', 'friendRequestMade', userMakingRequestId, userRequested._id, requestId);
+    loadUserAndThen(userMakingRequestId, function (userMakingRequest) {
+        notificationsfunctions.recordFriendRequest(userMakingRequest, userRequested, requestId);
+        emailstoresfunctions.recordFriendRequest(userMakingRequest, userRequested, requestId, hashids);
+    });
 };
 
 exports.friendRequestAccepted = function () {

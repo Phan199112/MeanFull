@@ -1,6 +1,6 @@
 var EventModel = require('../db.models/event.model');
 
-exports.createNotification = function createNotification(user, fromuser, type, message, data) {
+function createNotification(user, fromuser, type, message, data) {
     EventModel.create(
         {
             userid: user,
@@ -18,4 +18,10 @@ exports.createNotification = function createNotification(user, fromuser, type, m
             } else {
             }
         });
+}
+
+exports.createNotification = createNotification;
+
+exports.recordFriendRequest = function (userMakingRequest, userRequested, requestId) {
+    createNotification(userRequested.id, userMakingRequest.id, "network", null, requestId);
 };

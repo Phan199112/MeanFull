@@ -6,7 +6,8 @@ var NetworkEdgesModel = require('../db.models/networkedges.model');
 var EmailStoreModel = require('../db.models/emailStore.model');
 var randommod = require("../functions/random");
 var commfunctions = require('../functions/communities');
-var emailfunctions 	= require("../functions/email");
+var publishEvent  = require("../functions/eventpubsub");
+var emailfunctions  = require("../functions/email");
 var usersfunctions = require('../functions/users');
 
 
@@ -548,125 +549,36 @@ module.exports = function(app, passport, manager, hashids) {
 
         // variables
         var targetuserid = hashids.decodeHex(req.body.targetid);
-        var networkLink = `https://www.questionsly.com/profile/${hashids.encodeHex(req.session.userid)}`
-        var edgeid = null;
-        var status = 0;
+        var targetuser;
 
-        new Promise(function(resolve, reject) {
-            // set the network edges
-            NetworkEdgesModel.create({userid: [targetuserid, req.session.userid], status: false, timestamp: Date.now()}, function(err, k) {
-                if (err) {
-                    reject(err);
+        return new Promise(function(resolve, reject) {
+            UserModel.findOne({'_id': targetuserid}, function (err, user) {
+                if (err || !user) {
+                    reject();
                 } else {
-                    edgeid = hashids.encodeHex(k._id);
+                    targetuser = user;
                     resolve();
                 }
-            });
+            })
         })
-            .then(function () {
-
-                return new Promise(function(resolve, reject) {
-                    if (edgeid != null) {
-                        EventModel.create({userid: targetuserid, fromuser: req.session.userid, type: "network", seen: false, acted: false, data: edgeid, timestamp: Date.now()}, function(err, k) {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve();
-                                status = 1;
-                            }
-                        });
+        .then(function () {
+            return new Promise(function (resolve, reject) {
+                NetworkEdgesModel.create({userid: [targetuserid, req.session.userid], status: false, timestamp: Date.now()}, function(err, k) {
+                    if (err) {
+                        reject(err);
                     } else {
-                        reject();
+                        publishEvent.friendRequestMade(req.session.userid, targetuser, hashids.encodeHex(k._id), hashids);
+                        resolve();
                     }
-                })
-
-                    .then(function () {
-                        // send an email
-                        // current username:
-                        var sendername = '';
-                        if (req.user != null) {
-                            if (req.user.provider === "facebook") {
-                                sendername = req.user.displayName;
-                            } else {
-                                sendername = req.user.name.first+' '+req.user.name.last;
-                            }
-                        }
-
-                        // get notification settings of the user and if allowed send an invitation email.
-                        // UserModel.findById(targetuserid, function(err, k) {
-                        //     if (err) {
-                        //         // err
-                        //     } else {
-                                //
-                                // if (Object.keys(k.notifications).length === 0) {
-                                //     if (k.notifications.networkrequest === true) {
-                                //         emailfunctions.sendNotificationFriendRequest(k.email, req.user)
-                                //     }
-                                // } else {
-                                //     // if no settings are recorded, emails should be send as this is default policity as signup as well
-                                //     emailfunctions.sendNotificationFriendRequest(k.email, req.user)
-                                // }
-
-                                new Promise(function (resolve, reject) {
-                                    EmailStoreModel.findOne({ userid: targetuserid }, function (err, e) {
-                                        if (err) {
-                                            console.log("Error fetching emailstore in network");
-                                            reject();
-                                        }
-
-                                        UserModel.findById(req.session.userid, function (err, me) {
-                                            if (err) {
-                                                console.log("Error fetching user!");
-                                                reject();
-                                            } else {
-                                                var senderName = me.name.first + " " + me.name.last;
-
-                                                if (e) {
-                                                    var networkNotifications = e.network;
-                                                    networkNotifications.push({ name: senderName, pic: usersfunctions.getProfilePic(me), link: networkLink});
-                                                    
-
-                                                    e.save(function (err) {
-                                                        if (err) {
-                                                            console.log("Problem pushing network update to email store");
-                                                        }
-                                                    });
-                                                    resolve();
-
-                                                } else {
-
-                                                    EmailStoreModel.create({
-                                                        userid: targetuserid,
-                                                        questions: [],
-                                                        community: [],
-                                                        network: [{ name: senderName, pic: usersfunctions.getProfilePic(me), link: networkLink}],
-                                                        shared: []
-                                                    }, function (err, k) {
-                                                        if (err) {
-                                                            console.log("Failed to create emailstore object");
-                                                            reject();
-                                                        } else {
-                                                            resolve();
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        });
-                                    });
-                                }).catch(err => {
-                                    console.log("emailstore network promise rejected");
-                                });
-                        //     }
-                        // });
-                    });
+                });
             })
-            .then(function () {
-                res.json({status: status});
-
-            })
-            .catch(function () {
-                console.log("error request network");
-            });
+        })
+        .then(function () {
+            res.json({status: 1});
+        })
+        .catch(function () {
+            res.json({status: 0});
+        });
     });
 
     // This API should be retired; use /users/settings/acceptfriendrequest instead
