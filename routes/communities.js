@@ -74,7 +74,7 @@ module.exports = function(app, passport, manager, hashids) {
                                                             reject();
                                                         } else {
                                                             var senderName = me.name.first + " " + me.name.last;
-                                                            var communityLink = `www.questionsly.com/community/${hashids.encodeHex(k._id)}`;
+                                                            var communityLink = `www.questionsly.com/group/${hashids.encodeHex(k._id)}`;
 
                                                             if (e) {
                                                                 var communityNotifications = e.community;

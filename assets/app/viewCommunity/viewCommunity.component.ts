@@ -62,7 +62,7 @@ export class ViewCommunityComponent implements OnInit {
                     if (this.status == '1') {
                         this.data = res.json().data;
 
-                        this.autoEnrollLink = "www.questionsly.com/community/" + this.id + ";access=" + this.data.adminId;
+                        this.autoEnrollLink = "www.questionsly.com/group/" + this.id + ";access=" + this.data.adminId;
 
                         this.loggedin = res.json().loggedin == '1';
                         this.loadsuccessful = true;
