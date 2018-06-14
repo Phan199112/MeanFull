@@ -853,23 +853,23 @@ module.exports = function(app, passport, manager, hashids) {
             var userId = req.session.userid;
         }
 
-        CommunityModel.findByIdAndUpdate(commid, { $push: { members: userId }, $pull: { requests: memid } }, function (err, k) {
-            if (err) {
-                res.json({status: 0})
-            } else {
-                // res.json({ status: 1 });
-
-                EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
-                    if (err) {
-                        res.json({ status: 0 });
-                    } else {
-                        res.json({ status: 1 });
-                    }
-                });
-
-
+        CommunityModel.update(
+            {_id: commid, members: {$ne: userId}},
+            { $push: { members: userId }, $pull: { requests: memid } },
+            function (err, k) {
+                if (err) {
+                    res.json({status: 0})
+                } else {
+                    EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
+                        if (err) {
+                            res.json({ status: 0 });
+                        } else {
+                            res.json({ status: 1 });
+                        }
+                    });
+                }
             }
-        });
+        );
     });
 
     app.post('/community/reject', manager.ensureLoggedIn('/users/login'), function (req, res) {
