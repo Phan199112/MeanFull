@@ -33,6 +33,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     somethingChanged: boolean = false;
     prevTag: string;
     prevComm: string;
+    showLoadingBoxes: boolean = true;
 
     constructor(private http: Http, 
                 private userService: UserService,
@@ -164,7 +165,11 @@ export class FeedListComponent implements OnInit, OnChanges {
                     }                   
 
 
-                    if (this.feedlist.length == 0) this.emptyMessage = "No questions have been asked yet"
+                    if (this.feedlist.length == 0) {
+                        this.emptyMessage = "No questions have been asked yet";
+                        this.showLoadingBoxes = false;
+                    }
+                    
 
                 }
             })

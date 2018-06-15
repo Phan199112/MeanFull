@@ -1,4 +1,5 @@
-<div *ngIf="context === 'profile'">
+<!-- Profile Sidebar -->
+<div *ngIf="context === 'profile'" class="qSidebar">
     <button *ngIf="me" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">
         Ask a Question
     </button>
@@ -28,6 +29,19 @@
                 View All
             </a>
         </div>
+
+
+        <div *ngIf="showFriendsLoading" class="loadingContainer">
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+        </div>
     </div>
 
     <div class="sContainer">
@@ -55,11 +69,25 @@
                 View All
             </a>
         </div>
+
+
+        <div *ngIf="showCommunityLoading" class="loadingContainer">
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+        </div>
+
     </div>
 </div>
 
-
-<div *ngIf="context === 'feed'" class="mainContainer">
+<!-- Feed Sidebar -->
+<div *ngIf="context === 'feed'" class="mainContainer qSidebar">
     <div class="sContainer lhs">
         <h3 class="lpText">Discover People</h3>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
@@ -72,6 +100,20 @@
                 <user-image [data]="p"> </user-image>
             </div>
         </div>
+
+
+        <div *ngIf="showFriendsLoading" class="loadingContainer">
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+        </div>
+
     </div>
 
     <div class="sContainer comPadding rhs">
@@ -86,18 +128,44 @@
                 <community-image [data]="c"> </community-image>
             </div>
         </div>
+        
+        <div *ngIf="showCommunityLoading" class="loadingContainer">
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+        </div>
+        
         <a class="submitButton" [routerLink]="['/createGroup']">Create Group</a>
     </div>
 </div>
 
 
-<div *ngIf="context === 'community'">
+<!-- Community Sidebar -->
+<div *ngIf="context === 'community'" class="qSidebar">
     <div class="sContainer">
         <h6 class="lpText small">Members</h6>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
             <div *ngFor="let p of networklist" style="flex-basis:33%;">
                 <user-image [data]="p"> </user-image>
             </div>
+        </div>
+
+        <div *ngIf="showFriendsLoading" class="loadingContainer">
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
         </div>
     </div>
 
@@ -113,7 +181,21 @@
                 <community-image [data]="c"> </community-image>
             </div>
         </div>
+        
+        <div *ngIf="showCommunityLoading" class="loadingContainer">
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+            <div class="loadingBox"></div>
+        </div>
+        
         <a class="submitButton" [routerLink]="['/createGroup']">Create Group</a>
+
     </div>
 </div>
 

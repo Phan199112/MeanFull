@@ -33,6 +33,8 @@ export class Sidebar implements OnInit, OnChanges {
     mobWidth: number;
     amountToFetch: number = 9;
     amountArray = Array(9);
+    showFriendsLoading: boolean = true;
+    showCommunityLoading: boolean = true;
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {  
@@ -51,6 +53,7 @@ export class Sidebar implements OnInit, OnChanges {
             .then(response => {
                 this.users = this.users.concat(response.json().data);
                 this.users = this.users.slice(0,this.amountToFetch);
+                this.showFriendsLoading = false;
             });
     }
 
@@ -74,6 +77,7 @@ export class Sidebar implements OnInit, OnChanges {
                         j++;
                     }
                 }
+                this.showFriendsLoading = false;
             }
 
         this.http.post(`/community/list`, { user: this.user }).toPromise()
@@ -95,6 +99,7 @@ export class Sidebar implements OnInit, OnChanges {
                         }
                     }
 
+
                     var i = 0;
                     if (this.randomlistdata != null) {
                         this.randomlist = [];
@@ -105,6 +110,8 @@ export class Sidebar implements OnInit, OnChanges {
                             }
                         }
                     }
+
+                    this.showCommunityLoading = false;
                 }
 
             })

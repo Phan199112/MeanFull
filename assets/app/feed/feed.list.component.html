@@ -1,7 +1,32 @@
 <div id="FeedContainer">
     <feed-form-component [pic]="pic" [pictype]="pictype" [form]="form" [inComm]="comm" [me]="me" *ngFor="let form of feedlist"> </feed-form-component>
     <div *ngIf="feedlist.length === 0" class="aboutContainer">
-    	<h4 class="tempText qslyGray">{{emptyMessage}}</h4>
+        <h4 *ngIf="!showLoadingBoxes" class="tempText qslyGray">{{emptyMessage}}</h4>
+        <div *ngIf="showLoadingBoxes" class="loadingBoxContainer">
+            <div class="loadingPost">
+                <div class="loadingHeader">
+                    <div class="loadingUser"></div>
+                    <div class="loadingTag"></div>
+                </div>
+                <div class="loadingBox"></div>
+            </div>
+            
+            <div class="loadingPost">
+                <div class="loadingHeader">
+                    <div class="loadingUser"></div>
+                    <div class="loadingTag"></div>
+                </div>
+                <div class="loadingBox"></div>
+            </div>
+
+            <div class="loadingPost">
+                <div class="loadingHeader">
+                    <div class="loadingUser"></div>
+                    <div class="loadingTag"></div>
+                </div>
+                <div class="loadingBox"></div>
+            </div>
+        </div>
     </div>
 </div>
 

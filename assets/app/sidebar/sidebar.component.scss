@@ -221,3 +221,29 @@ h3 {
     background-color: lighten($primaryColor, 10);
   }
 }
+
+.loadingContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.loadingBox {
+  width: 52px;
+  height: 52px;
+  margin: 10px;
+  border-radius: 6px;
+  background: #E2E2E2;
+  animation: loading 1s linear 0s infinite alternate;
+}
+
+
+@keyframes loading {
+  0% {
+      background: #E2E2E2;
+    }
+  100% {
+    background: #CECECE;  
+    }
+}

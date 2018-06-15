@@ -69,6 +69,14 @@ export class NavbarComponent implements OnInit {
             this.getEventsList();
         });
 
+
+        // const aboutOffset = $('qSidebar').offset().top;
+
+        // $(window).scroll(function () {
+        //     var wScroll = $(window).scrollTop();
+        //     $('.qSidebar').css({position:"relative"; left: aboutOffset + wScroll });
+        //     if (wScroll < 0) wScroll = 0;
+        // });
     }
 
     ngOnDestroy() {
