@@ -27,9 +27,11 @@ a {
 .imgDiv {
   width: 52px;
   height: 52px;
+  margin: 0px 5px;
+
   text-align: center;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 36px;
     height: 36px;
   }
@@ -53,7 +55,7 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     font-size: .55rem;
     max-width: 36px;
   }

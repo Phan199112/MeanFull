@@ -17,6 +17,8 @@ a {
     font-size: .75rem;
     color: #333;
     display: block;
+    padding: auto 5px;
+    margin-top: 2px;
 
    &:hover {
     cursor: pointer;
@@ -33,7 +35,7 @@ a {
     cursor: pointer;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 36px;
     height: 36px;
   }
@@ -42,11 +44,13 @@ a {
 
 .title {
     margin-top: 2px;
+    max-width: 52px;
     text-align: center;
   }
 
   .commText {
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       font-size: .51rem;
+      max-width: 36px;
     }
   }

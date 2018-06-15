@@ -332,7 +332,8 @@ export class ViewCommunityComponent implements OnInit {
     deleteCommunity(x) {
         this.http.post('/community/delete', {targetid: x}).toPromise()
             .then(response => {
-                //
+                this.router.navigate(['/']);
+
                 if (response.json().status == 1) {
 
                 }

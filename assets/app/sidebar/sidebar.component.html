@@ -1,5 +1,5 @@
 <!-- Profile Sidebar -->
-<div *ngIf="context === 'profile'" class="qSidebar">
+<div *ngIf="context === 'profile'" class="qSidebar" id="sidebar">
     <button *ngIf="me" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">
         Ask a Question
     </button>
@@ -87,7 +87,7 @@
 </div>
 
 <!-- Feed Sidebar -->
-<div *ngIf="context === 'feed'" class="mainContainer qSidebar">
+<div *ngIf="context === 'feed'" class="mainContainer qSidebar" id="sidebar">
     <div class="sContainer lhs">
         <h3 class="lpText">Discover People</h3>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
@@ -147,7 +147,7 @@
 
 
 <!-- Community Sidebar -->
-<div *ngIf="context === 'community'" class="qSidebar">
+<div *ngIf="context === 'community'" class="qSidebar" id="sidebar">
     <div class="sContainer">
         <h6 class="lpText small">Members</h6>
         <div *ngIf="networklist.length != 0" class="peopleContainer">

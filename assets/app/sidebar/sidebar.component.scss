@@ -20,7 +20,7 @@ h3 {
   padding: 12px 10px 10px 10px;
   width: 100%;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex-basis: 49%;
     margin: 10px 0 8px 0;
     padding-bottom: 0px;
@@ -28,19 +28,19 @@ h3 {
 }
 
 .lhs {
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     margin-right: 1%; 
   }
 }
 .rhs {
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     margin-left: 1%; 
   }}
 
 .commPadding {
   padding-bottom: 15px;
   
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     padding-bottom: 0;
   }
 }
@@ -111,7 +111,7 @@ h3 {
   justify-content: center;
   width: 100%;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     padding: 6px 0 0 0;
   }
 }
@@ -198,7 +198,7 @@ h3 {
         text-decoration: none;
     }
     
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     display: none;
   }
 }
