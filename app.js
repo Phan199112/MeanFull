@@ -14,6 +14,31 @@ var bcrypt = require('bcrypt-nodejs');
 var flash = require('req-flash');
 var fs = require('fs');
 var sslRedirect = require('heroku-ssl-redirect');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+//Set up default mongoose connection
+
+// FOR DEBUG AND TESTING
+//var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
+
+// mongodb (this is the live version with real data, if you'd like to do tests us the mlab above)
+// PRODUCTION LEVEL DB
+var mongoDB = 'mongodb://questionslyadmindb:kHGV5DYHKFS8qdgF@questionslydb1-shard-00-00-hv0tz.mongodb.net:27017,questionslydb1-shard-00-01-hv0tz.mongodb.net:27017,questionslydb1-shard-00-02-hv0tz.mongodb.net:27017/questionslydb1?ssl=true&replicaSet=questionslydb1-shard-0&authSource=admin';
+
+mongoose.connect(mongoDB, {
+    useMongoClient: true
+});
+
+//Get the default connection
+var db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+
+
+
 
 
 // HTTPS
@@ -35,32 +60,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
-app.use(require('express-session')({ secret: 'efewgndwdssxsxsffsdhgldsljgjdskfdfdspkpldfdgdk', resave: true, saveUninitialized: true }));
+app.use(session({
+    secret: 'efewgndwdssxsxsffsdhgldsljgjdskfdfdspkpldfdgdk',
+    resave: true,
+    saveUninitialized: true,
+    store: new MongoStore({mongooseConnection: db})
+}));
 app.use(flash());
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
-
-//Set up default mongoose connection
-
-// FOR DEBUG AND TESTING
-//var mongoDB = 'mongodb://cwlocaltest:HCW-9yE-9Tz-keb@ds125255.mlab.com:25255/cw';
-
-// mongodb (this is the live version with real data, if you'd like to do tests us the mlab above)
-// PRODUCTION LEVEL DB
-var mongoDB = 'mongodb://questionslyadmindb:kHGV5DYHKFS8qdgF@questionslydb1-shard-00-00-hv0tz.mongodb.net:27017,questionslydb1-shard-00-01-hv0tz.mongodb.net:27017,questionslydb1-shard-00-02-hv0tz.mongodb.net:27017/questionslydb1?ssl=true&replicaSet=questionslydb1-shard-0&authSource=admin';
-
-mongoose.connect(mongoDB, {
-    useMongoClient: true
-});
-
-//Get the default connection
-var db = mongoose.connection;
-
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // routes
 var index = require('./routes/index');
