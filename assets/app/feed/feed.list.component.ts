@@ -138,6 +138,8 @@ export class FeedListComponent implements OnInit, OnChanges {
                 topsurvey: this.formselected,
                 comm: this.comm,
                 pref: this.pref,
+                anonymous: true,
+                // Just a flag to not show anonymous
                 currentPosts: this.formids
             };
 

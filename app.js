@@ -290,7 +290,7 @@ module.exports = app;
 // Find Duplicates within a community
 // (function() {
 //     if (CommunityModel) {
-//         CommunityModel.findById("community", function(err, comm) {
+//         CommunityModel.findById("5ae62d1393627a0014880ba6", function(err, comm) {
 //         var members = comm.members;
 //         var duplicates = [];
 
