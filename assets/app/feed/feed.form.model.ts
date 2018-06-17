@@ -86,6 +86,19 @@ export class FeedForm {
             } else {
                 this.setFailed();
             }
+
+            // manyShortMcOptions can be used for UI formatting
+            for (var i = 0; i < this.questions.length; i++) {
+                if (this.questions[i].kind != 'Multiple Choice' || this.questions[i].options.length <= 5) {
+                    this.questions[i].manyShortMcOptions = false;
+                    continue;
+                }
+                var maxMcOptionLength = 0;
+                this.questions[i].options.forEach(function (option) {
+                    maxMcOptionLength = Math.max(maxMcOptionLength, option.body.length);
+                });
+                this.questions[i].manyShortMcOptions = (maxMcOptionLength < 32);
+            }
         }
     }
 
