@@ -32,6 +32,8 @@ export class ViewCommunityComponent implements OnInit {
 
     friends: any[] = [];    
     showEdit: boolean = false;
+    deleteWarning: boolean = false;
+
     @ViewChild('invitationModal') invitationModal;    
 
     constructor(private http: Http,
@@ -329,8 +331,12 @@ export class ViewCommunityComponent implements OnInit {
             });
     }
 
+    toggleDeleteWarning() {
+        this.deleteWarning = !this.deleteWarning;
+    }
+
     deleteCommunity(x) {
-        this.http.post('/community/delete', {targetid: x}).toPromise()
+        this.http.post('/community/delete', {targetid: this.id}).toPromise()
             .then(response => {
                 this.router.navigate(['/']);
 

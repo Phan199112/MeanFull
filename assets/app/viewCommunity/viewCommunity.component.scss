@@ -154,7 +154,7 @@ feed-list {
     line-height: 1.5rem;
     width: auto;
     text-align: center;
-    border: none;
+    border: $borderColor 1px solid;
 
     font-size: .9rem;
     font-family: Karla;
@@ -172,7 +172,7 @@ feed-list {
     }
 }
 
-.grey {
+.greyBtn {
   background: none;
   border: 1px solid #666;
   color: #666 !important;
@@ -180,6 +180,18 @@ feed-list {
   &:hover {
     background: none;
     color: #333 !important;
+    border: 1px solid #333;
+  }
+}
+
+.redBtn {
+  background: #e23f33;
+  border: 1px solid #e23f33;
+  color: #FFFFFF !important;
+
+  &:hover {
+    background: darken(#e23f33, 5);
+    color: #FFFFFFFF !important;
     border: 1px solid #333;
   }
 }
