@@ -5,6 +5,7 @@ import { UserService} from "../user.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ShareService } from '../share.service';
 
+
 @Component({
     selector: 'profile',
     templateUrl: './profile.component.html',
@@ -88,7 +89,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         window.addEventListener('resize', function (event) {
             recalculate();
         });
-
     }
 
     loadProfile() {

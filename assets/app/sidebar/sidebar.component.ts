@@ -40,6 +40,7 @@ export class Sidebar implements OnInit, OnChanges {
     ogCommunityList: Object[];
     ogUsersList: Object[];
     ogRandomList: Object[];
+    sliceHeightResize: Object = {sliced: false, count: 9, prevHeight: 1200};
     
 
     constructor(private http: Http, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {  
@@ -69,6 +70,10 @@ export class Sidebar implements OnInit, OnChanges {
             });
 
         this.handleScrollAndResize();
+
+
+        
+
     }
 
 
@@ -140,24 +145,6 @@ export class Sidebar implements OnInit, OnChanges {
     }
 
     handleScrollAndResize() {
-        // Translates sidebar as you scroll to keep it on the window
-        $(window).scroll(function () {
-            var wScroll = $(window).scrollTop();
-            var windowWidth = $(window).width();
-            if (windowWidth > 768) {
-                if (wScroll > 53) {
-                    wScroll -= 43;
-                }
-                $('#sidebar, #rightPanel').css({
-                    'transform': 'translateY(' + wScroll + 'px)'
-                })
-            } else {
-                $('#sidebar, #rightPanel').css({
-                    'transform': 'translateY(' + 0 + 'px)'
-                })
-            }
-        });
-
         // Helper function to slice user/community arrays when resizing
         const sliceLists = (x: number) => {
             this.users = this.ogUsersList.slice(0, x);
@@ -166,39 +153,84 @@ export class Sidebar implements OnInit, OnChanges {
             this.randomlist = this.randomlist.slice(0, x);
         }
 
+        const fixSidebar = () => {
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+            var sdbPos = $(".sdbHolder").offset();
+            var sdbWidth = $(".sdbHolder").width();
+            var rpnPos = $(".rpnHolder").offset();
+            var rpnWidth = $(".rpnHolder").width();       
+            var heightToSlice = $('#sdb').height() + sdbPos.top;
+            var flag = false;
+
+            // For vertical resizing and slicing of elements in sidebar so the whole sidebar is always in the window
+            if (windowHeight - heightToSlice < 1 && this.sliceHeightResize.count !== 3) { 
+                flag = true;
+                let newCount = this.sliceHeightResize.count - 3;  
+                this.sliceHeightResize = { count: newCount, prevHeight: windowHeight, sliced: true};             
+                sliceLists(newCount);
+            }
+            
+            if (windowHeight - heightToSlice > 200 && this.sliceHeightResize.count !== 9) { 
+                flag = true;  
+                let newCount = this.sliceHeightResize.count + 3;
+                this.sliceHeightResize = {count: newCount, prevHeight: windowHeight, sliced: true};             
+                sliceLists(newCount);
+            }
+
+
+            
+            // Width checks for setting the sidebar either fixed or static position in the page
+            if (windowWidth > 767) {
+                $("#sdb").css({
+                    'position': "fixed",
+                    "width": sdbWidth,
+                    "top": sdbPos.top - 8,
+                    "left": sdbPos.left
+                });
+
+                $("#rightPanel").css({
+                    'position': "fixed",
+                    "width": rpnWidth,
+                    "top": rpnPos.top - 8,
+                    "left": rpnPos.left
+                });
+            }
+
+            if (windowWidth < 768) {                
+                $("#sdb, #rightPanel").css({
+                    'position': "static",
+                    "width": "100%"
+                });
+            }
+
+            // Window width resizing checks that will resize sidebar if needed
+            if (!flag) {
+                if (windowWidth > 1089 && this.sliceHeightResize.count == 9) {
+                    sliceLists(9);
+                }
+    
+                if (windowWidth < 1089 && this.sliceHeightResize.count !== 3) {
+                    sliceLists(6);
+                }
+                if (windowWidth < 820) {
+                    sliceLists(3);
+                }
+    
+                if (windowWidth < 768 && this.sliceHeightResize.count !== 3) {
+                    sliceLists(6);
+                }
+            }
+
+        }
+
+        // Just cause the dom isnt ready right away and able to get the position and width of our placeholder right away
+        window.setTimeout(fixSidebar, 400);
+
+
         // Resets sidebar and rightpanel position when window is resized
         $(window).resize(function () {
-            var wScroll = $(window).scrollTop();
-            var windowWidth = $(window).width();
-
-            if (windowWidth > 768) {
-                if (wScroll > 53) {
-                    wScroll -= 43;
-                }
-                $('#sidebar, #rightPanel').css({
-                    'transform': 'translateY(' + wScroll + 'px)'
-                })
-            } else {
-                $('#sidebar, #rightPanel').css({
-                    'transform': 'translateY(' + 0 + 'px)'
-                })
-            }
-
-            // Following is to restore proper quantity of items in sidebar
-            if (windowWidth > 1089) {
-                sliceLists(9);
-            }
-
-            if (windowWidth < 1089) {
-                sliceLists(6);
-            }
-            if (windowWidth < 820) {
-                sliceLists(3);
-            }
-
-            if (windowWidth < 768) {
-                sliceLists(6);
-            }
+            fixSidebar();
         });
     }
 
