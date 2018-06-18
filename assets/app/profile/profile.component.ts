@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     subsectionResource: string;
     mobileWidth: boolean;
 
-    showAnsweredQuestions: boolean = false;
+    showAnsweredQuestions: boolean = true;
 
     constructor(
         private http: Http,
@@ -96,9 +96,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.clearAll();
             this.id = params.id;
 
-            if (params.subsection == "answered") {
+            if (params.subsection == "asked") {
                 this.genericSubsection = "";
-                this.showAnsweredQuestions = true;
+                this.showAnsweredQuestions = false;
             } else {
                 this.genericSubsection = params.subsection;
             }
