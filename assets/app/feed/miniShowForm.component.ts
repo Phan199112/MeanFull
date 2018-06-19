@@ -174,9 +174,9 @@ export class MiniShowFormComponent implements OnInit {
         }
     }
 
-    checkSubmit() {
+    checkSubmit() {        
         this.setAsTouched(this.questionnaire);
-        if (this.questionnaire.invalid) {
+        if (this.questionnaire.invalid) {            
             this.questionnaire.wasChecked = true;
         } else {
             this.submitIt();
@@ -185,6 +185,7 @@ export class MiniShowFormComponent implements OnInit {
 
     submitIt() {
         if (this.submitted) return;
+
         let value = Object.assign({}, this.questionnaire.value);
         for (let question of value.questions) {
             if (question.kind === 'Checkboxes') {

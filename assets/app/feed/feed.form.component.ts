@@ -428,6 +428,8 @@ export class FeedFormComponent implements OnInit {
         data.id = this.form.id;
         this.http.post('/forms/answers', data).toPromise()
           .then(response => {
+              console.log('Response', response.json().status);
+
 
               if (response.json().status == 1) {
                   this.submitted = true;

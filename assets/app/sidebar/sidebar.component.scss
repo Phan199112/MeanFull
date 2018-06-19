@@ -17,7 +17,8 @@ h3 {
   border-radius: 5px;
   box-sizing: border-box;
   margin: 8px auto;
-  padding: 12px 10px 10px 10px;
+  padding: 12px 1px 0px 1px;
+  // padding: 12px 10px 10px 10px;
   width: 100%;
 
   @media (max-width: 767px) {
@@ -112,7 +113,7 @@ h3 {
   width: 100%;
 
   @media (max-width: 767px) {
-    padding: 6px 0 0 0;
+    padding: 6px 0 3px 0;
   }
 }
 
@@ -186,6 +187,7 @@ h3 {
     color: #666 !important;
     outline-style: none;
     margin-top: 0px;
+    margin-bottom: 6px;
 
     &:active {
         outline-style: none;
@@ -241,6 +243,7 @@ h3 {
 
 .sdbHolder {
   visibility: hidden;
+  margin-bottom: -32px;
 }
 
 

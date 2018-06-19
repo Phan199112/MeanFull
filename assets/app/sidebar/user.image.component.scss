@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column;
   // flex-basis: 33%;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
 
   &:active {
     outline-style: none;
@@ -27,20 +27,20 @@ a {
 .imgDiv {
   // width: 52px;
   // height: 52px;
-  margin: 0px 3px;
+  margin: 0px 2px;
   text-align: center;
   position: relative;
 
   @media (max-width: 767px) {
-    width: 36px;
-    height: 36px;
+    // width: 36px;
+    // height: 36px;
   }
 }
 
 img {
-    border-radius: 4px;
+    // border-radius: 4px;
     width: 100%;
-    height: 52px;
+    height: 77px;
     object-fit: cover;
 
   &:hover {
@@ -54,10 +54,10 @@ img {
   position: absolute;
   bottom: 0px;
   left: 0px;
-  padding: 0 0 4px 4px;
-  border-radius: 0 0 4px 4px;
+  padding: 20px 0 4px 4px;
+  // border-radius: 0 0 4px 4px;
   color: white;
-  background: rgba(0,0,0,.4);
+  background: linear-gradient(0, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0));
   text-transform: capitalize;
 
   overflow: hidden;
@@ -65,6 +65,6 @@ img {
 
   @media (max-width: 767px) {
     font-size: .55rem;
-    max-width: 36px;
+    // max-width: 36px;
   }
 }

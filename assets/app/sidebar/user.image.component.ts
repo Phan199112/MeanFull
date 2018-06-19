@@ -38,6 +38,7 @@ export class UserImageComponent implements OnInit, AfterViewInit {
 
         window.setTimeout(setHeight,400);
         window.setTimeout(setHeight,1000);
+        window.setTimeout(setHeight,2000);
 
         // Resize images when window resizes
         $(window).resize(function () {

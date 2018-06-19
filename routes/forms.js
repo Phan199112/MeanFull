@@ -483,7 +483,7 @@ module.exports = function(app, passport, manager, hashids) {
         };
 
         // the execution of this function depends on whether the user is signed in
-        if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) {            
 
             new Promise(function(resolve, reject) {
 
@@ -542,6 +542,7 @@ module.exports = function(app, passport, manager, hashids) {
         } else {
             // does the form allow anonymous submissions?
 
+
             new Promise(function(resolve, reject) {
 
                 promiseschecks.push(fcheckloginRequired());// does the form allow anonymous submissions?
@@ -569,13 +570,13 @@ module.exports = function(app, passport, manager, hashids) {
                         pic: false
                     }
 
-                    if (proceed === true) {
+                    if (proceed) {
                         // add the answer and send an email/notification
-
+                        
                         promises.push(writeanswerfunction(answerformid, receivedData.questions,'anonymous'));
                         promises.push(formauthorfunction(answerformid));
-
-                        return Promise.all(promises).then(function () {
+                        
+                        return Promise.all(promises).then(function () {                            
                             // log
                             log.writeLog('anonymous', 'answered form');
 
@@ -586,10 +587,10 @@ module.exports = function(app, passport, manager, hashids) {
                             // email notification
                             // check the notification settings of this user
 
-                            eventpubsub.surveyAnswered(null, loadedFormModel, hashids);
+                            publishEvent.surveyAnswered(null, loadedFormModel, hashids);
                             res.json({status: 1});
                         })
-                            .catch(function () {
+                            .catch(function (err) {
                                 res.json({status: 0});
                             });
 
