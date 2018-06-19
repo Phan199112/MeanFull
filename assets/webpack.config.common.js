@@ -4,7 +4,7 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 
 module.exports = {
     entry: {
-        'app': './assets/app/main.ts'
+        'app': './app/main.ts'
     },
 
     resolve: {
