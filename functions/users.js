@@ -201,7 +201,7 @@ exports.updateUserTags  = function updateUserTags(userid) {
 
 exports.getProfilePic = function getProfilePic(user) {
     if (user.facebookID != null) {
-        return 'https://graph.facebook.com/' + user.facebookID + '/picture?width=30&height=30';
+        return 'https://graph.facebook.com/' + user.facebookID + '/picture?width=80&height=80';
     }
     return user.pic;
 };

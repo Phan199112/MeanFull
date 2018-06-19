@@ -69,11 +69,11 @@
 
 
                 <div *ngIf="!hidefeed && !genericSubsection" class="feedRow">
-                    <a [routerLink]="['/profile', id]" [ngClass]="{currentFeed: !showAnsweredQuestions, notCurrentFeed: showAnsweredQuestions}">
-                        Asked
-                    </a>
-                    <a [routerLink]="['/profile', id, 'answered']" [ngClass]="{currentFeed: showAnsweredQuestions, notCurrentFeed: !showAnsweredQuestions}">
+                    <a [routerLink]="['/profile', id]" [ngClass]="{currentFeed: showAnsweredQuestions, notCurrentFeed: !showAnsweredQuestions}">
                         Answered
+                    </a>
+                    <a [routerLink]="['/profile', id, 'asked']" [ngClass]="{currentFeed: !showAnsweredQuestions, notCurrentFeed: showAnsweredQuestions}">
+                        Asked
                     </a>
                 </div>
 

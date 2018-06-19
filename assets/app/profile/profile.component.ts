@@ -5,6 +5,7 @@ import { UserService} from "../user.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ShareService } from '../share.service';
 
+
 @Component({
     selector: 'profile',
     templateUrl: './profile.component.html',
@@ -48,7 +49,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     subsectionResource: string;
     mobileWidth: boolean;
 
-    showAnsweredQuestions: boolean = false;
+    showAnsweredQuestions: boolean = true;
 
     constructor(
         private http: Http,
@@ -88,7 +89,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         window.addEventListener('resize', function (event) {
             recalculate();
         });
-
     }
 
     loadProfile() {
@@ -96,9 +96,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.clearAll();
             this.id = params.id;
 
-            if (params.subsection == "answered") {
+            if (params.subsection == "asked") {
                 this.genericSubsection = "";
-                this.showAnsweredQuestions = true;
+                this.showAnsweredQuestions = false;
             } else {
                 this.genericSubsection = params.subsection;
             }

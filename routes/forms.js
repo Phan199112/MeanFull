@@ -833,6 +833,7 @@ module.exports = function(app, passport, manager, hashids) {
         var selecteduser;
         var queryobj;
         var selectedcomm;
+        var anonymous;
 
         if (req.body.topsurvey == null) {
             topsurvey = null;
@@ -860,6 +861,9 @@ module.exports = function(app, passport, manager, hashids) {
             selectedtags = req.body.tag.substr(0, ind - 1);
         }
 
+
+        
+
         // console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
 
         if (selectedtags != null && selecteduser == null) {
@@ -886,6 +890,13 @@ module.exports = function(app, passport, manager, hashids) {
             // fall back solution
             queryobj = {public: true, shared: true}
         }
+
+        if (req.body.anonymous) {
+            queryobj['anonymous'] = false;
+        }
+
+
+
 
         var selectedforms = [];
         var authors = [];
@@ -1004,6 +1015,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // retrieve forms by complete queries
                 var tempfunctionByQuery = function() {
                     return new Promise(function(resolve, reject){
+
                         FormModel.find(queryobj).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
                             .on('data', function(form){
 

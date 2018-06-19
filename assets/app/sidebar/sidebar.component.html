@@ -1,5 +1,11 @@
+<!-- Beginning Placeholder -->
+<div class="qSidebar sdbHolder" id="sidebar">
+    <div class="sContainer">
+    </div>
+</div>
+
 <!-- Profile Sidebar -->
-<div *ngIf="context === 'profile'" class="qSidebar" id="sidebar">
+<div *ngIf="context === 'profile'" class="qSidebar" id="sdb">
     <button *ngIf="me" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm">
         Ask a Question
     </button>
@@ -87,7 +93,7 @@
 </div>
 
 <!-- Feed Sidebar -->
-<div *ngIf="context === 'feed'" class="mainContainer qSidebar" id="sidebar">
+<div *ngIf="context === 'feed'" class="mainContainer qSidebar" id="sdb">
     <div class="sContainer lhs">
         <h3 class="lpText">Discover People</h3>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
@@ -147,7 +153,7 @@
 
 
 <!-- Community Sidebar -->
-<div *ngIf="context === 'community'" class="qSidebar" id="sidebar">
+<div *ngIf="context === 'community'" class="qSidebar" id="sdb">
     <div class="sContainer">
         <h6 class="lpText small">Members</h6>
         <div *ngIf="networklist.length != 0" class="peopleContainer">
@@ -198,6 +204,10 @@
 
     </div>
 </div>
+
+
+
+
 
 <!-- Test Summary trigger -->
 <!-- <a style="padding: 5px 12px; background: black; color: white;" (click)="sendSummary()">Send Summary</a> -->

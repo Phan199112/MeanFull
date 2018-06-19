@@ -13,6 +13,15 @@
 
 
             <div id="viewCommunityContainer">
+                
+                <div *ngIf="deleteWarning && !showEdit" class="aboutContainer fdColumn">
+                    <h3 class="name" style="text-align: center">Are you sure you want to delete this group?</h3>
+                    <div class="flex fjCenter" style="margin-top: 24px">
+                        <button class="submitButton greyBtn" (click)="toggleDeleteWarning()" style="margin-right: 16px;">Cancel</button>
+                        <button class="submitButton redBtn" (click)="deleteCommunity()">Delete</button>
+                    </div>
+                </div>
+                
 
                 <!-- Info header -->
                 <div class="aboutContainer" *ngIf="!showEdit">
@@ -36,7 +45,7 @@
                                 <a class="dropdown-item" *ngIf="data.isPending && !data.public">Request Pending</a> 
                                 <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Group</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="inviteToCommunity(id)">Invite others to join</a>
-                                <a class="dropdown-item" *ngIf="data.isadmin" (click)="deleteCommunity(id)">Delete Group</a>
+                                <a class="dropdown-item" *ngIf="data.isadmin" (click)="toggleDeleteWarning()">Delete Group</a>
                                 <a class="dropdown-item" *ngIf="!data.isadmin" (click)="reportCommunity(id)">Report Group</a>
                             </div>
                         </div>
@@ -161,7 +170,7 @@
                     
 
                         <div class="flexContainer" style="justify-content: center">
-                            <button type="button" class="submitButton grey" (click)="toggleEdit()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted" style="margin-right: 20px;">Cancel</button>
+                            <button type="button" class="submitButton greyBtn" (click)="toggleEdit()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted" style="margin-right: 20px;">Cancel</button>
                             <button type="button"  class="submitButton" (click)="updateCommunity()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Update</button>
                         </div>
 
