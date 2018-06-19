@@ -111,6 +111,7 @@ var UserModel = require('./db.models/user.model');
 var FormModel = require('./db.models/form.model');
 var CommunityModel = require('./db.models/community.model');
 var EmailStoreModel = require('./db.models/emailStore.model');
+var NetworkEdgesModel = require('./db.models/networkedges.model');
 
 
 getSearchAndTags();
@@ -303,6 +304,18 @@ module.exports = app;
 //         })
 
 //         console.log('Duplicates: \n', duplicates);
+//     })
+// }}
+// )();
+
+// Get all friend requests for a user
+// (function() {
+//     if (NetworkEdgesModel) {
+//         NetworkEdgesModel.find({ userid: "userID" , status: false}, function(err, comm) {
+            
+//         comm.forEach((m,i) => {
+//             console.log(`https://www.questionsly.com/profile/${hashids.encodeHex(m.userid[0])} \n`);            
+//         })
 //     })
 // }}
 // )();

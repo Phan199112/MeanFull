@@ -3,7 +3,7 @@
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  flex-basis: 33%;
+  // flex-basis: 33%;
   margin-bottom: 10px;
 
   &:active {
@@ -25,11 +25,11 @@ a {
 }
 
 .imgDiv {
-  width: 52px;
-  height: 52px;
-  margin: 0px 5px;
-
+  // width: 52px;
+  // height: 52px;
+  margin: 0px 2px;
   text-align: center;
+  position: relative;
 
   @media (max-width: 767px) {
     width: 36px;
@@ -38,9 +38,10 @@ a {
 }
 
 img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 6px;
+    border-radius: 4px;
+    width: 100%;
+    height: 52px;
+    object-fit: cover;
 
   &:hover {
     cursor: pointer;
@@ -49,9 +50,16 @@ img {
 
 .imgTitle {
   display: block;
-  text-align: center;
+  text-align: left;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding: 0 0 4px 4px;
+  border-radius: 4px;
+  color: white;
+  background: rgba(0,0,0,.4);
+  text-transform: capitalize;
 
-  max-width: 52px;
   overflow: hidden;
   text-overflow: ellipsis;
 

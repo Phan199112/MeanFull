@@ -1,7 +1,7 @@
 <div class="iContainer" [routerLink]="['/group', data.id]" (click)="clickedCommunity()">
-    <img class="img" *ngIf="data.pic" [src]="data.pic" />
-    <img class="img" *ngIf="!data.pic" src="/images/community.png" />
-    <div class="title">
-        <div><a class="commText" [routerLink]="['/group', data.id]">{{title}}</a></div>
+    <div class="imgDiv">
+        <img class="commImg" *ngIf="data.pic" [src]="data.pic" />
+        <img class="commImg" *ngIf="!data.pic" src="/images/community.png" />
+        <a class="commText" [routerLink]="['/group', data.id]">{{title}}</a>
     </div>
 </div>
