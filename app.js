@@ -56,6 +56,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'QuestionslyFrontend', 'dist')));
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
