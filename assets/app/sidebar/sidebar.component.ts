@@ -232,6 +232,36 @@ export class Sidebar implements OnInit, OnChanges {
         $(window).resize(function () {
             fixSidebar();
         });
+
+        // Make sidebars scroll with page then become fixed when they reach the top
+        $(window).scroll(function() {
+            let wScroll = $(window).scrollTop();
+            let windowWidth = $(window).width();
+            let sdbPos = $(".sdbHolder").offset();
+            let rpnPos = $(".rpnHolder").offset();            
+
+            if (windowWidth > 767) {
+                let navHeight = $(".navbar").height() + 8;
+
+                if (navHeight < sdbPos.top - 8 - wScroll) {
+                    $("#sdb").css({
+                        "top": sdbPos.top - 8 - wScroll,
+                    });
+    
+                    $("#rightPanel").css({
+                        "top": rpnPos.top - 8 - wScroll,
+                    });
+                } else {
+                    $("#sdb").css({
+                        "top": 52
+                    });
+
+                    $("#rightPanel").css({
+                        "top": 52
+                    });
+                }
+            }
+        });
     }
 
 // Function to test summary email
