@@ -1,0 +1,438 @@
+$whiteColor: #fff;
+$primaryColor:  #28ab64;
+$borderColor: rgb(226,226,226);
+$navBarColor:  #FFF;
+$primaryFont: Dosis;
+$backgroundColor: #FFF;
+$commentBackground: #f0f6f0;
+
+
+
+/deep/ .navbar {
+  @media (max-width: 768px) {
+    padding-left: 15px;
+    padding-right: 0;
+  }
+}
+
+#nav-bar-actions, .notification {
+  cursor: pointer;
+}
+
+.navbar-light {
+    display:flex;
+    justify-content: space-between;
+    background-color: $navBarColor !important;
+    border-bottom: 1px solid $borderColor;
+    
+  @media (min-width: 992px) {
+    padding: 0px 12%;
+    height: 52px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+
+  @media (min-width: 768px) and (max-width: 991px) {
+      max-width: 100%;
+      width: 100%;
+      padding: 8px 0;
+  }
+
+  @media (max-width: 767px) {
+    padding: 4px 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar-collapse.show, .navbar-collapse.collapsing {
+    display: flex;
+    width: 100%;
+    background: white;
+    padding: 0 10%;
+  }
+}
+
+.navbar-light .navbar-text,
+.navbar-light .navbar-brand{
+  color: $primaryColor;
+  font-weight: 700;
+}
+
+.navbar-brand {
+  @media (max-width: 767px) {
+    margin: 4px 5%;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    margin: 0px 10%;
+  }
+}
+
+.navbar-toggler, .navbar-login {
+  outline: none;
+  
+  @media (min-width: 768px) and (max-width: 991px) {
+    margin: 0px 10% !important;
+  }
+
+  @media (max-width: 767px) {
+    margin: 0 5% !important;
+  }
+}
+
+
+.navlinks {
+  color: $primaryColor !important;
+}
+
+.nav-item {
+  cursor: hand;
+  margin-right: 5px;
+
+  i.fa {
+    width: 14px;
+  }
+}
+
+.bordTop {
+  @media (max-width: 991px) {
+    border-top: 1px solid $borderColor;
+  }
+}
+
+.align-right {
+  text-align: right;
+}
+
+.dropdown-toggle {
+  display: inherit;
+}
+
+
+.notification {
+  background: #FFF;
+  &.new {
+    color: #fff !important;
+    background-color: #eafff4;
+    &:hover {
+      background-color: #F0F0F0;
+      color: #fff !important;
+    }
+  }
+  &:hover:not(.new) {
+    background-color: #eee;
+    color: #333 !important;
+  }
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: $primaryColor;
+  font-weight: 700;
+}
+
+.navli:hover {
+  background: $whiteColor;
+  color: $navBarColor;
+}
+
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+  color: #666;
+}
+
+.mouseChangeToHand{
+  cursor: pointer;
+  cursor: hand;
+}
+
+.newnotification {
+  color: darkred;
+}
+
+img {
+  width: 40px;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  width: 250px;
+  margin-left: 12px;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    margin-left: 0px;
+  }
+
+}
+
+.searchbar {
+  width: 100%;
+  padding: 2px;
+  font-size: .85rem;
+  font-family: Karla;
+  text-align: center;
+}
+
+.userImage {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+
+  @media (max-width: 767px) {
+    width: 24px;
+    height: 24px;
+  }
+    
+}
+
+.notification-icon {
+  display: flex;
+  align-items: center; 
+  margin-right: 25px; 
+  align-items: center;
+}
+
+.notification-bubble {
+  background: lighten($primaryColor, 14);
+  padding: 1px 3px;
+  color: white;
+  font-family: Karla;
+  top: 10px;
+  right: -13px;
+}
+
+.iconActive {
+  color: $primaryColor !important;
+}
+
+.notificationDropdown {
+  background: #FFF;
+  max-height: 70vh;
+  overflow-y: scroll;
+  overflow-x: none;
+
+  position: absolute;
+  right: -10px;
+  top: 30px;
+  width: 400px;
+  border-radius: 4px;
+  border: 1px solid $borderColor;
+
+  @media(max-width: 767px) {
+    width: 90vw;
+    max-width: 320px;
+    max-height: 80vh;
+    right: -18vw;
+  }
+
+  @media(max-width: 400px) {
+    width: 90vw;
+    max-height: 80vh;
+    right: -35vw;
+  }
+
+}
+
+.dropdownItem {
+  cursor: hand;
+  padding: 6px 15px 5px 12px;
+  &:not(:last-of-type) {
+    border-bottom: 1px solid #ddd;
+  }
+  &:hover {
+    background-color: lighten($primaryColor, 14);
+    color: #fff !important;
+  }
+  width: 100%;
+  align-items: center;
+  background-color: #FFFFFF;
+}
+
+
+.flex {
+  display: flex;
+  // width: 100%;
+}
+
+.fCol {
+    flex-direction: column;
+}
+
+.notifImage {
+  height: 36px !important;
+  width: 36px !important;
+  border-radius: 24px;
+  margin-right: 6px;
+}
+
+.toggleNot {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.noNotifications {
+  text-align: center;
+  font-family: Helvetica Neue;
+  color: #666;
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin: 10px 0px;
+}
+
+.notifTextCont {
+  border: 1px solid #FFFFFF;
+  border-top: 1px solid $borderColor;
+  border-bottom: 1px solid $borderColor;
+  display: flex; 
+  justify-content: space-between; 
+  padding: auto 8px;
+
+  .notifLabel {
+    margin: 0;
+    padding: 5px 10px;
+    font-size: .75rem;
+    font-family: Karla;
+
+    &.markAll {
+      &:hover {
+        cursor: pointer;
+        font-weight: 700;
+      }
+    }
+  }
+
+}
+
+.notVisible {
+  visibility: hidden;
+}
+
+.noTopBorder {
+  border-top: none;
+}
+
+.showMoreLabel {
+  text-align: center;
+  font-weight: 700;
+  color: #666;
+  margin: 6px auto;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+.acceptButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 4px 8px;
+    border: none;
+    text-align: center;
+    font-size: .7rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin: 0px 3px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+}
+
+.denyButton {
+    background: #FFF;
+    border-radius: 8px;
+    padding: 4px 8px;
+    text-align: center;
+    border: none;
+    border: solid 1px #666;
+    font-size: .7rem;
+    font-family: Karla;
+    color: #666 !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        color: #333 !important;
+        border: solid 1px #333;
+    }
+}
+
+.rightNavList {
+  list-style: none;
+  display: flex;
+  margin-bottom: 0px;
+  padding-left: 0;
+  justify-content: space-between;
+  background: #FFFFFF;
+  margin: 0 5%;
+}
+
+.mobHide {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.mobShow {
+  display: none;
+  @media (max-width: 767px) {
+    display: block;
+  }
+}
+
+.logo {
+  width: 24px;
+
+  @media (max-width: 767px) {
+    width: 20px;
+  }
+}
+
+.signupBanner {
+  width: 100%; 
+  text-align: center; 
+  margin: .9rem 0 0.5rem 0; 
+  padding: 0 2rem; 
+  font-size: larger;
+  font-family: karla;
+  font-weight: 300;
+  color: #999;
+
+  button {
+    display: block;
+    margin: 0px auto;
+    margin-top: 15px;
+    min-width: 250px;
+    padding: 4px 10px;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+    background-color: $primaryColor;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: lighten($primaryColor, 10);
+    }
+
+    @media (max-width: 767px) {
+      margin-top: 8px;
+    }
+  }
+}
