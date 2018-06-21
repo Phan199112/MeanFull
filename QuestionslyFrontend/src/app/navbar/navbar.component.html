@@ -127,37 +127,34 @@
 
             <li *ngIf="loggedin">
                 <div class="">
-                    <div *ngFor="let placement of ['bottom-left', 'bottom-right']">
-                        <li [ngClass]="{
-                                    'nav-item': true, 
-                                    'd-none': placement == 'bottom-left', 
-                                    'd-xl-block': placement == 'bottom-left',
-                                    'd-xl-none': placement == 'bottom-right'
-                                }" ngbDropdown>
-                            <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 8px 0" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
-                                <div *ngIf="pictype" class="d-inline-block">
-                                    <div *ngIf="pictype == 'fb'">
-                                        <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
-                                    </div>
-                                    <div *ngIf="pictype == 'local'">
-                                        <img class="userImage" [src]="pic" />
-                                    </div>
-                                    <div *ngIf="pictype == 'default-male'">
-                                        <img class="userImage" src="/images/male.png" />
-                                    </div>
-                                    <div *ngIf="pictype == 'default-female'">
-                                        <img class="userImage" src="/images/female.png" />
-                                    </div>
+                    <li [ngClass]="{
+                                'nav-item': true, 
+                                'd-none': true, 
+                                'd-xl-block': true
+                            }" ngbDropdown>
+                        <a class="navlinks nav-link custom-dropdown-toggle" style="padding: 8px 0" id="nav-bar-actions" ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                            <div *ngIf="pictype" class="d-inline-block">
+                                <div *ngIf="pictype == 'fb'">
+                                    <img class="userImage" src="https://graph.facebook.com/{{pic}}/picture?width=40&height=40">
                                 </div>
-                                <span style="margin-left: 4px">{{firstname}}</span>
-                            </a>
-                            <div class="p-0 settingsDropdown" ngbDropdownMenu aria-labelledby="nav-bar-actions">
-                                <a class="dropdown-item" [routerLink]="['/profile', dbid]">Profile</a>
-                                <a class="dropdown-item" routerLink="/settings">Settings</a>
-                                <a class="dropdown-item" (click)="logout()">Logout</a>
+                                <div *ngIf="pictype == 'local'">
+                                    <img class="userImage" [src]="pic" />
+                                </div>
+                                <div *ngIf="pictype == 'default-male'">
+                                    <img class="userImage" src="/images/male.png" />
+                                </div>
+                                <div *ngIf="pictype == 'default-female'">
+                                    <img class="userImage" src="/images/female.png" />
+                                </div>
                             </div>
-                        </li>
-                    </div>
+                            <span style="margin-left: 4px">{{firstname}}</span>
+                        </a>
+                        <div class="p-0 settingsDropdown" ngbDropdownMenu aria-labelledby="nav-bar-actions">
+                            <a class="dropdown-item" [routerLink]="['/profile', dbid]">Profile</a>
+                            <a class="dropdown-item" routerLink="/settings">Settings</a>
+                            <a class="dropdown-item" (click)="logout()">Logout</a>
+                        </div>
+                    </li>
                 </div>
             </li>
             </div>

@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http'; 
+import { HttpModule } from '@angular/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import {routing} from "./app.routing";
 import { AppComponent } from './app.component';
@@ -108,7 +109,9 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     RouterModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    routing,
+    NgbModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
