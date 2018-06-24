@@ -7,7 +7,6 @@ import * as $ from 'jquery';
     templateUrl: './user-image.component.html',
     styleUrls: ['./user-image.component.scss'],
 })
-
 export class UserImageComponent implements OnInit, AfterViewInit {
     @Input() data: any;
     name: Array<string>;
