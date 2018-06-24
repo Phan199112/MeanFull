@@ -1,10 +1,22 @@
+// Third party
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragulaModule } from "ng2-dragula";
+import { TagInputModule } from 'ngx-chips';
+import { Ng2FlatpickrModule } from 'ng2-flatpickr';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { NgForageModule } from "ngforage";
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { ShareButtonModule } from '@ngx-share/button';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import * as XLSX from 'xlsx';
 
+// From our app
 import {routing} from "./app.routing";
 import { AppComponent } from './app.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
@@ -111,7 +123,16 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     HttpModule,
     routing,
     NgbModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    BrowserAnimationsModule,
+    DragulaModule,
+    TagInputModule,
+    Ng2FlatpickrModule,
+    AngularMultiSelectModule,
+    NgForageModule,
+    ShareButtonsModule.forRoot(),
+    ShareButtonModule.forRoot(),
+    ImageCropperModule
   ],
   providers: [],
   bootstrap: [AppComponent]
