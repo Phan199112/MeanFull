@@ -1,3 +1,28 @@
-<p>
-  feed-page works!
-</p>
+<div class="pageLayout">
+
+  <div class="row">
+      <button *ngIf="loggedin" style="font-family: Karla" class="btn btn-outline-success" id="askBtn" routerLink="/createForm" (click)="askQuestion()">Ask a Question</button>
+  </div>
+
+  <div class="row">
+
+      <div class="col-md-3 col-sm-12 col-12 order-1 order-md-1">
+        <!--
+          <sidebar [loggedin]="loggedin" [context]="'feed'"></sidebar>
+          -->
+      </div>
+
+      <div class="col-md-6 col-12 order-3 order-md-2">
+          <br>
+          <div class="statusMessage bad" *ngIf="emailconfirmfailed">Validation of your email address failed. Please try again later.</div>
+          <div class="statusMessage" *ngIf="emailconfirmok">Your email address was confirmed! Many thanks for joining Questionsly!</div>
+          <div class="card-body btn-success" *ngIf="completedform">Many thanks for completing a form on Questionsly!</div>
+          <!--<feed-list [pic]="pic" [pictype]="pictype" [user]="null" [tag]="tag" [pref]="preference"></feed-list>-->
+      </div>
+
+      <div class="col-md-3 col-12 order-2 order-md-3" id="rightSideOfContainer">
+          <!--<right-panel [loggedin]="loggedin" (toggledTag)="setTag($event)"></right-panel>-->
+      </div>
+
+  </div>
+  </div>
