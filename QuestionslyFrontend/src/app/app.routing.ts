@@ -1,8 +1,5 @@
 import {RouterModule, Routes} from "@angular/router";
 
-// For testing...
-import {PieChartComponent} from "./pie-chart/pie-chart.component";
-
 import {CreateFormComponent} from "./create-form/create-form.component";
 import {PreviewFormComponent} from "./preview-form/preview-form.component";
 import {ShareFormComponent} from "./share-form/share-form.component";
@@ -16,8 +13,7 @@ import {FeedPageComponent} from "./feed-page/feed-page.component";
 import {SearchPageComponent} from "./search-page/search-page.component";
 
 const APP_ROUTES: Routes = [
-    {path: '', component: PieChartComponent},
-    {path: 'ng6index.html', component: PieChartComponent},
+    {path: 'ng6index.html', component: FeedPageComponent, pathMatch: 'full'},
     {path: '', component: FeedPageComponent, pathMatch: 'full'},
     {path: 'createForm', component: CreateFormComponent},
     {path: 'previewForm', component: PreviewFormComponent},
