@@ -1,25 +1,23 @@
 import {RouterModule, Routes} from "@angular/router";
 
+// For testing...
 import {PieChartComponent} from "./pie-chart/pie-chart.component";
 
-
-/*
-import {CreateFormComponent} from "./createForm/createForm.component";
-import {PreviewFormComponent} from "./previewForm/previewForm.component";
-import {ShareFormComponent} from "./shareForm/shareForm.component";
-import {TakeFormComponent} from "./takeForm/takeForm.component";
+import {CreateFormComponent} from "./create-form/create-form.component";
+import {PreviewFormComponent} from "./preview-form/preview-form.component";
+import {ShareFormComponent} from "./share-form/share-form.component";
+import {TakeFormComponent} from "./take-form/take-form.component";
 import {LoginComponent} from "./login/login.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {SettingsComponent} from "./settings/settings.component";
-import {CreateCommunityComponent} from "./createCommunity/createCommunity.component";
-import {ViewCommunityComponent} from "./viewCommunity/viewCommunity.component";
-import {FeedPageComponent} from "./feed/feed.page.component";
-import {SearchPageComponent} from "./search/search.page.component";
-*/
+import {CreateCommunityComponent} from "./create-community/create-community.component";
+import {ViewCommunityComponent} from "./view-community/view-community.component";
+import {FeedPageComponent} from "./feed-page/feed-page.component";
+import {SearchPageComponent} from "./search-page/search-page.component";
+
 const APP_ROUTES: Routes = [
     {path: '', component: PieChartComponent},
-    {path: 'ng6index.html', component: PieChartComponent}
-/*
+    {path: 'ng6index.html', component: PieChartComponent},
     {path: '', component: FeedPageComponent, pathMatch: 'full'},
     {path: 'createForm', component: CreateFormComponent},
     {path: 'previewForm', component: PreviewFormComponent},
@@ -33,7 +31,6 @@ const APP_ROUTES: Routes = [
     {path: 'createGroup', component: CreateCommunityComponent},
     {path: 'group/:id', component: ViewCommunityComponent},
     {path: 'searchresults', component: SearchPageComponent}
-    */
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);
