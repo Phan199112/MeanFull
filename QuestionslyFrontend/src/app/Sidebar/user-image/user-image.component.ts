@@ -30,7 +30,7 @@ export class UserImageComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         // Dynamically sets img width and text box of images to be equal to the width
         function setHeight() {
-            var usrImgWidth = $(".usrImg").first().width();
+            let usrImgWidth = $(".usrImg").first().width();
             if (usrImgWidth == 0) window.setTimeout(setHeight,200);
             $(".usrImg, .commImg").css({ height: usrImgWidth  });
             $(".imgTitle, .commText").css({ width: usrImgWidth });
