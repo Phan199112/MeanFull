@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'feed-list',
   templateUrl: './feed-list.component.html',
-  styleUrls: ['./feed-list.component.css']
+  styleUrls: ['./feed-list.component.scss']
 })
 export class FeedListComponent implements OnInit {
 

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'sa-question-form',
   templateUrl: './short-answer-form.component.html',
-  styleUrls: ['./short-answer-form.component.css']
+  styleUrls: ['./short-answer-form.component.scss']
 })
 export class ShortAnswerFormComponent implements OnInit {
 

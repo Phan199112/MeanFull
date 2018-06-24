@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'number-question-form',
   templateUrl: './number-question-form.component.html',
-  styleUrls: ['./number-question-form.component.css']
+  styleUrls: ['./number-question-form.component.scss']
 })
 export class NumberQuestionFormComponent implements OnInit {
 
