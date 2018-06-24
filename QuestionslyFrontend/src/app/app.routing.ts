@@ -1,16 +1,16 @@
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule, Routes} from '@angular/router';
 
-import {CreateFormComponent} from "./create-form/create-form.component";
-import {PreviewFormComponent} from "./preview-form/preview-form.component";
-import {ShareFormComponent} from "./share-form/share-form.component";
-import {TakeFormComponent} from "./take-form/take-form.component";
-import {LoginComponent} from "./login/login.component";
-import {ProfileComponent} from "./profile/profile.component";
-import {SettingsComponent} from "./settings/settings.component";
-import {CreateCommunityComponent} from "./create-community/create-community.component";
-import {ViewCommunityComponent} from "./view-community/view-community.component";
-import {FeedPageComponent} from "./feed-page/feed-page.component";
-import {SearchPageComponent} from "./search-page/search-page.component";
+import {CreateFormComponent} from './create-form/create-form.component';
+import {PreviewFormComponent} from './preview-form/preview-form.component';
+import {ShareFormComponent} from './share-form/share-form.component';
+import {TakeFormComponent} from './take-form/take-form.component';
+import {LoginComponent} from './login/login.component';
+import {ProfileComponent} from './profile/profile.component';
+import {SettingsComponent} from './settings/settings.component';
+import {CreateCommunityComponent} from './create-community/create-community.component';
+import {ViewCommunityComponent} from './view-community/view-community.component';
+import {FeedPageComponent} from './feed-page/feed-page.component';
+import {SearchPageComponent} from './search-page/search-page.component';
 
 const APP_ROUTES: Routes = [
     {path: 'ng6index.html', component: FeedPageComponent, pathMatch: 'full'},
@@ -21,7 +21,7 @@ const APP_ROUTES: Routes = [
     {path: 'takeForm/:id', component: TakeFormComponent},
     {path: 'feed', component: FeedPageComponent},
     {path: 'users/login', component: LoginComponent},
-    {path: 'profile/:id', component: ProfileComponent},    
+    {path: 'profile/:id', component: ProfileComponent},
     {path: 'profile/:id/:subsection', component: ProfileComponent},
     {path: 'settings', component: SettingsComponent},
     {path: 'createGroup', component: CreateCommunityComponent},
