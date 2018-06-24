@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'network-item',
+  selector: 'app-network-item',
   templateUrl: './network-item.component.html',
   styleUrls: ['./network-item.component.scss']
 })

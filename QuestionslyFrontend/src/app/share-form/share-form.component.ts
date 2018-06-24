@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'share-form',
+  selector: 'app-share-form',
   templateUrl: './share-form.component.html',
   styleUrls: ['./share-form.component.scss']
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'discussion-list',
+  selector: 'app-discussion-list',
   templateUrl: './discussion-list.component.html',
   styleUrls: ['./discussion-list.component.scss']
 })

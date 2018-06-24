@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'mini-show-form',
+  selector: 'app-mini-show-form',
   templateUrl: './mini-show-form.component.html',
   styleUrls: ['./mini-show-form.component.scss']
 })

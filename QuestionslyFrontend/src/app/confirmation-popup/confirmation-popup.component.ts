@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'confirmation-popup',
+  selector: 'app-confirmation-popup',
   templateUrl: './confirmation-popup.component.html',
   styleUrls: ['./confirmation-popup.component.scss']
 })

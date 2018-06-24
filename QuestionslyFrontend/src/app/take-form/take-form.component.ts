@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'take-form',
+  selector: 'app-take-form',
   templateUrl: './take-form.component.html',
   styleUrls: ['./take-form.component.scss']
 })

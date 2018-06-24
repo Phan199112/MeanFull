@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'feedback-form',
+  selector: 'app-feedback-form',
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss']
 })

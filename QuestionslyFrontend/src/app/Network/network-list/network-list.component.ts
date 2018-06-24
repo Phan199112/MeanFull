@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'network-list',
+  selector: 'app-network-list',
   templateUrl: './network-list.component.html',
   styleUrls: ['./network-list.component.scss']
 })

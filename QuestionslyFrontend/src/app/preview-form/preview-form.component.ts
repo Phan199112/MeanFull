@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'preview-form',
+  selector: 'app-preview-form',
   templateUrl: './preview-form.component.html',
   styleUrls: ['./preview-form.component.scss']
 })

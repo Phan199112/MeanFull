@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'community-image',
+  selector: 'app-community-image',
   templateUrl: './community-image.component.html',
   styleUrls: ['./community-image.component.scss']
 })

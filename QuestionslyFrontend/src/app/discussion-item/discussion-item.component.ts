@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'discussion-item',
+  selector: 'app-discussion-item',
   templateUrl: './discussion-item.component.html',
   styleUrls: ['./discussion-item.component.scss']
 })
