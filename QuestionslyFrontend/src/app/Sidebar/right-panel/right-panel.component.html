@@ -1,3 +1,73 @@
-<p>
-  right-panel works!
-</p>
+<!-- Placeholder -->
+<div class="rpnHolder">
+    <div class="sContainer">
+    </div>
+</div>
+
+
+
+<div id="rightPanel">
+    <div class="sContainer" >
+        <h3 class="lpText small">Top Tags</h3>
+        <div class="catList">
+            <div *ngFor="let t of topTags" class="catContainer" (click)="toggleTag(t)">
+                <img class="catIcon" src="/images/icons/next.svg" />
+                <span class="catTitle" [ngClass]="{selected: t === currentTag}">{{t}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="sContainer" *ngIf="loggedin && noLocation">
+        <h3 class="lpText small">Please Complete Your Profile</h3>
+
+        <h3 class="lpText medium" *ngIf="submittedLocation">Thanks for updating your profile!</h3>
+
+        <div *ngIf="!submittedLocation">
+            <p>Location</p>
+            <form [formGroup]="locationForm" novalidate>
+                <div class="formBox">
+                    <div class="formGroup">
+                        <label for="city">City</label>
+                        <input type="text" name="city" formControlName="city" />
+                    </div>
+                    <div class="formGroup">
+                        <label for="state">State</label>
+                        <input type="text" name="city" formControlName="state" />
+                    </div>
+                    <div class="formGroup">
+                        <label for="country">Country</label>
+                        <input type="text" name="city" formControlName="country" />
+                    </div>
+                </div>
+            </form>
+            <p class="submitButton" (click)="updateLocation()">Submit</p>
+        </div>
+    </div>
+
+    <a class="sContainer fbCont" id="feedbackBtn" (click)="toggleFb()" *ngIf="!showFeedbackForm">Give us Feedback!</a>
+
+    <div class="sContainer fbCont" *ngIf="showFeedbackForm">
+        <h3 class="lpText medium" *ngIf="sentFeedback" style="margin-top: 0">Thanks for the Feedback!</h3>
+
+        <div *ngIf="!sentFeedback" style="width: 100%">
+            <div class="flex">
+                <div id="emptyContainer"></div>
+                <h3 class="lpText small">Send Feedback</h3>
+                <i class="fa fa-times cancelCross" (click)="toggleFb()"></i>
+            </div>
+
+            <p  *ngIf="fbError" class="valError">Feedback cannot be empty</p>
+
+            <div>
+                <form [formGroup]="feedbackForm" novalidate style="width: 100%">
+                        <div class="formGroup">
+                            <textarea formControlName="feedback" name="feedback" id="fbInput" rows="6"></textarea>
+                        </div>
+                </form>
+                <p class="submitButton" (click)="sendFeedback()" style="margin-top: 8px;">Submit</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
