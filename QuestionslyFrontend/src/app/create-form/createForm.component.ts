@@ -160,7 +160,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             enableCheckAll: false
         };
     }
-    
+
 
     ngOnDestroy() {
         if (this.autoScroll) {
@@ -634,7 +634,7 @@ export class CreateFormComponent implements OnInit, OnDestroy {
             id: formData.id
         };
         let data = Object.assign(this.questionnaireData(), meta);
-        
+
 
         this.http.put(`/forms/${data.id}`, data).toPromise()
             .then(response => {
@@ -755,31 +755,32 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     }
 
     uploadShareEmailAddresses() {
-        // var fileInput = $(".shareEmails input[type=file]")[0];
-        // const target: DataTransfer = <DataTransfer><any>(fileInput);
-        // if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-        // const reader: FileReader = new FileReader();
-        // reader.onload = (e: any) => {
-        //     /* read workbook */
-        //     const bstr: string = e.target.result;
-        //     const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+        const fileInput = $('.shareEmails input[type=file]')[0];
+        const target: DataTransfer = <DataTransfer><any>(fileInput);
+        if (target.files.length !== 1) {
+            throw new Error('Cannot use multiple files');
+        }
+        const reader: FileReader = new FileReader();
+        reader.onload = (e: any) => {
+            /* read workbook */
+            const bstr: string = e.target.result;
+            const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
-        //     /* grab first sheet */
-        //     const wsname: string = wb.SheetNames[0];
-        //     const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+            /* grab first sheet */
+            const wsname: string = wb.SheetNames[0];
+            const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-        //     /* save data */
-        //     var emailArray = <any>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-            
-        //     /* strip emails of the individual arrays they are in */
-        //     emailArray = emailArray.map(x => x[0]);
+            /* save data */
+            var emailArray = <any>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
 
-        //     $(".shareEmails input[type=text]").val(emailArray.join(', '));
-        //     $(".shareEmails input[type=file]").val('');
+            /* strip emails of the individual arrays they are in */
+            emailArray = emailArray.map(x => x[0]);
 
-        //     console.log("email", emailArray)
-        // };
-        // reader.readAsBinaryString(target.files[0]);
-    // }}
+            $('.shareEmails input[type=text]').val(emailArray.join(', '));
+            $('.shareEmails input[type=file]').val('');
+
+            console.log("email", emailArray);
+        };
+        reader.readAsBinaryString(target.files[0]);
     }
 }

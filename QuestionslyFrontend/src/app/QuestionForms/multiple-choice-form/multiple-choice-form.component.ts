@@ -1,12 +1,8 @@
 import { Component, OnInit, OnChanges, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
-import {Http} from "@angular/http";
-import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
 import {FormBuilder, FormControl, FormArray, FormGroup, Validators} from "@angular/forms";
-import {FormService} from "../../form.service";
-import {Router, ActivatedRoute} from "@angular/router";
-import * as autoScroll from 'dom-autoscroller';
-import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
+import {FormService} from '../../form.service';
+import {Router, ActivatedRoute} from '@angular/router';
 // import { create } from 'domain';
 
 import * as $ from 'jquery';
@@ -19,22 +15,22 @@ import * as $ from 'jquery';
     ],
 })
 
-export class MultipleChoiceFormComponent implements OnInit {
+export class MultipleChoiceFormComponent implements OnInit, OnChanges {
     @Input() questionType: string;
     @Input() qLength: number;
     @Input() updateData: any;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object> ();
 
-    question: FormGroup;
-    updateView: boolean = false;
+    question: any; // FormGroup usually
+    updateView = false;
     errors: any = {
         question: false,
         choices: false
-    }
+    };
 
-    @ViewChildren("imgTooltipCtrl") imgTooltipCtrls;
-    @ViewChildren("imgTooltipToggle") imgTooltipToggles;
+    @ViewChildren('imgTooltipCtrl') imgTooltipCtrls;
+    @ViewChildren('imgTooltipToggle') imgTooltipToggles;
 
     constructor(
         private fb: FormBuilder,
@@ -55,7 +51,6 @@ export class MultipleChoiceFormComponent implements OnInit {
             this.createForm();
         }
     }
-    
 
     createForm() {
         if (this.updateData) {
@@ -71,11 +66,11 @@ export class MultipleChoiceFormComponent implements OnInit {
                 pic: this.updateData.pic,
                 canSelectMultiple: this.updateData.canSelectMultiple,
                 id: this.updateData.id
-            })  
-            
+            });
+
             const control = this.question.get('options');
-            
-            for (let i=0; i<this.updateData.options.length; i++) {
+
+            for (let i = 0; i < this.updateData.options.length; i++) {
                 (<FormArray>control).push(this.createOption(this.updateData.options[i].body));
             }
 
@@ -86,10 +81,10 @@ export class MultipleChoiceFormComponent implements OnInit {
                 options: this.fb.array([]),
                 required: true,
                 number: this.qLength,
-                pic: "",
+                pic: '',
                 canSelectMultiple: false,
                 id: Math.random().toString().substring(2),
-            })
+            });
             this.addMcOption();
         }
 
@@ -103,7 +98,9 @@ export class MultipleChoiceFormComponent implements OnInit {
     }
 
     enterMcOption(f: any) {
-        if (f.value == "") return;
+        if (f.value == '') {
+            return;
+        }
         const arrayControl = this.question.get('options') as FormArray;
         const lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
         const lastControl = lastGroup.get('option') as FormControl;
@@ -170,7 +167,6 @@ export class MultipleChoiceFormComponent implements OnInit {
             if (!lg.value.body)  this.removeOption(cont.length-1);
         }
 
-        
         if (this.question.valid && (<FormArray>this.question.get('options')).length > 1) {
             this.errors.question = false;
             this.errors.choices = false;
@@ -188,25 +184,24 @@ export class MultipleChoiceFormComponent implements OnInit {
                 let control = group.get('body') as FormControl;
                 if (empty.test(control.value)) this.removeOption(i);
             }
-            
+
             if (this.updateView) {
                 this.outputUpdateData.emit(this.question.value);
                 this.updateView = false;
-                this.updateData = null;   
+                this.updateData = null;
                 this.createForm();
 
             } else {
-                this.questionData.emit(this.question.value);     
+                this.questionData.emit(this.question.value);
             }
 
             this.purgeForm();
         } else {
-            this.errors.question = !this.question.get('body').valid
-            this.errors.choices = !this.question.get('options').valid
-            
+            this.errors.question = !this.question.get('body').valid;
+            this.errors.choices = !this.question.get('options').valid;
+
             if ((<FormArray>this.question.get('options')).length < 2) {
                 this.errors.choices = true;
-                
             }
         }
     }
@@ -241,8 +236,7 @@ export class MultipleChoiceFormComponent implements OnInit {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     this.question.get('pic').setValue(url);
-                }
-                else {
+                } else {
                     alert('Could not upload file.');
                 }
             }
@@ -262,8 +256,7 @@ export class MultipleChoiceFormComponent implements OnInit {
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     this.uploadFile(file, response.signedRequest, response.url);
-                }
-                else {
+                } else {
                     alert('Could not get signed URL.');
                 }
             }
@@ -285,4 +278,3 @@ export class MultipleChoiceFormComponent implements OnInit {
     }
 
 }
-

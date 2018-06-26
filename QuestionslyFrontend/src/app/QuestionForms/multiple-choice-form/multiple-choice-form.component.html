@@ -34,14 +34,14 @@
             <div class="imgContainer">
                 <h6 class="title qslyBlack">Add an image</h6>
                 <div class="inner">
-                   
+
                     <div id="uploadBtn">
                         <label for="picFile" class="submitButton not">Upload</label>
                         <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
                     </div>
-                    
+
                     <div><p id="orText" class="qslyGray">or</p></div>
-                    
+
                     <div id="urlImage" class="input-group" style="width: 100%">
                         <input type="text" formControlName="pic" #imgUrl class="form-control" style="font-size: .5rem" placeholder="Enter image URL">
                         <div class="input-group-append">
@@ -52,14 +52,14 @@
                     </div>
 
                 </div>
-                
+
                 <div class="flex">
                    <img class="image" *ngIf="question.get('pic').value !== ''" id="preview" [src]="question.get('pic').value">
                 </div>
 
             </div>
             <!-- IMAGE END -->
-            
+
         </div>
 
 

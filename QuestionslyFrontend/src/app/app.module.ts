@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragulaModule } from 'ng2-dragula';
@@ -14,10 +15,9 @@ import { NgForageModule } from 'ngforage';
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareButtonModule } from '@ngx-share/button';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import * as XLSX from 'xlsx';
 
 // From our app
-import {routing} from './app.routing';
+import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -121,6 +121,7 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     RouterModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     routing,
     NgbModule,
     NgbModule.forRoot(),
