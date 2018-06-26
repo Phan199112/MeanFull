@@ -108,9 +108,13 @@
                             </div>
 
                         </div>
-<!-- TODOO
-                        <star-array *ngIf="question.kind == 'Rating'" (selected)="setRating($event, i)" formGroupName="answer" [scale]="question.scale"></star-array>
--->
+
+                        <app-star-array *ngIf="question.kind == 'Rating'"
+                            (selected)="setRating($event, i)"
+                            formGroupName="answer"
+                            [scale]="question.scale">
+                        </app-star-array>
+
                         <input (click)="loginPopup.check(data.loginRequired)" type="number" min="question.lowerBoundary" max="question.upperBoundary"
                             class="formChoices num" formControlName="answer" *ngIf="question.kind == 'Number'" />
 
