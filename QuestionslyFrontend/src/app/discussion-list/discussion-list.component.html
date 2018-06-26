@@ -1,3 +1,34 @@
-<p>
-  discussion-list works!
-</p>
+<div class="cBody" *ngIf="!hide && form.found">
+
+    <form [formGroup]="newmessage">
+        <div class="userComCont">
+                    <div *ngIf="pictype == 'fb'">
+                        <img src="https://graph.facebook.com/{{pic}}/picture?width=32&height=32" class="comUserImage" />
+                    </div>
+                    <div *ngIf="pictype == 'local'">
+                        <img [src]="pic" class="comUserImage" />
+                    </div>
+                    <div *ngIf="form.pictype !== 'local'">
+                        <img *ngIf="pictype == 'default-male'"  src="/images/male.png" class="comUserImage" />
+                        <img *ngIf="pictype == 'default-female'" src="/images/female.png" class="comUserImage" />
+                    </div>
+                <textarea #entrybox placeholder="Leave a comment.." class="niceTextInput" rows="1" formControlName="message" (keydown)="autosizeTextarea($event, entrybox)" style="min-height: 23px !important;" (click)="loginPopup.check(!loggedin)" ></textarea>
+        </div>
+        <div *ngIf="entrybox.value !== ''" class="comSort" style="padding-top: 0">
+            <a (click)="checkSubmit()" class="submitButton">Comment</a>
+        </div>
+        <div *ngIf="submissionfailed">Submission failed.</div>
+    </form>
+
+    <div class="comments">
+        <div *ngFor="let com of chatlist; let i = index">
+            <!-- <discussion-item [data]="com" *ngIf="commentsExpanded || i < 2" [ind]="i"></discussion-item> -->
+        </div>
+    </div>
+
+    <div *ngIf="chatlist.length > 2" class="flex" style="padding-top: 0px">
+        <span class="comSwitch" style="font-size: 1rem" (click)="expandComment()">{{commentsExpanded ? 'See Less Comments' : 'See More Comments'}}</span>
+    </div>
+
+</div>
+<!-- <login-popup #loginPopup></login-popup> TODOO -->
