@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SwitchButtonsComponent } from './switchButtons.component';
+import { SwitchButtonsComponent } from './switch-buttons.component';
 
 describe('SwitchButtonsComponent', () => {
   let component: SwitchButtonsComponent;
