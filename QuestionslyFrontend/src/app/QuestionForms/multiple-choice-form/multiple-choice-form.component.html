@@ -1,3 +1,70 @@
-<p>
-  multiple-choice-form works!
-</p>
+<div style="width: 100%;">
+    <form [formGroup]="question" novalidate >
+        <div class="multipleChoice">
+            <h6 class="title firstTitle qslyBlack">What is your question? <span class="valError" *ngIf="errors.question">*Question cannot be empty.</span></h6>
+            <div style="display: flex; align-items: center; width: 100%">
+                <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
+            </div>
+
+            <h6 class="title qslyBlack">Choices <span class="valError" *ngIf="errors.choices">*Must enter at least 2 choices.</span></h6>
+
+            <div class="responseContainer" formArrayName="options">
+                <div class="responseRow" *ngFor="let x of question.get('options').controls; let i = index">
+                    <div class="flex" [formGroupName]="i">
+                        <div style="margin-right: 2px"><label class="subtleText qslyGray">- </label></div>
+                        <input placeholder="Enter response choice" class="niceTextInput" type="text" formControlName="body" #f (keyup.enter)="enterMcOption(f);" />
+                        <button *ngIf="question.get('options').length === i +1" id="focusLastBtn" style="display:none" (click)="focusLast(f)"></button>
+                        <i *ngIf="question.get('options').length > 1" class="fa fa-times cross" (click)="removeOption(i)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h6 class="title qslyBlack">Allow User to Select Multiple Choices?</h6>
+                <div style="display:flex; justify-content: flex-start;">
+                    <app-switch-buttons [active]="question.get('canSelectMultiple').value" [option]="false" [title]="'No'" (selected)="toggleMultiple($event)"
+                        formControlName="canSelectMultiple"></app-switch-buttons>
+                    <app-switch-buttons [active]="question.get('canSelectMultiple').value" [option]="true" [title]="'Yes'" (selected)="toggleMultiple($event)"
+                        formControlName="canSelectMultiple"></app-switch-buttons>
+                </div>
+            </div>
+
+            <!-- IMAGE START -->
+            <div class="imgContainer">
+                <h6 class="title qslyBlack">Add an image</h6>
+                <div class="inner">
+                   
+                    <div id="uploadBtn">
+                        <label for="picFile" class="submitButton not">Upload</label>
+                        <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
+                    </div>
+                    
+                    <div><p id="orText" class="qslyGray">or</p></div>
+                    
+                    <div id="urlImage" class="input-group" style="width: 100%">
+                        <input type="text" formControlName="pic" #imgUrl class="form-control" style="font-size: .5rem" placeholder="Enter image URL">
+                        <div class="input-group-append">
+                            <button (click)="setPicUrl(imgUrl.value)" class="btn btn-outline-secondary">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="flex">
+                   <img class="image" *ngIf="question.get('pic').value !== ''" id="preview" [src]="question.get('pic').value">
+                </div>
+
+            </div>
+            <!-- IMAGE END -->
+            
+        </div>
+
+
+        <div id="sbContainer">
+            <a class="submitButton" (click)="submitQuestion()" style="margin-bottom:20px">{{updateView ? "Update" : "Add Question"}}</a>
+        </div>
+    </form>
+</div>

@@ -27,7 +27,7 @@ import { MultipleChoiceFormComponent } from './QuestionForms/multiple-choice-for
 import { NumberQuestionFormComponent } from './QuestionForms/number-question-form/number-question-form.component';
 import { RatingFormComponent } from './QuestionForms/rating-form/rating-form.component';
 import { ShortAnswerFormComponent } from './QuestionForms/short-answer-form/short-answer-form.component';
-import { CreateFormComponent } from './create-form/create-form.component';
+import { CreateFormComponent } from './create-form/createForm.component';
 import { DescriptionSwitchButtonsComponent } from './description-switch-buttons/description-switch-buttons.component';
 import { FormButtonComponent } from './form-button/form-button.component';
 import { SwitchButtonsComponent } from './switch-buttons/switch-buttons.component';

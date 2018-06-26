@@ -38,12 +38,11 @@
                 <div class="flexContainer fdColumn faStart">
                     <h6 class="title firstTitle">Privacy</h6>
                     <div style="display:flex; justify-content: flex-start;">
-                        <!-- TODOO
-                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
-                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
-                        <desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
-                            (selected)="toggleAudience($event)" formControlName="public"></desc-switch-buttons>
-                            -->
+                        <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
+                            (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
+                        <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
+                            (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
+                           
                     </div>
                 </div>
 
