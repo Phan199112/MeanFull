@@ -244,7 +244,7 @@ export class SidebarComponent implements OnInit, OnChanges {
             let sdbPos = $('.sdbHolder').offset();
             let rpnPos = $('.rpnHolder').offset();
 
-            if (windowWidth > 767) {
+            if (windowWidth > 767 && sdbPos) {
                 let navHeight = $('.navbar').height() + 8;
 
                 if (navHeight < sdbPos.top - 8 - wScroll) {
