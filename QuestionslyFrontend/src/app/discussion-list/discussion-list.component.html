@@ -12,7 +12,15 @@
                         <img *ngIf="pictype == 'default-male'"  src="/images/male.png" class="comUserImage" />
                         <img *ngIf="pictype == 'default-female'" src="/images/female.png" class="comUserImage" />
                     </div>
-                <textarea #entrybox placeholder="Leave a comment.." class="niceTextInput" rows="1" formControlName="message" (keydown)="autosizeTextarea($event, entrybox)" style="min-height: 23px !important;" (click)="loginPopup.check(!loggedin)" ></textarea>
+                <textarea #entrybox
+                    placeholder="Leave a comment.."
+                    class="niceTextInput"
+                    rows="1"
+                    formControlName="message"
+                    (keydown)="autosizeTextarea($event, entrybox)"
+                    style="min-height: 23px !important;"
+                    (click)="loginPopup.check(!loggedin)">
+                </textarea>
         </div>
         <div *ngIf="entrybox.value !== ''" class="comSort" style="padding-top: 0">
             <a (click)="checkSubmit()" class="submitButton">Comment</a>
@@ -31,4 +39,4 @@
     </div>
 
 </div>
-<!-- <login-popup #loginPopup></login-popup> TODOO -->
+<app-login-popup #loginPopup></app-login-popup>
