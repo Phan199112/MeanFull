@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-short-answers',
   templateUrl: './short-answers.component.html',
-  styleUrls: ['./short-answers.component.scss']
+  styleUrls: ['./short-answers.component.scss'],
+  providers: [UserService]
 })
-export class ShortAnswersComponent implements OnInit {
+export class ShortAnswersComponent {
+  @Input() answers: any;
+  index: number;
 
-  constructor() { }
+  @ViewChild('content') content;
 
-  ngOnInit() {
+  constructor(
+    private modalService: NgbModal,
+    private userService: UserService
+  ) {}
+
+  open(i: number) {
+    this.index = i;
+    this.modalService.open(this.content);
   }
-
 }

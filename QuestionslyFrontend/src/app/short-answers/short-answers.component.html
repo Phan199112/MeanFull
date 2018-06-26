@@ -1,3 +1,13 @@
-<p>
-  short-answers works!
-</p>
+<ng-template #content let-c="close" let-d="dismiss" class="display:flex; justify-content: center; align-items: center;">
+        <div class="modal-container">
+            <p class="question qslyGray">All Responses <span>({{answers[index].length}})</span></p>
+            <div class="response-container" *ngFor="let ans of answers[index]">
+                <div>
+                    <img class="response-image" src="{{ans.pic}}" />
+                    <span class="author qslyGray">{{ans.name}}:</span>
+                    <span class="response qslyBlack">{{ans.answer}}</span>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </ng-template>
