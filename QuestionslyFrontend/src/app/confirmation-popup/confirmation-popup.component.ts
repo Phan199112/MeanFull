@@ -3,8 +3,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-confirmation-popup',
-  templateUrl: './confirmationPopup.component.html',
-  styleUrls: ['./confirmationPopup.component.scss']
+  templateUrl: './confirmation-popup.component.html',
+  styleUrls: ['./confirmation-popup.component.scss']
 })
 export class ConfirmationPopupComponent {
   @ViewChild('content') content;

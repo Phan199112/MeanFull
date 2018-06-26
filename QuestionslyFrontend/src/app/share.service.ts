@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ShareService {
 
   get(key): Observable<any> {
     if (!this.subjects.hasOwnProperty(key)) {
-      this.subjects[key] = new Subject<any>();      
+      this.subjects[key] = new Subject<any>();
     }
     return this.subjects[key].asObservable();
   }
