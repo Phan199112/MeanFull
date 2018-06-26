@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
 
-import {CreateFormComponent} from './create-form/create-form.component';
+import {CreateFormComponent} from './create-form/createForm.component';
 import {PreviewFormComponent} from './preview-form/preview-form.component';
 import {ShareFormComponent} from './share-form/share-form.component';
 import {TakeFormComponent} from './take-form/take-form.component';

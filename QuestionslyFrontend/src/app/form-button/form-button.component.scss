@@ -1,0 +1,36 @@
+$color1: #28ab64;
+$color2: #3b3e52;
+
+.choice {
+    min-width: 100px;
+    width: auto;
+    font-size: 1rem;
+    font-weight: 300;
+    font-family: Karla;
+    display: block;
+    margin: 2px 5px;
+    padding: 4px 8px;
+    text-align: center;
+
+    &:hover {
+        cursor: pointer;
+        color: $color1;
+    }
+}
+.selected {
+    color: $color1;
+    font-weight: 700;
+}
+
+.center {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.choiceContainer {
+    @media (max-width: 767px) {
+        width: 100%;
+        margin: 4px 0;
+    }
+}

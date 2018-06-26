@@ -1,3 +1,4 @@
-<p>
-  description-switch-buttons works!
-</p>
+<div class="box" [ngClass]="{selectedBox: option === active}" (click)="toggle(option)">
+    <p class="text title qslyBlack" [ngClass]="{selectedText: option === active}">{{title}}</p>
+    <p class="text description qslyGray" [ngClass]="{selectedText: option === active}">{{description}}</p>
+</div>
