@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { DiscussionModel } from '../Discussion/discussion.model';
+import { DiscussionModel } from '../discussion.model';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
 

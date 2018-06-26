@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DiscussionModel } from '../Discussion/discussion.model';
+import { DiscussionModel } from '../discussion.model';
 import { Http } from '@angular/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { FeedFormModel } from '../Feed/feed-form.model';
+import { FeedFormModel } from '../../Feed/feed-form.model';
 
 @Component({
     selector: 'app-discussion-list',
