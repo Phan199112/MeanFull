@@ -1,3 +1,10 @@
-<p>
-  resource-list works!
-</p>
+<div id="gallery">
+  <div class="item" *ngFor="let item of list">
+    <a [routerLink]="link(item)">
+      <img class="image" src="{{pic(item)}}" />
+    </a>
+    <a class="name" [routerLink]="link(item)" title="{{item.name || item.title}}">
+      {{item.name || item.title}}
+    </a>
+  </div>
+</div>

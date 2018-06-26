@@ -1,3 +1,37 @@
-<p>
-  search-page works!
-</p>
+<div class="pageLayout">
+    <div class="row">
+
+        <div class="col-md-3 col-sm-12 col-12 order-2 order-md-1">
+            <app-sidebar [context]="'feed'"></app-sidebar>
+        </div>
+
+
+        <div class="col-md-6 col-12 order-1 order-md-2">
+            <div class="aboutContainer">
+                <h3 class="titles mainTitle">Search Results</h3>    
+                <div *ngIf="results">
+
+                    <h3 class="titles">Users</h3>
+                    <app-resource-list *ngIf="usersearchresultsList && usersearchresultsList.length !== 0" [resource]="'user'" [list]="usersearchresultsList"></app-resource-list>
+                    <h3 *ngIf="!usersearchresultsList || usersearchresultsList.length === 0" class="noResults">No users found matching this search</h3>
+
+                    <h3 class="titles">Groups</h3>
+                    <app-resource-list *ngIf="communitysearchresultsList && communitysearchresultsList.length !== 0" [resource]="'community'" [list]="communitysearchresultsList"></app-resource-list>
+                    <h3 *ngIf="!communitysearchresultsList || communitysearchresultsList.length === 0" class="noResults">No groups found matching this search</h3>
+
+                    <h3 class="titles">Questions</h3>
+                    <app-resource-list *ngIf="formsearchresultsList && formsearchresultsList.length !== 0" [resource]="'form'" [list]="formsearchresultsList"></app-resource-list>
+                    <h3 *ngIf="!formsearchresultsList || formsearchresultsList.length === 0" class="noResults">No questions found matching this search</h3>
+
+                    <!-- <h3 class="titles">Tags</h3>
+                    <tag-banner-list [data]="tagsList"></tag-banner-list>
+                    <h3 *ngIf="!usersearchresultsList || usersearchresultsList.length === 0">No tags found matching this search.</h3> -->
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-xl-2 offset-xl-0 col-md-7 offset-md-3" id="rightSideOfContainer">
+            <feedback-form *ngIf="loggedin"></feedback-form>
+        </div> -->
+    </div>
+</div>

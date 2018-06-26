@@ -1,0 +1,254 @@
+$formContainerColor: #fff;
+$whiteColor: #fff;
+$insideColor: #e6f7ff;
+$navBarColor:  #0088cc;
+$primaryColor: #28ab64;
+$borderColor: rgb(226,226,226);
+
+
+
+#profileContainer {
+  min-height: 100%;
+  overflow:auto;
+  overflow-x: hidden;
+  margin-top: 8px;
+  @media (max-width: 1140px){
+    min-height: 0;
+    overflow: hidden;
+  }   
+}
+
+#topJumbo {
+  border: 10px;
+  background: $insideColor;
+}
+
+.mouseChangeToHand{
+  cursor: pointer;
+  cursor: hand;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/crossword.png');
+}
+
+canvas {
+  -webkit-filter: blur(0.6px);
+  -moz-filter: blur(0.6px);
+  -o-filter: blur(0.6px);
+  -ms-filter: blur(0.6px);
+  filter: blur(0.6px);
+}
+
+#Profile {
+  //position: absolute;
+  margin: auto;
+  top: 0; right: 0; left: 0; bottom: 0;
+  width: 120px; height: 120px;
+  border-radius: 120px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#Profile img {
+  border-radius: 120px;
+}
+
+#interests-input {
+  background-color: lightblue;
+}
+
+/deep/ tag-input {
+  tag:not(:active) {
+    background-color: #fff !important;
+  }
+  tag-input-form {
+    input {
+      background-color: lightblue;
+    }
+  }
+}
+
+#profile-menu-wrapper {
+  position: absolute;
+  top: 4rem;
+  right: 0.8rem;
+
+  #profile-menu {
+    font-size: 25px;
+  }
+}
+
+
+// New
+.aboutContainer {
+  width: 100%;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  background: #FFF;
+  margin: 0px;
+  border-radius: 4px;
+  border: 1px solid $borderColor;
+  position: relative;
+}
+
+.container {
+  margin-top: 8px;
+  border: 1px solid $borderColor;
+  background: #FFF;
+  border-radius: 4px;
+}
+.container h3 {
+  margin: 12px 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.profilePicture {
+  // margin-bottom: 20px;
+  width: 120px;
+  border-radius: 60px;
+  margin-right: 25px;
+
+  @media (max-width: 767px) {
+    width: 64px;
+    border-radius: 32px;
+  }
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  margin-bottom: 2px;
+  font-family: Karla;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+
+  @media (max-width: 767px) {
+    font-size: 1.2rem;
+  }
+}
+
+.location {
+  margin-bottom: 6px;
+  font-family: Karla;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: #666;
+
+  @media (max-width: 767px) {
+    font-size: .8rem;
+  }
+}
+
+.stats {
+  color: #666;
+  font-size: .8rem;
+  font-weight: 400;
+  display: block;
+
+  &::before {
+    margin-left: 4px;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+
+  span {
+    font-weight: 700;
+    font-family: Karla;
+  }
+}
+
+.addToNetwork {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+
+.submitButton {
+    background: $primaryColor;
+    border-radius: 8px;
+    padding: 3px 6px;
+    line-height: 1.5rem;
+    min-width: 100px;
+    max-width: 150px;
+    width: auto;
+    text-align: center;
+    border: none;
+
+    font-size: .9rem;
+    font-family: Karla;
+    color: #FFF !important;
+    outline-style: none;
+    margin-top: 0px;
+
+    &:active {
+        outline-style: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: lighten($primaryColor, 5);
+    }
+
+    @media (max-width: 767px) {
+      font-size: .75rem;
+    }
+}
+
+.profileMenu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+}
+
+.feedRow {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+
+  a {
+    display: block;
+  }
+}
+
+
+.currentFeed {
+  color: #FFF !important;
+  font-size: .75rem;
+  padding: 4px 12px;
+  border: 1px solid #666;
+  background: #666;
+  margin: 0 6px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.notCurrentFeed {
+  color: #999;
+  font-size: .75rem;
+  padding: 4px 12px;
+  border: 1px solid #999;
+  margin: 0 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #333;
+    color: #666;
+  }
+  
+}
+
