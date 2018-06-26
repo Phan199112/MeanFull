@@ -1,15 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
+import { DiscussionModel } from '../Discussion/discussion.model';
+import { Http } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-discussion-item',
-  templateUrl: './discussion-item.component.html',
-  styleUrls: ['./discussion-item.component.scss']
+    selector: 'app-discussion-item',
+    templateUrl: './discussion-item.component.html',
+    styleUrls: ['./discussion-item.component.scss'],
 })
-export class DiscussionItemComponent implements OnInit {
+export class DiscussionItemComponent {
+    @Input() data: DiscussionModel;
+    @Input() ind: number;
+    hide: boolean;
+    firstName: string;
 
-  constructor() { }
+    constructor(
+        private http: Http,
+        private route: ActivatedRoute,
+        private elementRef: ElementRef
+    ) {}
 
-  ngOnInit() {
-  }
+    ngAfterViewInit() {
+        this.route.params.subscribe(params => {
+            if (params.message && params.message == this.data.id) {
+                setTimeout(() => {
+                    this.elementRef.nativeElement.scrollIntoView();
+                    window.scrollBy(0, -63.5);
+                }, 500);
+            }
+        });
+
+        this.firstName = this.data.author.name.split(' ')[0];
+    }
+
+    deleteMessage() {
+        // post and get response
+        this.http.post('/discussions/delete', {id: this.data.id})
+            .toPromise()
+            .then(response => {
+                if (response.json().status == 1) {
+                    this.hide = true;
+                }
+            });
+    }
 
 }

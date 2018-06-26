@@ -22,7 +22,7 @@
 
     <div class="comments">
         <div *ngFor="let com of chatlist; let i = index">
-            <!-- <discussion-item [data]="com" *ngIf="commentsExpanded || i < 2" [ind]="i"></discussion-item> -->
+            <app-discussion-item [data]="com" *ngIf="commentsExpanded || i < 2" [ind]="i"></app-discussion-item>
         </div>
     </div>
 
