@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef } from '@angular/core';
+import { Component, Input, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { DiscussionModel } from '../Discussion/discussion.model';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
     templateUrl: './discussion-item.component.html',
     styleUrls: ['./discussion-item.component.scss'],
 })
-export class DiscussionItemComponent {
+export class DiscussionItemComponent implements OnInit {
     @Input() data: DiscussionModel;
     @Input() ind: number;
     hide: boolean;
@@ -20,7 +20,7 @@ export class DiscussionItemComponent {
         private elementRef: ElementRef
     ) {}
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this.route.params.subscribe(params => {
             if (params.message && params.message == this.data.id) {
                 setTimeout(() => {
