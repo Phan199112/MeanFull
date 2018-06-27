@@ -4,7 +4,6 @@ import {Http} from "@angular/http";
 import {Router} from "@angular/router";
 import {UserService} from "../user.service";
 declare var require: any;
-var UsSchools = require("./US-schools.json");
 
 @Component({
     selector: 'app-login',
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
     profilePic: any;
     profilePicURL: string;
     status: boolean = true;
-    UsSchools: string[] = UsSchools;
+
     // reset
     showForgotPwd: boolean = false;
     statusresetfailed: boolean = false;
@@ -35,9 +34,9 @@ export class LoginComponent implements OnInit {
         private http: Http,
         private router: Router,
         private userService: UserService
-    ){       
+    ){
     }
-    
+
     ngOnInit() {
         this.login = this.fb.group({
             email: ['', Validators.required],
@@ -82,7 +81,7 @@ export class LoginComponent implements OnInit {
     checkSubmit(form, name) {
         this.setAsTouched(form);
         if (form.invalid) {
-            form.wasChecked = true;            
+            form.wasChecked = true;
         } else {
             if (name == 'signup') {
                 this.submitSignup();
@@ -189,7 +188,7 @@ export class LoginComponent implements OnInit {
                                                     "name": `${signupData.name.firstname} ${signupData.name.lastname}`,
                                                     "timestamp": Date.now()
                                             });
-                                            
+
                                         });
 
                                 } else {
