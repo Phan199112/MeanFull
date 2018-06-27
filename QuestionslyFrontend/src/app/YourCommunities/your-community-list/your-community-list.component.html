@@ -1,3 +1,4 @@
-<p>
-  your-community-list works!
-</p>
+<div class="scrollView" *ngIf="visible">
+        <app-your-comm-component class="" [comm]="comm" *ngFor="let comm of yourcommlist"> </app-your-comm-component>
+    
+</div>

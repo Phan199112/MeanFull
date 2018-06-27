@@ -1,3 +1,16 @@
-<p>
-  your-community-item works!
-</p>
+<div>
+    
+    <div class="flex">
+        <div>
+            <img [src]="comm.pic" *ngIf="comm.pic" class="imageSize"/>
+            <img class="imageSize" *ngIf="!comm.pic" src="/images/community.png" />
+
+            <a *ngIf="!sharedAlready" (click)="closeModal()" [routerLink]="['/group', comm.id]" style="color: #999;">{{comm.title}}</a>
+            <span *ngIf="sharedAlready" style="font-family:karla">Post shared in <a style="color:#999" [routerLink]="['/group', comm.id]">{{comm.title}}!</a></span>
+        </div>
+        <div>
+            <button *ngIf="!sharedAlready" class="submitButton" (click)="shareInComm()">Share</button>
+        </div>
+    </div>
+    
+</div>

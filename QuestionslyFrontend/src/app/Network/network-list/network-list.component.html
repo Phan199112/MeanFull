@@ -1,3 +1,11 @@
-<p>
-  network-list works!
-</p>
+<div class="container main-container" id="tagsListComponent">
+    <div class="secondary-container">
+        <a *ngIf="user" routerLink="/profile/{{user}}/friends">
+            <h5 class="title">Friends</h5>
+        </a>
+        <h5 *ngIf="!user" class="title">Friends</h5>        
+        <div class="adaptable-matrix">
+            <app-network-item class="adaptable-matrix-unit" [data]="item" *ngFor="let item of networklist"> </app-network-item>
+        </div>
+    </div>
+</div>
