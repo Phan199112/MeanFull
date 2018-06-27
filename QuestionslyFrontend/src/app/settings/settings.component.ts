@@ -57,7 +57,6 @@ export class SettingsComponent implements OnInit {
             .map((res: any) => res.json())
             .subscribe((json: Object) => {
                 this.UsaSchools = json;
-                console.log(json);
 
                 this.userService.afterLoginCheck().then(userData => {
                     if (userData) {
