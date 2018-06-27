@@ -156,7 +156,7 @@
 
 
 
-    <!-- <confirmation-popup></confirmation-popup> TODOO-->
+    <app-confirmation-popup></app-confirmation-popup>
     <ng-template #shareModal let-c="close" let-d="dismiss">
         <div class="shareContainer">
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -173,7 +173,7 @@
             <div *ngIf="loggedin">
                 <h6 style="font-family:karla; font-weight:bold; color: #CCC;">Group</h6>
 
-                <!--<app-yourcomm-list [link]="form.id"></app-yourcomm-list> TODOO -->
+                <app-your-comm-list [link]="form.id"></app-your-comm-list>
             </div>
         </div>
     </ng-template>
