@@ -342,13 +342,11 @@
                                             </div>
                                             <form *ngIf="educationfield.edit" class="edit" [formGroup]="generalQuestionsForm">
                                                 <ul id="questions">
-                                                    <!-- TODOO
-                                                    <question
+                                                    <app-question
                                                             *ngFor="let question of generalQuestions"
                                                             [data]="question"
                                                             [form]="generalQuestionsForm">
-                                                    </question>
-                                                    -->
+                                                    </app-question>
                                                 </ul>
                                                 <div class="row" *ngIf="generalQuestionsForm.submitted && generalQuestionsForm.pristine">
                                                     <div class="col text-center submitted-message">
