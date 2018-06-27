@@ -26,7 +26,7 @@ export class CreateCommunityComponent  {
     friends: any[] = [];
     errors: any = {
         title: false
-    }
+    };
 
     constructor(
         private fb: FormBuilder,
@@ -39,7 +39,7 @@ export class CreateCommunityComponent  {
 
     ngOnInit() {
         this.createForm();
-        this.userService.afterLoginCheck().then(userData => {            
+        this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
                 this.reject = false;
                 this.http.get("/users/network").toPromise().then(res => {
@@ -114,7 +114,6 @@ export class CreateCommunityComponent  {
 
     createcommunityData() {
         let data = this.fgCreateCommunity.value;
-        
 
         for (let tagField of ['hashtags', 'admins']) {
             if (data[tagField]) {
@@ -216,8 +215,8 @@ export class CreateCommunityComponent  {
         if (keyword[0] === "@") {
             keyword = keyword.substring(1);
         }
-        return keyword.length > 0 && 
-            targetValue && 
+        return keyword.length > 0 &&
+            targetValue &&
             targetValue.toLowerCase().indexOf(keyword.toLowerCase()) === 0;
     }
 
@@ -275,7 +274,7 @@ export class CreateCommunityComponent  {
 
     autosizeTextarea(event: any, el: any) {
         if (event.keyCode == 13) {
-            el.blur()
+            el.blur();
         } else {
             setTimeout(function () {
                 el.style.cssText = 'height:auto; padding:0';
@@ -285,7 +284,5 @@ export class CreateCommunityComponent  {
             }, 0);
         }
     }
-
-
 
 }

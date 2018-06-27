@@ -42,7 +42,7 @@
                             (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
                         <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
                             (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
-                           
+
                     </div>
                 </div>
 
@@ -134,10 +134,3 @@
         <div class="col-md-6" id="rightSideOfContainer"></div>
     </div>
 </div>
-
-
-
-
-<!-- TODOO
-<image-editor #imgEditor [imgChangedEvent]="imgChangedEvent" (done)="getSignedRequest($event)"></image-editor>
--->
