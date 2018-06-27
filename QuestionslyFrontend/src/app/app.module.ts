@@ -47,7 +47,6 @@ import { NetworkItemComponent } from './Network/network-item/network-item.compon
 import { NetworkListComponent } from './Network/network-list/network-list.component';
 import { PreviewFormComponent } from './preview-form/preview-form.component';
 import { ProfileComponent } from './profile/profile.component';
-import { StarsQuestionComponent } from './stars-question/stars-question.component';
 import { ResourceListComponent } from './resource-list/resource-list.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { QuestionComponent } from './question/question.component';
@@ -97,7 +96,6 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     NetworkListComponent,
     PreviewFormComponent,
     ProfileComponent,
-    StarsQuestionComponent,
     ResourceListComponent,
     SearchPageComponent,
     QuestionComponent,
