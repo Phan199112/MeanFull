@@ -1,0 +1,140 @@
+a {
+    cursor: pointer;
+  }
+
+  /deep/ ul.nav-tabs {
+    display: none !important;
+  }
+
+  $warningColor: rgb(234, 122, 133);
+  .ng-invalid.ng-touched {
+      border-color: $warningColor;
+  }
+  .invalid-feedback {
+      color: $warningColor;
+      display: block;
+  }
+
+  .tab-list {
+    border-right: 1px solid #ccc;
+
+    .tab-nav {
+      cursor: hand;
+      padding: 5px;
+
+      &.active {
+        background-color: #c4d2e7;
+        font-weight: bold;
+      }
+
+      i {
+        margin-right: 5px;
+        width: 15px;
+      }
+    }
+  }
+
+  .tab-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  /deep/ input {
+    font-size: 12px !important;
+    width: auto !important;
+    padding: 5px !important;
+  }
+
+  /deep/ select {
+    font-size: 12px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 5px !important;
+  }
+
+  button {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .settings-box {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+  }
+
+  .edit {
+    /deep/ label, input {
+      display: inline;
+    }
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+    }
+    /deep/ input {
+      font-size: 12px;
+      width: auto;
+      padding: 5px;
+    }
+    button {
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  #general-box {
+    .field {
+      border-bottom: 1px #e9ebee solid;
+      margin: 0;
+      padding: 8px 0;
+
+      .field-name {
+        font-weight: bold;
+        font-size: 12px;
+      }
+      .visualization {
+        .field-value {
+          font-size: 12px;
+        }
+        .edit-btn {
+          font-size: 12px;
+          color: blue;
+          cursor: hand;
+          float: right;
+        }
+      }
+    }
+  }
+
+  #security-box {
+    .security-row {
+      margin: 0;
+      padding: 15px 0;
+
+      .icon, .content {
+        display: inline-block;
+      }
+
+      .content {
+        margin-left: 30px;
+      }
+
+      .edit {
+        @media (max-width: 767px) {
+          margin-top: 20px;
+        }
+      }
+
+      &#password-change {
+        label {
+          display: inline-block;
+          width: 130px;
+        }
+      }
+    }
+  }
+
+  ul#questions {
+    padding-left: 20px;
+    padding-top: 20px;
+  }

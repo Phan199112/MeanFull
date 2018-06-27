@@ -133,7 +133,8 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     NgForageModule,
     ShareButtonsModule.forRoot(),
     ShareButtonModule.forRoot(),
-    ImageCropperModule
+    ImageCropperModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
