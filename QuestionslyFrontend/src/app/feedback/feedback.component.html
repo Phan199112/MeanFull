@@ -1,3 +1,28 @@
-<p>
-  feedback works!
-</p>
+<div class="container main-container" id="tagsListComponent">
+    <div class="secondary-container">
+        <h5 class="title">Feedback</h5>
+
+        <form [formGroup]="formfeedback" *ngIf="!submitted">
+            <div class="textarea-btn-holder form-group form-group-replace">
+                <textarea rows="10" class="form-control text-comment" placeholder="This is a beta release release. Please, help us improve your experience, by reporting any bugs here :)"
+                          formControlName="feedback" [ngClass]="{'form-control': true, 'is-invalid': formfeedback.get('feedback').invalid && formfeedback.get('feedback').touched}">
+                </textarea>
+                <div *ngIf="formfeedback.get('feedback').invalid && formfeedback.get('feedback').touched" class="invalid-feedback">
+                    Please provide a longer message!
+                </div>
+            </div>
+            <button id="formSubmitButton"
+                    class="d-flex justify-content-center btn btn-outline-primary mouseChangeToHand"
+                    [disabled]="formfeedback.get('feedback').invalid && formfeedback.get('feedback').touched || !formfeedback.get('feedback').touched"
+                    (click)="checkSubmit()">
+                Submit!
+            </button>
+        </form>
+
+        <div>
+            <div *ngIf="submissionfailed">Failure: please try again!</div>
+            <div *ngIf="submissionthanks">Thank you for your feedback!</div>
+        </div>
+
+    </div>
+</div>
