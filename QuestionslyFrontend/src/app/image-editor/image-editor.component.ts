@@ -25,7 +25,7 @@ export class ImageEditorComponent {
       this.imgLoaded = false;
       var data = this.cropped.substring(this.cropped.indexOf(";base64,") + 8);
       var type = this.cropped.substring(this.cropped.indexOf("data:") + 5, this.cropped.indexOf(";base64,"));
-      var file = b64ToBlob(data, type);
+      var file = (b64ToBlob as any)(data, type);
       file.name = this.imgChangedEvent.target.files[0].name;
       this.done.emit(file);
     }, (reason) => {
