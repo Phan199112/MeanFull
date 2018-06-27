@@ -65,9 +65,7 @@
 
                     <!-- ********** Chart ************ -->
                     <div *ngIf="(data.answerCount > 0) && (i == 0 || !data.contracted) && data.viewGraphsbool">
-<!-- TODOO
-                        <pie-chart  id="{{ 'piechart-' + i}}" [qKind]="question.kind" [dataLabels]="data?.plotdata[i][0]" [dataValues]="data?.plotdata[i][1]" [dataCounts]="data?.plotdata[i][2]" [count]="count" ></pie-chart>
--->
+                        <app-pie-chart  id="{{ 'piechart-' + i}}" [qKind]="question.kind" [dataLabels]="data?.plotdata[i][0]" [dataValues]="data?.plotdata[i][1]" [dataCounts]="data?.plotdata[i][2]" [count]="count" ></app-pie-chart>
                     </div>
                     <div *ngIf="(data.answerCount > 0) && ((i == 0 && data.contracted) || (i == lastMcQuestionIndex && !data.contracted) ) && data.viewGraphsbool" style="display: flex; width: 100%; justify-content: center">
                         <a class="submitButton smaller filterButton qslyGray" (click)="toggleFilter()">{{showFilters ? 'Hide Filters' : 'Filter Responses'}}</a>
