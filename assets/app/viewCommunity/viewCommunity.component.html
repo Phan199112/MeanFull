@@ -61,15 +61,19 @@
 
 
                 <!-- Feed list and private community message -->
-                <div class="" *ngIf="!showEdit">
+                <div class="" *ngIf="!showEdit && !showAllMembers">
                     <div *ngIf="status == '2'" class="aboutContainer" style="flex-direction: column"><h6 class="description center">{{data.title}} is a private group.</h6><h6 class="description center">Only members can see the content of this group.</h6></div>
                     <feed-list *ngIf="data.public || data.ismember" [comm]="id"></feed-list>
+                </div>
+
+                <!-- View all members -->
+                <div class="aboutContainer" *ngIf="showAllMembers">
                 </div>
 
 
 
                 <!-- Edit Community -->
-                <div class="aboutContainer" *ngIf="data.isadmin && showEdit" style="margin-bottom: 18px !important; flex-direction: column;">
+                <div class="aboutContainer" *ngIf="data.isadmin && showEdit && !showAllMembers" style="margin-bottom: 18px !important; flex-direction: column;">
                     <div class="flexContainer" style="justify-content: center; padding-bottom: 0;">
                         <h3 class="description" style="margin-bottom: 25px">Edit Group</h3>
                     </div>

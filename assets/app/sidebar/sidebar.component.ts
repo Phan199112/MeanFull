@@ -69,10 +69,7 @@ export class Sidebar implements OnInit, OnChanges {
                 this.showFriendsLoading = false;
             });
 
-        this.handleScrollAndResize();
-
-
-        
+        this.handleScrollAndResize();       
 
     }
 
