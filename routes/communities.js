@@ -559,6 +559,11 @@ module.exports = function(app, passport, manager, hashids) {
                 });
     });
 
+    app.post('/community/members', function(req,res) {
+        const comm = req.body.community;
+
+    });
+
     // list for feed
     app.post('/community/list', function (req, res) {
         // variables

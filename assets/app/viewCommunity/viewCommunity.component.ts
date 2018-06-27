@@ -33,6 +33,7 @@ export class ViewCommunityComponent implements OnInit {
     friends: any[] = [];    
     showEdit: boolean = false;
     deleteWarning: boolean = false;
+    showAllMembers: boolean = false;
 
     @ViewChild('invitationModal') invitationModal;    
 
