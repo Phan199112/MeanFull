@@ -21,12 +21,12 @@
 
       <div *ngIf="networklist.length != 0" class="peopleContainer">
           <div *ngFor="let p of networklist" style="flex-basis:33%;">
-              <app-user-image [data]="p"> </app-user-image>
+              <app-user-image [showNames]="showNames" [data]="p"> </app-user-image>
           </div>
       </div>
       <div *ngIf="networklist.length == 0" class="peopleContainer">
           <div *ngFor="let p of users" style="flex-basis:33%;">
-              <app-user-image [data]="p"> </app-user-image>
+              <app-user-image [showNames]="showNames" [data]="p"> </app-user-image>
           </div>
       </div>
 
@@ -61,12 +61,12 @@
 
       <div *ngIf="communitylist.length != 0" class="peopleContainer">
           <div *ngFor="let c of communitylist" style="flex-basis:33%;">
-              <app-community-image [data]="c"> </app-community-image>
+              <app-community-image [showNames]="showNames" [data]="c"> </app-community-image>
           </div>
       </div>
       <div *ngIf="communitylist.length == 0" class="peopleContainer">
           <div *ngFor="let c of randomlist" style="flex-basis:33%;">
-              <app-community-image [data]="c"> </app-community-image>
+              <app-community-image [showNames]="showNames" [data]="c"> </app-community-image>
           </div>
       </div>
 
@@ -98,12 +98,12 @@
       <h3 class="lpText">Discover People</h3>
       <div *ngIf="networklist.length != 0" class="peopleContainer">
           <div *ngFor="let p of networklist" style="flex-basis:33%;">
-              <app-user-image [data]="p"> </app-user-image>
+              <app-user-image [showNames]="showNames" [data]="p"> </app-user-image>
           </div>
       </div>
       <div *ngIf="networklist.length == 0" class="peopleContainer">
           <div *ngFor="let p of users" style="flex-basis:33%;">
-              <app-user-image [data]="p"> </app-user-image>
+              <app-user-image [showNames]="showNames" [data]="p"> </app-user-image>
           </div>
       </div>
 
@@ -126,12 +126,12 @@
       <h3 class="lpText">Discover Groups</h3>
       <div *ngIf="communitylist.length != 0" class="peopleContainer">
           <div *ngFor="let c of communitylist" style="flex-basis:33%;">
-              <app-community-image [data]="c"> </app-community-image>
+              <app-community-image [showNames]="showNames" [data]="c"> </app-community-image>
           </div>
       </div>
       <div *ngIf="communitylist.length == 0" class="peopleContainer">
           <div *ngFor="let c of data" style="flex-basis:33%;">
-              <app-community-image [data]="c"> </app-community-image>
+              <app-community-image [showNames]="showNames" [data]="c"> </app-community-image>
           </div>
       </div>
 
@@ -158,7 +158,7 @@
       <h6 class="lpText small">Members</h6>
       <div *ngIf="networklist.length != 0" class="peopleContainer">
           <div *ngFor="let p of networklist" style="flex-basis:33%;">
-              <app-user-image [data]="p"> </app-user-image>
+              <app-user-image [showNames]="showNames" [data]="p"> </app-user-image>
           </div>
       </div>
 
@@ -179,12 +179,12 @@
       <h3 class="lpText">Discover Groups</h3>
       <div *ngIf="communitylist.length != 0" class="peopleContainer">
           <div *ngFor="let c of communitylist" style="flex-basis:33%;">
-              <app-community-image [data]="c"> </app-community-image>
+              <app-community-image [showNames]="showNames" [data]="c"> </app-community-image>
           </div>
       </div>
       <div *ngIf="communitylist.length == 0" class="peopleContainer">
           <div *ngFor="let c of data">
-              <app-community-image [data]="c"> </app-community-image>
+              <app-community-image [showNames]="showNames" [data]="c"> </app-community-image>
           </div>
       </div>
 

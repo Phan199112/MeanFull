@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 export class CommunityImageComponent implements OnInit {
     @Input() data: any;
+    @Input() showNames: boolean;
     title = '';
     startingTime: any;
 
