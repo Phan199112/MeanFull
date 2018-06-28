@@ -9,6 +9,7 @@ import * as $ from 'jquery';
 })
 export class UserImageComponent implements OnInit, AfterViewInit {
     @Input() data: any;
+    @Input() showNames: boolean;
     name: Array<string>;
     type: string;
 

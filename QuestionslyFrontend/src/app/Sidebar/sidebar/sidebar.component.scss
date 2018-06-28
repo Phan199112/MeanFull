@@ -109,7 +109,7 @@ h3 {
   padding: 4px;
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 
   @media (max-width: 767px) {
@@ -156,6 +156,7 @@ h3 {
 .moreLink {
   text-align: right;
   width: 100%;
+  padding: 4px 8px 8px 0;
 }
 
 .moreLink a {

@@ -36,6 +36,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     amountArray = Array(9);
     showFriendsLoading = true;
     showCommunityLoading = true;
+    showNames = false;
     ogNetworkList: Object[];
     ogCommunityList: Object[];
     ogUsersList: Object[];
@@ -60,6 +61,8 @@ export class SidebarComponent implements OnInit, OnChanges {
             this.amountToFetch = 6;
         }
 
+        const showNames = () => {this.showNames = true;}
+
         this.http.get('/users/feedlist')
             .toPromise()
             .then(response => {
@@ -67,13 +70,10 @@ export class SidebarComponent implements OnInit, OnChanges {
                 this.ogUsersList = this.ogUsersList.concat(response.json().data);
                 this.users = this.users.slice(0, this.amountToFetch);
                 this.showFriendsLoading = false;
+                window.setTimeout(showNames, 500);
             });
 
         this.handleScrollAndResize();
-
-
-
-
     }
 
 
