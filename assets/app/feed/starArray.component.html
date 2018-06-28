@@ -1,6 +1,0 @@
-<div class='starArray'>
-    <div *ngFor="let x of temp; let i = index">
-        <img class="star" *ngIf="i <= rating" src="/images/icons/starFilled.svg" (click)="toggle(i)" width="22px" />
-        <img class="star" *ngIf="i > rating" src="/images/icons/star.svg" (click)="toggle(i)" width="22px" />
-    </div>
-</div>

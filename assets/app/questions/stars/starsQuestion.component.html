@@ -1,8 +1,0 @@
-<div class="stars">
-  <span class="star" *ngFor="let n of scale">
-      <i 
-        [ngClass]="{'fa': true, 'fa-star-o': n < temp, 'fa-star': n >= temp}" 
-        (click)="setValue(n); loginPopup.check()"></i>
-  </span>
-</div>
-<login-popup #loginPopup></login-popup>
