@@ -11,7 +11,10 @@ import * as $ from 'jquery';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+    host: {
+        '(document:click)': 'onDocClick($event)',
+    }
 })
 export class NavbarComponent implements OnInit {
     searchbox: FormGroup;
@@ -348,7 +351,7 @@ export class NavbarComponent implements OnInit {
         // Auto Scroll for Filters in Feed Post
         if ($(event.target).hasClass('filterButton')) {
             window.setTimeout(() => {
-                var target = $(event.target).closest('.fBody').find('#analysisContainer');
+                var target = $(event.target).closest('.fBody').find('#analysisContainer');                
                 if (target.length) {
                     $('html, body').animate({
                         scrollTop: Math.ceil(target.offset().top - 100)
@@ -367,16 +370,16 @@ export class NavbarComponent implements OnInit {
             $('body').css('overflow', 'auto');
         }
 
-        if ($(event.target).parents('.notificationDropdown').length || $(event.target).parents('.settingsDropdown').length) {
+        if ($(event.target).parents('.notificationDropdown').length || $(event.target).parents('.settingsDropdown').length) {            
             $('#navbarSupportedContent').removeClass('show');
         }
 
-        if ($(event.target).hasClass('navbar-toggler') || $(event.target).hasClass('navbar-toggler-icon')) {
+        if ($(event.target).hasClass('navbar-toggler') || $(event.target).hasClass('navbar-toggler-icon')) {            
             return;
         } 
 
 
-        if (!$(event.target).parents('.navbar-collapse').length) {
+        if (!$(event.target).parents('.navbar-collapse').length) {            
             $('#navbarSupportedContent').removeClass('show');
         }
 

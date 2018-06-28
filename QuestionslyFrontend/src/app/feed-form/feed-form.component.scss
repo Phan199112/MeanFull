@@ -584,3 +584,11 @@ hr {
   border: 1px solid $borderColor;
   border-radius: 8px;
 }
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+#form-menu-wrapper {
+  cursor: pointer;
+}
