@@ -78,3 +78,11 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+ // See: https://murhafsousli.github.io/ngx-sharebuttons/#/icons
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons/faLinkedinIn';
+import { faLink } from '@fortawesome/free-solid-svg-icons/faLink';
+library.add(faFacebookF, faTwitter, faLinkedinIn, faLink);
