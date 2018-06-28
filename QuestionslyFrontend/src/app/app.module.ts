@@ -45,14 +45,12 @@ import { LoginComponent } from './login/login.component';
 import { LoginPopupComponent } from './login-popup/login-popup.component';
 import { NetworkItemComponent } from './Network/network-item/network-item.component';
 import { NetworkListComponent } from './Network/network-list/network-list.component';
-import { PreviewFormComponent } from './preview-form/preview-form.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ResourceListComponent } from './resource-list/resource-list.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { QuestionComponent } from './question/question.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ShareFormComponent } from './share-form/share-form.component';
-import { ShowFormComponent } from './show-form/show-form.component';
 import { CommunityImageComponent } from './Sidebar/community-image/community-image.component';
 import { RightPanelComponent } from './Sidebar/right-panel/right-panel.component';
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
@@ -91,14 +89,12 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     LoginPopupComponent,
     NetworkItemComponent,
     NetworkListComponent,
-    PreviewFormComponent,
     ProfileComponent,
     ResourceListComponent,
     SearchPageComponent,
     QuestionComponent,
     SettingsComponent,
     ShareFormComponent,
-    ShowFormComponent,
     CommunityImageComponent,
     RightPanelComponent,
     SidebarComponent,

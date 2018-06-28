@@ -1,7 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
 
 import {CreateFormComponent} from './create-form/createForm.component';
-import {PreviewFormComponent} from './preview-form/preview-form.component';
 import {ShareFormComponent} from './share-form/share-form.component';
 import {TakeFormComponent} from './take-form/take-form.component';
 import {LoginComponent} from './login/login.component';
@@ -16,7 +15,6 @@ const APP_ROUTES: Routes = [
     {path: 'ng6index.html', component: FeedPageComponent, pathMatch: 'full'},
     {path: '', component: FeedPageComponent, pathMatch: 'full'},
     {path: 'createForm', component: CreateFormComponent},
-    {path: 'previewForm', component: PreviewFormComponent},
     {path: 'shareForm', component: ShareFormComponent},
     {path: 'takeForm/:id', component: TakeFormComponent},
     {path: 'feed', component: FeedPageComponent},
