@@ -100,7 +100,7 @@ app.use('/tos', function(req, res, next) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    res.render("index");
+    res.sendFile(path.join(__dirname, 'QuestionslyFrontend', 'dist', 'index.html'));
 });
 
 
