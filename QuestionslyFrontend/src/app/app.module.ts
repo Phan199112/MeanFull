@@ -57,9 +57,6 @@ import { CommunityImageComponent } from './Sidebar/community-image/community-ima
 import { RightPanelComponent } from './Sidebar/right-panel/right-panel.component';
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
 import { UserImageComponent } from './Sidebar/user-image/user-image.component';
-import { TagBannerListComponent } from './tag-banner-list/tag-banner-list.component';
-import { TagComponent } from './Tag/tag/tag.component';
-import { TagListComponent } from './Tag/tag-list/tag-list.component';
 import { TakeFormComponent } from './take-form/take-form.component';
 import { ViewCommunityComponent } from './view-community/view-community.component';
 import { YourCommunityItemComponent } from './YourCommunities/your-community-item/your-community-item.component';
@@ -106,9 +103,6 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     RightPanelComponent,
     SidebarComponent,
     UserImageComponent,
-    TagBannerListComponent,
-    TagComponent,
-    TagListComponent,
     TakeFormComponent,
     ViewCommunityComponent,
     YourCommunityItemComponent,
