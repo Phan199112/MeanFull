@@ -59,6 +59,7 @@ import { TakeFormComponent } from './take-form/take-form.component';
 import { ViewCommunityComponent } from './view-community/view-community.component';
 import { YourCommunityItemComponent } from './YourCommunities/your-community-item/your-community-item.component';
 import { YourCommunityListComponent } from './YourCommunities/your-community-list/your-community-list.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { YourCommunityListComponent } from './YourCommunities/your-community-lis
     TakeFormComponent,
     ViewCommunityComponent,
     YourCommunityItemComponent,
-    YourCommunityListComponent
+    YourCommunityListComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,

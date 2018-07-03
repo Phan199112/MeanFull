@@ -3,7 +3,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   /*background-color: #e6f7ff;*/
   background-color: #F3F3F3;
-  padding-top: 50px;
+  /* padding-top: 50px; */
 }
 
 div, p, span, li, label, input, textarea, select, option, button, a {
@@ -12,8 +12,8 @@ div, p, span, li, label, input, textarea, select, option, button, a {
 
 @media (min-width: 768px) {
   body {
-    padding-left: 40px;
-    padding-right: 40px;
+    /* padding-left: 40px;
+    padding-right: 40px; */
   }
 
   .col-md-6, .col-6 {

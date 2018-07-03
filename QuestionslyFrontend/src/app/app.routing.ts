@@ -9,11 +9,12 @@ import {SettingsComponent} from './settings/settings.component';
 import {CreateCommunityComponent} from './create-community/create-community.component';
 import {ViewCommunityComponent} from './view-community/view-community.component';
 import {FeedPageComponent} from './feed-page/feed-page.component';
+import {LandingPageComponent} from './landing-page/landing-page.component';
 import {SearchPageComponent} from './search-page/search-page.component';
 
 const APP_ROUTES: Routes = [
-    {path: 'ng6index.html', component: FeedPageComponent, pathMatch: 'full'},
-    {path: '', component: FeedPageComponent, pathMatch: 'full'},
+    // {path: 'ng6index.html', component: LandingPageComponent, pathMatch: 'full'},
+    {path: '', component: LandingPageComponent, pathMatch: 'full'},
     {path: 'createForm', component: CreateFormComponent},
     {path: 'shareForm', component: ShareFormComponent},
     {path: 'takeForm/:id', component: TakeFormComponent},
