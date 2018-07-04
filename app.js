@@ -24,7 +24,7 @@ const MongoStore = require('connect-mongo')(session);
 
 // mongodb (this is the live version with real data, if you'd like to do tests us the mlab above)
 // PRODUCTION LEVEL DB
-var mongoDB = 'mongodb://questionslyadmindb123:g92TcJdYWzDkTK7I@questionslydb1-shard-00-00-hv0tz.mongodb.net:27017,questionslydb1-shard-00-01-hv0tz.mongodb.net:27017,questionslydb1-shard-00-02-hv0tz.mongodb.net:27017/questionslydb1?ssl=true&replicaSet=questionslydb1-shard-0&authSource=admin';
+var mongoDB = 'mongodb://questionslyadmindb123:g92TcJdYWzDkTK7I@questionslydb3-shard-00-00-hv0tz.mongodb.net:27017,questionslydb3-shard-00-01-hv0tz.mongodb.net:27017,questionslydb3-shard-00-02-hv0tz.mongodb.net:27017/questionsly?ssl=true&replicaSet=questionslydb3-shard-0&authSource=admin&retryWrites=true';
 
 mongoose.connect(mongoDB, {
     useMongoClient: true
