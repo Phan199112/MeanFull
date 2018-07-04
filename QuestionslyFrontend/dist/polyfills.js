@@ -7600,7 +7600,7 @@ _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__["library"].add(_f
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/fernandofunes/Desktop/crowdworks/QuestionslyFrontend/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! /Users/fernandofunes/Desktop/questionsly/QuestionslyFrontend/src/polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })

@@ -4652,7 +4652,7 @@ module.exports = "<div class=\"background\">\n<!-- <app-navbar></app-navbar> -->
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "@import url(\"https://fonts.googleapis.com/css?family=Dosis:300,400,500,700|Karla:400,700|Quicksand:400,500,700|Raleway:300,400,500,600,700\");\nh1 {\n  color: blue; }\nli h2 {\n  color: green; }\n"
+module.exports = "@import url(\"https://fonts.googleapis.com/css?family=Dosis:300,400,500,700|Karla:400,700|Quicksand:400,500,700|Raleway:300,400,500,600,700|Cabin:400,700\");\nh1 {\n  color: blue; }\nli h2 {\n  color: green; }\n"
 
 /***/ }),
 
@@ -8089,7 +8089,7 @@ var ImageEditorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"full-width\">\n  <div class=\"container\">\n    <div class=\"col-50\">\n      <h1>Questionsly</h1>\n      <h4>Helping people make data-driven decisions.</h4>\n    </div>\n    <div class=\"col-50\">\n      <h2>It's easy to get started!<br/>Just sign in with your organization's email.</h2>\n      <input type='text' class=\"email-input\" />\n    </div>\n  </div>\n\n</div>"
+module.exports = "<div class=\"full-width\">\n  <div class=\"container\">\n    <nav>\n      <img src=\"https://www.questionsly.com/images/logo.png\" height=\"60px\">\n      <a class=\"nav-tab\">About Us</a>\n    </nav>\n  </div>\n  <div class=\"container\">\n    <div class=\"col-50\">\n      <h1>Questionsly</h1>\n      <h4>Helping people make data-driven decisions. This should be some amazing copy that makes questionsly seem super badass.\n        Blah blah blah and then some more blah blah blah.</h4>\n      <h2>It's easy to get started!\n        <br/>Just sign in with your organization's email.</h2>\n      <div class=\"flex\">\n        <input type='text' class=\"email-input\" placeholder=\"Enter your email..\" />\n        <button class=\"cta-btn\">Get Started</button>\n      </div>\n    </div>\n    <div class=\"col-50\">\n    </div>\n  </div>\n\n</div>"
 
 /***/ }),
 
@@ -8100,7 +8100,7 @@ module.exports = "<div class=\"full-width\">\n  <div class=\"container\">\n    <
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "h1 {\n  font-size: 3.2rem;\n  color: #333333; }\n\nh2 {\n  font-size: 1.6rem;\n  color: #333333;\n  line-height: 1.35; }\n\n.full-width {\n  width: 100%;\n  height: 100vh;\n  background: #f6f8f9;\n  display: flex;\n  justify-content: center; }\n\n.container {\n  max-width: 1200px;\n  display: flex;\n  justify-content: center; }\n\n.col-50 {\n  width: 50%;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 100px 25px; }\n\n.email-input {\n  width: 100%;\n  font-size: 2rem;\n  color: #000000;\n  outline: none;\n  margin-top: 24px; }\n"
+module.exports = "h1 {\n  font-size: 3.2rem;\n  font-weight: 700;\n  font-family: Cabin;\n  color: #28ab64;\n  margin-bottom: 48px; }\n\nnav {\n  width: 100%;\n  height: 70px;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: solid 1px #e2e2e2;\n  padding: 0 32px; }\n\nnav a {\n    color: #666666;\n    font-size: 1rem;\n    cursor: pointer; }\n\nh4 {\n  margin-left: 8px;\n  margin-bottom: 32px;\n  font-size: 1.4rem; }\n\nh2 {\n  font-size: 1.2rem;\n  color: #333333;\n  line-height: 1.4;\n  margin-left: 8px;\n  margin-bottom: 0; }\n\n.nav-tab {\n  font-size: 1.2rem;\n  color: #999; }\n\n.full-width {\n  width: 100%;\n  height: 100vh;\n  background: #f6f8f9;\n  display: flex;\n  flex-direction: column;\n  align-items: center; }\n\n.container {\n  max-width: 1200px;\n  display: flex;\n  justify-content: center; }\n\n.col-50 {\n  width: 50%;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 100px 25px; }\n\n.email-input {\n  width: auto;\n  font-size: 1.6rem;\n  color: #000000;\n  outline: none;\n  margin-left: 8px;\n  padding: .8rem;\n  border: solid 1px #e6e6e6;\n  border-right: none;\n  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1); }\n\n.cta-btn {\n  background: #28ab64;\n  color: #FFFFFF;\n  font-family: Cabin;\n  font-size: 1.2rem;\n  font-weight: 700;\n  padding: 8px 16px;\n  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);\n  outline: none;\n  cursor: pointer; }\n\n.cta-btn:hover {\n    background: #30cc77; }\n\n::-webkit-input-placeholder {\n  color: #CCCCCC;\n  opacity: 1; }\n\n:-ms-input-placeholder {\n  color: #CCCCCC;\n  opacity: 1; }\n\n::-ms-input-placeholder {\n  color: #CCCCCC;\n  opacity: 1; }\n\n::placeholder {\n  color: #CCCCCC;\n  opacity: 1; }\n\n.flex {\n  display: flex;\n  margin-top: 16px;\n  width: 100%; }\n"
 
 /***/ }),
 
@@ -12299,7 +12299,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/fernandofunes/Desktop/crowdworks/QuestionslyFrontend/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/fernandofunes/Desktop/questionsly/QuestionslyFrontend/src/main.ts */"./src/main.ts");
 
 
 /***/ }),
