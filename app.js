@@ -87,6 +87,7 @@ var feedbackroute = require('./routes/feedback')(app, passport, manager, hashids
 var searchroute = require('./routes/search')(app, passport, manager, hashids);
 var uploadroute = require('./routes/upload')(app, passport, manager, hashids);
 var discussroute = require('./routes/discussion')(app, passport, manager, hashids);
+var orgsroute = require('./routes/organizations')(app, passport, manager, hashids);
 var emailfunctions = require("./functions/email");
 
 //
