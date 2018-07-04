@@ -27,7 +27,8 @@ var UserSchema = new Schema({
     timestamp: String,
     notaken: Number,
     nocreated: Number,
-    nodiscussion: Number
+    nodiscussion: Number,
+    organization: String,
 });
 
 UserSchema.methods.generateHash = function(password) {

@@ -20,7 +20,8 @@ var FormSchema = new Schema({
     expired: Boolean,
     timestamp: String,
     report: Object,
-    activityEmailSent: Boolean
+    activityEmailSent: Boolean,
+    organization: String,
 });
 
 // Compile model from schema

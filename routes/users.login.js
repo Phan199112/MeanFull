@@ -1,13 +1,17 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LocalStrategy = require('passport-local').Strategy;
+
 var UserModel = require('../db.models/user.model');
 var CommunityModel = require('../db.models/community.model');
+var OrganizationModel = require('../db.models/organization.model');
+
 var log = require("../functions/logs");
 var randommod = require("../functions/random");
 var usersfunctions = require('../functions/users');
 var emailfunctions 	= require("../functions/email");
 var fbfunctions 	= require("../functions/fb.api");
+var orgfunctions = require('../functions/organizations');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -134,6 +138,42 @@ module.exports = function(app, passport, manager, hashids) {
             }
 
             cb(err, temp);
+        });
+    });
+
+    // Check if the email address belongs to an existing account or existing organization
+    app.post("/users/status", function(req, res) {
+        var data = req.body;
+
+        var doesUserExist, doesOrgExist;
+
+        var userExists = new Promise(function(resolve, reject) {
+            UserModel.findOne({ $or:[ {"local.email": data.email}, {'email': data.email} ]}, function (err, user) {
+                if (err) {
+                    reject()
+                } else {
+                    doesUserExist = (user != null);
+                    resolve();
+                }
+            })
+        });
+
+        var orgExists = new Promise(function(resolve, reject) {
+            orgfunctions.getOrganizationForEmailAddress(data.email, function (err, org) {
+                if (err) {
+                    reject();
+                } else {
+                    doesOrgExist = (org != null);
+                    resolve();
+                }
+            });
+        });
+
+        return Promise.all([userExists, orgExists]).then(function () {
+            res.json({status: 1, userExists: doesUserExist, orgExists: doesOrgExist});
+        })
+        .catch(function(err) {
+            res.json({status: 0});
         });
     });
 

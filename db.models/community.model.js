@@ -12,7 +12,8 @@ var CommunitySchema = new Schema({
     pic: String,
     report: Object,
     members: [{type: String}],
-    requests: [{type: String}]
+    requests: [{type: String}],
+    organization: String,
 });
 
 CommunitySchema.plugin(random, { path: 'r' });
