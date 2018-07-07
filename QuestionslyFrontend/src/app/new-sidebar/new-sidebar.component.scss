@@ -1,0 +1,61 @@
+.sb-container {
+    width: 216px;
+    height: 100vh;
+    background: #28ab64;
+    box-shadow: 1px 0px 16px 0px rgba(0, 0, 0, 0.21);
+}
+
+.brand-text {
+    display: block;
+    color: white;
+    padding: 16px 24px;
+    font: {
+        size: 1.2rem;
+        weight: 700;
+        family: Montserrat;
+    }
+}
+
+.group-section {
+    width: 100%;
+    margin-top: 16px;
+    border-top: 1px solid rgba(255,255,255,.2);
+}
+
+.section-title {
+    color: rgba(255,255,255, .45);
+    padding: 8px 16px;
+    margin: 0;
+    font: {
+        size: .9rem;
+        weight: 400;
+        family: "Fira Sans";
+    }
+}
+
+.section-entry {
+    color: #FFFFFF;
+    padding: 4px 16px 4px 24px;
+    margin: 0;
+    margin-bottom: 4px;
+    width: 100%;
+    font: {
+        size: 1rem;
+        weight: 300;
+        family: "Fira Sans";
+    }
+    cursor: pointer;
+
+    &.active {
+        font-weight: 700;
+        background: rgba(255,255,255,.1);
+    }
+
+    &.dim {
+        color: rgba(255,255,255, .6);
+    }
+    
+    &:hover {
+        background: rgba(255,255,255,.1);
+    }
+}

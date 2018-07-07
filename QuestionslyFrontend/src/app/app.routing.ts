@@ -9,6 +9,7 @@ import {SettingsComponent} from './settings/settings.component';
 import {CreateCommunityComponent} from './create-community/create-community.component';
 import {ViewCommunityComponent} from './view-community/view-community.component';
 import {FeedPageComponent} from './feed-page/feed-page.component';
+import {NewFeedPageComponent} from './new-feed-page/new-feed-page.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
 import {SearchPageComponent} from './search-page/search-page.component';
 
@@ -19,6 +20,7 @@ const APP_ROUTES: Routes = [
     {path: 'shareForm', component: ShareFormComponent},
     {path: 'takeForm/:id', component: TakeFormComponent},
     {path: 'feed', component: FeedPageComponent},
+    {path: 'newfeed', component: NewFeedPageComponent},
     {path: 'users/login', component: LoginComponent},
     {path: 'profile/:id', component: ProfileComponent},
     {path: 'profile/:id/:subsection', component: ProfileComponent},

@@ -60,6 +60,9 @@ import { ViewCommunityComponent } from './view-community/view-community.componen
 import { YourCommunityItemComponent } from './YourCommunities/your-community-item/your-community-item.component';
 import { YourCommunityListComponent } from './YourCommunities/your-community-list/your-community-list.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { NewFeedPageComponent } from './new-feed-page/new-feed-page.component';
+import { NewSidebarComponent } from './new-sidebar/new-sidebar.component';
+import { NewNavbarComponent } from './new-navbar/new-navbar.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +107,10 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     ViewCommunityComponent,
     YourCommunityItemComponent,
     YourCommunityListComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    NewFeedPageComponent,
+    NewSidebarComponent,
+    NewNavbarComponent
   ],
   imports: [
     BrowserModule,
