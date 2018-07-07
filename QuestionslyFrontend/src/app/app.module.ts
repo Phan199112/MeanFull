@@ -63,6 +63,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { NewFeedPageComponent } from './new-feed-page/new-feed-page.component';
 import { NewSidebarComponent } from './new-sidebar/new-sidebar.component';
 import { NewNavbarComponent } from './new-navbar/new-navbar.component';
+import { MemberListComponent } from './member-list/member-list.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { NewNavbarComponent } from './new-navbar/new-navbar.component';
     LandingPageComponent,
     NewFeedPageComponent,
     NewSidebarComponent,
-    NewNavbarComponent
+    NewNavbarComponent,
+    MemberListComponent
   ],
   imports: [
     BrowserModule,
