@@ -1,0 +1,19 @@
+<div *ngIf="whichStep == 'loading'">
+    <!-- Don't show anything -->
+</div>
+
+<div *ngIf="whichStep == 'noemail'">
+    <p>What is your email address?</p>
+</div>
+
+<div *ngIf="whichStep == 'noorg'">
+    <p>Sorry, there is no organization for your email address XYZ.</p>
+</div>
+
+<div *ngIf="whichStep == 'noaccount'">
+    <p>Welcome to UCLA Anderson! Let's make an account.</p>
+</div>
+
+<div *ngIf="whichStep == 'login'">
+    <p>Welcome. Enter your password</p>
+</div>

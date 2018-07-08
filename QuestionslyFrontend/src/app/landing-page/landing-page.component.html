@@ -3,23 +3,24 @@
     <nav>
       <!-- <img src="https://www.questionsly.com/images/logo.png" height="60px"> -->
       <h2 class="logo-text">Questionsly</h2>
-      <a class="nav-tab">Login</a>
+      <a class="nav-tab" [routerLink]="['/sign-in']">Login</a>
     </nav>
   </div>
-  <div class="container">
-    <div class="col-50">
-      <h1>Better Data,<br/>Better Decisions.</h1>
-      <h4>Bring your organization together to make better decisions, faster..</h4>
-      <!-- <h2>It's easy to get started!
-        <br/>Just sign in with your organization's email.</h2> -->
-      <div class="flex">
-        <input type='text' class="email-input" placeholder="name@company.com" />
-        <button class="cta-btn">GET STARTED IT'S FREE</button>
-      </div>
+    <div class="container">
+        <div class="col-50">
+            <h1>Better Data,<br/>Better Decisions.</h1>
+            <h4>Bring your organization together to make better decisions, faster..</h4>
+            <!-- <h2>It's easy to get started!
+            <br/>Just sign in with your organization's email.</h2> -->
+            <form [formGroup]="getStartedForm">
+                <div class="flex">
+                    <input type='email' class="email-input form-control" placeholder="name@company.com" formControlName="email">
+                    <button class="cta-btn" (click)="getStartedItsFree()">GET STARTED IT’S FREE</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-50">
+            <img src="/assets/images/school.png">
+        </div>
     </div>
-    <div class="col-50">
-      <img src="../../assets/images/school.png" />
-    </div>
-  </div>
-
 </div>

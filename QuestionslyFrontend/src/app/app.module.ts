@@ -15,6 +15,7 @@ import { NgForageModule } from 'ngforage';
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareButtonModule } from '@ngx-share/button';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { CookieService } from 'ngx-cookie-service';
 
 // From our app
 import { routing } from './app.routing';
@@ -64,6 +65,7 @@ import { NewFeedPageComponent } from './new-feed-page/new-feed-page.component';
 import { NewSidebarComponent } from './new-sidebar/new-sidebar.component';
 import { NewNavbarComponent } from './new-navbar/new-navbar.component';
 import { MemberListComponent } from './member-list/member-list.component';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +114,8 @@ import { MemberListComponent } from './member-list/member-list.component';
     NewFeedPageComponent,
     NewSidebarComponent,
     NewNavbarComponent,
-    MemberListComponent
+    MemberListComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +137,10 @@ import { MemberListComponent } from './member-list/member-list.component';
     ImageCropperModule,
     FormsModule
   ],
-  providers: [NgbActiveModal],
+  providers: [
+      NgbActiveModal,
+      CookieService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
