@@ -66,6 +66,7 @@ import { NewSidebarComponent } from './new-sidebar/new-sidebar.component';
 import { NewNavbarComponent } from './new-navbar/new-navbar.component';
 import { MemberListComponent } from './member-list/member-list.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { AskQuestionComponent } from './ask-question/ask-question.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
     NewSidebarComponent,
     NewNavbarComponent,
     MemberListComponent,
-    SignInComponent
+    SignInComponent,
+    AskQuestionComponent
   ],
   imports: [
     BrowserModule,

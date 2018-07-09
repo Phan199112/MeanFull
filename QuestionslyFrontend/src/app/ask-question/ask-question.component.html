@@ -1,0 +1,8 @@
+<div *ngIf="activeDimmer" class="dim-overlay"></div>
+<textarea rows="2" class="ask-textarea" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Start typing your question here.."></textarea>
+<div class="toolbar">
+    <a class="tb-option">Type</a>
+    <a class="tb-option">Options</a>
+    <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" />
+    <a class="tb-option submit">Add&nbsp;Question</a>
+</div>

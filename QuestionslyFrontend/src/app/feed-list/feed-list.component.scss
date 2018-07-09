@@ -39,7 +39,12 @@ $borderColor: rgb(226,226,226);
   border-radius: 4px;
   border: 1px solid $borderColor;
   position: relative;
-}
+  z-index: -2;
+
+  @media (min-width: 980px) {
+      min-width: 480px;
+  }
+ }
 
 .tempText {
   margin-bottom: 6px;

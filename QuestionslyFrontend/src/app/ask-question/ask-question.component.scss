@@ -1,0 +1,80 @@
+.ask-textarea {
+    width: 100%;
+    outline: none;
+    border: 1px solid #e2e2e2;
+    padding: 20px;
+    padding-bottom: 0;
+    font-size: 1.2rem;
+    margin-bottom: -4px;
+    border-bottom-color: #f4f4f4;
+    
+    &:focus {
+        border-color: #28ab64;
+    }   
+    
+    &::placeholder {
+        color: #AAAAAA;
+        font-size: 1.2rem;
+    }
+}
+
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
+    background: #FFFFFF;
+    border: 1px solid #e2e2e2;
+    border-top: none;
+    padding: 16px;
+
+}
+
+.tb-option {
+    font: {
+        size: 1rem;
+        weight: 400;
+        family: "Fira Sans";
+    }
+    padding: 2px 8px;
+    color: #28ab64 !important;
+    cursor: pointer;
+
+    &.submit {
+        background: #28ab64;
+        color: white !important;
+        padding: 8px 12px;
+        border-radius: 8px;
+
+        &:hover {
+            background: lighten(#28ab64, 15);
+        }
+    }
+}
+
+
+.groups-input {
+    width: 100%;
+    margin: 0 16px;
+    padding-left: 8px;
+    border: none;
+    outline: none;
+    font-size: .9rem;
+
+    &::placeholder {
+        color: #AAAAAA;
+        font-size: .9rem;
+    }
+}
+
+.dim-overlay {
+    position: absolute;
+    background: #000000;
+    opacity: .4;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+}

@@ -10,7 +10,16 @@
     justify-content: flex-end;
 }
 
+.flex-jcse {
+    justify-content: space-evenly;
+}
+
 #main-container {
-    margin-top: 120px;
     padding: 0 64px;
+    padding-top: 120px;
+}
+
+.feed-column {
+    width: 100%;
+    max-width: 800px;
 }
