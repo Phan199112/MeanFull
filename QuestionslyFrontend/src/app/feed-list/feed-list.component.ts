@@ -60,6 +60,7 @@ export class FeedListComponent implements OnInit, OnChanges {
         const loadMorePosts = this.loadMorePosts.bind(this);
 
         window.setTimeout(loadMorePosts, 3000);
+        
         this.refreshFeed(); //take out after we have official posts
     }
 
