@@ -29,4 +29,11 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
+    app.post('/api/joinWaitingList', function (req, res, next) {
+        var email = req.session.email;
+        var feedback = email + " wants to join the interest list";
+
+        emailfunctions.sendFeedback(feedback);
+        res.json({status: 1});
+    });
 };

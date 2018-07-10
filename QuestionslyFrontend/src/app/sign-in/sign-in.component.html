@@ -1,19 +1,51 @@
-<div *ngIf="whichStep == 'loading'">
-    <!-- Don't show anything -->
-</div>
+<div class="fullpage">
+    <nav>
+        <h2 class="logo-text">Questionsly</h2>
+    </nav>
 
-<div *ngIf="whichStep == 'noemail'">
-    <p>What is your email address?</p>
-</div>
+    <div *ngIf="whichStep == 'loading'" id="loadingStep">
+        <!-- Don't show anything -->
+    </div>
 
-<div *ngIf="whichStep == 'noorg'">
-    <p>Sorry, there is no organization for your email address XYZ.</p>
-</div>
+    <div *ngIf="whichStep == 'noemail'" id="noemailStep">
+        <h1>Welcome!</h1>
+        <p>Enter your email address to get started.</p>
 
-<div *ngIf="whichStep == 'noaccount'">
-    <p>Welcome to UCLA Anderson! Let's make an account.</p>
-</div>
+        <form [formGroup]="noemailForm">
+            <div class="flex">
+                <div *ngIf="noemailForm.controls['email'].invalid && noemailForm.controls['email'].touched" class="alert alert-danger">
+                    Please provide your email address.
+                </div>
 
-<div *ngIf="whichStep == 'login'">
-    <p>Welcome. Enter your password</p>
+                <input type='email' class="form-control" placeholder="name@company.com" formControlName="email">
+
+                <div style="float: right">
+                    <button class="cta-btn" (click)="noemailFormSubmit()">Go</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="whichStep == 'noorg'" id="noorgStep">
+        <h1>Welcome!</h1>
+        <p>
+            Thanks for your interest in Questionsly. Currently, Questionsly is in a closed beta for specific organizations.
+            Join our interest list to be notified when Questionsly is opened for {{emailDomain}} emails.
+        </p>
+        <div style="float: right">
+            <button class="text-btn" (click)="tryADifferentEmailAddress()">Try a different email address</button>
+            <button id="joinInterestList" class="cta-btn" (click)="joinInterestList()">Join interest list</button>
+        </div>
+    </div>
+
+    <div *ngIf="whichStep == 'noaccount'" id="noaccountStep">
+        <p>Welcome to UCLA Anderson! Let's make an account.</p>
+        <!-- large form here -->
+    </div>
+
+    <div *ngIf="whichStep == 'login'" id="loginStep">
+        <p>Welcome. Enter your password</p>
+        <!-- password input here -->
+    </div>
+
 </div>

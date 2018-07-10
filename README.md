@@ -19,6 +19,7 @@ Step 4) Start the backend
 Step 6) Start the frontend (in a new terminal)
         `cd QuestionslyFrontend`
         `npm install`
-        `ng build`
+        `ng build` (real builds) or `npm run start` (dev mode)
 
-Step 7) Open `localhost:3000` in your web browser
+Step 7) Open `localhost:3000` (real builds) or `localhost:4200` (dev mode)
+        in your web browser
