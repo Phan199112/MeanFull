@@ -1,11 +1,11 @@
 <div style="width: 100%;">
     <form [formGroup]="question" novalidate >
         <div class="multipleChoice">
-            <h6 class="title firstTitle qslyBlack">What is your question? <span class="valError" *ngIf="errors.question">*Question cannot be empty.</span></h6>
+            <!-- <h6 class="title firstTitle qslyBlack">What is your question? <span class="valError" *ngIf="errors.question">*Question cannot be empty.</span></h6>
             <div style="display: flex; align-items: center; width: 100%">
                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                 <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
-            </div>
+            </div> -->
 
             <h6 class="title qslyBlack">Choices <span class="valError" *ngIf="errors.choices">*Must enter at least 2 choices.</span></h6>
 
@@ -22,7 +22,7 @@
 
             <div>
                 <h6 class="title qslyBlack">Allow User to Select Multiple Choices?</h6>
-                <div style="display:flex; justify-content: flex-start;">
+                <div style="display:flex; justify-content: flex-start; margin-bottom: 30px">
                     <app-switch-buttons [active]="question.get('canSelectMultiple').value" [option]="false" [title]="'No'" (selected)="toggleMultiple($event)"
                         formControlName="canSelectMultiple"></app-switch-buttons>
                     <app-switch-buttons [active]="question.get('canSelectMultiple').value" [option]="true" [title]="'Yes'" (selected)="toggleMultiple($event)"
@@ -31,7 +31,7 @@
             </div>
 
             <!-- IMAGE START -->
-            <div class="imgContainer">
+            <!-- <div class="imgContainer">
                 <h6 class="title qslyBlack">Add an image</h6>
                 <div class="inner">
 
@@ -57,14 +57,14 @@
                    <img class="image" *ngIf="question.get('pic').value !== ''" id="preview" [src]="question.get('pic').value">
                 </div>
 
-            </div>
+            </div> -->
             <!-- IMAGE END -->
 
         </div>
 
 
-        <div id="sbContainer">
+        <!-- <div id="sbContainer">
             <a class="submitButton" (click)="submitQuestion()" style="margin-bottom:20px">{{updateView ? "Update" : "Add Question"}}</a>
-        </div>
+        </div> -->
     </form>
 </div>

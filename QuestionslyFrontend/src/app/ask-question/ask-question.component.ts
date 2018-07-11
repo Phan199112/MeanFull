@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-ask-question',
@@ -8,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class AskQuestionComponent implements OnInit {
 
   activeDimmer: boolean = false;
+  selection: string = '';
+  questionType: string = 'shortanswer';
+  question: string = '';
 
   constructor() { }
 
@@ -18,7 +22,38 @@ export class AskQuestionComponent implements OnInit {
   activateDimmer() {
     this.activeDimmer = true;
   }
+
   deactivateDimmer() {
-    this.activeDimmer = false;
+    if (this.question) {
+      return;
+    } else {
+      this.activeDimmer = false;
+    }
   }
+
+  toolbarSelect(item: string) {
+    if (item === this.selection) {
+      this.selection = '';
+    } else {
+      this.selection = item;
+    }
+  }
+
+  questionSelect(item: string) {
+    const toolbarSelect = this.toolbarSelect.bind(this);
+    if (item === this.questionType) {
+      window.setTimeout(() => { toolbarSelect(this.selection)}, 1500);
+      
+    } else {
+      this.questionType = item;
+      window.setTimeout(() => { toolbarSelect(this.selection)}, 1500);
+    }
+  }
+
+  isQuestionEmpty(val: string) {
+    if(this.question && !this.activateDimmer) {
+      this.activateDimmer()
+    }
+  }
+
 }

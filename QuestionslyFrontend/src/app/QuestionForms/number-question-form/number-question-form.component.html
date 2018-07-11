@@ -1,11 +1,11 @@
 <div style="width: 100%">
     <form [formGroup]="question" novalidate (ngSubmit)=submitQuestion()>    
         <div class="multipleChoice">
-            <h6 class="title qslyBlack firstTitle">What is your question? <span class="valError" *ngIf="errors.question">*Question cannot be empty.</span></h6>
+            <!-- <h6 class="title qslyBlack firstTitle">What is your question? <span class="valError" *ngIf="errors.question">*Question cannot be empty.</span></h6>
             <div style="display: flex; align-items: center; width: 100%">
                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                 <textarea class="niceTextAreaInput" formControlName="body" rows="1" autofocus #f (keydown)="autosizeTextarea($event, f)"></textarea>
-            </div>
+            </div> -->
             <!-- <a formControlName="required">Required</a> -->
 
             <div>
@@ -30,7 +30,7 @@
 
             
             <!-- IMAGE START -->
-            <div class="imgContainer">
+            <!-- <div class="imgContainer">
                 <h6 class="title qslyBlack">Add an image</h6>
                 <div class="inner">
             
@@ -58,13 +58,13 @@
                     <img class="image" *ngIf="question.get('pic').value !== ''" id="preview" [src]="question.get('pic').value">
                 </div>
             
-            </div>
+            </div> -->
             <!-- IMAGE END -->
 
         </div>
 
-        <div id="sbContainer">
+        <!-- <div id="sbContainer">
             <a class="submitButton" (click)="submitQuestion()" style="margin-bottom:20px">{{updateView ? "Update" : "Add Question"}}</a>
-        </div>
+        </div> -->
     </form>
 </div>

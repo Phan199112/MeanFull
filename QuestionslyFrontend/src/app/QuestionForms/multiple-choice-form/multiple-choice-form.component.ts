@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChildren, QueryList, Input, Output, EventEmitter, Inject } from '@angular/core';
 import 'rxjs/add/observable/of';
 import {FormBuilder, FormControl, FormArray, FormGroup, Validators} from "@angular/forms";
 import {FormService} from '../../form.service';
@@ -13,6 +13,7 @@ import * as $ from 'jquery';
     styleUrls: [
         './multiple-choice-form.component.scss'
     ],
+    providers: [FormService]
 })
 
 export class MultipleChoiceFormComponent implements OnInit, OnChanges {
