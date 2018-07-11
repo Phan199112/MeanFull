@@ -12,7 +12,7 @@
         <p>Enter your email address to get started.</p>
 
         <form [formGroup]="noemailForm">
-            <div class="flex">
+            <div>
                 <div *ngIf="noemailForm.controls['email'].invalid && noemailForm.controls['email'].touched" class="alert alert-danger">
                     Please provide your email address.
                 </div>
@@ -114,7 +114,7 @@
         <p>Enter your password for {{email}}.</p>
 
         <form [formGroup]="loginForm">
-            <div class="flex">
+            <div>
                 <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="alert alert-danger">
                     Please provide your password.
                 </div>
