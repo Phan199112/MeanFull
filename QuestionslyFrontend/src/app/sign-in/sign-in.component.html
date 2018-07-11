@@ -17,9 +17,9 @@
                     Please provide your email address.
                 </div>
 
-                <input type='email' class="form-control" placeholder="name@company.com" formControlName="email">
+                <input type='email' class="form-control" placeholder="name@ucla.edu" formControlName="email">
 
-                <div style="float: right">
+                <div class="submitButtons">
                     <button class="cta-btn" (click)="noemailFormSubmit()">Go</button>
                 </div>
             </div>
@@ -32,20 +32,102 @@
             Thanks for your interest in Questionsly. Currently, Questionsly is in a closed beta for specific organizations.
             Join our interest list to be notified when Questionsly is opened for {{emailDomain}} emails.
         </p>
-        <div style="float: right">
-            <button class="text-btn" (click)="tryADifferentEmailAddress()">Try a different email address</button>
+        <div class="submitButtons">
             <button id="joinInterestList" class="cta-btn" (click)="joinInterestList()">Join interest list</button>
+            <button class="text-btn" (click)="tryADifferentEmailAddress()">Try a different email address</button>
         </div>
     </div>
 
     <div *ngIf="whichStep == 'noaccount'" id="noaccountStep">
-        <p>Welcome to UCLA Anderson! Let's make an account.</p>
-        <!-- large form here -->
+        <p>Welcome to {{orgName}}! Let's make an account for {{email}}.</p>
+
+        <form [formGroup]="noaccountForm">
+            <div class="flex">
+                <!-- first name -->
+                <div class="col-sm-6">
+                    <label>
+                        First name
+                        <input type='text' class="form-control" formControlName="firstName"
+                            [ngClass]="{'is-invalid': noaccountForm.controls['firstName'].invalid && noaccountForm.controls['firstName'].touched}">
+                    </label>
+                    <div *ngIf="noaccountForm.controls['firstName'].invalid && noaccountForm.controls['firstName'].touched" class="is-invalid">
+                        Required field
+                    </div>
+                </div>
+
+                <!-- last name -->
+                <div class="col-sm-6">
+                    <label>
+                        Last name
+                        <input type='text' class="form-control" formControlName="lastName"
+                            [ngClass]="{'is-invalid': noaccountForm.controls['lastName'].invalid && noaccountForm.controls['lastName'].touched}">
+                    </label>
+                    <div *ngIf="noaccountForm.controls['lastName'].invalid && noaccountForm.controls['lastName'].touched" class="is-invalid">
+                        Required field
+                    </div>
+                </div>
+            </div>
+            <div class="flex">
+                <!-- profile pic -->
+                <div class="col-sm-6">
+                    profilepic
+                </div>
+
+                <!-- gender -->
+                <div class="col-sm-6">
+                    <label class="form-check-label">
+                        <input formControlName="gender" value="male" type="radio" name="gender">
+                        Male
+                    </label>
+                    <label class="form-check-label">
+                        <input formControlName="gender" value="female" type="radio" name="gender">
+                        Female
+                    </label>
+                </div>
+            </div>
+            <div class="flex">
+                <!-- password -->
+                <div class="col-sm-6">
+                    <label>
+                        Password
+                        <input type='password' class="form-control" formControlName="password"
+                            [ngClass]="{'is-invalid': noaccountForm.controls['password'].invalid && noaccountForm.controls['password'].touched}">
+                    </label>
+                    <div *ngIf="noaccountForm.controls['password'].invalid && noaccountForm.controls['password'].touched" class="is-invalid">
+                        Required field
+                    </div>
+                </div>
+            </div>
+
+            <div class="submitButtons">
+                <button class="cta-btn" (click)="noaccountSubmit()">Sign Up</button>
+                <button class="text-btn" (click)="tryADifferentEmailAddress()">Use different email</button>
+            </div>
+        </form>
     </div>
 
     <div *ngIf="whichStep == 'login'" id="loginStep">
-        <p>Welcome. Enter your password</p>
-        <!-- password input here -->
+        <h1>Welcome back!</h1>
+        <p>Enter your password for {{email}}.</p>
+
+        <form [formGroup]="loginForm">
+            <div class="flex">
+                <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="alert alert-danger">
+                    Please provide your password.
+                </div>
+                <div *ngIf="loginPasswordIncorrect" class="alert alert-danger">
+                    Your password is incorrect.
+                </div>
+
+                <input type='password' class="form-control" formControlName="password">
+
+                <div class="submitButtons">
+                    <button class="cta-btn" (click)="loginSubmit()">Login</button>
+                    <!-- TODO <button class="text-btn" (click)="forgotPassword()">Forgot password?</button> -->
+                    <button class="text-btn" (click)="tryADifferentEmailAddress()">Use different email</button>
+                </div>
+            </div>
+        </form>
     </div>
 
 </div>

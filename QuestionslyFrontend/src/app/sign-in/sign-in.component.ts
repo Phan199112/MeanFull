@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,16 +13,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class SignInComponent implements OnInit {
 
     public whichStep = 'loading'; // Options: loading, noemail, noorg, noaccount, login
-    private email: string;
+    public email: string;
     public emailDomain: string;
+    public orgName: string;
+    public loginPasswordIncorrect = false;
 
     noemailForm: FormGroup;
+    loginForm: FormGroup;
+    noaccountForm: FormGroup;
 
     constructor(
         private cookieService: CookieService,
         private http: Http,
         private router: Router,
         private fb: FormBuilder,
+        private userService: UserService,
     ) { }
 
     ngOnInit() {
@@ -45,6 +51,9 @@ export class SignInComponent implements OnInit {
                 return;
             }
 
+            this.orgName = (responseJson.orgExists ? responseJson.orgName : '');
+            console.log('just set the name', this.orgName, responseJson);
+
             if (responseJson.userExists) {
                 this.whichStep = 'login';
             } else if (responseJson.orgExists) {
@@ -59,6 +68,17 @@ export class SignInComponent implements OnInit {
     initAllForms() {
         this.noemailForm = this.fb.group({
             email: ['', Validators.compose([Validators.email, Validators.required])],
+        });
+
+        this.loginForm = this.fb.group({
+            password: ['', Validators.required],
+        });
+
+        this.noaccountForm = this.fb.group({
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            password: ['', Validators.required],
+            gender: ['', Validators.required],
         });
     }
 
@@ -81,11 +101,12 @@ export class SignInComponent implements OnInit {
     }
 
     joinInterestList(button) {
-        this.http.post('/api/joinWaitingList', {email: this.email}).toPromise()
-        .then(response => {
-            document.getElementById('joinInterestList').innerHTML = 'Joined!';
-        })
-        .catch (error => this.router.navigate(['/']));
+        this.http
+            .post('/api/joinWaitingList', {email: this.email}).toPromise()
+            .then(response => {
+                document.getElementById('joinInterestList').innerHTML = 'Joined!';
+            })
+            .catch (error => this.router.navigate(['/']));
     }
 
     tryADifferentEmailAddress() {
@@ -93,5 +114,47 @@ export class SignInComponent implements OnInit {
         this.noemailForm.controls['email'].setValue('');
         this.noemailForm.controls['email'].markAsUntouched();
         this.computeWhichStep();
+    }
+
+    //
+    // For noaccount step
+    //
+
+    noaccountSubmit() {
+
+        this.noaccountForm.markAsTouched();
+        if (!this.noaccountForm.invalid) {
+            alert('ok');
+        }
+    }
+
+    //
+    // For login step
+    //
+
+    loginSubmit() {
+        this.loginForm.controls['password'].markAsTouched();
+        this.loginPasswordIncorrect = false;
+        if (!this.loginForm.invalid) {
+            this.http
+                .post('/users/login/local', {email: this.email, password: this.loginForm.controls['password'].value}).toPromise()
+                .then(response => {
+                    const responseJson = response.json();
+
+                    if (responseJson.status === 1) {
+                        // reload userservice
+                        this.userService.acknowledgeLogin();
+                        // navigate to feed
+                        this.router.navigate(['/']);
+                    } else {
+                        this.loginPasswordIncorrect = true;
+                    }
+                })
+                .catch (error => this.router.navigate(['/']));
+        }
+    }
+
+    forgotPassword() {
+        alert('not implemented');
     }
 }

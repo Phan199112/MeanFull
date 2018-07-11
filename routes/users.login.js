@@ -145,7 +145,7 @@ module.exports = function(app, passport, manager, hashids) {
     app.post("/users/status", function(req, res) {
         var data = req.body;
 
-        var doesUserExist, doesOrgExist;
+        var doesUserExist, doesOrgExist, orgName;
 
         var userExists = new Promise(function(resolve, reject) {
             UserModel.findOne({ $or:[ {"local.email": data.email}, {'email': data.email} ]}, function (err, user) {
@@ -164,13 +164,16 @@ module.exports = function(app, passport, manager, hashids) {
                     reject();
                 } else {
                     doesOrgExist = (org != null);
+                    if (doesOrgExist) {
+                        orgName = org.name;
+                    }
                     resolve();
                 }
             });
         });
 
         return Promise.all([userExists, orgExists]).then(function () {
-            res.json({status: 1, userExists: doesUserExist, orgExists: doesOrgExist});
+            res.json({status: 1, userExists: doesUserExist, orgExists: doesOrgExist, orgName: orgName});
         })
         .catch(function(err) {
             res.json({status: 0});
