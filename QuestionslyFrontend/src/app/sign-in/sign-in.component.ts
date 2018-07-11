@@ -78,7 +78,7 @@ export class SignInComponent implements OnInit {
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             password: ['', Validators.required],
-            gender: ['', Validators.required],
+            gender: ['female', Validators.required],
         });
     }
 
@@ -121,10 +121,30 @@ export class SignInComponent implements OnInit {
     //
 
     noaccountSubmit() {
-
         this.noaccountForm.markAsTouched();
+
         if (!this.noaccountForm.invalid) {
-            alert('ok');
+            const signupData = Object.assign({
+                email: this.email,
+                name: {
+                    firstname: this.noaccountForm.controls['firstName'].value,
+                    lastname: this.noaccountForm.controls['lastName'].value,
+                },
+            }, this.noaccountForm.value);
+
+            this.http
+                .post('/users/signup', signupData).toPromise()
+                .then(response => {
+                    const responseJson = response.json();
+
+                    if (responseJson.status === 1) {
+                        this.userService.acknowledgeLogin();
+                        this.router.navigate(['/']);
+                    } else {
+                        alert('Error, please try again');
+                    }
+                })
+                .catch (error => alert('Error, please try again'));
         }
     }
 
@@ -142,9 +162,7 @@ export class SignInComponent implements OnInit {
                     const responseJson = response.json();
 
                     if (responseJson.status === 1) {
-                        // reload userservice
                         this.userService.acknowledgeLogin();
-                        // navigate to feed
                         this.router.navigate(['/']);
                     } else {
                         this.loginPasswordIncorrect = true;
