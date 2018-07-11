@@ -15,6 +15,7 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
     styleUrls: [
         './rating-form.component.scss'
     ],
+    providers: [FormService]
 })
 
 export class RatingFormComponent implements OnInit {

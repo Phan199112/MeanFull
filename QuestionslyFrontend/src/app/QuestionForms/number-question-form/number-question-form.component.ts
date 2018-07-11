@@ -15,6 +15,8 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
     styleUrls: [
         './number-question-form.component.scss'
     ],
+    providers: [FormService]
+
 })
 
 export class NumberQuestionFormComponent implements OnInit {

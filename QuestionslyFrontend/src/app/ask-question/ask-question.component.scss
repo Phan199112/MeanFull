@@ -23,11 +23,17 @@
     display: flex;
     align-items: center;
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 0;
     background: #FFFFFF;
     border: 1px solid #e2e2e2;
     border-top: none;
-    padding: 16px;
+    padding: 8px 16px;
+    margin-bottom: 24px;
+
+    &.active {
+        border-bottom-color: #f4f4f4;
+        margin-bottom: 0;
+    }
 
 }
 
@@ -37,18 +43,48 @@
         weight: 400;
         family: "Fira Sans";
     }
-    padding: 2px 8px;
+    padding: 4px 12px;
     color: #28ab64 !important;
     cursor: pointer;
+    border-radius: 16px;
 
     &.submit {
         background: #28ab64;
         color: white !important;
         padding: 8px 12px;
         border-radius: 8px;
+        opacity: .4;
+        pointer-events: none;
 
         &:hover {
             background: lighten(#28ab64, 15);
+        }
+
+        &.enabled {
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+
+    &.active {
+        background: lighten(#28ab64, 14);
+        color: white !important;
+    }
+    
+    &.sub {
+        margin: 2px 8px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        color: #BBBBBB !important;
+        
+        &.active {
+            background: lighten(#28ab64, 14);
+            color: white !important;
+            pointer-events: none;
+        }
+        
+        &:hover:not(.active) {
+            color: #28ab64 !important;            
         }
     }
 }
@@ -68,6 +104,18 @@
     }
 }
 
+.selection-menu, .photo-menu {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
+    background: #FFFFFF;
+    border: 1px solid #e2e2e2;
+    border-top: none;
+    padding: 16px;
+
+}
+
 .dim-overlay {
     position: absolute;
     background: #000000;
@@ -77,4 +125,18 @@
     bottom: 0;
     right: 0;
     z-index: -1;
+}
+
+.question-form-container {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #e2e2e2;
+    box-sizing: border-box;
+}
+
+.photo-menu {
+    .tb-option {
+        color: #AAAAAA !important;
+        cursor: initial;
+    }
 }
