@@ -31,6 +31,12 @@ export class SignInComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        // Logged-in users shouldn't go through sign-in flow
+        if (this.userService.getUser() !== 0) {
+            this.router.navigate(['/']);
+            return;
+        }
+
         this.setEmail(this.cookieService.get('sign-in-email'));
         this.initAllForms();
         this.computeWhichStep();
