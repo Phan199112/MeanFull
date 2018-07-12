@@ -100,7 +100,8 @@ app.use('/tos', function(req, res, next) {
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var userLoginState = '0';
-    if (req.isAuthenticated()) {
+    // Check req.user.name in case we are authenticated as a deleted user
+    if (req.isAuthenticated() && req.user.name) {
         userLoginState = JSON.stringify({
             firstname: req.user.name.first,
             lastname: req.user.name.last,

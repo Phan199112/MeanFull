@@ -312,11 +312,8 @@ module.exports = function(app, passport, manager, hashids) {
         var commToJoinWith = req.body.commToJoinWith;
 
         // test whether a user already exists with this email address
-
-        // variables
         var userfound = 10; // set default to 'reject' value
-
-        new Promise(function(resolve, reject) {
+        var findUserPromise = new Promise(function(resolve, reject) {
             UserModel.findOne({ $or:[ {"local.email": data.email}, {'email': data.email} ]}, function (err, k) {
                 if (err) {
                     reject(err);
@@ -331,10 +328,24 @@ module.exports = function(app, passport, manager, hashids) {
                     }
                 }
             })
-        })
+        });
+
+        var existingOrg;
+        var orgExistsPromise = new Promise(function(resolve, reject) {
+            orgfunctions.getOrganizationForEmailAddress(data.email, function (err, org) {
+                if (err) {
+                    reject();
+                } else {
+                    existingOrg = org;
+                    resolve();
+                }
+            });
+        });
+
+        Promise.all([findUserPromise, orgExistsPromise])
             .then(function () {
 
-                if (userfound == 0) {
+                if (userfound == 0 && existingOrg) {
                     // so no user has been found with this email address
 
                     // safe to create a new user
@@ -370,7 +381,8 @@ module.exports = function(app, passport, manager, hashids) {
                         facebookProfile: null,
                         notifications: {networkrequest: true, formrequest: true, discussion: true, formactivity: true, summary: true},
                         public: true,
-                        timestamp: Date.now()
+                        timestamp: Date.now(),
+                        organization: existingOrg._id,
                     }, function (err, k) {
                         if (err) {
                             // failed
