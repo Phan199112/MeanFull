@@ -138,8 +138,18 @@ export class SignInComponent implements OnInit {
                     const responseJson = response.json();
 
                     if (responseJson.status === 1) {
-                        this.userService.acknowledgeLogin();
-                        this.router.navigate(['/']);
+                        this.http.post('/users/login/local', {email: signupData.email, password: signupData.password})
+                            .map((res: any) => res.json())
+                            .subscribe(
+                                (data) => {
+                                    if (data.status === 1) {
+                                        this.userService.acknowledgeLogin(data);
+                                        this.router.navigate(['/']).then(function () { /* location.reload(true); shouldn't be needed */ });
+                                    } else {
+                                        alert('Error, please try again');
+                                    }
+                                }
+                            );
                     } else {
                         alert('Error, please try again');
                     }
@@ -162,7 +172,7 @@ export class SignInComponent implements OnInit {
                     const responseJson = response.json();
 
                     if (responseJson.status === 1) {
-                        this.userService.acknowledgeLogin();
+                        this.userService.acknowledgeLogin(responseJson);
                         this.router.navigate(['/']);
                     } else {
                         this.loginPasswordIncorrect = true;

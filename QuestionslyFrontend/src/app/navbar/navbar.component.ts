@@ -157,7 +157,7 @@ export class NavbarComponent implements OnInit {
             if (notification.seen == false) {
                 this.unreadNotifications++;
             }
-            this.notifications.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));            
+            this.notifications.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
         }
     }
 
@@ -229,10 +229,10 @@ export class NavbarComponent implements OnInit {
             case "form":
                 if (notification.data.comm) {
                     return ['/group', notification.data.comm.value, { 'survey': notification.data.formid }];
-                } else {                        
+                } else {
                     return ['/feed', { 'survey': notification.data.formid }];
                 }
-            case "form-answer":                
+            case "form-answer":
                 return ['/feed', { 'survey': notification.data }];
             case "form-shared":
                 return ['/group', notification.data.commid ]
@@ -268,7 +268,7 @@ export class NavbarComponent implements OnInit {
     notificationMessage(notification) {
         var name;
         var pronoun;
-        
+
 
         // trim message
         function trimMessage(string, wordCount = 12) {
@@ -311,8 +311,8 @@ export class NavbarComponent implements OnInit {
             name = "Someone";
             pronoun = "their";
         }
-        
-        
+
+
         switch (notification.type) {
             case "form":
                 if (notification.data.comm) {
@@ -338,7 +338,6 @@ export class NavbarComponent implements OnInit {
     }
 
     logout() {
-        this.userService.clearLogin();
         this.goTo('/users/logout');
     }
 
@@ -351,35 +350,35 @@ export class NavbarComponent implements OnInit {
         // Auto Scroll for Filters in Feed Post
         if ($(event.target).hasClass('filterButton')) {
             window.setTimeout(() => {
-                var target = $(event.target).closest('.fBody').find('#analysisContainer');                
+                var target = $(event.target).closest('.fBody').find('#analysisContainer');
                 if (target.length) {
                     $('html, body').animate({
                         scrollTop: Math.ceil(target.offset().top - 100)
                     }, 700);
                     return;
-                } 
+                }
             }, 50);
-                
-            
+
+
             return;
         }
-        
+
         if (this.showNotifications) {
             this.navExpanded = false;
             this.showNotifications = false;
             $('body').css('overflow', 'auto');
         }
 
-        if ($(event.target).parents('.notificationDropdown').length || $(event.target).parents('.settingsDropdown').length) {            
+        if ($(event.target).parents('.notificationDropdown').length || $(event.target).parents('.settingsDropdown').length) {
             $('#navbarSupportedContent').removeClass('show');
         }
 
-        if ($(event.target).hasClass('navbar-toggler') || $(event.target).hasClass('navbar-toggler-icon')) {            
+        if ($(event.target).hasClass('navbar-toggler') || $(event.target).hasClass('navbar-toggler-icon')) {
             return;
-        } 
+        }
 
 
-        if (!$(event.target).parents('.navbar-collapse').length) {            
+        if (!$(event.target).parents('.navbar-collapse').length) {
             $('#navbarSupportedContent').removeClass('show');
         }
 
@@ -425,7 +424,7 @@ export class NavbarComponent implements OnInit {
 
     toggleNotifications() {
         if (this.showNotifications) return;
-        window.setTimeout(()=>{ 
+        window.setTimeout(()=>{
             this.showNotifications = !this.showNotifications;
             $('body').css('overflow', 'hidden');
         }, 10);
@@ -499,7 +498,7 @@ export class NavbarComponent implements OnInit {
     markAllRead() {
         this.http.post(`/events/markAllRead`, {}).toPromise()
             .then(() => {
-               
+
                 this.notifications.forEach((x) => {
                     x.seen = true;
                 })

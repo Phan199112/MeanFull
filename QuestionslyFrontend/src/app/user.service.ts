@@ -1,72 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Http } from "@angular/http";
+import { Http } from '@angular/http';
 
-let data: any = null;
-let checkedLogin: boolean = false;
-let loggedin: boolean = false;
-let loginCheckPromise: Promise<any> = null;
 let callbacksForLogin: any[] = [];
 
 @Injectable({
-  providedIn: 'root'
+     providedIn: 'root'
 })
 export class UserService {
 
     constructor(private http: Http) {}
 
-    getData() {
-        return data;
+    getUser() {
+        return window['USER_LOGIN_STATE'];
     }
 
-    setData(received) {
-        data = received;
-    }
-
-    clearLogin() {
-        data = null;
-        checkedLogin = false;
-        loggedin = false;
-        loginCheckPromise = null;
-    }
-
+    // Deprecated - no async stuff needed now
     afterLoginCheck() {
-        if (checkedLogin) {
-            return new Promise((resolve, reject) => {
-                resolve(data);
-            });
-        }
-
-        // We are already checking /users/loggedin; we already have a promise
-        if (loginCheckPromise) {
-            return loginCheckPromise;
-        }
-
-        return loginCheckPromise = new Promise((resolve, reject) => {
-            this.http.get('/users/loggedin').toPromise()
-                .then(res => {
-                    checkedLogin = true;
-                    data = res.json();
-                    loggedin = data != 0;
-                    resolve(data);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        })
-            .catch(function() {
-                data = null;
-                checkedLogin = false;
-                loggedin = false;
-                loginCheckPromise = null;
-
-                // Indicate that the user is not logged in
-                return 0;
-            });
+        return (new Promise((resolve, reject) => {
+            resolve(window['USER_LOGIN_STATE']);
+        }) as any);
     }
 
-    acknowledgeLogin() {
-        checkedLogin = false;
-        loginCheckPromise = null;
+    // We just made a successful AJAX request to login; we should notify any subscribers who are waiting to be logged in
+    acknowledgeLogin(userData) {
+        window['USER_LOGIN_STATE'] = userData;
         callbacksForLogin.forEach(function (callback) {
             callback();
         });

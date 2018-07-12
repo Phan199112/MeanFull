@@ -13,10 +13,11 @@ import {FeedPageComponent} from './feed-page/feed-page.component';
 import {NewFeedPageComponent} from './new-feed-page/new-feed-page.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
 import {SearchPageComponent} from './search-page/search-page.component';
+import {HomePageComponent} from './home-page/home-page.component';
 
 const APP_ROUTES: Routes = [
     // {path: 'ng6index.html', component: LandingPageComponent, pathMatch: 'full'},
-    {path: '', component: LandingPageComponent, pathMatch: 'full'},
+    {path: '', component: HomePageComponent, pathMatch: 'full'},
     {path: 'createForm', component: CreateFormComponent},
     {path: 'shareForm', component: ShareFormComponent},
     {path: 'takeForm/:id', component: TakeFormComponent},

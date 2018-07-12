@@ -180,31 +180,23 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
-    // loggedin
-    app.get("/users/loggedin", function(req, res) {
-        var returnobj = {};
-
-        if (req.user != null) {
-
-
-            returnobj = {firstname: req.user.name.first,
-                    lastname: req.user.name.last,
-                    dbid: hashids.encodeHex(req.session.userid),
-                    location: req.user.location,
-                    picdata: req.user.pic, gender: req.user.gender,
-                    fbid:req.user.fbid, fb: req.user.fb};
-        }
-
-        res.send(req.isAuthenticated() ? returnobj : '0');
-    });
-
     app.post('/users/login/local',
         passport.authenticate('local', { failureRedirect: '/users/login', failureFlash: 'Invalid email or password.' }),
         function(req, res) {
             req.session.userid = req.user._id;
             log.writeLog(req.user._id, 'local signin', req.ip);
             usersfunctions.updateUserTags(req.session.userid);
-            res.json({status: 1});
+            res.json({
+                status: 1,
+                firstname: req.user.name.first,
+                lastname: req.user.name.last,
+                dbid: hashids.encodeHex(req.session.userid),
+                location: req.user.location,
+                picdata: req.user.pic,
+                gender: req.user.gender,
+                fbid:req.user.fbid,
+                fb: req.user.fb,
+            });
         });
 
     app.get('/auth/google',

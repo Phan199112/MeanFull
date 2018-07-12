@@ -75,7 +75,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
-var index = require('./routes/index');
+var index = require('./routes/index')(app, passport, manager, hashids);
 var usersroute = require('./routes/users.login.js')(app, passport, manager, hashids);
 var formsroute = require('./routes/forms')(app, passport, manager, hashids);
 var profileroute = require('./routes/users.profile')(app, passport, manager, hashids);
@@ -91,7 +91,6 @@ var orgsroute = require('./routes/organizations')(app, passport, manager, hashid
 var emailfunctions = require("./functions/email");
 
 //
-app.use('/', index);
 app.use('/privacy', function(req, res, next) {
     res.render("privacy");
 });
