@@ -181,7 +181,7 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     app.post('/users/login/local',
-        passport.authenticate('local', { failureRedirect: '/users/login', failureFlash: 'Invalid email or password.' }),
+        passport.authenticate('local', { failureFlash: 'Invalid email or password.' }),
         function(req, res) {
             req.session.userid = req.user._id;
             log.writeLog(req.user._id, 'local signin', req.ip);

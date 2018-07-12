@@ -171,14 +171,12 @@ export class SignInComponent implements OnInit {
                 .then(response => {
                     const responseJson = response.json();
 
-                    if (responseJson.status === 1) {
-                        this.userService.acknowledgeLogin(responseJson);
-                        this.router.navigate(['/']);
-                    } else {
-                        this.loginPasswordIncorrect = true;
-                    }
+                    this.userService.acknowledgeLogin(responseJson);
+                    this.router.navigate(['/']);
                 })
-                .catch (error => this.router.navigate(['/']));
+                .catch (error => {
+                    this.loginPasswordIncorrect = true;
+                });
         }
     }
 

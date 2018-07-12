@@ -75,7 +75,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
-var index = require('./routes/index')(app, passport, manager, hashids);
 var usersroute = require('./routes/users.login.js')(app, passport, manager, hashids);
 var formsroute = require('./routes/forms')(app, passport, manager, hashids);
 var profileroute = require('./routes/users.profile')(app, passport, manager, hashids);
@@ -100,7 +99,21 @@ app.use('/tos', function(req, res, next) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    res.sendFile(path.join(__dirname, 'QuestionslyFrontend', 'dist', 'index.html'));
+    var userLoginState = '0';
+    if (req.isAuthenticated()) {
+        userLoginState = JSON.stringify({
+            firstname: req.user.name.first,
+            lastname: req.user.name.last,
+            dbid: hashids.encodeHex(req.session.userid),
+            location: req.user.location,
+            picdata: req.user.pic,
+            gender: req.user.gender,
+            fbid:req.user.fbid,
+            fb: req.user.fb
+        });
+    }
+    
+    res.render(path.join(__dirname, 'QuestionslyFrontend', 'dist', 'index-template.hbs'), {userLoginState: userLoginState});
 });
 
 

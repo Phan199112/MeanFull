@@ -115,7 +115,7 @@
 
         <form [formGroup]="loginForm">
             <div>
-                <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="alert alert-danger">
+                <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched && !loginPasswordIncorrect" class="alert alert-danger">
                     Please provide your password.
                 </div>
                 <div *ngIf="loginPasswordIncorrect" class="alert alert-danger">
