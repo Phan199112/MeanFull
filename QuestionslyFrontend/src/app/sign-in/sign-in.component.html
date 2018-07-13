@@ -68,24 +68,6 @@
                 </div>
             </div>
             <div class="flex">
-                <!-- profile pic -->
-                <div class="col-sm-6">
-                    profilepic
-                </div>
-
-                <!-- gender -->
-                <div class="col-sm-6">
-                    <label class="form-check-label">
-                        <input formControlName="gender" value="male" type="radio" name="gender">
-                        Male
-                    </label>
-                    <label class="form-check-label">
-                        <input formControlName="gender" value="female" type="radio" name="gender">
-                        Female
-                    </label>
-                </div>
-            </div>
-            <div class="flex">
                 <!-- password -->
                 <div class="col-sm-6">
                     <label>
@@ -97,7 +79,47 @@
                         Required field
                     </div>
                 </div>
+
+                <!-- gender -->
+                <div class="col-sm-6">
+                    <label style="margin-bottom: 0">Gender</label><br>
+                    <label class="form-check-label">
+                        <input formControlName="gender" value="male" type="radio" name="gender">
+                        Male
+                    </label>
+                    <label class="form-check-label">
+                        <input formControlName="gender" value="female" type="radio" name="gender">
+                        Female
+                    </label>
+                    <label class="form-check-label">
+                        <input formControlName="gender" value="other" type="radio" name="gender">
+                        Other
+                    </label>
+                </div>
             </div>
+            <div class="flex">
+                <!-- profile pic -->
+                <div class="col-sm-6">
+                    <label style="margin-bottom: 0">Profile pic</label><br>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <div class="btn btn-default">
+                                    <span><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+                                    <span class="image-preview-input-title">Browse</span>
+                                    <input (change)="onProfilePicChange($event)" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <img style="border:1px solid gray;width:100px;"  id="preview" [src]="profilePicURL" *ngIf="profilePicURL">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
             <div class="col-sm-12 tos">
                 By using this service you agree to our <a href="/tos">Terms of Service</a> & <a href="/privacy">Privacy Policy</a>.
             </div>

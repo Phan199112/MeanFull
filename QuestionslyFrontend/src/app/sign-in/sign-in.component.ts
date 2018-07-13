@@ -18,6 +18,9 @@ export class SignInComponent implements OnInit {
     public orgName: string;
     public loginPasswordIncorrect = false;
 
+    profilePic: any;
+    profilePicURL: string;
+
     noemailForm: FormGroup;
     loginForm: FormGroup;
     noaccountForm: FormGroup;
@@ -136,6 +139,7 @@ export class SignInComponent implements OnInit {
                     firstname: this.noaccountForm.controls['firstName'].value,
                     lastname: this.noaccountForm.controls['lastName'].value,
                 },
+                profilePic: this.profilePicURL,
             }, this.noaccountForm.value);
 
             this.http
@@ -162,6 +166,53 @@ export class SignInComponent implements OnInit {
                 })
                 .catch (error => alert('Error, please try again'));
         }
+    }
+
+    onProfilePicChange($event) {
+        const file = $event.target.files[0];
+        if (file == null) {
+            return alert('No file selected.');
+        }
+        this.getSignedRequest(file);
+    }
+
+    /*
+      Function to get the temporary signed request from the app.
+      If request successful, continue to upload the file using this signed
+      request.
+    */
+    getSignedRequest(file) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    this.uploadFile(file, response.signedRequest, response.url);
+                } else {
+                    alert('Could not get signed URL.');
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    /*
+      Function to carry out the actual PUT request to S3 using the signed request from the app.
+    */
+    uploadFile(file, signedRequest, url) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', signedRequest);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    this.profilePicURL = url;
+                } else {
+                    alert('Could not upload file.');
+                }
+            }
+        };
+        xhr.send(file);
     }
 
     //
