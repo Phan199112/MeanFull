@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/observable/of';
@@ -19,10 +19,11 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
 
 })
 
-export class NumberQuestionFormComponent implements OnInit {
+export class NumberQuestionFormComponent implements OnInit, OnChanges {
     @Input() questionType: string;
     @Input() qLength: number;
     @Input() updateData: any;
+    @Input() getData: boolean;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object>();
 
@@ -45,7 +46,7 @@ export class NumberQuestionFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.updateData && this.updateData.kind != "Number") {
+        if (this.updateData && this.updateData.kind !== "Number") {
             this.updateData = null;
         }
         this.createForm();
@@ -53,10 +54,14 @@ export class NumberQuestionFormComponent implements OnInit {
     }
 
     ngOnChanges() {
-        if (this.updateData && this.updateData.kind != "Number") {
+        if (this.updateData && this.updateData.kind !== "Number") {
             this.updateData = null;
         }
         this.createForm();
+
+        if (this.getData) {
+            this.submitQuestion();
+        }
     }
 
     validateNumber(event: any) {
@@ -76,7 +81,6 @@ export class NumberQuestionFormComponent implements OnInit {
 
 
             this.question = this.fb.group({
-                body: [this.updateData.body, [Validators.required, Validators.minLength(1)]],
                 kind: ['Number', Validators.required],
                 options: this.fb.array([]),
                 required: this.updateData.required,
@@ -89,7 +93,6 @@ export class NumberQuestionFormComponent implements OnInit {
             })
         } else {
             this.question = this.fb.group({
-                body: ['', [Validators.required, Validators.minLength(1)]],
                 kind: ['Number', Validators.required],
                 options: this.fb.array([]),
                 required: true,
@@ -143,7 +146,6 @@ export class NumberQuestionFormComponent implements OnInit {
             }
             this.purgeForm();
         } else {
-            this.errors.question = !this.question.get('body').valid
         }
     }
 
@@ -165,7 +167,6 @@ export class NumberQuestionFormComponent implements OnInit {
         this.question.markAsUntouched();
         this.question.updateValueAndValidity();
 
-        this.question.get('body').setValue('');
         this.question.get('boundaries').setValue(false);
         this.question.get('lowerBoundary').setValue('0');
         this.question.get('upperBoundary').setValue('100');

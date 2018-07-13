@@ -1,3 +1,6 @@
+.fullwidth {
+    width: 100%;
+}
 .ask-textarea {
     width: 100%;
     outline: none;
@@ -134,9 +137,114 @@
     box-sizing: border-box;
 }
 
+
 .photo-menu {
     .tb-option {
         color: #AAAAAA !important;
         cursor: initial;
     }
+}
+
+.summary-container {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #e2e2e2;
+    border-bottom: none;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+}
+
+.question-count {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #bbbbbb;
+    font-family: "Fira Sans";
+    font-weight: 500;
+    text-align: center;
+}
+
+.preview-btn {
+    padding: 4px 12px;
+    color: #999999 !important;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    font-size: .9rem;
+    cursor: pointer;
+    float: right;
+    transition: all 200ms ease-in-out;
+
+    &:hover {
+        border-color: #28ab64;
+        color: #28ab64 !important;
+        transition: all 200ms ease-in-out;
+    }
+}
+
+.prev-item {
+    flex-basis: 33.33%;
+}
+
+.question {
+    width: 100%;
+    background: #FFFFFF;
+    padding: 24px 16px;
+    box-shadow: 0 6px 30px 12px rgba(0, 0, 0, 0.05);
+}
+
+.number-label {
+    font: {
+        size: .8rem;
+        family: "Fira Sans";
+        weight: 400;
+    }
+    color: #AAAAAA;
+    margin-bottom: 8px;
+}
+
+.question-body {
+    font: {
+        size: 1.4rem;
+        family: "Fira Sans";
+        weight: 600;
+    }
+    color: #333333;
+    margin-left: 8px;
+    margin-bottom: 16px;
+}
+
+.prev-radios {
+    margin-left: 32px;
+    margin-right: 8px;
+}
+
+.radio-container {
+    margin-bottom: 8px;
+}
+
+.radio-text {
+    font: {
+        size: 1rem;
+        family: "Fira Sans";
+        weight: 500;
+    }
+    color: #484848;
+}
+
+.number-boundary {
+    font: {
+        size: 1rem;
+        family: "Fira Sans";
+        weight: 600;
+    }
+    color: #999999;
+    margin-left: 8px;
+    margin-bottom: 16px;
+    margin-top: -16px;
+}
+
+.title {
+    cursor: pointer;
 }

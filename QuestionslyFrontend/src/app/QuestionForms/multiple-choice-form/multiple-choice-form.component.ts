@@ -19,6 +19,7 @@ import * as $ from 'jquery';
 export class MultipleChoiceFormComponent implements OnInit, OnChanges {
     @Input() questionType: string;
     @Input() qLength: number;
+    @Input() getData: boolean;
     @Input() updateData: any;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object> ();
@@ -51,6 +52,12 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
         if (this.updateData) {
             this.createForm();
         }
+        
+        if (this.getData) {
+            console.log('called');
+            
+            this.submitQuestion();
+        }
     }
 
     createForm() {
@@ -59,7 +66,6 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
 
 
             this.question = this.fb.group({
-                body: [this.updateData.body, [Validators.required, Validators.minLength(1)]],
                 kind: ['Multiple Choice', Validators.required],
                 options: this.fb.array([]),
                 required: this.updateData.required,
@@ -77,7 +83,6 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
 
         } else {
             this.question = this.fb.group({
-                body: ['', [Validators.required, Validators.minLength(1)]],
                 kind: ['Multiple Choice', Validators.required],
                 options: this.fb.array([]),
                 required: true,
@@ -87,6 +92,7 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
                 id: Math.random().toString().substring(2),
             });
             this.addMcOption();
+
         }
 
     }
@@ -141,7 +147,6 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
         var arrayControl = this.question.get('options') as FormArray;
         var lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
         var lastControl = lastGroup.get('body') as FormControl;
-        var body = this.question.get('body') as FormControl;
 
 
         this.question.markAsPristine();
@@ -153,7 +158,6 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
         }
 
         lastControl.setValue('');
-        body.setValue('');
         this.question.get('canSelectMultiple').setValue(false);
         this.question.get('pic').setValue("");
         this.question.get('id').setValue(Math.random().toString().substring(2));
@@ -168,7 +172,12 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
             if (!lg.value.body)  this.removeOption(cont.length-1);
         }
 
+
+
+        console.log(this.question.valid, (<FormArray>this.question.get('options')).length);
         if (this.question.valid && (<FormArray>this.question.get('options')).length > 1) {
+            console.log('In here');
+            
             this.errors.question = false;
             this.errors.choices = false;
 
@@ -177,6 +186,7 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
             var arrayControl = this.question.get('options') as FormArray;
             var lastGroup = arrayControl.at(arrayControl.length - 1) as FormGroup;
             var lastControl = lastGroup.get('body') as FormControl;
+
 
             if (arrayControl.length === 1 && empty.test(lastControl.value)) return;
 
@@ -193,17 +203,18 @@ export class MultipleChoiceFormComponent implements OnInit, OnChanges {
                 this.createForm();
 
             } else {
+                
                 this.questionData.emit(this.question.value);
             }
 
             this.purgeForm();
         } else {
-            this.errors.question = !this.question.get('body').valid;
             this.errors.choices = !this.question.get('options').valid;
 
             if ((<FormArray>this.question.get('options')).length < 2) {
                 this.errors.choices = true;
             }
+
         }
     }
 

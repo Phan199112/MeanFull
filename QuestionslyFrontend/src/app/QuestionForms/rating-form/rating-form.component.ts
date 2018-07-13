@@ -18,9 +18,10 @@ import {FlatpickrOptions} from 'ng2-flatpickr/ng2-flatpickr';
     providers: [FormService]
 })
 
-export class RatingFormComponent implements OnInit {
+export class RatingFormComponent implements OnInit, OnChanges {
     @Input() qLength: number;
     @Input() updateData: any;
+    @Input() getData: boolean;
     @Output() questionData: EventEmitter<Object> = new EventEmitter<Object> ();
     @Output() outputUpdateData: EventEmitter<Object> = new EventEmitter<Object>();
 
@@ -55,6 +56,10 @@ export class RatingFormComponent implements OnInit {
             this.updateData = null;
         }
         this.createForm();
+
+        if (this.getData) {
+            this.submitQuestion();
+        }
     }
 
     createForm() {
@@ -65,7 +70,6 @@ export class RatingFormComponent implements OnInit {
             this.temp = Array(Number(this.updateData.scale));
 
             this.question = this.fb.group({
-                body: [this.updateData.body, [Validators.required, Validators.minLength(1)]],
                 kind: ['Rating', Validators.required],
                 options: this.fb.array([]),
                 required: this.updateData.required,
@@ -76,7 +80,6 @@ export class RatingFormComponent implements OnInit {
             })
         } else {
             this.question = this.fb.group({
-                body: ['', [Validators.required, Validators.minLength(1)]],
                 kind: ['Rating', Validators.required],
                 options: this.fb.array([]),
                 required: true,
@@ -125,7 +128,6 @@ export class RatingFormComponent implements OnInit {
             }
             this.purgeForm();         
         } else {
-            this.errors.question = !this.question.get('body').valid
         }
     }
 
@@ -146,8 +148,6 @@ export class RatingFormComponent implements OnInit {
         this.question.markAsPristine();
         this.question.markAsUntouched();
         this.question.updateValueAndValidity();
-
-        this.question.get('body').setValue('');
         this.question.get('scale').setValue('5');
         this.temp = Array(5);
         this.question.get('pic').setValue("");

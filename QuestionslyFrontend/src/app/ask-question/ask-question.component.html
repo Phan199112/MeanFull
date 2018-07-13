@@ -1,30 +1,69 @@
 <div *ngIf="activeDimmer" class="dim-overlay"></div>
-<textarea id="user-question-text" rows="2" class="ask-textarea" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Start typing your question here.."></textarea>
-<div class="question-form-container">
-    <app-mc-question-form *ngIf="questionType == 'multiplechoice'"></app-mc-question-form>
-    <app-rating-question-form *ngIf="questionType == 'rating'"></app-rating-question-form>
-    <app-number-question-form *ngIf="questionType == 'number'"></app-number-question-form>
-    <!-- <app-sa-question-form *ngIf="questionType == 'shortanswer'"></app-sa-question-form> -->
-                            <!-- <app-mc-question-form *ngIf="questionnaire.get('kind').value == 'Multiple Choice'" (outputUpdateData)="updateQuestion($event)"
-                                (questionData)="pushQuestionToList($event)" [updateData]="updateData"></app-mc-question-form> -->
 
-</div>
-<div class="toolbar" [ngClass]='{active: selection}'>
-    <a class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question&nbsp;Type</a>
-    <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add&nbsp;Picture</a>
-    <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" />
-    <a class="tb-option submit" [ngClass]="{enabled: question}">Add&nbsp;Question</a>
+<div *ngIf="!preview" class="fullwidth">
+    <div class="summary-container" *ngIf="questionsContainer.length > 0">
+        <div class="prev-item"></div>
+        <p class="question-count prev-item">Added {{questionsContainer.length}} {{questionsContainer.length === 1 ? 'Question' : 'Questions'}}</p>
+        <div class="prev-item">
+            <a class="preview-btn" (click)=togglePreview()>Preview Survey</a>
+        </div>
+    </div>
+    <textarea id="user-question-text" rows="2" class="ask-textarea" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Start typing your question here.."></textarea>
+    <div class="question-form-container">
+        <app-mc-question-form #mc *ngIf="questionType == 'multiplechoice'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-mc-question-form>
+        <app-rating-question-form #rc *ngIf="questionType == 'rating'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-rating-question-form>
+        <app-number-question-form #nc *ngIf="questionType == 'number'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-number-question-form>
+    </div>
+    <div class="toolbar" [ngClass]='{active: selection}'>
+        <a class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question&nbsp;Type</a>
+        <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add&nbsp;Picture</a>
+        <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" />
+        <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="getData('multiplechoice')">Add&nbsp;Question</a>
+    </div>
+    
+    <div *ngIf="selection == 'question'" class="selection-menu">
+        <a class="tb-option sub active" (click)="questionSelect('shortanswer')" [ngClass]="{active: questionType == 'shortanswer'}" style="margin-left: 0">Short Answer</a>
+        <a class="tb-option sub" (click)="questionSelect('multiplechoice')" [ngClass]="{active: questionType == 'multiplechoice'}">Multiple Choice</a>
+        <a class="tb-option sub" (click)="questionSelect('rating')" [ngClass]="{active: questionType == 'rating'}">Rating</a>
+        <a class="tb-option sub" (click)="questionSelect('number')" [ngClass]="{active: questionType == 'number'}">Number</a>
+        <a class="tb-option sub" (click)="questionSelect('yesno')" [ngClass]="{active: questionType == 'yesno'}">Yes/No</a>
+        <a class="tb-option sub" (click)="questionSelect('matrix')" [ngClass]="{active: questionType == 'matrix'}">Matrix</a>
+    </div>
+    
+    <div *ngIf="selection == 'photo'" class="photo-menu">
+        <a class="tb-option" style="margin-left: 0">Select an Image</a>
+    </div>
 </div>
 
-<div *ngIf="selection == 'question'" class="selection-menu">
-    <a class="tb-option sub active" (click)="questionSelect('shortanswer')" [ngClass]="{active: questionType == 'shortanswer'}" style="margin-left: 0">Short Answer</a>
-    <a class="tb-option sub" (click)="questionSelect('multiplechoice')" [ngClass]="{active: questionType == 'multiplechoice'}">Multiple Choice</a>
-    <a class="tb-option sub" (click)="questionSelect('rating')" [ngClass]="{active: questionType == 'rating'}">Rating</a>
-    <a class="tb-option sub" (click)="questionSelect('number')" [ngClass]="{active: questionType == 'number'}">Number</a>
-    <a class="tb-option sub" (click)="questionSelect('yesno')" [ngClass]="{active: questionType == 'yesno'}">Yes/No</a>
-    <a class="tb-option sub" (click)="questionSelect('matrix')" [ngClass]="{active: questionType == 'matrix'}">Matrix</a>
-</div>
+<div *ngIf="preview" class="fullwidth">
+        <div class="summary-container" *ngIf="questionsContainer.length > 0">
+            <div class="prev-item"></div>
+            <p *ngIf='!addTitle' class="question-count prev-item title" (click)="toggleTitle()">{{title ? title : 'Click to Add Title'}}</p>
+            <input (blur)="toggleTitle()" [(ngModel)]="title" class="groups-input" style="text-align: center; font-size: 1.2rem; color: #333333;" *ngIf='addTitle' type="text" autofocus />
+            <div class="prev-item">
+                <a class="preview-btn" (click)="togglePreview()">Add a Question</a>
+            </div>
+        </div>
+        <div class="question" *ngFor="let q of questionsContainer; let i = index;">
+            <p class="number-label">Question {{i + 1}}</p>
+            <p class="question-body">{{q.question}}</p>
+            
+            <!-- Multiple Choice -->
+            <form *ngIf="q.kind == 'Multiple Choice'">
+                <div *ngFor="let o of q.options">
+                    <div class="radio-container" *ngIf="q.canSelectMultiple">
+                        <input class="prev-radios" type="checkbox" /> <span class="radio-text">{{o.body}}</span> <br />
+                    </div>
+                    <div class="radio-container" *ngIf="!q.canSelectMultiple">
+                        <input class="prev-radios" type="radio" /> <span class="radio-text">{{o.body}}</span> <br />
+                    </div>
+                </div>
+            </form>
 
-<div *ngIf="selection == 'photo'" class="photo-menu">
-    <a class="tb-option" style="margin-left: 0">Select an Image</a>
+            <!-- Number -->
+            <p *ngIf="q.kind == 'Number' && q.boundaries" class="number-boundary">Answer must lie within {{q.lowerBoundary}} and {{q.upperBoundary}}</p>
+
+
+        </div>
+
 </div>
