@@ -115,6 +115,9 @@
                     <div>
                         <img style="border:1px solid gray;width:100px;"  id="preview" [src]="profilePicURL" *ngIf="profilePicURL">
                     </div>
+                    <div *ngIf="showProfilePicRequired" class="is-invalid">
+                        Profile pic required
+                    </div>
                 </div>
             </div>
             <br>

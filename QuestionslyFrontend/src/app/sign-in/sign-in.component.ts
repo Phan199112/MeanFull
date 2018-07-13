@@ -18,8 +18,8 @@ export class SignInComponent implements OnInit {
     public orgName: string;
     public loginPasswordIncorrect = false;
 
-    profilePic: any;
     profilePicURL: string;
+    showProfilePicRequired = false;
 
     noemailForm: FormGroup;
     loginForm: FormGroup;
@@ -61,7 +61,6 @@ export class SignInComponent implements OnInit {
             }
 
             this.orgName = (responseJson.orgExists ? responseJson.orgName : '');
-            console.log('just set the name', this.orgName, responseJson);
 
             if (responseJson.userExists) {
                 this.whichStep = 'login';
@@ -87,7 +86,7 @@ export class SignInComponent implements OnInit {
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             password: ['', Validators.required],
-            gender: ['female', Validators.required],
+            gender: ['male', Validators.required],
         });
     }
 
@@ -131,8 +130,9 @@ export class SignInComponent implements OnInit {
 
     noaccountSubmit() {
         this.noaccountForm.markAsTouched();
+        this.showProfilePicRequired = !this.profilePicURL;
 
-        if (!this.noaccountForm.invalid) {
+        if (this.profilePicURL && !this.noaccountForm.invalid) {
             const signupData = Object.assign({
                 email: this.email,
                 name: {
@@ -207,6 +207,7 @@ export class SignInComponent implements OnInit {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     this.profilePicURL = url;
+                    this.showProfilePicRequired = false;
                 } else {
                     alert('Could not upload file.');
                 }
