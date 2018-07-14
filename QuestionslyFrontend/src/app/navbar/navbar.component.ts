@@ -464,8 +464,8 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
-    acceptNewCommMemberRequest(x, commId, memberId) {
-        this.http.post(`/community/accept`, { commid: commId, memberid: memberId }).toPromise()
+    acceptNewgroupMemberRequest(x, commId, memberId) {
+        this.http.post(`/group/accept`, { commid: commId, memberid: memberId }).toPromise()
             .then(() => {
                 //delete event for all admins once one of them makes a decision
 
@@ -477,8 +477,8 @@ export class NavbarComponent implements OnInit {
             .catch(error => alert("Error: " + error));
     }
 
-    rejectNewCommMemberRequest(x, commId, memberId) {
-        this.http.post(`/community/reject`, { commid: commId, memberid: memberId }).toPromise()
+    rejectNewgroupMemberRequest(x, commId, memberId) {
+        this.http.post(`/group/reject`, { commid: commId, memberid: memberId }).toPromise()
             .then(() => {
                 this.reloadFullNotificationsList();
             })

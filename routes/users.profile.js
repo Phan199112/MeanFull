@@ -2,7 +2,7 @@ var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
 var AnswersModel = require('../db.models/answers.model');
 var NetworkEdgesModel = require('../db.models/networkedges.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var DiscussionModel = require('../db.models/discussion.model');
 var math = require("../functions/math");
 

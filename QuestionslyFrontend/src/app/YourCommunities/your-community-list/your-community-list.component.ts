@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { YourCommunitiesModel } from "../your-community.model";
+import { YourCommunitiesModel } from "../your-group.model";
 import { Http } from "@angular/http";
 
 @Component({
@@ -19,7 +19,7 @@ export class YourCommunityListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.http.get(`/community/mylist`).toPromise()
+        this.http.get(`/group/mylist`).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     this.data = res.json().data;

@@ -81,7 +81,7 @@ var profileroute = require('./routes/users.profile')(app, passport, manager, has
 var tagsroute = require('./routes/tags')(app, passport, manager, hashids);
 var settingsroute = require('./routes/settings')(app, passport, manager, hashids);
 var eventsroute = require('./routes/events')(app, passport, manager, hashids);
-var communityroute = require('./routes/communities')(app, passport, manager, hashids);
+var communityroute = require('./routes/groups')(app, passport, manager, hashids);
 var feedbackroute = require('./routes/feedback')(app, passport, manager, hashids);
 var searchroute = require('./routes/search')(app, passport, manager, hashids);
 var uploadroute = require('./routes/upload')(app, passport, manager, hashids);
@@ -124,7 +124,7 @@ var cron = require('node-cron');
 var TagsModel = require('./db.models/tags.model');
 var UserModel = require('./db.models/user.model');
 var FormModel = require('./db.models/form.model');
-var CommunityModel = require('./db.models/community.model');
+var GroupModel = require('./db.models/group.model');
 var EmailStoreModel = require('./db.models/emailStore.model');
 var NetworkEdgesModel = require('./db.models/networkedges.model');
 
@@ -169,7 +169,7 @@ function getSearchAndTags() {
 
         var tempfunctionTagsCommunities = function () {
             return new Promise(function (resolve, reject) {
-                CommunityModel.find({ public: true }).cursor()
+                GroupModel.find({ public: true }).cursor()
                     .on('data', function (comm) {
                         // form is one entry of many
                         // there may be multi hashtags
@@ -195,7 +195,7 @@ function getSearchAndTags() {
 
         var randomCommunitities = function () {
             return new Promise(function (resolve, reject) {
-                CommunityModel.syncRandom(function (err, result) {
+                GroupModel.syncRandom(function (err, result) {
                     resolve();
                 });
             });
@@ -267,8 +267,8 @@ module.exports = app;
 
 // Multiple Community Addition Fix
 // (function() {
-//     if (CommunityModel) {
-//         CommunityModel.findById("communityID", function(err, comm) {
+//     if (GroupModel) {
+//         GroupModel.findById("communityID", function(err, comm) {
 //         var members = comm.members;
 //         var gotFirstAlready = false;
 //         var firstIndex = 0;
@@ -305,8 +305,8 @@ module.exports = app;
 
 // Find Duplicates within a community
 // (function() {
-//     if (CommunityModel) {
-//         CommunityModel.findById("5ae62d1393627a0014880ba6", function(err, comm) {
+//     if (GroupModel) {
+//         GroupModel.findById("5ae62d1393627a0014880ba6", function(err, comm) {
 //         var members = comm.members;
 //         var duplicates = [];
 

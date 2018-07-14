@@ -1,4 +1,4 @@
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
 var EventModel = require('../db.models/event.model');
@@ -8,7 +8,7 @@ var log = require("../functions/logs");
 var networkfunctions = require('../functions/network');
 var usersfunctions = require('../functions/users');
 var notifications = require("../functions/notifications");
-var commfunctions = require('../functions/communities');
+var commfunctions = require('../functions/groups');
 var formfunctions = require('../functions/forms');
 var emailfunctions 	= require("../functions/email");
 
@@ -16,7 +16,7 @@ var emailfunctions 	= require("../functions/email");
 module.exports = function(app, passport, manager, hashids) {
 
     // save a new community
-    app.post('/community/save', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/save', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var receivedData =  req.body;
         var unhashedAdmins = [];
 
@@ -35,7 +35,7 @@ module.exports = function(app, passport, manager, hashids) {
         }
 
         // mongodb
-        CommunityModel.create({adminuserid: [req.session.userid],
+        GroupModel.create({adminuserid: [req.session.userid],
             title: receivedData.title,
             hashtags: receivedData.hashtags,
             public: receivedData.public,
@@ -137,7 +137,7 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
 
-    app.put('/community/update', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.put('/group/update', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var receivedData = req.body;
         console.log("Received:", receivedData);
         var unhashedAdmins = [];
@@ -160,7 +160,7 @@ module.exports = function(app, passport, manager, hashids) {
         }
 
 
-        CommunityModel.findOneAndUpdate({_id: decrypted}, {$set: {title: newtitle, description: newdescription, public: newpublic, pic: newpic}}, {new: true}, function (err, doc) {
+        GroupModel.findOneAndUpdate({_id: decrypted}, {$set: {title: newtitle, description: newdescription, public: newpublic, pic: newpic}}, {new: true}, function (err, doc) {
             if (err) {
                 console.log("Error updating community: ", err);
                 res.json({ status: 0 });
@@ -248,14 +248,14 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
 
-    app.post('/community/invite', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/invite', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
         var commtitle = req.body.commtitle;
         var commpic = req.body.commpic;
         var communityLink = `www.questionsly.com/group/${req.body.commid}`;
 
 
-        commfunctions.commAdmin(commid, req.session.userid).then(function(result) {
+        commfunctions.groupAdmin(commid, req.session.userid).then(function(result) {
             if (result === true) {
                 // the current user is an admin
                 req.body.userids.forEach(function(userid) {
@@ -355,13 +355,13 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     // retrieve a community
-    app.get('/community/retrieve/:id', function(req, res) {
+    app.get('/group/retrieve/:id', function(req, res) {
 
         var decrypted = hashids.decodeHex(req.params.id);
         console.log(decrypted);
 
         // mongoDB findByID
-        CommunityModel.findById(decrypted, function (err, comm) {
+        GroupModel.findById(decrypted, function (err, comm) {
             if (err) {
                 res.json({status: 0});
             } else {
@@ -524,12 +524,12 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
     // list for sharing to community feed
-    app.get('/community/mylist', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.get('/group/mylist', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // get the communities for which req.session.userid is a member
         var communitiesdata = [];
 
         return new Promise(function (resolve, reject) {
-                CommunityModel.find({
+                GroupModel.find({
                     $or: [{'adminuserid': req.session.userid}, {'members': req.session.userid}]
                 }).limit(20).cursor()
                     .on('data', function (comm) {
@@ -559,13 +559,13 @@ module.exports = function(app, passport, manager, hashids) {
                 });
     });
 
-    app.post('/community/members', function(req,res) {
+    app.post('/group/members', function(req,res) {
         const comm = req.body.community;
 
     });
 
     // list for feed
-    app.post('/community/list', function (req, res) {
+    app.post('/group/list', function (req, res) {
         // variables
         var selecteduser;
         var loggedin = false;
@@ -588,7 +588,7 @@ module.exports = function(app, passport, manager, hashids) {
             // mongoDB query
             // console.log("PRE MONGODB COMMUNITY LIST CALL")
             new Promise(function(resolve, reject) {
-                CommunityModel.findRandom({public: true}).limit(100).exec(function (err, k) {
+                GroupModel.findRandom({public: true}).limit(100).exec(function (err, k) {
                     if (err) {
                         reject(err);
                     } else {
@@ -686,7 +686,7 @@ module.exports = function(app, passport, manager, hashids) {
                     var randomCommunities = function () {
                         var promise = new Promise(function (resolve, reject) {
                             // determine whether the profile the loggon user is visiting is already part of his/her network
-                            CommunityModel.findRandom().limit(limitrecords).exec(function (err, songs) {
+                            GroupModel.findRandom().limit(limitrecords).exec(function (err, songs) {
                                 for (l=0; l < songs.length; l++) {
                                     randomcomm.push({
                                         title: songs[l].title,
@@ -706,7 +706,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                     var userCommunities = function () {
                         var promise = new Promise(function (resolve, reject) {
-                            CommunityModel.find({
+                            GroupModel.find({
                                 $or: [{'adminuserid': selecteduser}, {'members': selecteduser}]
                             }).limit(userCommunitiesLimit * 2).cursor()
                                 .on('data', function (comm) {
@@ -786,7 +786,7 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     // join a community
-    app.post('/community/join', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/join', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid =  hashids.decodeHex(req.body.targetid);
         var adminsList = [];
         var pendingRequests = [];
@@ -794,13 +794,13 @@ module.exports = function(app, passport, manager, hashids) {
         // one can only manually join if the community is public
         return new Promise(function(resolve, reject){
             // check whether the community is public
-            commfunctions.commPublic(commid).then(function(result) {
+            commfunctions.groupPublic(commid).then(function(result) {
                 if (result === true) {
                     // Handle join PUBLIC community
                     resolve();
                 } else {
                     // Handle join PRIVATE community
-                    CommunityModel.findById(commid, function (err, c) {
+                    GroupModel.findById(commid, function (err, c) {
                         if (err) {
                             reject(err);
                         } else {
@@ -831,7 +831,7 @@ module.exports = function(app, passport, manager, hashids) {
         })
             .then(function() {
                 // mongodb update the database entry
-                CommunityModel.findByIdAndUpdate(commid, {$push: {members: req.session.userid}}, function(err, k) {
+                GroupModel.findByIdAndUpdate(commid, {$push: {members: req.session.userid}}, function(err, k) {
                     if (err) {
                         res.json({status: 0});
                     } else {
@@ -844,7 +844,7 @@ module.exports = function(app, passport, manager, hashids) {
             });
     });
 
-    app.post('/community/accept', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/accept', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
         var memid = "";
         
@@ -858,7 +858,7 @@ module.exports = function(app, passport, manager, hashids) {
             var userId = req.session.userid;
         }
 
-        CommunityModel.update(
+        GroupModel.update(
             {_id: commid, members: {$ne: userId}},
             { $push: { members: userId }, $pull: { requests: memid } },
             function (err, k) {
@@ -877,11 +877,11 @@ module.exports = function(app, passport, manager, hashids) {
         );
     });
 
-    app.post('/community/reject', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/reject', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
         var userId = hashids.decodeHex(req.body.memberid);
 
-        CommunityModel.findByIdAndUpdate(commid, { $pull: { requests: req.body.memberid } }, function (err, k) {
+        GroupModel.findByIdAndUpdate(commid, { $pull: { requests: req.body.memberid } }, function (err, k) {
             if (err) {
                 res.json({ status: 0 })
             } else {
@@ -903,11 +903,11 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     // leave a community
-    app.post('/community/leave', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/leave', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var receivedData =  hashids.decodeHex(req.body.targetid);
         console.log("join network: ", receivedData);
         // mongodb
-        CommunityModel.findByIdAndUpdate(receivedData, {$pull: {members: req.session.userid}}, function(err, k) {
+        GroupModel.findByIdAndUpdate(receivedData, {$pull: {members: req.session.userid}}, function(err, k) {
             if (err) {
                 res.json({status: 0});
             } else {
@@ -916,11 +916,11 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
-    app.post('/community/report', manager.ensureLoggedIn('/users/login'), function(req,res) {
+    app.post('/group/report', manager.ensureLoggedIn('/users/login'), function(req,res) {
 
         var targetcommid = hashids.decodeHex(req.body.targetid);
         //
-        CommunityModel.findByIdAndUpdate(targetcommid, {$set: {report: {set: true, by: req.session.userid, timestamp: Date.now()}}}, function(err, k) {
+        GroupModel.findByIdAndUpdate(targetcommid, {$set: {report: {set: true, by: req.session.userid, timestamp: Date.now()}}}, function(err, k) {
             if (err) {
                 console.log("Error in reporting community"+err);
                 res.json({status: 0});
@@ -932,11 +932,11 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
-    app.post('/community/delete', manager.ensureLoggedIn('/users/login'), function(req,res) {
+    app.post('/group/delete', manager.ensureLoggedIn('/users/login'), function(req,res) {
 
         var targetcommid = hashids.decodeHex(req.body.targetid);
         //
-        CommunityModel.remove({_id: targetcommid, adminuserid: req.session.userid}, function(err, k) {
+        GroupModel.remove({_id: targetcommid, adminuserid: req.session.userid}, function(err, k) {
             if (err) {
                 console.log("Error in deleting community"+err);
                 res.json({status: 0});
@@ -948,7 +948,7 @@ module.exports = function(app, passport, manager, hashids) {
         });
     });
 
-    app.post('/community/shareform', manager.ensureLoggedIn('/users/login'), function(req,res) {
+    app.post('/group/shareform', manager.ensureLoggedIn('/users/login'), function(req,res) {
 
         var commid = hashids.decodeHex(req.body.commid);
         var formid = hashids.decodeHex(req.body.formid);
@@ -983,7 +983,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         var getuserscomm = function (x) {
             return new Promise(function (resolve, reject) {
-                CommunityModel.findById(x, function (err, c) {
+                GroupModel.findById(x, function (err, c) {
                     if (err) {
                         console.log(err);
                         reject(err);

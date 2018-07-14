@@ -1,6 +1,6 @@
 var TagsModel = require('../db.models/tags.model');
 var UserModel = require('../db.models/user.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var networkfunctions = require('../functions/network');
 var usersfunctions = require('../functions/users');
 
@@ -125,7 +125,7 @@ module.exports = function(app, passport, manager, hashids) {
             // so we want tags for a particular community
 
             new Promise(function(resolve, reject){
-                CommunityModel.findById(selectedcomm, function (err, k) {
+                GroupModel.findById(selectedcomm, function (err, k) {
                     if (err) {
                         reject(err);
                     } else {

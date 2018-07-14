@@ -78,7 +78,7 @@ export class FeedPageComponent implements OnInit, OnDestroy  {
 
                 const commid = localStorage.getItem('comm');
                 if (commid) {
-                    this.http.post('/community/accept', { commid: commid }).toPromise()
+                    this.http.post('/group/accept', { commid: commid }).toPromise()
                         .then(response => {
                             localStorage.removeItem('comm');
                             localStorage.removeItem('commVerification');

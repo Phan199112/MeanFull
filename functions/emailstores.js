@@ -4,7 +4,7 @@ var UserModel = require('../db.models/user.model');
 
 var usersfunctions = require('../functions/users');
 
-// Add an item (questions/community/etc) to the email store for the given user, and
+// Add an item (questions/group/etc) to the email store for the given user, and
 // create the email store if it does not already exist
 function putItem(user, itemType, item) {
     var addToSet = function () {

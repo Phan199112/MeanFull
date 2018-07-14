@@ -1,4 +1,4 @@
-export class CommunityModel {
+export class GroupModel {
   title: string;
   id: string; // hashed db _id
   pic: string;

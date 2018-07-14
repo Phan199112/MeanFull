@@ -1,6 +1,6 @@
 var TagsModel = require('../db.models/tags.model');
 var UserModel = require('../db.models/user.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var FormModel = require('../db.models/form.model');
 var autocomplete = require('../modules/mongoose-in-memory-autocomplete-multiple/main');
 var cron = require('node-cron');
@@ -33,7 +33,7 @@ module.exports = function(app, passport, manager, hashids) {
         //Maximum number of results to return with an autocomplete request
         maximumResults: 10,
         //MongoDB model (defined earlier) that will be used for autoCompleteFields and dataFields
-        model: CommunityModel
+        model: GroupModel
     };
 
     var configurationUser = {
@@ -203,7 +203,7 @@ module.exports = function(app, passport, manager, hashids) {
 
             return new Promise(function (resolve, reject) {
                 //
-                CommunityModel.find({'title': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
+                GroupModel.find({'title': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
                     if (err) {
                         reject();
 
@@ -228,7 +228,7 @@ module.exports = function(app, passport, manager, hashids) {
                     // query username and link of the person's network
                     var tempfunctioncomm = function (x) {
                         return new Promise(function (resolve, reject) {
-                            CommunityModel.findById(x, function (err, comm) {
+                            GroupModel.findById(x, function (err, comm) {
                                 if (err) {
                                     reject(err);
                                 } else {

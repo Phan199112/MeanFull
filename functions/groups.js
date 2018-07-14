@@ -1,8 +1,8 @@
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 
-exports.commPublic  = function commPublic(x) {
+exports.groupPublic  = function groupPublic(x) {
     return new Promise(function(resolve, reject){
-        CommunityModel.findById(x, function (err, comminfo) {
+        GroupModel.findById(x, function (err, comminfo) {
             if (err) {
                 reject(err);
             } else {
@@ -17,9 +17,9 @@ exports.commPublic  = function commPublic(x) {
 };
 
 // this function will test whether a user is a member or admin
-exports.commMember = function commMember(x,y) {
+exports.groupMember = function groupMember(x,y) {
     return new Promise(function(resolve, reject){
-        CommunityModel.findById(x, function (err, comminfo) {
+        GroupModel.findById(x, function (err, comminfo) {
             if (err) {
                 reject(err);
             } else {
@@ -43,9 +43,9 @@ exports.commMember = function commMember(x,y) {
 };
 
 // this function will test whether a user is a member
-exports.commAdmin = function commAdmin(x,y) {
+exports.groupAdmin = function groupAdmin(x,y) {
     return new Promise(function(resolve, reject){
-        CommunityModel.findById(x, function (err, comminfo) {
+        GroupModel.findById(x, function (err, comminfo) {
             if (err) {
                 reject(err);
             } else {

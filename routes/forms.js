@@ -1,6 +1,6 @@
 var FormModel = require('../db.models/form.model');
 var AnswersModel = require('../db.models/answers.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var ReactionsModel = require('../db.models/reactions.model');
 var EmailStoreModel = require('../db.models/emailStore.model');
 var UserModel = require('../db.models/user.model');
@@ -9,7 +9,7 @@ var notifications = require("../functions/notifications");
 var mathfunctions = require('../functions/math');
 var networkfunctions = require('../functions/network');
 var usersfunctions = require('../functions/users');
-var commfunctions = require('../functions/communities');
+var commfunctions = require('../functions/groups');
 var formfunctions = require('../functions/forms');
 var exportfunctions = require('../functions/export');
 var emailfunctions  = require("../functions/email");
@@ -111,7 +111,7 @@ module.exports = function(app, passport, manager, hashids) {
         // load users of the community, add them to `unhashedUsers`
         var getuserscomm = function (x) {
             return new Promise(function (resolve, reject) {
-                CommunityModel.findById(x, function (err, c) {
+                GroupModel.findById(x, function (err, c) {
                     if (err) {
                         console.log(err);
                         reject(err);
@@ -945,12 +945,12 @@ module.exports = function(app, passport, manager, hashids) {
 
             } else if (selecteduser === null && selectedcomm !== null) {
                 // check whether it is public
-                commfunctions.commPublic(selectedcomm).then(function(result) {
+                commfunctions.groupPublic(selectedcomm).then(function(result) {
                     if (result === true) {
                         resolve();
 
                     } else {
-                        commfunctions.commMember(selectedcomm, req.session.userid).then(function(result) {
+                        commfunctions.groupMember(selectedcomm, req.session.userid).then(function(result) {
                             //console.log("comm member check "+result);
                             if (result === true) {
                                 resolve();

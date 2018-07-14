@@ -1,11 +1,11 @@
 var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var EventModel = require('../db.models/event.model');
 var NetworkEdgesModel = require('../db.models/networkedges.model');
 var EmailStoreModel = require('../db.models/emailStore.model');
 var randommod = require("../functions/random");
-var commfunctions = require('../functions/communities');
+var commfunctions = require('../functions/groups');
 var publishEvent  = require("../functions/eventpubsub");
 var emailfunctions  = require("../functions/email");
 var usersfunctions = require('../functions/users');
@@ -356,7 +356,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         });
 
                                 } else if (x.type === "comm" || x.type === "comm-admin") {
-                                    CommunityModel.findById(hashids.decodeHex(x.data), function (err, comm) {
+                                    GroupModel.findById(hashids.decodeHex(x.data), function (err, comm) {
                                         if (err) {
                                             reject(err);
                                         } else {
@@ -504,7 +504,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // vars
 
                 return new Promise(function (resolve, reject) {
-                    CommunityModel.find({
+                    GroupModel.find({
                         $or: [{'adminuserid': req.session.userid}, {'members': req.session.userid}]
                     }).limit(100).cursor()
                         .on('data', function (comm) {
@@ -854,7 +854,7 @@ module.exports = function(app, passport, manager, hashids) {
                 } else {
                     operation = {members: req.session.userid};
                 }
-                CommunityModel.findOneAndUpdate({_id: commid}, {$push: operation}, function(err, k) {
+                GroupModel.findOneAndUpdate({_id: commid}, {$push: operation}, function(err, k) {
                     if (err) {
                         res.json({status: 0});
                     } else {

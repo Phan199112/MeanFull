@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from "@angular/core";
-import { YourCommunitiesModel } from "../your-community.model";
+import { YourCommunitiesModel } from "../your-group.model";
 import { Http } from "@angular/http";
 import { NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,7 +21,7 @@ export class YourCommunityItemComponent {
     }
 
     shareInComm() {
-        this.http.post(`/community/shareform`, {commid: this.comm.id, formid: this.comm.link, pic: this.comm.pic}).toPromise()
+        this.http.post(`/group/shareform`, {commid: this.comm.id, formid: this.comm.link, pic: this.comm.pic}).toPromise()
             .then((result) => {
                 if (result.json().status == 1) {
                     this.sharedAlready = true;

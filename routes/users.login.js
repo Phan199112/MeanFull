@@ -3,7 +3,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 
 var UserModel = require('../db.models/user.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var OrganizationModel = require('../db.models/organization.model');
 
 var log = require("../functions/logs");
@@ -398,7 +398,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             if (req.body.commToJoinWith) {
                                 var commid = hashids.decodeHex(req.body.commToJoinWith);
-                                CommunityModel.findById(commid, function (err, comm) {
+                                GroupModel.findById(commid, function (err, comm) {
                                     if (err) {
                                         console.log("Could not join community at signup");
                                     } else {

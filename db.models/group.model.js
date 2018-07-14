@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var random = require('mongoose-random');
 var Schema = mongoose.Schema;
 
-var CommunitySchema = new Schema({
+var GroupSchema = new Schema({
     adminuserid: [{type: String}],
     title: String,
     hashtags: [{type: String}],
@@ -16,11 +16,7 @@ var CommunitySchema = new Schema({
     organization: String,
 });
 
-CommunitySchema.plugin(random, { path: 'r' });
+GroupSchema.plugin(random, { path: 'r' });
 
 // Compile model from schema
-module.exports = mongoose.model('CommunityModel', CommunitySchema );
-
-
-
-
+module.exports = mongoose.model('GroupModel', GroupSchema );

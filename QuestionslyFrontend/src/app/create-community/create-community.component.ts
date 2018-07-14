@@ -94,7 +94,7 @@ export class CreateCommunityComponent  {
         let data = this.createcommunityData();
         console.log("posted", data);
 
-        this.http.post('/community/save', data).toPromise()
+        this.http.post('/group/save', data).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
                     this.commurl = response.json().id;

@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RouterModule, Router, Routes, ActivatedRoute} from '@angular/router';
 //import { CommunityListComponent } from '../communityContainer/community.list.component';
-import { CommunityModel } from '../community.model';
+import { GroupModel } from '../group.model';
 import { NetworkModel } from '../../Network/network.model';
 import * as $ from 'jquery';
 
@@ -27,8 +27,8 @@ export class SidebarComponent implements OnInit, OnChanges {
     communities: Object[];
     users: Object[];
     networklist: NetworkModel[];
-    communitylist: CommunityModel[] = [];
-    randomlist: CommunityModel[] = [];
+    communitylist: GroupModel[] = [];
+    randomlist: GroupModel[] = [];
     data: Object[];
     randomlistdata: Object[];
     mobWidth: number;
@@ -104,7 +104,7 @@ export class SidebarComponent implements OnInit, OnChanges {
                 this.showFriendsLoading = false;
             }
 
-        this.http.post(`/community/list`, { user: this.user }).toPromise()
+        this.http.post(`/group/list`, { user: this.user }).toPromise()
             .then(res => {
                 if (res.json().status == 1) {
                     this.data = res.json().data;
@@ -119,8 +119,8 @@ export class SidebarComponent implements OnInit, OnChanges {
                     for (let obj of this.data) {
                         if (k < this.amountToFetch) {
                             // console.log('obj:', obj);
-                            this.communitylist.push(new CommunityModel(obj));
-                            this.ogCommunityList.push(new CommunityModel(obj));
+                            this.communitylist.push(new GroupModel(obj));
+                            this.ogCommunityList.push(new GroupModel(obj));
                             k++;
                         }
                     }
@@ -132,8 +132,8 @@ export class SidebarComponent implements OnInit, OnChanges {
                         this.ogRandomList = [];
                         for (let obj of this.randomlistdata) {
                             if (i < this.amountToFetch) {
-                                this.randomlist.push(new CommunityModel(obj));
-                                this.ogRandomList.push(new CommunityModel(obj));
+                                this.randomlist.push(new GroupModel(obj));
+                                this.ogRandomList.push(new GroupModel(obj));
                                 i++;
                             }
                         }

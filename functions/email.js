@@ -2,7 +2,7 @@ var email 	= require("../node_modules/emailjs/email");
 var EmailStoreModel = require('../db.models/emailStore.model');
 var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 
 // var server 	= email.server.connect({
 //     user:    "support@questionsly.com",

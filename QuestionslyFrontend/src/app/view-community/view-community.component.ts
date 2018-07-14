@@ -57,7 +57,7 @@ export class ViewCommunityComponent implements OnInit {
         this.route.params.subscribe(params => {
             this.id = params.id;          
 
-            this.http.get(`/community/retrieve/${params.id}`).toPromise()
+            this.http.get(`/group/retrieve/${params.id}`).toPromise()
                 .then(res => {
                     this.loading = false;
                     this.status = res.json().status;
@@ -142,7 +142,7 @@ export class ViewCommunityComponent implements OnInit {
     updateCommunity() {
         let data = this.createcommunityData();
 
-        this.http.put('/community/update', data).toPromise()
+        this.http.put('/group/update', data).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
                     var commurl = response.json().id;
@@ -276,7 +276,7 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     joinCommunity(x) {
-        this.http.post('/community/join', {targetid: x}).toPromise()
+        this.http.post('/group/join', {targetid: x}).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
                     this.data.ismember = true;
@@ -290,7 +290,7 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     forceJoinPrivateCommunity(commid) {
-        this.http.post('/community/accept', { commid: commid }).toPromise()
+        this.http.post('/group/accept', { commid: commid }).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
                     this.loadData();
@@ -306,7 +306,7 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     leaveCommunity(x) {
-        this.http.post('/community/leave', {targetid: x}).toPromise()
+        this.http.post('/group/leave', {targetid: x}).toPromise()
             .then(response => {
                 if (response.json().status == 1) {
                     //
@@ -322,7 +322,7 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     reportCommunity(x) {
-        this.http.post('/community/report', {targetid: x}).toPromise()
+        this.http.post('/group/report', {targetid: x}).toPromise()
             .then(response => {
                 //
             })
@@ -336,7 +336,7 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     deleteCommunity(x) {
-        this.http.post('/community/delete', {targetid: this.id}).toPromise()
+        this.http.post('/group/delete', {targetid: this.id}).toPromise()
             .then(response => {
                 this.router.navigate(['/']);
 
@@ -354,7 +354,7 @@ export class ViewCommunityComponent implements OnInit {
             friends: null
         });
         this.modalService.open(this.invitationModal).result.then((result) => {
-            this.http.post("/community/invite", {
+            this.http.post("/group/invite", {
                 commid: this.id,
                 commtitle: this.data.title,
                 commpic: this.data.pic,

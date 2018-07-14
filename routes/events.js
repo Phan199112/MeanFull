@@ -1,6 +1,6 @@
 var EventModel = require('../db.models/event.model');
 var UserModel = require('../db.models/user.model');
-var CommunityModel = require('../db.models/community.model');
+var GroupModel = require('../db.models/group.model');
 var FormModel = require('../db.models/form.model');
 var emailfunctions = require("../functions/email");
 
@@ -129,7 +129,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                 };
                                             });
                                         } else if (event.type === "comm" || event.type === "comm-admin" || event.type === "comm-request") {
-                                            CommunityModel.findById(decryptedId, function (err, commInfo) {
+                                            GroupModel.findById(decryptedId, function (err, commInfo) {
                                                 if (err) {
                                                     reject();
                                                 } else if (commInfo) {
@@ -170,7 +170,7 @@ module.exports = function (app, passport, manager, hashids) {
 
                                                         reject(err);
                                                     } else if (formInfo) {
-                                                        CommunityModel.findById(decryptedCom, function (err2, commInfo) {
+                                                        GroupModel.findById(decryptedCom, function (err2, commInfo) {
                                                             if (err2) {
                                                                 reject();
                                                             } else if (commInfo) {
