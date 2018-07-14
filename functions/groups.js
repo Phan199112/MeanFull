@@ -3,15 +3,39 @@ var GroupModel = require('../db.models/group.model');
 exports.getGroupCategories = function () {
     return {
         'class': {
+            category: 'class', // must match key name above
+            displayName: 'Class',
+            displayNamePlural: 'Classes',
             shouldBePublic: false,
+            groups: [], // this is just put here so calling code can add groups to it
         },
         'studentOrg': {
+            category: 'studentOrg',
+            displayName: 'Student Organization',
+            displayNamePlural: 'Student Organizations',
             shouldBePublic: true,
+            groups: [],
         },
     };
 };
 
-exports.groupPublic  = function groupPublic(x) {
+exports.getGroup = function (groupId) {
+    return new Promise(function(resolve, reject){
+        GroupModel.findById(groupId, function (err, group) {
+            if (err) {
+                reject(err);
+            } else {
+                if (comminfo) {
+                    resolve(group);
+                } else {
+                    reject();
+                }
+            }
+        });
+    });
+};
+
+exports.groupPublic = function groupPublic(x) {
     return new Promise(function(resolve, reject){
         GroupModel.findById(x, function (err, comminfo) {
             if (err) {

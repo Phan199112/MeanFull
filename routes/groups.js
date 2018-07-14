@@ -539,19 +539,22 @@ module.exports = function(app, passport, manager, hashids) {
     // list for sharing to community feed
     app.get('/group/mylist', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // get the communities for which req.session.userid is a member
-        var communitiesdata = [];
+        var groupData = [];
+        var categories = commfunctions.getGroupCategories();
 
         return new Promise(function (resolve, reject) {
                 GroupModel.find({
                     $or: [{'adminuserid': req.session.userid}, {'members': req.session.userid}]
-                }).limit(20).cursor()
-                    .on('data', function (comm) {
-                        communitiesdata.push({
-                            title: comm.title,
-                            pic: comm.pic,
-                            id: hashids.encodeHex(comm._id)
-                            //window.console.log("")
-                        });
+                }).limit(1000).cursor()
+                    .on('data', function (group) {
+                        var renderedGroup = {
+                            title: group.title,
+                            pic: group.pic,
+                            id: hashids.encodeHex(group._id),
+                            category: group.category,
+                        };
+                        categories[group.category].groups.push(renderedGroup);
+                        groupData.push(renderedGroup);
                     })
                     .on('error', function (err) {
                         // handle error
@@ -563,9 +566,11 @@ module.exports = function(app, passport, manager, hashids) {
                     });
             })
                 .then(function () {
-                    //
-                    res.json({status: 1, data: communitiesdata})
-
+                    res.json({
+                        status: 1,
+                        data: groupData, // TODO should remove this and make frontend stop using it
+                        categories: categories,
+                    });
                 })
                 .catch(function () {
                     res.json({status: 0});
@@ -807,8 +812,13 @@ module.exports = function(app, passport, manager, hashids) {
         // one can only manually join if the community is public
         return new Promise(function(resolve, reject){
             // check whether the community is public
-            commfunctions.groupPublic(commid).then(function(result) {
-                if (result === true) {
+            commfunctions.getGroup(commid).then(function(group) {
+                if (group.organization != req.session.user.organization) {
+                    reject();
+                    return;
+                }
+
+                if (group.public === true) {
                     // Handle join PUBLIC community
                     resolve();
                 } else {
