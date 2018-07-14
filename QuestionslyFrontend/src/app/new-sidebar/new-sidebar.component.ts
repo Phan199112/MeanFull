@@ -11,6 +11,7 @@ export class NewSidebarComponent implements OnInit {
     @Input() activeGroup: boolean;
 
     public categories: Array<any> = [];
+    public orgName = '';
 
     constructor(
         private http: Http,
@@ -27,6 +28,13 @@ export class NewSidebarComponent implements OnInit {
             for (const category of Object.keys(responseJson.categories)) {
                 this.categories.push(responseJson.categories[category]);
             }
+        });
+    this.http.get('/organizations/mine')
+        .toPromise()
+        .then(response => {
+            const responseJson = response.json();
+
+            this.orgName = responseJson.organization.name;
         });
   }
 }
