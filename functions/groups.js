@@ -1,5 +1,16 @@
 var GroupModel = require('../db.models/group.model');
 
+exports.getGroupCategories = function () {
+    return {
+        'class': {
+            shouldBePublic: false,
+        },
+        'studentOrg': {
+            shouldBePublic: true,
+        },
+    };
+};
+
 exports.groupPublic  = function groupPublic(x) {
     return new Promise(function(resolve, reject){
         GroupModel.findById(x, function (err, comminfo) {

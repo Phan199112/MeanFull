@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var GroupSchema = new Schema({
     adminuserid: [{type: String}],
     title: String,
+    category: String,
     hashtags: [{type: String}],
     public: Boolean,
     description: String,

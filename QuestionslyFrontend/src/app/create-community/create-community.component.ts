@@ -92,6 +92,7 @@ export class CreateCommunityComponent  {
     postForm() {
         let date = new Date();
         let data = this.createcommunityData();
+        data.category = 'class';
         console.log("posted", data);
 
         this.http.post('/group/save', data).toPromise()

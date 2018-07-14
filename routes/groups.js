@@ -25,6 +25,13 @@ module.exports = function(app, passport, manager, hashids) {
             return;
         }
 
+        // Valid category required
+        var allCategories = commfunctions.getGroupCategories();
+        if (typeof receivedData.category !== 'string' || !allCategories[receivedData.category]) {
+            res.json({status: 0});
+            return;
+        }
+
         if (receivedData.admins != null) {
             for (var i = 0; i < receivedData.admins.length; i++) {
                 // save value
@@ -35,13 +42,19 @@ module.exports = function(app, passport, manager, hashids) {
         }
 
         // mongodb
-        GroupModel.create({adminuserid: [req.session.userid],
-            title: receivedData.title,
-            hashtags: receivedData.hashtags,
-            public: receivedData.public,
-            pic: receivedData.pic,
-            description: receivedData.description,
-            timestamp: Date.now()}, function(err, k) {
+        GroupModel.create(
+            {
+                adminuserid: [req.session.userid],
+                title: receivedData.title,
+                category: receivedData.category,
+                organization: req.session.user.organization,
+                hashtags: receivedData.hashtags,
+                public: allCategories[receivedData.category].shouldBePublic,
+                pic: receivedData.pic,
+                description: receivedData.description,
+                timestamp: Date.now(),
+            },
+            function(err, k) {
                 if (err) {
                     res.json({status: 0});
                 } else {
