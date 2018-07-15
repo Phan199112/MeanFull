@@ -1,10 +1,11 @@
 var OrganizationModel = require('../db.models/organization.model');
 
 var orgfunctions = require('../functions/organizations');
+var userfunctions = require('../functions/users');
 
 module.exports = function(app, passport, manager, hashids) {
 
-    app.get('/organizations/mine', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.get('/organizations/mine', manager.ensureLoggedIn('/users/login'), userfunctions.ensureAuthenticatedUserInSession, function (req, res) {
         orgfunctions.getOrganization(req.session.user.organization)
         .then(function(org) {
             res.json({status: 1, organization: org});

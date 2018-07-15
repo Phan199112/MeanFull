@@ -2,6 +2,21 @@ var UserModel = require('../db.models/user.model');
 var FormModel = require('../db.models/form.model');
 var AnswersModel = require('../db.models/answers.model');
 
+exports.ensureAuthenticatedUserInSession = function (req, res, next) {
+    UserModel.findById(req.session.userid, function (err, user) {
+        if (err) {
+            next('router');
+        } else {
+            if (user) {
+                req.session.user = user;
+                next();
+            } else {
+                next('router');
+            }
+        }
+    });
+};
+
 exports.profilePublic  = function profilePublic(x) {
     return new Promise(function(resolve, reject){
         UserModel.findById(x, function (err, userinfo) {
