@@ -1,6 +1,6 @@
 <div *ngIf="activeDimmer" class="dim-overlay"></div>
 
-<div *ngIf="!preview" class="fullwidth">
+<div *ngIf="!preview" class="fullwidth askbox">
     <div class="summary-container" *ngIf="questionsContainer.length > 0">
         <div class="prev-item"></div>
         <p class="question-count prev-item">Added {{questionsContainer.length}} {{questionsContainer.length === 1 ? 'Question' : 'Questions'}}</p>
@@ -17,7 +17,17 @@
     <div class="toolbar" [ngClass]='{active: selection}'>
         <a class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question&nbsp;Type</a>
         <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add&nbsp;Picture</a>
-        <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" />
+
+        <mat-form-field class="groups-input">
+            <input type="text" placeholder="Share with a group" aria-label="Number" matInput [formControl]="group" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let g of filteredGroups | async" [value]="g">
+                    {{g}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" /> -->
         <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="getData('multiplechoice')">Add&nbsp;Question</a>
     </div>
     
@@ -64,7 +74,7 @@
     </div>
 </div>
 
-<div *ngIf="preview" class="fullwidth">
+<div *ngIf="preview" class="fullwidth askbox">
         <div class="summary-container" *ngIf="questionsContainer.length > 0">
             <div class="prev-item"></div>
             <p *ngIf='!addTitle' class="question-count prev-item title" (click)="toggleTitle()">{{title ? title : 'Click to Add Title'}}</p>
@@ -75,7 +85,8 @@
         </div>
         <div class="question" *ngFor="let q of questionsContainer; let i = index;">
             <p class="number-label">Question {{i + 1}}</p>
-            <p class="question-body">{{q.question}}</p>
+            <img class="q-prev-image" [src]="q.pic" [ngClass]="{hidden: !q.pic}"/>
+            <p class="question-body">{{q.body}}</p>
             
             <!-- Multiple Choice -->
             <form *ngIf="q.kind == 'Multiple Choice'">

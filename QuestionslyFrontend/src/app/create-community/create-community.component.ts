@@ -19,6 +19,7 @@ export class CreateCommunityComponent  {
     submissionfailed = false;
     submitted = false;
     commPicURL: any;
+    showAdmins: boolean;
     visitbutton = false;
     commurl: String;
     privacyOption = 0;

@@ -5,8 +5,13 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material';
+
+
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DragulaModule } from 'ng2-dragula';
 import { TagInputModule } from 'ngx-chips';
 import { Ng2FlatpickrModule } from 'ng2-flatpickr';
@@ -127,10 +132,14 @@ import { HomePageComponent } from './home-page/home-page.component';
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
     routing,
     NgbModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
+    NoopAnimationsModule,
     DragulaModule,
     TagInputModule,
     Ng2FlatpickrModule,

@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http } from '@angular/http';
+import { FormControl } from "@angular/forms";
 import { MultipleChoiceFormComponent } from '../QuestionForms/multiple-choice-form/multiple-choice-form.component';
 import { RatingFormComponent } from '../QuestionForms/rating-form/rating-form.component';
 import { NumberQuestionFormComponent } from '../QuestionForms/number-question-form/number-question-form.component';
 import * as $ from 'jquery';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ask-question',
@@ -25,8 +28,14 @@ export class AskQuestionComponent implements OnInit {
   preview: boolean = false;
   title: string = '';
   addTitle: boolean = false;
+  group: FormControl = new FormControl();
   kindsWithOptions: string[] = ["Multiple Choice", "Checkboxes", "Drop-down", "Rank"];
   alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
+  groups: string[] = ['Class 1', 'Class 2', 'Class 3'];
+  filteredGroups: Observable<string[]>;
+
+
+  @Output() refreshFeed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
   @ViewChild('mc') mc: MultipleChoiceFormComponent;
@@ -38,14 +47,46 @@ export class AskQuestionComponent implements OnInit {
     private http: Http,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.filteredGroups = this.group.valueChanges
+      .pipe(
+        startWith(''),
+        map(g => g ? this._filterGroups(g) : this.groups.slice())
+      );
+
+    console.log('TYPEOF: ', typeof this.filteredGroups);
+    
+   }
+
+  private _filterGroups(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.groups.filter(g => g.toLowerCase().indexOf(filterValue) === 0);
+  }
+
 
   ngOnInit() {
+
+    //handle dimmer toggling
+    const activateDimmer = this.activateDimmer.bind(this);
+    const deactivateDimmer = this.deactivateDimmer.bind(this);
+    $(window.document).on('click', function(event) {
+      if ($(event.target).parents('.askbox').length) {
+        activateDimmer();
+        event.stopPropagation();        
+      } else {
+        event.stopPropagation();
+        
+        deactivateDimmer();
+      }
+    });
+
   }
 
 
   activateDimmer() {
     this.activeDimmer = true;
+    $('.fBody, .cBody').css({'z-index': -2});
   }
 
 
@@ -54,6 +95,8 @@ export class AskQuestionComponent implements OnInit {
       return;
     } else {
       this.activeDimmer = false;
+      $('.fBody, .cBody').css({ 'z-index': 2 });
+      $('.cBody').css({ 'z-index': 1 });
     }
   }
 
@@ -63,18 +106,22 @@ export class AskQuestionComponent implements OnInit {
       this.selection = '';
     } else {
       this.selection = item;
+      this.activateDimmer();
     }
   }
 
 
   questionSelect(item: string) {
-    const toolbarSelect = this.toolbarSelect.bind(this);
+    const toolbarSelect = () => {
+      this.toolbarSelect(this.selection);
+    }
+
     if (item === this.questionType) {
-      window.setTimeout(() => { toolbarSelect(this.selection)}, 1500);
+      window.setTimeout(toolbarSelect, 1500);
 
     } else {
       this.questionType = item;
-      window.setTimeout(() => { toolbarSelect(this.selection)}, 1500);
+      window.setTimeout(toolbarSelect, 1500);
     }
   }
 
@@ -120,7 +167,7 @@ export class AskQuestionComponent implements OnInit {
 
   togglePreview() {
     if (this.preview === false) {
-      this.activeDimmer = true;
+      this.activateDimmer();
     }
     this.preview = !this.preview;
   }
@@ -140,7 +187,10 @@ export class AskQuestionComponent implements OnInit {
         this.questionsContainer = [];
         this.questionType = 'shortanswer';
         this.preview = false;
-        this.activeDimmer = false;
+        this.deactivateDimmer();
+        this.refreshFeed.emit(true);
+        // const refresh = () => {this.refreshFeed.emit(true);};
+        // window.setTimeout(refresh, 1000);
       })
       .catch(error => this.router.navigate(['/users/login']));
   }
@@ -219,6 +269,8 @@ export class AskQuestionComponent implements OnInit {
 
   setPicUrl(url) {
     this.pic = url;
+    const toggle = () => {this.toolbarSelect('')};
+    window.setTimeout(toggle, 1500);
   }
 
 }

@@ -39,7 +39,8 @@
     </div>
 
     <div *ngIf="whichStep == 'noaccount'" id="noaccountStep">
-        <p>Welcome to {{orgName}}! Let's make an account for {{email}}.</p>
+        <p class="welcome-label top">Welcome to {{orgName}}!</p>
+        <p class="welcome-label bottom">Please enter the following information to finish creating your account for {{email}}.</p>
 
         <form [formGroup]="noaccountForm">
             <div class="flex">
@@ -101,7 +102,9 @@
                 <!-- profile pic -->
                 <div class="col-sm-6">
                     <label style="margin-bottom: 0">Profile pic</label><br>
-                    <div class="form-group">
+
+
+                    <!-- <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-btn">
                                 <div class="btn btn-default">
@@ -111,7 +114,24 @@
                                 </div>
                             </span>
                         </div>
+                    </div> -->
+
+                    <!-- IMAGE START -->
+                    <div class="imgContainer">
+                        <div class="inner">
+                    
+                            <div id="uploadBtn">
+                                <label for="picFile" class="submitButton not">Upload</label>
+                                <input id="picFile"  name="input-file-preview" title="Hello" style="display:none;" type="file" accept="image/png, image/jpeg, image/gif" (change)="onProfilePicChange($event)" />
+                            </div>
+                    
+                        </div>
+
                     </div>
+                    <!-- IMAGE END -->
+
+
+
                     <div>
                         <img style="border:1px solid gray;width:100px;"  id="preview" [src]="profilePicURL" *ngIf="profilePicURL">
                     </div>

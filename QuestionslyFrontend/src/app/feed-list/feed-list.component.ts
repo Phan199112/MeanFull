@@ -111,9 +111,15 @@ export class FeedListComponent implements OnInit, OnChanges {
     }
 
 
-    refreshFeed() {
+    refreshFeed(totalRefresh: boolean = false) {
         var route;
         var requestBody;
+
+        
+        if (totalRefresh) {
+            this.formids = [];
+            this.feedlist = [];
+        }
 
         if (this.showAnsweredQuestions) {
             route = `/forms/feed/answered`;
@@ -145,19 +151,18 @@ export class FeedListComponent implements OnInit, OnChanges {
 
         }
         
-        console.log(route, requestBody, 'Post\n');
-
         this.http
             .post(route, requestBody)
             .toPromise()
             .then(res => {
-                if (res.json().status == 1) {
+                if (res.json().status === 1) {
 
                     // add to list
                     this.data = res.json().data;
-                    for (let obj of this.data) {
+
+                    for (let obj of this.data) {                        
                         
-                        if (this.formids.indexOf(obj.id) == -1) {
+                        if (this.formids.indexOf(obj.id) === -1) {
                             // Push forms into feedlist if not there already
                             // console.log('PREBODY: ', obj);
 
