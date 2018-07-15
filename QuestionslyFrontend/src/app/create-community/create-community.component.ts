@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {Http} from "@angular/http";
-import { Router } from "@angular/router";
-import {Observable} from "rxjs";
+import {Http} from '@angular/http';
+import { Router } from '@angular/router';
+import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import {FormService} from "../form.service";
-import {UserService} from "../user.service";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormService} from '../form.service';
+import {UserService} from '../user.service';
 
 @Component({
     selector: 'app-create-community',
@@ -16,12 +16,11 @@ import {UserService} from "../user.service";
 export class CreateCommunityComponent  {
 
     fgCreateCommunity: FormGroup;
-    submissionfailed: boolean = false;
-    submitted: boolean = false;
+    submissionfailed = false;
+    submitted = false;
     commPicURL: any;
-    visitbutton: boolean = false;
+    visitbutton = false;
     commurl: String;
-    reject: any = null;
     privacyOption = 0;
     friends: any[] = [];
     errors: any = {
@@ -41,15 +40,12 @@ export class CreateCommunityComponent  {
         this.createForm();
         this.userService.afterLoginCheck().then(userData => {
             if (userData != 0) {
-                this.reject = false;
                 this.http.get("/users/network").toPromise().then(res => {
                     var json = res.json();
                     if (json.data) {
                         this.friends = json.data;
                     }
                 });
-            } else {
-                this.reject = true;
             }
         });
     }

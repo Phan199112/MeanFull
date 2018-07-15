@@ -1,136 +1,118 @@
-<div class="pageLayout" *ngIf="reject">
-    <h2>You are not authorised to create a new group. Please login first!</h2>
-</div>
+<div class="pageLayout">
+    <h3 class="name qslyGray" style="margin-bottom: 25px">Create Group</h3>
 
 
-<!-- FLIP THE PERMISSIONS WHEN DONE DEVELOPING -->
-<div class="pageLayout" *ngIf="!reject">
-    <div class="row">
+    <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
 
-
-        <div class="col-md-3" id="leftSideOfContainer"></div>
-
-
-        <div class="col-lg-6">
-            <div class="aboutContainer">
-                <h3 class="name qslyGray" style="margin-bottom: 25px">Create Group</h3>
-
-
-                <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
-
-                    <div class="flexContainer fdColumn faStart">
-                        <h6 class="title firstTitle">Group Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
-                        <div style="display: flex; align-items: center; width: 100%">
-                            <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
-                            <input class="niceTextInput qslyGray" formControlName="title" autofocus />
-                        </div>
-                    </div>
-
-                    <div class="flexContainer fdColumn faStart">
-                        <h6 class="title firstTitle">Description</h6>
-                        <div style="display: flex; align-items: center; width: 100%">
-                            <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
-                            <textarea placeholder="Enter a short description.." class="niceTextAreaInput qslyGray" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
-                        </div>
-                    </div>
-
-
-                <div class="flexContainer fdColumn faStart">
-                    <h6 class="title firstTitle">Privacy</h6>
-                    <div style="display:flex; justify-content: flex-start;">
-                        <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
-                            (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
-                        <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
-                            (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
-
-                    </div>
-                </div>
-
-
-                <!-- IMAGE START -->
-                <div class="flexContainer fdColumn faStart">
-                    <h6 class="title firstTitle">Add an image</h6>
-                    <div class="flex" style="align-items: center">
-
-                        <div id="uploadBtn">
-                            <label for="picFile" class="submitButton not">Upload</label>
-                            <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
-                        </div>
-
-                        <div>
-                            <p id="orText" class="qslyGray">or</p>
-                        </div>
-
-                        <div id="urlImage" class="input-group" style="width: 100%">
-                            <input type="text" formControlName="pic" #imgUrl class="form-control" placeholder="Enter an image URL">
-                            <div class="input-group-append">
-                                <button (click)="setPicUrl(imgUrl.value)" class="btn btn-outline-secondary">
-                                    <i class="fa fa-check"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="flex" style="margin-top: 15px;">
-                        <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
-                    </div>
-
-                </div>
-                <!-- IMAGE END -->
-
-
-
-
-
-
-                <div class="flexContainer faStart fdColumn">
-                    <h6 class="title firstTitle">Add Other Group Admins</h6>
-                    <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
-                        <div
-                            [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}"
-                            class="tag-placeholder text-muted"
-                            (click)="showAdmins = true; focusTagInput(admins)">
-                            Add your friends as admins
-                        </div>
-                        <tag-input
-                            #admins
-                            [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}"
-                            [onAdding]="transformName"
-                            [identifyBy]="'value'"
-                            [displayBy]="'display'"
-                            placeholder="@name"
-                            secondaryPlaceholder="@name"
-                            (onBlur)="showAdmins = false"
-                            [separatorKeyCodes]="[32, 13, 188]"
-                            formControlName="admins"
-                            [onlyFromAutocomplete]="true"
-                            id="admins">
-                            <tag-input-dropdown
-                                identifyBy="id"
-                                displayBy="name"
-                                [matchingFn]="nameMatching"
-                                [focusFirstElement]="true"
-                                [autocompleteItems]="friends">
-                            </tag-input-dropdown>
-                        </tag-input>
-                    </div>
-                </div>
-
-
-                <div id="buttons" *ngIf="!visitbutton" class="flexContainer" style="justify-content: center">
-                    <button
-                            class="submitButton"
-                            (click)="checkSubmit()"
-                            [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Create!</button>
-                </div>
-
-
-                        <p class="valError" style="text-align: center" *ngIf="errors.title">Uh oh, there has been an error creating the group. Check for errors above.</p>
-
-                    </form>
-                </div>
+        <div class="flexContainer fdColumn faStart">
+            <h6 class="title firstTitle">Group Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
+            <div style="display: flex; align-items: center; width: 100%">
+                <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                <input class="niceTextInput qslyGray" formControlName="title" autofocus />
             </div>
-        <div class="col-md-6" id="rightSideOfContainer"></div>
-    </div>
+        </div>
+
+        <div class="flexContainer fdColumn faStart">
+            <h6 class="title firstTitle">Description</h6>
+            <div style="display: flex; align-items: center; width: 100%">
+                <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
+                <textarea placeholder="Enter a short description.." class="niceTextAreaInput qslyGray" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
+            </div>
+        </div>
+
+
+        <div class="flexContainer fdColumn faStart">
+            <h6 class="title firstTitle">Privacy</h6>
+            <div style="display:flex; justify-content: flex-start;">
+                <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
+                    (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
+                <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
+                    (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
+
+            </div>
+        </div>
+
+
+        <!-- IMAGE START -->
+        <div class="flexContainer fdColumn faStart">
+            <h6 class="title firstTitle">Add an image</h6>
+            <div class="flex" style="align-items: center">
+
+                <div id="uploadBtn">
+                    <label for="picFile" class="submitButton not">Upload</label>
+                    <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
+                </div>
+
+                <div>
+                    <p id="orText" class="qslyGray">or</p>
+                </div>
+
+                <div id="urlImage" class="input-group" style="width: 100%">
+                    <input type="text" formControlName="pic" #imgUrl class="form-control" placeholder="Enter an image URL">
+                    <div class="input-group-append">
+                        <button (click)="setPicUrl(imgUrl.value)" class="btn btn-outline-secondary">
+                            <i class="fa fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex" style="margin-top: 15px;">
+                <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
+            </div>
+
+        </div>
+        <!-- IMAGE END -->
+
+
+
+
+
+
+        <div class="flexContainer faStart fdColumn">
+            <h6 class="title firstTitle">Add Other Group Admins</h6>
+            <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
+                <div
+                    [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}"
+                    class="tag-placeholder text-muted"
+                    (click)="showAdmins = true; focusTagInput(admins)">
+                    Add your friends as admins
+                </div>
+                <tag-input
+                    #admins
+                    [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}"
+                    [onAdding]="transformName"
+                    [identifyBy]="'value'"
+                    [displayBy]="'display'"
+                    placeholder="@name"
+                    secondaryPlaceholder="@name"
+                    (onBlur)="showAdmins = false"
+                    [separatorKeyCodes]="[32, 13, 188]"
+                    formControlName="admins"
+                    [onlyFromAutocomplete]="true"
+                    id="admins">
+                    <tag-input-dropdown
+                        identifyBy="id"
+                        displayBy="name"
+                        [matchingFn]="nameMatching"
+                        [focusFirstElement]="true"
+                        [autocompleteItems]="friends">
+                    </tag-input-dropdown>
+                </tag-input>
+            </div>
+        </div>
+
+
+        <div id="buttons" *ngIf="!visitbutton" class="flexContainer" style="justify-content: center">
+            <button
+                    class="submitButton"
+                    (click)="checkSubmit()"
+                    [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Create!</button>
+        </div>
+
+
+        <p class="valError" style="text-align: center" *ngIf="errors.title">Uh oh, there has been an error creating the group. Check for errors above.</p>
+
+    </form>
 </div>

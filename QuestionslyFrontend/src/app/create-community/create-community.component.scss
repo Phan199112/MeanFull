@@ -33,7 +33,7 @@ $color1: #28ab64;
 
 #main-form > .row {
   margin-bottom: 40px;
-  
+
   label.align {
     margin-top: 6px;
   }
@@ -178,15 +178,10 @@ input.option-input.is-invalid {
 // New
 .aboutContainer {
   width: 100%;
-  padding: 25px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background: #FFF;
-  margin: 0px;
-  margin-top: 6%;
-  border-radius: 4px;
-  border: 1px solid $borderColor;
   position: relative;
 }
 

@@ -10,6 +10,11 @@
             {{group.title}}
         </h4>
 
-        <h4 class="section-entry dim">+ Add Group</h4>
+        <h4 class="section-entry dim" (click)="openCreateGroupModal()">+ Add Group</h4>
   </div>
 </div>
+
+
+<ng-template #createGroupModal let-c="close" let-d="dismiss">
+    <app-create-community></app-create-community>
+</ng-template>

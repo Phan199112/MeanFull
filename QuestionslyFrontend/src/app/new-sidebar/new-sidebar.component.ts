@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -9,12 +10,14 @@ import { Http } from '@angular/http';
 export class NewSidebarComponent implements OnInit {
 
     @Input() activeGroup: boolean;
+    @ViewChild('createGroupModal') createGroupModal;
 
     public categories: Array<any> = [];
     public orgName = '';
 
     constructor(
         private http: Http,
+        private modalService: NgbModal,
     ) {
 
     }
@@ -37,4 +40,10 @@ export class NewSidebarComponent implements OnInit {
             this.orgName = responseJson.organization.name;
         });
   }
+
+
+    openCreateGroupModal() {
+        this.modalService.open(this.createGroupModal);
+    }
+
 }
