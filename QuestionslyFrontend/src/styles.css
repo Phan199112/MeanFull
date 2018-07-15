@@ -1,3 +1,5 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 /* You can add global styles to this file, and also import other style files */
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -114,4 +116,25 @@ background: #38d574 !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+}
+
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  /* color: #28ab64; */
+}
+
+.mat-form-field-label.mat-empty.mat-form-field-empty {
+  color: #333333;
+}
+
+#mat-form-field-label-1 {
+  color: #AAAAAA;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background: #AAAAAA;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background: #28ab64;
 }

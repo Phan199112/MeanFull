@@ -1,12 +1,13 @@
+<app-new-sidebar [activeGroup]="viewGroupId"></app-new-sidebar>
 <div class="flex">
-    <app-new-sidebar [activeGroup]="viewGroupId"></app-new-sidebar>
+    <div id="sidebarPlaceholder"></div>
     <div class="flex">
         <div></div>
         <app-new-navbar></app-new-navbar>
         <div id="main-container" class="flex flex-jcse">
             <div class="feed-column">
-                <app-ask-question></app-ask-question>
-                <app-feed-list></app-feed-list>
+                <app-ask-question (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
+                <app-feed-list #feedList></app-feed-list>
             </div>
             <app-member-list style="z-index: -2;"></app-member-list>
         </div>

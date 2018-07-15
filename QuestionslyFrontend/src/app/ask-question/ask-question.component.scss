@@ -7,17 +7,16 @@
     border: 1px solid #e2e2e2;
     padding: 20px;
     padding-bottom: 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: -4px;
     border-bottom-color: #f4f4f4;
     
     &:focus {
-        border-color: #28ab64;
     }   
     
     &::placeholder {
         color: #AAAAAA;
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 }
 
@@ -42,8 +41,8 @@
 
 .tb-option {
     font: {
-        size: 1rem;
-        weight: 400;
+        size: .8rem;
+        weight: 500;
         family: "Fira Sans";
     }
     padding: 4px 12px;
@@ -56,7 +55,7 @@
         color: white !important;
         padding: 8px 12px;
         border-radius: 8px;
-        opacity: .4;
+        opacity: .1;
         pointer-events: none;
 
         &:hover {
@@ -256,6 +255,7 @@
     box-shadow: 0 6px 30px 12px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: center;
+    margin-bottom: 24px;
 }
 
 .submit-btn {
@@ -297,6 +297,10 @@
     }
 }
 
+.input-group {
+    max-width: 320px;
+}
+
 .url-input {
     border: 1px solid #e2e2e2;
     outline: none;
@@ -332,7 +336,7 @@
 }
 
 #preview {
-    width:200px;
+    max-width: 128px;
     border-radius: 8px;
     outline-style: none;
     outline: none;
@@ -377,12 +381,27 @@
 
 }
 
-.btn-outline-secondary:hover {
-    background: #999999;
-    border-color: #999999;
+.btn-outline-secondary {
+    border-color: #E2E2E2;
+    
+    &:hover {
+        background: #AAAAAA;
+        border-color: #AAAAAA;
+    }
 }
+
 
 .form-control:focus {
     box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.53);
 }
 // End picture styles
+
+
+.q-prev-image {
+    max-width: 64px;
+    margin: 8px 16px;
+}
+
+.hidden {
+    display: none;
+}
