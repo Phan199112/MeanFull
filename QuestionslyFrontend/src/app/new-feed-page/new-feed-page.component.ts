@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-new-feed-page',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewFeedPageComponent implements OnInit {
 
-  constructor() { }
+    @Input() viewGroupId: string;
+    @Input() viewFilter: string;
 
-  ngOnInit() {
-  }
+    constructor() { }
+
+    ngOnInit() {
+    }
 
 }

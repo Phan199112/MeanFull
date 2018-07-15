@@ -1,19 +1,32 @@
 <div class="sb-container">
-  <div class="header">
-    <span class="brand-text">{{orgName}}</span>
-  </div>
+    <div class="header">
+        <span class="brand-text">Questionsly</span>
+    </div>
 
-  <div *ngFor="let category of categories" class="group-section">
+    <div class="group-section">
+        <h4 class="section-entry" [ngClass]="{active: '' == activeGroup}">
+            <a [routerLink]="['/']">
+                {{orgName}}
+            </a>
+        </h4>
+    </div>
+
+    <div *ngFor="let category of categories" class="group-section">
         <h4 class="section-title">{{category.displayNamePlural}}</h4>
 
         <h4 *ngFor="let group of category.groups" class="section-entry" [ngClass]="{active: group.title == activeGroup}">
-            {{group.title}}
+            <a [routerLink]="['/']" [queryParams]="{groupid: group.id}">
+                {{group.title}}
+            </a>
         </h4>
 
-        <h4 class="section-entry dim" (click)="openCreateGroupModal()">+ Add Group</h4>
-  </div>
+        <h4 class="section-entry dim">
+            <a (click)="openCreateGroupModal()">
+                + Add {{category.displayName}}
+            </a>
+        </h4>
+    </div>
 </div>
-
 
 <ng-template #createGroupModal let-c="close" let-d="dismiss">
     <app-create-community></app-create-community>

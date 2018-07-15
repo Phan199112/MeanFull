@@ -34,17 +34,24 @@
 }
 
 .section-entry {
-    color: #FFFFFF;
-    padding: 4px 16px 4px 24px;
-    margin: 0;
-    margin-bottom: 4px;
-    width: 100%;
-    font: {
-        size: 1rem;
-        weight: 300;
-        family: "Fira Sans";
+    a {
+        color: #FFFFFF;
+        padding: 4px 16px 4px 24px;
+        margin: 0;
+        margin-bottom: 4px;
+        width: 100%;
+        font: {
+            size: 1rem;
+            weight: 300;
+            family: "Fira Sans";
+        }
+        cursor: pointer;
     }
-    cursor: pointer;
+
+    &:first-child {
+        position: relative;
+        top: 8px;
+    }
 
     &.active {
         font-weight: 700;
@@ -54,7 +61,7 @@
     &.dim {
         color: rgba(255,255,255, .6);
     }
-    
+
     &:hover {
         background: rgba(255,255,255,.1);
     }

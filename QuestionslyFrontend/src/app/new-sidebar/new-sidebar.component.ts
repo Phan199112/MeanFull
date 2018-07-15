@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -40,7 +40,6 @@ export class NewSidebarComponent implements OnInit {
             this.orgName = responseJson.organization.name;
         });
   }
-
 
     openCreateGroupModal() {
         this.modalService.open(this.createGroupModal);
