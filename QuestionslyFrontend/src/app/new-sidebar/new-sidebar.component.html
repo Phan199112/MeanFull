@@ -4,27 +4,21 @@
     </div>
 
     <div class="group-section">
-        <h4 class="section-entry" [ngClass]="{active: '' == activeGroup}">
-            <a [routerLink]="['/']">
+            <a class="section-entry" [ngClass]="{active: !activeGroup}" [routerLink]="['/']">
                 {{orgName}}
             </a>
-        </h4>
     </div>
 
     <div *ngFor="let category of categories" class="group-section">
         <h4 class="section-title">{{category.displayNamePlural}}</h4>
 
-        <h4 *ngFor="let group of category.groups" class="section-entry" [ngClass]="{active: group.title == activeGroup}">
-            <a [routerLink]="['/']" [queryParams]="{groupid: group.id}">
+            <a *ngFor="let group of category.groups" class="section-entry" [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/']" [queryParams]="{groupid: group.id}">
                 {{group.title}}
             </a>
-        </h4>
 
-        <h4 class="section-entry dim">
-            <a (click)="openCreateGroupModal(category)">
+            <a class="section-entry dim" (click)="openCreateGroupModal(category)">
                 + Add {{category.displayNameShort}}
             </a>
-        </h4>
     </div>
 </div>
 
