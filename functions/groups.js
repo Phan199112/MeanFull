@@ -5,6 +5,7 @@ exports.getGroupCategories = function () {
         'class': {
             category: 'class', // must match key name above
             displayName: 'Class',
+            displayNameShort: 'Class',
             displayNamePlural: 'Classes',
             shouldBePublic: false,
             groups: [], // this is just put here so calling code can add groups to it
@@ -12,6 +13,7 @@ exports.getGroupCategories = function () {
         'studentOrg': {
             category: 'studentOrg',
             displayName: 'Student Organization',
+            displayNameShort: 'Student Org',
             displayNamePlural: 'Student Organizations',
             shouldBePublic: true,
             groups: [],
