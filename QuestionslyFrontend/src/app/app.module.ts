@@ -28,7 +28,7 @@ import { AppComponent } from './app.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ConfirmationPopupComponent } from './confirmation-popup/confirmation-popup.component';
-import { CreateCommunityComponent } from './create-community/create-community.component';
+import { CreateGroupComponent } from './create-group/create-group.component';
 import { MultipleChoiceFormComponent } from './QuestionForms/multiple-choice-form/multiple-choice-form.component';
 import { NumberQuestionFormComponent } from './QuestionForms/number-question-form/number-question-form.component';
 import { RatingFormComponent } from './QuestionForms/rating-form/rating-form.component';
@@ -80,7 +80,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     PieChartComponent,
     NavbarComponent,
     ConfirmationPopupComponent,
-    CreateCommunityComponent,
+    CreateGroupComponent,
     MultipleChoiceFormComponent,
     NumberQuestionFormComponent,
     RatingFormComponent,

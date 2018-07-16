@@ -24,13 +24,13 @@ export class ViewCommunityComponent implements OnInit {
     addfailed: boolean = false;
     status: string;
     inviteForm: FormGroup;
-    fgCreateCommunity: FormGroup;
+    fgCreateGroup: FormGroup;
     autoEnrollLink: string = "";
-    
+
     communityToJoin: string = "";
     verifyAccess: string = ""
 
-    friends: any[] = [];    
+    friends: any[] = [];
     showEdit: boolean = false;
     deleteWarning: boolean = false;
     showAllMembers: boolean = false;
@@ -55,7 +55,7 @@ export class ViewCommunityComponent implements OnInit {
 
     loadData() {
         this.route.params.subscribe(params => {
-            this.id = params.id;          
+            this.id = params.id;
 
             this.http.get(`/group/retrieve/${params.id}`).toPromise()
                 .then(res => {
@@ -86,7 +86,7 @@ export class ViewCommunityComponent implements OnInit {
                             }
                         }
 
-                        
+
 
                     } else if (this.status == '2') {
                         this.data = res.json().data;
@@ -100,10 +100,10 @@ export class ViewCommunityComponent implements OnInit {
                             this.communityToJoin = this.id;
                             this.verifyAccess = params.access;
 
-                            if (this.loggedin && !this.data.ismember) {                                
+                            if (this.loggedin && !this.data.ismember) {
                                 this.forceJoinPrivateCommunity(this.id);
                             }
-                        
+
                             if (!this.loggedin) {
                                 localStorage.setItem("comm", this.communityToJoin);
                                 localStorage.setItem("commVerification", this.verifyAccess);
@@ -114,8 +114,8 @@ export class ViewCommunityComponent implements OnInit {
                     } else {
                         this.loadsuccessful = false;
                     }
-                  
-                    this.fgCreateCommunity = this.fb.group({
+
+                    this.fgCreateGroup = this.fb.group({
                         title: this.data.title,
                         description: this.data.description,
                         public: this.data.public,
@@ -166,7 +166,7 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     createcommunityData() {
-        let data = this.fgCreateCommunity.value;
+        let data = this.fgCreateGroup.value;
 
         data.commid = this.id;
 
@@ -179,7 +179,7 @@ export class ViewCommunityComponent implements OnInit {
 
         return data;
     }
-    
+
     transformHashtag(value) {
         if (value !== null && typeof value === 'object') {
             value = value.value;
@@ -385,7 +385,7 @@ export class ViewCommunityComponent implements OnInit {
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    this.fgCreateCommunity.get('pic').setValue(url);
+                    this.fgCreateGroup.get('pic').setValue(url);
                 }
                 else {
                     alert('Could not upload file.');
@@ -423,12 +423,12 @@ export class ViewCommunityComponent implements OnInit {
     }
 
     setPicUrl(url) {
-        this.fgCreateCommunity.get('pic').setValue(url);
+        this.fgCreateGroup.get('pic').setValue(url);
     }
 
 
     toggleAudience(audience: string) {
-        this.fgCreateCommunity.get('public').setValue(audience);
+        this.fgCreateGroup.get('public').setValue(audience);
     }
 
     autosizeTextarea(event: any, el: any) {

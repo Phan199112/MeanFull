@@ -8,16 +8,16 @@ import {FormService} from '../form.service';
 import {UserService} from '../user.service';
 
 @Component({
-    selector: 'app-create-community',
-    templateUrl: './create-community.component.html',
-    styleUrls: ['./create-community.component.scss'],
+    selector: 'app-create-group',
+    templateUrl: './create-group.component.html',
+    styleUrls: ['./create-group.component.scss'],
     providers: [FormService, UserService]
 })
-export class CreateCommunityComponent implements OnInit {
+export class CreateGroupComponent implements OnInit {
 
     @Input() category: any;
 
-    fgCreateCommunity: FormGroup;
+    fgCreateGroup: FormGroup;
     submissionfailed = false;
     submitted = false;
     commPicURL: any;
@@ -54,7 +54,7 @@ export class CreateCommunityComponent implements OnInit {
     }
 
     createForm() {
-        this.fgCreateCommunity = this.fb.group({
+        this.fgCreateGroup = this.fb.group({
             title: new FormControl('', [Validators.required, Validators.minLength(1)]),
             description: '',
             public: true,
@@ -75,8 +75,8 @@ export class CreateCommunityComponent implements OnInit {
     }
 
     checkSubmit() {
-        this.setAsTouched(this.fgCreateCommunity);
-        if (this.fgCreateCommunity.invalid) {
+        this.setAsTouched(this.fgCreateGroup);
+        if (this.fgCreateGroup.invalid) {
             this.errors.title = true;
         } else {
             this.submitted = true;
@@ -113,7 +113,7 @@ export class CreateCommunityComponent implements OnInit {
     }
 
     createcommunityData() {
-        let data = this.fgCreateCommunity.value;
+        let data = this.fgCreateGroup.value;
 
         for (let tagField of ['hashtags', 'admins']) {
             if (data[tagField]) {
@@ -226,7 +226,7 @@ export class CreateCommunityComponent implements OnInit {
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    this.fgCreateCommunity.get('pic').setValue(url);
+                    this.fgCreateGroup.get('pic').setValue(url);
                 }
                 else {
                     alert('Could not upload file.');
@@ -264,12 +264,12 @@ export class CreateCommunityComponent implements OnInit {
     }
 
     setPicUrl(url) {
-        this.fgCreateCommunity.get('pic').setValue(url);
+        this.fgCreateGroup.get('pic').setValue(url);
     }
 
 
     toggleAudience(audience: string) {
-        this.fgCreateCommunity.get('public').setValue(audience);
+        this.fgCreateGroup.get('public').setValue(audience);
     }
 
     autosizeTextarea(event: any, el: any) {

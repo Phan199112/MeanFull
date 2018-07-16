@@ -7,7 +7,7 @@ import {LoginComponent} from './login/login.component';
 import {SignInComponent} from './sign-in/sign-in.component';
 import {ProfileComponent} from './profile/profile.component';
 import {SettingsComponent} from './settings/settings.component';
-import {CreateCommunityComponent} from './create-community/create-community.component';
+import {CreateGroupComponent} from './create-group/create-group.component';
 import {SearchPageComponent} from './search-page/search-page.component';
 import {HomePageComponent} from './home-page/home-page.component';
 
@@ -21,7 +21,7 @@ const APP_ROUTES: Routes = [
     {path: 'profile/:id', component: ProfileComponent},
     {path: 'profile/:id/:subsection', component: ProfileComponent},
     {path: 'settings', component: SettingsComponent},
-    {path: 'createGroup', component: CreateCommunityComponent},
+    {path: 'createGroup', component: CreateGroupComponent},
     {path: 'searchresults', component: SearchPageComponent}
 ];
 

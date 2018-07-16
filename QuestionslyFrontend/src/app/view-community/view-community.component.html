@@ -13,7 +13,7 @@
 
 
             <div id="viewCommunityContainer">
-                
+
                 <div *ngIf="deleteWarning && !showEdit" class="aboutContainer fdColumn">
                     <h3 class="name" style="text-align: center">Are you sure you want to delete this group?</h3>
                     <div class="flex fjCenter" style="margin-top: 24px">
@@ -21,7 +21,7 @@
                         <button class="submitButton redBtn" (click)="deleteCommunity()">Delete</button>
                     </div>
                 </div>
-                
+
 
                 <!-- Info header -->
                 <div class="aboutContainer" *ngIf="!showEdit">
@@ -31,7 +31,7 @@
                         <h5 class="description">{{data.description ? data.description : "No Description."}}</h5>
                         <h5 *ngIf="(data.public || data.ismember) && data.members" class="description smallDesc">{{data.memberCount}} {{data.memberCount > 1 ? "Members" : "Member"}}</h5>
                     </div>
-                    
+
                     <div class="profileMenu">
 
                         <div ngbDropdown placement="bottom-right" class="mouseChangeToHand" *ngIf="loggedin">
@@ -41,8 +41,8 @@
                             <div ngbDropdownMenu aria-labelledby="community-menu">
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="toggleEdit()">Edit</a>
                                 <a class="dropdown-item" *ngIf="!data.ismember && status != '2'" (click)="joinCommunity(id)">Join Group</a>
-                                <a class="dropdown-item" *ngIf="!data.public && !data.ismember && !data.isPending" (click)="joinCommunity(id)">Request to Join</a> 
-                                <a class="dropdown-item" *ngIf="data.isPending && !data.public">Request Pending</a> 
+                                <a class="dropdown-item" *ngIf="!data.public && !data.ismember && !data.isPending" (click)="joinCommunity(id)">Request to Join</a>
+                                <a class="dropdown-item" *ngIf="data.isPending && !data.public">Request Pending</a>
                                 <a class="dropdown-item" *ngIf="data.ismember && !data.isadmin" (click)="leaveCommunity(id)">Leave Group</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="inviteToCommunity(id)">Invite others to join</a>
                                 <a class="dropdown-item" *ngIf="data.isadmin" (click)="toggleDeleteWarning()">Delete Group</a>
@@ -77,10 +77,10 @@
                     <div class="flexContainer" style="justify-content: center; padding-bottom: 0;">
                         <h3 class="description" style="margin-bottom: 25px">Edit Group</h3>
                     </div>
-                    
-                    
-                    <form id="main-form" [formGroup]="fgCreateCommunity">
-                    
+
+
+                    <form id="main-form" [formGroup]="fgCreateGroup">
+
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Group Title</h6>
                             <div style="display: flex; align-items: center; width: 100%">
@@ -88,7 +88,7 @@
                                 <input class="niceTextInput" formControlName="title" autofocus />
                             </div>
                         </div>
-                    
+
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Description</h6>
                             <div style="display: flex; align-items: center; width: 100%">
@@ -96,33 +96,33 @@
                                 <textarea placeholder="Enter a short description.." class="niceTextAreaInput" formControlName="description" rows="1" #f (keydown)="autosizeTextarea($event, f)"></textarea>
                             </div>
                         </div>
-                    
-                    
+
+
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Privacy</h6>
                             <div style="display:flex; justify-content: flex-start;">
-                                <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
+                                <app-desc-switch-buttons [active]="fgCreateGroup.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
                                     (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
-                                <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
+                                <app-desc-switch-buttons [active]="fgCreateGroup.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
                                     (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
                             </div>
                         </div>
-                    
-                    
+
+
                         <!-- IMAGE START -->
                         <div class="flexContainer fdColumn faStart">
                             <h6 class="title firstTitle">Image</h6>
                             <div class="flex" style="align-items: center; width: 100%">
-                    
+
                                 <div id="uploadBtn">
                                     <label for="picFile" class="submitButton not">Upload</label>
                                     <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
                                 </div>
-                    
+
                                 <div>
                                     <p id="orText">or</p>
                                 </div>
-                    
+
                                 <div id="urlImage" class="input-group" style="width: 100%">
                                     <input type="text" formControlName="pic" #imgUrl class="form-control" placeholder="Enter an image URL">
                                     <div class="input-group-append">
@@ -131,24 +131,24 @@
                                         </button>
                                     </div>
                                 </div>
-                    
+
                                 <div style="margin-left: 12px">
-                                    <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
+                                    <img class="image" *ngIf="fgCreateGroup.get('pic').value !== ''" id="preview" [src]="fgCreateGroup.get('pic').value">
                                 </div>
                             </div>
-                    
-                    
+
+
                         </div>
                         <!-- IMAGE END -->
-                    
-                                       
+
+
                         <div class="flexContainer faStart fdColumn">
                             <h6 class="title firstTitle">Add Admins</h6>
                             <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
-                                <div [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}" class="tag-placeholder text-muted" (click)="showAdmins = true; focusTagInput(admins)">
+                                <div [ngClass]="{'d-none': showAdmins || fgCreateGroup.get('admins').value}" class="tag-placeholder text-muted" (click)="showAdmins = true; focusTagInput(admins)">
                                     Add your friends as admins
                                 </div>
-                                <tag-input #admins [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}" [onAdding]="transformName"
+                                <tag-input #admins [ngClass]="{'d-none': !showAdmins && fgCreateGroup.get('admins').value === null}" [onAdding]="transformName"
                                     [identifyBy]="'value'" [displayBy]="'display'" placeholder="@name" secondaryPlaceholder="@name" (onBlur)="showAdmins = false"
                                     [separatorKeyCodes]="[32, 13, 188]" formControlName="admins" [onlyFromAutocomplete]="true" id="admins">
                                     <tag-input-dropdown identifyBy="id" displayBy="name" [matchingFn]="nameMatching" [focusFirstElement]="true" [autocompleteItems]="friends">
@@ -160,10 +160,10 @@
                         <!-- <div class="flexContainer faStart fdColumn">
                             <h6 class="title firstTitle">Add Other Community Admins</h6>
                             <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
-                                <div [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}" class="tag-placeholder text-muted" (click)="showAdmins = true; focusTagInput(admins)">
+                                <div [ngClass]="{'d-none': showAdmins || fgCreateGroup.get('admins').value}" class="tag-placeholder text-muted" (click)="showAdmins = true; focusTagInput(admins)">
                                     Add your friends as admins
                                 </div>
-                                <tag-input #admins [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}" [onAdding]="transformName"
+                                <tag-input #admins [ngClass]="{'d-none': !showAdmins && fgCreateGroup.get('admins').value === null}" [onAdding]="transformName"
                                     [identifyBy]="'value'" [displayBy]="'display'" placeholder="@name" secondaryPlaceholder="@name" (onBlur)="showAdmins = false"
                                     [separatorKeyCodes]="[32, 13, 188]" formControlName="admins" [onlyFromAutocomplete]="true" id="admins">
                                     <tag-input-dropdown identifyBy="id" displayBy="name" [matchingFn]="nameMatching" [focusFirstElement]="true" [autocompleteItems]="friends">
@@ -171,11 +171,11 @@
                                 </tag-input>
                             </div>
                         </div> -->
-                    
+
 
                         <div class="flexContainer" style="justify-content: center">
-                            <button type="button" class="submitButton greyBtn" (click)="toggleEdit()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted" style="margin-right: 20px;">Cancel</button>
-                            <button type="button"  class="submitButton" (click)="updateCommunity()" [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Update</button>
+                            <button type="button" class="submitButton greyBtn" (click)="toggleEdit()" [disabled]="(fgCreateGroup.invalid && fgCreateGroup.wasChecked) || submitted" style="margin-right: 20px;">Cancel</button>
+                            <button type="button"  class="submitButton" (click)="updateCommunity()" [disabled]="(fgCreateGroup.invalid && fgCreateGroup.wasChecked) || submitted">Update</button>
                         </div>
 
                     </form>
@@ -215,9 +215,9 @@
         <div class="row">
             <div class="col">
                 <div id="friendsInput" [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showFriends == true}">
-                    <div 
+                    <div
                         [ngClass]="{'d-none': showFriends || inviteForm.get('friends').value}"
-                        class="tag-placeholder text-muted" 
+                        class="tag-placeholder text-muted"
                         (click)="showFriends = true; focusTagInput(admins)">
                         Names of your friends you want to invite
                     </div>
@@ -233,11 +233,11 @@
                         [separatorKeyCodes]="[32, 13, 188]"
                         formControlName="friends"
                         [onlyFromAutocomplete]="true">
-                        <tag-input-dropdown 
-                            identifyBy="id" 
-                            displayBy="name" 
-                            [matchingFn]="nameMatching" 
-                            [focusFirstElement]="true" 
+                        <tag-input-dropdown
+                            identifyBy="id"
+                            displayBy="name"
+                            [matchingFn]="nameMatching"
+                            [focusFirstElement]="true"
                             [autocompleteItems]="friends">
                         </tag-input-dropdown>
                     </tag-input>
@@ -248,7 +248,7 @@
         <p class="enrollLink center">{{autoEnrollLink}}</p>
         <div class="row" style="padding-top: 20px">
             <div class="col text-center">
-                <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>                    
+                <button type="button" class="btn btn-primary" (click)="c(true)">Send</button>
             </div>
         </div>
     </div>

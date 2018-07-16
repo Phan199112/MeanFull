@@ -1,7 +1,7 @@
 <div class="pageLayout">
     <h3 class="name qslyGray" style="margin-bottom: 25px">Create {{category.displayName}}</h3>
 
-    <form id="main-form" [formGroup]="fgCreateCommunity" class="container">
+    <form id="main-form" [formGroup]="fgCreateGroup" class="container">
 
         <div class="flexContainer fdColumn faStart">
             <h6 class="title firstTitle">Group Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
@@ -23,9 +23,9 @@
         <div class="flexContainer fdColumn faStart">
             <h6 class="title firstTitle">Privacy</h6>
             <div style="display:flex; justify-content: flex-start;">
-                <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
+                <app-desc-switch-buttons [active]="fgCreateGroup.get('public').value" [option]="true" [title]="'Public'" [description]="'Anyone can see the contents of this group'"
                     (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
-                <app-desc-switch-buttons [active]="fgCreateCommunity.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
+                <app-desc-switch-buttons [active]="fgCreateGroup.get('public').value" [option]="false" [title]="'Private'" [description]="'Only members can see the contents of this group'"
                     (selected)="toggleAudience($event)" formControlName="public"></app-desc-switch-buttons>
 
             </div>
@@ -58,7 +58,7 @@
             </div>
 
             <div class="flex" style="margin-top: 15px;">
-                <img class="image" *ngIf="fgCreateCommunity.get('pic').value !== ''" id="preview" [src]="fgCreateCommunity.get('pic').value">
+                <img class="image" *ngIf="fgCreateGroup.get('pic').value !== ''" id="preview" [src]="fgCreateGroup.get('pic').value">
             </div>
 
         </div>
@@ -73,14 +73,14 @@
             <h6 class="title firstTitle">Add Other Group Admins</h6>
             <div [ngClass]="{'tag-input-wrapper': true, 'form-control': true, 'active': showAdmins == true}">
                 <div
-                    [ngClass]="{'d-none': showAdmins || fgCreateCommunity.get('admins').value}"
+                    [ngClass]="{'d-none': showAdmins || fgCreateGroup.get('admins').value}"
                     class="tag-placeholder text-muted"
                     (click)="showAdmins = true; focusTagInput(admins)">
                     Add your friends as admins
                 </div>
                 <tag-input
                     #admins
-                    [ngClass]="{'d-none': !showAdmins && fgCreateCommunity.get('admins').value === null}"
+                    [ngClass]="{'d-none': !showAdmins && fgCreateGroup.get('admins').value === null}"
                     [onAdding]="transformName"
                     [identifyBy]="'value'"
                     [displayBy]="'display'"
@@ -107,7 +107,7 @@
             <button
                     class="submitButton"
                     (click)="checkSubmit()"
-                    [disabled]="(fgCreateCommunity.invalid && fgCreateCommunity.wasChecked) || submitted">Create!</button>
+                    [disabled]="(fgCreateGroup.invalid && fgCreateGroup.wasChecked) || submitted">Create!</button>
         </div>
 
 
