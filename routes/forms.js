@@ -292,10 +292,10 @@ module.exports = function(app, passport, manager, hashids) {
     // save new form
     app.post('/forms/create', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // input
-        var receivedData = req.body;
+        var receivedData = req.body;        
 
         var promisesToUploadMedia = [];
-        receivedData.questions.forEach(function (question) {
+        receivedData.forEach(function (question) {
             if (question.pic) {
                 if (question.pic.indexOf("questionsly") == -1) { // URL not already in our s3 bucket
                     promisesToUploadMedia.push(
@@ -322,12 +322,12 @@ module.exports = function(app, passport, manager, hashids) {
             FormModel.create(
                 {
                     userid: req.session.userid,
-                    questions: receivedData.questions,
-                    anonymous: receivedData.anonymous,
+                    questions: receivedData,
+                    anonymous: false,
                     hashtags: receivedData.hashtags,
                     categories: receivedData.categories,
-                    public: false,
-                    shared: false,
+                    public: true,
+                    shared: true,
                     resultsPublic: true,
                     expired: false,
                     activityEmailSent: false,
@@ -810,8 +810,7 @@ module.exports = function(app, passport, manager, hashids) {
         // this function retrieved the feed
         // limits to x posts
         // only public posts
-
-
+        
 
         // Get how many are viewed right now and add 12 to be post limit.
         // Skip over the first y - 12 posts

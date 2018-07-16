@@ -87,6 +87,7 @@ export class AskQuestionComponent implements OnInit {
   activateDimmer() {
     this.activeDimmer = true;
     $('.fBody, .cBody').css({'z-index': -2});
+    // $('nav').css({'z-index': 0});
   }
 
 
@@ -96,7 +97,7 @@ export class AskQuestionComponent implements OnInit {
     } else {
       this.activeDimmer = false;
       $('.fBody, .cBody').css({ 'z-index': 2 });
-      $('.cBody').css({ 'z-index': 1 });
+      $('.cBody, nav').css({ 'z-index': 1 });
     }
   }
 
