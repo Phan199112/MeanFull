@@ -21,7 +21,7 @@
         </h4>
 
         <h4 class="section-entry dim">
-            <a (click)="openCreateGroupModal()">
+            <a (click)="openCreateGroupModal(category)">
                 + Add {{category.displayNameShort}}
             </a>
         </h4>
@@ -29,5 +29,5 @@
 </div>
 
 <ng-template #createGroupModal let-c="close" let-d="dismiss">
-    <app-create-community></app-create-community>
+    <app-create-community [category]="createGroupCategory"></app-create-community>
 </ng-template>

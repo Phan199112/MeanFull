@@ -9,11 +9,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class NewSidebarComponent implements OnInit {
 
-    @Input() activeGroup: boolean;
+    @Input() activeGroup: string;
     @ViewChild('createGroupModal') createGroupModal;
 
     public categories: Array<any> = [];
     public orgName = '';
+    public createGroupCategory: any;
 
     constructor(
         private http: Http,
@@ -22,26 +23,28 @@ export class NewSidebarComponent implements OnInit {
 
     }
 
-  ngOnInit() {
-    this.http.get('/group/mylist')
-        .toPromise()
-        .then(response => {
-            const responseJson = response.json();
+    ngOnInit() {
+        this.http.get('/group/mylist')
+            .toPromise()
+            .then(response => {
+                const responseJson = response.json();
 
-            for (const category of Object.keys(responseJson.categories)) {
-                this.categories.push(responseJson.categories[category]);
-            }
-        });
-    this.http.get('/organizations/mine')
-        .toPromise()
-        .then(response => {
-            const responseJson = response.json();
+                for (const category of Object.keys(responseJson.categories)) {
+                    this.categories.push(responseJson.categories[category]);
+                }
+            });
+        this.http.get('/organizations/mine')
+            .toPromise()
+            .then(response => {
+                const responseJson = response.json();
 
-            this.orgName = responseJson.organization.name;
-        });
-  }
+                this.orgName = responseJson.organization.name;
+            });
+    }
 
-    openCreateGroupModal() {
+    // category is an object from the backend
+    openCreateGroupModal(category: any) {
+        this.createGroupCategory = category;
         this.modalService.open(this.createGroupModal);
     }
 

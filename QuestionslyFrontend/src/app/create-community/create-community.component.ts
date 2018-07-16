@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {Http} from '@angular/http';
 import { Router } from '@angular/router';
 import {Observable} from 'rxjs';
@@ -13,7 +13,9 @@ import {UserService} from '../user.service';
     styleUrls: ['./create-community.component.scss'],
     providers: [FormService, UserService]
 })
-export class CreateCommunityComponent  {
+export class CreateCommunityComponent implements OnInit {
+
+    @Input() category: any;
 
     fgCreateCommunity: FormGroup;
     submissionfailed = false;
