@@ -15,6 +15,7 @@ var GroupSchema = new Schema({
     members: [{type: String}],
     requests: [{type: String}],
     organization: String,
+    session: String,
 });
 
 GroupSchema.plugin(random, { path: 'r' });

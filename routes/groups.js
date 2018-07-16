@@ -32,6 +32,12 @@ module.exports = function(app, passport, manager, hashids) {
             return;
         }
 
+        // Determine session -- only applies when category=class
+        var session = null;
+        if (receivedData.category == 'class') {
+            session = receivedData.forCurrentSession ? 'summer2018' : 'fall2018';
+        }
+
         if (receivedData.admins != null) {
             for (var i = 0; i < receivedData.admins.length; i++) {
                 // save value
@@ -45,6 +51,7 @@ module.exports = function(app, passport, manager, hashids) {
         GroupModel.create(
             {
                 adminuserid: [req.session.userid],
+                members: [req.session.userid],
                 title: receivedData.title,
                 category: receivedData.category,
                 organization: req.session.user.organization,
@@ -53,6 +60,7 @@ module.exports = function(app, passport, manager, hashids) {
                 pic: receivedData.pic,
                 description: receivedData.description,
                 timestamp: Date.now(),
+                session: session,
             },
             function(err, k) {
                 if (err) {

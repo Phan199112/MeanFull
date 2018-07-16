@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validators} from "@angular/forms";
-
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-desc-switch-buttons',
@@ -10,10 +9,10 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validators} from
 })
 export class DescriptionSwitchButtonsComponent {
     @Input() title: string;
-    @Input() description: string;    
+    @Input() description: string;
     @Input() option: string;
     @Input() active: string;
-    @Output() selected : EventEmitter<string> = new EventEmitter<string> ();
+    @Output() selected: EventEmitter<string> = new EventEmitter<string> ();
     _onChange: (value: any) => void;
 
     constructor() {
@@ -21,14 +20,14 @@ export class DescriptionSwitchButtonsComponent {
 
     writeValue(value: any) {}
 
-    registerOnChange(fn: (value:any) => void) {
+    registerOnChange(fn: (value: any) => void) {
         this._onChange = fn;
     }
 
-    registerOnTouched(){}
+    registerOnTouched() {}
 
     toggle(newType: string) {
-        this.selected.emit(this.option);        
+        this.selected.emit(this.option);
         this._onChange(newType);
     }
 }
