@@ -144,7 +144,11 @@ module.exports = function(app, passport, manager, hashids) {
                                 }
                             });
                         }
-                        res.json({ status: 1, id: hashids.encodeHex(k._id) });
+                        res.json({
+                            status: 1,
+                            id: hashids.encodeHex(k._id),
+                            shareToken: commfunctions.getGroupShareToken(k),
+                        });
                         
                     }
 

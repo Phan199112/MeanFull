@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 var GroupModel = require('../db.models/group.model');
 
 exports.getGroupCategories = function () {
@@ -100,4 +102,10 @@ exports.groupAdmin = function groupAdmin(x,y) {
             }
         });
     });
+};
+
+exports.getGroupShareToken = function (group) {
+    shasum = crypto.createHash('md5');
+    shasum.update(group._id + ':' + group.timestamp);
+    return shasum.digest('hex').substring(0, 16);
 };

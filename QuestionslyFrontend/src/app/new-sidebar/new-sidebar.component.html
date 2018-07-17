@@ -12,7 +12,8 @@
     <div *ngFor="let category of categories" class="group-section">
         <h4 class="section-title">{{category.displayNamePlural}}</h4>
 
-            <a *ngFor="let group of category.groups" class="section-entry" [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/']" [queryParams]="{groupid: group.id}">
+            <a *ngFor="let group of category.groups" class="section-entry"
+                [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/']" [queryParams]="{group: group.id}">
                 {{group.title}}
             </a>
 

@@ -60,7 +60,6 @@ export class CreateGroupComponent implements OnInit {
     }
 
     checkSubmit() {
-        console.log('check subnit');
         this.setAsTouched(this.fgCreateGroup);
         if (!this.fgCreateGroup.invalid) {
             this.submitted = true;
@@ -77,9 +76,11 @@ export class CreateGroupComponent implements OnInit {
 
         this.http.post('/group/save', data).toPromise()
             .then(response => {
-                if (response.json().status === 1) {
-                    this.shareLink = '/?groupid=' + response.json().id + ';' + 'autojoineie';
-                    this.newGroupLink = {queryParams: {'groupid': response.json().id}};
+                const responseJson = response.json();
+
+                if (responseJson.status === 1) {
+                    this.shareLink = '/?group=' + responseJson.id + ';' + 't=' + responseJson.shareToken;
+                    this.newGroupLink = {queryParams: {'group': responseJson.id}};
                 } else {
                     this.submissionfailed = true;
                 }

@@ -39,7 +39,7 @@
 
     <div class="flexContainer fdColumn faStart" *ngIf="shareLink">
         <h6 class="title firstTitle">Share Link</h6>
-        <p>Share this link with anyone who should join the {{category.displayName}}:</p>
+        <p>Share this link with anyone who should join the {{category.displayName.toLowerCase()}}:</p>
         <p><a [href]="shareLink">https://questionsly.herokuapp.com{{shareLink}}</a></p>
 
         <div id="buttons" class="flexContainer" style="justify-content: center">

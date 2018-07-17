@@ -22,7 +22,7 @@ export class HomePageComponent implements OnInit {
         this.isLoggedIn = this.userService.getUser() !== 0;
 
         this.route.queryParams.subscribe(params => {
-            this.viewGroupId = params.groupid;
+            this.viewGroupId = params.group;
             this.viewFilter = params.filter;
         });
     }
