@@ -1,9 +1,13 @@
 <div class="pageLayout">
-    <h3 class="name qslyGray" style="margin-bottom: 25px">Create {{category.displayName}}</h3>
+    <h3 class="name qslyGray" *ngIf="!shareLink">Create {{category.displayName}}</h3>
+    <h3 class="name qslyGray" *ngIf="shareLink">{{category.displayName}} Created</h3>
 
-    <form id="main-form" [formGroup]="fgCreateGroup" class="container">
+    <form id="main-form" [formGroup]="fgCreateGroup" class="container" *ngIf="!shareLink">
         <div class="flexContainer fdColumn faStart">
-            <h6 class="title firstTitle">Group Title <span class="valError" *ngIf="errors.title">*The title cannot be empty.</span></h6>
+            <h6 class="title firstTitle">
+                {{category.displayNameShort}} Name
+                <span class="valError" *ngIf="fgCreateGroup.controls['title'].invalid && fgCreateGroup.controls['title'].touched">*The name cannot be empty.</span>
+            </h6>
             <div style="display: flex; align-items: center; width: 100%">
                 <label style="margin-right: 10px; color: #CCC; margin-bottom: 0px;">-</label>
                 <input class="niceTextInput qslyGray" formControlName="title" autofocus />
@@ -22,13 +26,24 @@
             </div>
         </div>
 
-        <div id="buttons" *ngIf="!visitbutton" class="flexContainer" style="justify-content: center">
+        <div id="buttons" class="flexContainer" style="justify-content: center">
             <button
                     class="submitButton"
-                    (click)="checkSubmit()"
-                    [disabled]="(fgCreateGroup.invalid && fgCreateGroup.touched) || submitted">Create!</button>
+                    (click)="checkSubmit()">Create!</button>
         </div>
 
-        <p class="valError" style="text-align: center" *ngIf="errors.title">Uh oh, there has been an error creating the group. Check for errors above.</p>
+        <p class="valError" style="text-align: center" *ngIf="submissionfailed">
+            Error, please try again.
+        </p>
     </form>
+
+    <div class="flexContainer fdColumn faStart" *ngIf="shareLink">
+        <h6 class="title firstTitle">Share Link</h6>
+        <p>Share this link with anyone who should join the {{category.displayName}}:</p>
+        <p><a [href]="shareLink">https://questionsly.herokuapp.com{{shareLink}}</a></p>
+
+        <div id="buttons" class="flexContainer" style="justify-content: center">
+            <button class="submitButton" (click)="goToNewGroup()">Go to {{category.displayName}}</button>
+        </div>
+    </div>
 </div>

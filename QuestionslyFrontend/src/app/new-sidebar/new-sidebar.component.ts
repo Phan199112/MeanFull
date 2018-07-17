@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized } from '@angular/router';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -19,6 +20,7 @@ export class NewSidebarComponent implements OnInit {
     constructor(
         private http: Http,
         private modalService: NgbModal,
+        private router: Router,
     ) {
 
     }
@@ -45,7 +47,12 @@ export class NewSidebarComponent implements OnInit {
     // category is an object from the backend
     openCreateGroupModal(category: any) {
         this.createGroupCategory = category;
-        this.modalService.open(this.createGroupModal);
+        const ref = this.modalService.open(this.createGroupModal);
+        this.router.events
+            .filter(event => event instanceof NavigationStart)
+            .subscribe((event: NavigationStart) => {
+                ref.close();
+            });
     }
 
 }

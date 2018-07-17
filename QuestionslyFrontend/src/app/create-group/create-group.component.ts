@@ -18,7 +18,8 @@ export class CreateGroupComponent implements OnInit {
     fgCreateGroup: FormGroup;
     submissionfailed = false;
     submitted = false;
-    visitbutton = false;
+    shareLink = '';
+    newGroupLink: any;
     commurl: String;
     errors: any = {
         title: false
@@ -59,10 +60,9 @@ export class CreateGroupComponent implements OnInit {
     }
 
     checkSubmit() {
+        console.log('check subnit');
         this.setAsTouched(this.fgCreateGroup);
-        if (this.fgCreateGroup.invalid) {
-            this.errors.title = true;
-        } else {
+        if (!this.fgCreateGroup.invalid) {
             this.submitted = true;
             this.submitForm();
         }
@@ -70,25 +70,19 @@ export class CreateGroupComponent implements OnInit {
 
     submitForm() {
         this.fgCreateGroup.get('category').setValue(this.category.category);
-        this.postForm();
-    }
 
-    postForm() {
         let date = new Date();
         let data = this.createcommunityData();
         console.log("posted", data);
 
         this.http.post('/group/save', data).toPromise()
             .then(response => {
-                if (response.json().status == 1) {
-                    this.commurl = response.json().id;
-                    this.visitbutton = true;
-                    this.router.navigate(['/', {queryParams: {groupId: this.commurl}}]);
-
+                if (response.json().status === 1) {
+                    this.shareLink = '/?groupid=' + response.json().id + ';' + 'autojoineie';
+                    this.newGroupLink = {queryParams: {'groupid': response.json().id}};
                 } else {
                     this.submissionfailed = true;
                 }
-
             })
             .catch(error => function (error) {
                 this.submissionfailed = true;
@@ -106,6 +100,10 @@ export class CreateGroupComponent implements OnInit {
         }
 
         return data;
+    }
+
+    goToNewGroup() {
+        this.router.navigate(['/'], this.newGroupLink);
     }
 
     toggleForCurrentSession(forCurrentSession: string) {
