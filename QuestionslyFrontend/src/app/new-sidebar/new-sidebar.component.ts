@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized } from '@angular/router';
+import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -21,20 +21,25 @@ export class NewSidebarComponent implements OnInit {
         private http: Http,
         private modalService: NgbModal,
         private router: Router,
+        private route: ActivatedRoute,
     ) {
 
     }
 
     ngOnInit() {
-        this.http.get('/group/mylist')
+        this.route.queryParams.subscribe(params => {
+            this.http.get('/group/mylist')
             .toPromise()
             .then(response => {
                 const responseJson = response.json();
 
+                this.categories = [];
                 for (const category of Object.keys(responseJson.categories)) {
                     this.categories.push(responseJson.categories[category]);
                 }
             });
+        });
+
         this.http.get('/organizations/mine')
             .toPromise()
             .then(response => {
