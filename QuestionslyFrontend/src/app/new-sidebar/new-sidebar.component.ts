@@ -10,12 +10,14 @@ import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 })
 export class NewSidebarComponent implements OnInit {
 
+    public static categories: Array<any> = [];
+    public static orgName = '';
+    public static createGroupCategory: any;
+
+    public classReference = NewSidebarComponent;
+
     @Input() activeGroup: string;
     @ViewChild('createGroupModal') createGroupModal;
-
-    public categories: Array<any> = [];
-    public orgName = '';
-    public createGroupCategory: any;
 
     constructor(
         private http: Http,
@@ -27,15 +29,15 @@ export class NewSidebarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.route.queryParams.subscribe(params => {
+        this.route.params.subscribe(params => {
             this.http.get('/group/mylist')
             .toPromise()
             .then(response => {
                 const responseJson = response.json();
 
-                this.categories = [];
+                NewSidebarComponent.categories = [];
                 for (const category of Object.keys(responseJson.categories)) {
-                    this.categories.push(responseJson.categories[category]);
+                    NewSidebarComponent.categories.push(responseJson.categories[category]);
                 }
             });
         });
@@ -45,13 +47,13 @@ export class NewSidebarComponent implements OnInit {
             .then(response => {
                 const responseJson = response.json();
 
-                this.orgName = responseJson.organization.name;
+                NewSidebarComponent.orgName = responseJson.organization.name;
             });
     }
 
     // category is an object from the backend
     openCreateGroupModal(category: any) {
-        this.createGroupCategory = category;
+        NewSidebarComponent.createGroupCategory = category;
         const ref = this.modalService.open(this.createGroupModal);
         this.router.events
             .filter(event => event instanceof NavigationStart)

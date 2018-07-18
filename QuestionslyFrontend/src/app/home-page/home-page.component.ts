@@ -26,51 +26,37 @@ export class HomePageComponent implements OnInit {
         this.isLoggedIn = this.userService.getUser() !== 0;
         if (!this.isLoggedIn) {
             // Save the share token in case user logs in and then comes back
-            HomePageComponent.shareTokenInfo = this.getFixedQueryParams(this.route.snapshot.queryParams);
+            HomePageComponent.shareTokenInfo = [this.route.snapshot.params.groupid, this.route.snapshot.queryParams.t];
             return;
         }
 
+        this.route.params.subscribe(params => {
+            this.viewGroupId = params.groupid;
+            this.viewFilter = params.subsection;
+        });
         this.route.queryParams.subscribe(params => {
-            params = this.getFixedQueryParams(params);
-            this.viewGroupId = params.group;
-            this.viewFilter = params.filter;
-
-            this.consumeGroupShareTokens(params);
+            this.consumeGroupShareTokens([this.route.snapshot.params.groupid, this.route.snapshot.queryParams.t]);
         });
     }
 
-    consumeGroupShareTokens(queryParams: any) {
+    consumeGroupShareTokens(shareTokenInfo: any) {
         // Take the token from the URL if it's there; or fallback to the params we previously saved
-        const tokenInfo = queryParams.t ? queryParams : HomePageComponent.shareTokenInfo;
+        const tokenInfo = shareTokenInfo[1] ? shareTokenInfo : HomePageComponent.shareTokenInfo;
         HomePageComponent.shareTokenInfo = null;
 
         // Use token
         if (tokenInfo) {
             this.http
-                .post('/group/accept', {commid: tokenInfo.group, shareToken: tokenInfo.t}).toPromise()
+                .post('/group/accept', {commid: tokenInfo[0], shareToken: tokenInfo[1]}).toPromise()
                 .then(response => {
                     const responseJson = response.json();
 
                     if (responseJson.status === 1) {
-                        // Pull token out of URL -- we are done with it
-                        this.router.navigate(['/'], {queryParams: {group: queryParams.group, filter: queryParams.filter}});
+                        // Go to group and/or remove share token from URL
+                        this.router.navigate(['/', responseJson.category, tokenInfo[0]], {queryParams: {}});
                     }
                 })
                 .catch (error => console.log(error));
         }
-    }
-
-    // When pasting a URL with query params into the browser, we are getting:
-    // {group: "XYZ;t=123"}
-    // When we should be getting:
-    // {group: "XYZ", t: "123"}
-    getFixedQueryParams(queryParams: any) {
-        if (queryParams.group && queryParams.group.indexOf(';t=') > 0) {
-            return {
-                group: queryParams.group.split(';t=')[0],
-                t: queryParams.group.split(';t=')[1],
-            };
-        }
-        return queryParams;
     }
 }

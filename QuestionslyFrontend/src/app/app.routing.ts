@@ -13,6 +13,11 @@ import {HomePageComponent} from './home-page/home-page.component';
 
 const APP_ROUTES: Routes = [
     {path: '', pathMatch: 'full', component: HomePageComponent},
+    {path: 'class/:groupid', component: HomePageComponent},
+    {path: 'class/:groupid/:subsection', component: HomePageComponent},
+    {path: 'studentorg/:groupid', component: HomePageComponent},
+    {path: 'studentorg/:groupid/:subsection', component: HomePageComponent},
+
     {path: 'createForm', component: CreateFormComponent},
     {path: 'shareForm', component: ShareFormComponent},
     {path: 'takeForm/:id', component: TakeFormComponent},

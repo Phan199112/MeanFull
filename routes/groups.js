@@ -908,7 +908,7 @@ module.exports = function(app, passport, manager, hashids) {
                     if (err) {
                         res.json({status: 0});
                     } else {
-                        res.json({ status: 1 });
+                        res.json({ status: 1, category: group.category });
                         EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
                         });
                     }
