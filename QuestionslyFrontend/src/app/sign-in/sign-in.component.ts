@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
+import { MygroupsService } from '../mygroups.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -31,6 +32,7 @@ export class SignInComponent implements OnInit {
         private router: Router,
         private fb: FormBuilder,
         private userService: UserService,
+        private myGroupsService: MygroupsService,
     ) { }
 
     ngOnInit() {
@@ -154,6 +156,7 @@ export class SignInComponent implements OnInit {
                                 (data) => {
                                     if (data.status === 1) {
                                         this.userService.acknowledgeLogin(data);
+                                        this.myGroupsService.acknowledgeUserOrGroupChange();
                                         this.router.navigate(['/']).then(function () { /* location.reload(true); shouldn't be needed */ });
                                     } else {
                                         alert('Error, please try again');
@@ -230,6 +233,7 @@ export class SignInComponent implements OnInit {
                     const responseJson = response.json();
 
                     this.userService.acknowledgeLogin(responseJson);
+                    this.myGroupsService.acknowledgeUserOrGroupChange();
                     this.router.navigate(['/']);
                 })
                 .catch (error => {

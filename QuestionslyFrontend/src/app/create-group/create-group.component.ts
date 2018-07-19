@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import 'rxjs/add/observable/of';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {FormService} from '../form.service';
+import { MygroupsService } from '../mygroups.service';
 
 @Component({
     selector: 'app-create-group',
@@ -29,6 +30,7 @@ export class CreateGroupComponent implements OnInit {
         private fb: FormBuilder,
         private http: Http,
         private router: Router,
+        private myGroupsService: MygroupsService,
     ) {
 
     }
@@ -79,6 +81,7 @@ export class CreateGroupComponent implements OnInit {
                 const responseJson = response.json();
 
                 if (responseJson.status === 1) {
+                    this.myGroupsService.acknowledgeUserOrGroupChange();
                     this.shareLink = '/' + this.category.category + '/' + responseJson.id + '?t=' + responseJson.shareToken;
                     this.newGroupLink = ['/', this.category.category, responseJson.id];
                 } else {

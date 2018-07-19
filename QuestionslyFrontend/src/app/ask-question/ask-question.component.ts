@@ -8,6 +8,7 @@ import { NumberQuestionFormComponent } from '../QuestionForms/number-question-fo
 import * as $ from 'jquery';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MygroupsService } from '../mygroups.service';
 
 @Component({
   selector: 'app-ask-question',
@@ -43,20 +44,25 @@ export class AskQuestionComponent implements OnInit {
   @ViewChild('nc') nc: NumberQuestionFormComponent;
 
 
-  constructor(
-    private http: Http,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.filteredGroups = this.group.valueChanges
-      .pipe(
-        startWith(''),
-        map(g => g ? this._filterGroups(g) : this.groups.slice())
-      );
+    constructor(
+        private http: Http,
+        private router: Router,
+        private route: ActivatedRoute,
+        private myGroupsService: MygroupsService,
+    ) {
+        this.myGroupsService.onChange(data => {
+            this.groups = [];
+            data.g.forEach(function (group) {
+                this.groups.push(group.title);
+            }.bind(this));
 
-    console.log('TYPEOF: ', typeof this.filteredGroups);
-    
-   }
+            this.filteredGroups = this.group.valueChanges
+            .pipe(
+                startWith(''),
+                map(g => g ? this._filterGroups(g) : this.groups.slice())
+            );
+        });
+    }
 
   private _filterGroups(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -73,10 +79,10 @@ export class AskQuestionComponent implements OnInit {
     $(window.document).on('click', function(event) {
       if ($(event.target).parents('.askbox').length) {
         activateDimmer();
-        event.stopPropagation();        
+        event.stopPropagation();
       } else {
         event.stopPropagation();
-        
+
         deactivateDimmer();
       }
     });

@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
+import { MygroupsService } from '../mygroups.service';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -23,23 +24,17 @@ export class NewSidebarComponent implements OnInit {
         private http: Http,
         private modalService: NgbModal,
         private router: Router,
-        private route: ActivatedRoute,
+        private myGroupsService: MygroupsService,
     ) {
 
     }
 
     ngOnInit() {
-        this.route.params.subscribe(params => {
-            this.http.get('/group/mylist')
-            .toPromise()
-            .then(response => {
-                const responseJson = response.json();
-
-                NewSidebarComponent.categories = [];
-                for (const category of Object.keys(responseJson.categories)) {
-                    NewSidebarComponent.categories.push(responseJson.categories[category]);
-                }
-            });
+        this.myGroupsService.onChange(data => {
+            NewSidebarComponent.categories = [];
+            for (const category of Object.keys(data.c)) {
+                NewSidebarComponent.categories.push(data.c[category]);
+            }
         });
 
         this.http.get('/organizations/mine')
