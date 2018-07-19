@@ -128,11 +128,11 @@ var GroupModel = require('./db.models/group.model');
 var EmailStoreModel = require('./db.models/emailStore.model');
 var NetworkEdgesModel = require('./db.models/networkedges.model');
 
-
-getSearchAndTags();
-
-// crons for tags
-cron.schedule('*/1 * * * *', getSearchAndTags);
+// July 2018: this needs some re-work
+//getSearchAndTags();
+//
+// // crons for tags
+// cron.schedule('*/1 * * * *', getSearchAndTags);
 
 function getSearchAndTags() {
     var tags = [];
