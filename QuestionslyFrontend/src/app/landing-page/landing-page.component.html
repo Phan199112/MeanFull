@@ -2,11 +2,11 @@
   <div class="container">
     <nav>
       <!-- <img src="https://www.questionsly.com/images/logo.png" height="60px"> -->
-      <h2 class="logo-text">Questionsly</h2>
+    <a [routerLink]="['/']" class="logo-text">Questionsly</a>
       <a class="nav-tab" [routerLink]="['/sign-in']">Login</a>
     </nav>
   </div>
-    <div class="container">
+    <div class="container content">
         <div class="col-50">
             <h1>Better Data,<br/>Better Decisions.</h1>
             <h4>Bring your organization together to make better decisions, faster..</h4>
@@ -19,8 +19,8 @@
                 </div>
             </form>
         </div>
-        <div class="col-50">
-            <img src="/assets/images/school.png">
+        <div class="col-50 mobileFirst">
+            <img class="hero-img" src="/assets/images/school.png">
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 <div *ngIf="activeDimmer" class="dim-overlay"></div>
 
 <div *ngIf="!preview" class="fullwidth askbox">
+    <img id="deleteCross" src="/assets/images/delete-button.svg" />
     <div class="summary-container" *ngIf="questionsContainer.length > 0">
         <div class="prev-item"></div>
         <p class="question-count prev-item">Added {{questionsContainer.length}} {{questionsContainer.length === 1 ? 'Question' : 'Questions'}}</p>
@@ -15,10 +16,11 @@
         <app-number-question-form #nc *ngIf="questionType == 'number'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-number-question-form>
     </div>
     <div class="toolbar" [ngClass]='{active: selection}'>
-        <a class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question&nbsp;Type</a>
-        <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add&nbsp;Picture</a>
+        <a class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question Type</a>
+        <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add Picture</a>
+        <a class="tb-option"  [ngClass]='{active: selection == "groups" && isMobile }' (click)="toolbarSelect('groups')">Share with&nbsp;Groups</a>
 
-        <mat-form-field class="groups-input">
+        <mat-form-field class="groups-input" *ngIf="!isMobile">
             <input type="text" placeholder="Share with a group" aria-label="Number" matInput [formControl]="group" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let g of filteredGroups | async" [value]="g">
@@ -27,10 +29,14 @@
             </mat-autocomplete>
         </mat-form-field>
 
+
+
         <!-- <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" /> -->
         <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="getData('multiplechoice')">Add&nbsp;Question</a>
+
     </div>
-    
+
+
     <div *ngIf="selection == 'question'" class="selection-menu">
         <a class="tb-option sub active" (click)="questionSelect('shortanswer')" [ngClass]="{active: questionType == 'shortanswer'}" style="margin-left: 0">Short Answer</a>
         <a class="tb-option sub" (click)="questionSelect('multiplechoice')" [ngClass]="{active: questionType == 'multiplechoice'}">Multiple Choice</a>
@@ -72,6 +78,17 @@
                     </div>
         <!-- IMAGE END -->
     </div>
+
+    <div class="toolbar mobileGroup" *ngIf="isMobile && selection == 'groups'">
+        <mat-form-field class="groups-input">
+            <input type="text" placeholder="Share with a group" aria-label="Number" matInput [formControl]="group" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let g of filteredGroups | async" [value]="g">
+                    {{g}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
 </div>
 
 <div *ngIf="preview" class="fullwidth askbox">
@@ -102,6 +119,8 @@
 
             <!-- Number -->
             <p *ngIf="q.kind == 'Number' && q.boundaries" class="number-boundary">Answer must lie within {{q.lowerBoundary}} and {{q.upperBoundary}}</p>
+
+            <!-- Rating -->
 
 
         </div>

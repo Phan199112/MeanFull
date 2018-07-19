@@ -30,6 +30,7 @@ export class AskQuestionComponent implements OnInit {
   title: string = '';
   addTitle: boolean = false;
   group: FormControl = new FormControl();
+  isMobile: boolean = true;
   kindsWithOptions: string[] = ["Multiple Choice", "Checkboxes", "Drop-down", "Rank"];
   alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
   groups: string[] = ['Class 1', 'Class 2', 'Class 3'];
@@ -145,6 +146,7 @@ export class AskQuestionComponent implements OnInit {
     data.required = true;
     data.pic = this.pic;
     this.questionsContainer.push(data);
+    this.questionType = 'shortanswer';
     this.pic = '';
     console.log(data);
   }

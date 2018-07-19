@@ -15,17 +15,33 @@
 }
 
 #main-container {
-    padding: 0 64px;
+    // padding: 0 64px;
     padding-top: 120px;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+        padding-top: 100px;
+    }
 }
 
 .feed-column {
     width: 100%;
-    max-width: 680px;
+    max-width: 560px;
 }
 
 #sidebarPlaceholder {
     min-width: 216px;
     height: 100vh;
-    background: yellow;
+    background: #28ab64;
+    
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+.fullMobile {
+    @media (max-width: 768px) {
+        width: 100%;
+        order: -1;
+    }
 }

@@ -14,6 +14,7 @@ export class NewSidebarComponent implements OnInit {
     public static categories: Array<any> = [];
     public static orgName = '';
     public static createGroupCategory: any;
+    open: boolean = false;
 
     public classReference = NewSidebarComponent;
 
@@ -55,6 +56,11 @@ export class NewSidebarComponent implements OnInit {
             .subscribe((event: NavigationStart) => {
                 ref.close();
             });
+    }
+
+
+    toggleSidebar(val: boolean) {
+        this.open = !this.open;
     }
 
 }

@@ -7,6 +7,12 @@
     border-radius: 4px;
     padding-bottom: 24px;
     z-index: -2;
+    margin-bottom: 16px;
+
+    @media (max-width: 768px) {
+        order: -1;
+        width: 100%;
+    }
 }
 
 .title {
