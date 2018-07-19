@@ -9,7 +9,7 @@
                 <app-ask-question (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
                 <app-feed-list #feedList></app-feed-list>
             </div>
-            <app-member-list style="z-index: -2;"></app-member-list>
+            <app-member-list [activeGroup]="viewGroupId" style="z-index: -2;"></app-member-list>
         </div>
     </div>
 </div>

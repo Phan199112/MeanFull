@@ -589,9 +589,50 @@ module.exports = function(app, passport, manager, hashids) {
                 });
     });
 
-    app.post('/group/members', function(req,res) {
-        const comm = req.body.community;
+    app.get('/group/:id/members', manager.ensureLoggedIn('/users/login'), usersfunctions.ensureAuthenticatedUserInSession, function(req,res) {
+        var users = [];
+        var getPromiseToPutUserInList = function(userId) {
+            return new Promise(function(resolve, reject){
+                UserModel.findById(userId, function (err, user) {
+                    if (user) {
+                        users.push(user);
+                    }
+                    resolve();
+                });
+            }).catch(function () {
+            });
+        };
 
+        GroupModel.findById(hashids.decodeHex(req.params.id), function (err, group) {
+            // Security check
+            if (group && group.organization != req.session.user.organization) {
+                res.json({status: 0, x: group.organization, y: req.session.user.organization});
+                return;
+            }
+
+            var promises = [];
+            if (group) {
+                group.members.forEach(function(memberId) {
+                    promises.push(getPromiseToPutUserInList(memberId));
+                });
+            }
+
+            Promise.all(promises).then(function () {
+                var renderedUsers = [];
+                users.forEach(function (user) {
+                    renderedUsers.push({
+                        id: user._id,
+                        name: usersfunctions.getDisplayName(user),
+                        pic: usersfunctions.getProfilePic(user),
+                    });
+                });
+
+                res.json({
+                    status: 1,
+                    members: renderedUsers,
+                });
+            });
+        });
     });
 
     // list for feed

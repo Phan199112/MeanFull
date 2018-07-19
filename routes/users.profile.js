@@ -5,6 +5,7 @@ var NetworkEdgesModel = require('../db.models/networkedges.model');
 var GroupModel = require('../db.models/group.model');
 var DiscussionModel = require('../db.models/discussion.model');
 var math = require("../functions/math");
+var userfunctions = require('../functions/users');
 
 // expose this function to our app using module.exports
 module.exports = function(app, passport, manager, hashids) {
@@ -104,26 +105,20 @@ module.exports = function(app, passport, manager, hashids) {
 
 
 
-    app.get('/users/feedlist', function (req, res) {
+    app.get('/users/feedlist', manager.ensureLoggedIn('/users/login'), userfunctions.ensureAuthenticatedUserInSession, function (req, res) {
         // list for feed, provide 9 users
 
         // variables
         var loggedin = false;
         var usersdata = [];
-        loggedin = req.isAuthenticated();
+        loggedin = true;
 
         // mongoDB query
         new Promise(function(resolve, reject) {
             UserModel
             .find({
                 public: true,
-                // No generic gender pics, those don't look good
-                pic: {
-                    $nin: [
-                        'https://questionsly1.s3.amazonaws.com/Z9fJ4Q7sEdsGCjInkXvpJtnlKfmieFPGftrK8E3nJFCI9d7CXl.jpg',
-                        'https://questionsly1.s3.amazonaws.com/0y0PSn8KAPutNjxuyYpxLsW3sAbxiUsRUBHQxPdo6EICGeaxfv.jpg'
-                    ]
-                }
+                organization: req.session.user.organization,
             })
             .sort({ '_id': 'desc' })
             .limit(100)
