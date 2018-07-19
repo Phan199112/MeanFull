@@ -5,15 +5,15 @@
 
     <div class="group-section">
             <a class="section-entry" [ngClass]="{active: !activeGroup}" [routerLink]="['/']">
-                {{orgName}}
+                {{classReference.orgName}}
             </a>
     </div>
 
-    <div *ngFor="let category of categories" class="group-section">
+    <div *ngFor="let category of classReference.categories" class="group-section">
         <h4 class="section-title">{{category.displayNamePlural}}</h4>
 
             <a *ngFor="let group of category.groups" class="section-entry"
-                [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/']" [queryParams]="{group: group.id}">
+                [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]">
                 {{group.title}}
             </a>
 
@@ -24,5 +24,5 @@
 </div>
 
 <ng-template #createGroupModal let-c="close" let-d="dismiss">
-    <app-create-group [category]="createGroupCategory"></app-create-group>
+    <app-create-group [category]="classReference.createGroupCategory"></app-create-group>
 </ng-template>

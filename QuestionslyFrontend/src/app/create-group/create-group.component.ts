@@ -79,8 +79,8 @@ export class CreateGroupComponent implements OnInit {
                 const responseJson = response.json();
 
                 if (responseJson.status === 1) {
-                    this.shareLink = '/?group=' + responseJson.id + ';' + 't=' + responseJson.shareToken;
-                    this.newGroupLink = {queryParams: {'group': responseJson.id}};
+                    this.shareLink = '/' + this.category.category + '/' + responseJson.id + '?t=' + responseJson.shareToken;
+                    this.newGroupLink = ['/', this.category.category, responseJson.id];
                 } else {
                     this.submissionfailed = true;
                 }
@@ -104,7 +104,7 @@ export class CreateGroupComponent implements OnInit {
     }
 
     goToNewGroup() {
-        this.router.navigate(['/'], this.newGroupLink);
+        this.router.navigate(this.newGroupLink);
     }
 
     toggleForCurrentSession(forCurrentSession: string) {

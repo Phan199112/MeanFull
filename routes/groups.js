@@ -16,7 +16,7 @@ var emailfunctions 	= require("../functions/email");
 module.exports = function(app, passport, manager, hashids) {
 
     // save a new community
-    app.post('/group/save', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/group/save', manager.ensureLoggedIn('/users/login'), usersfunctions.ensureAuthenticatedUserInSession, function (req, res) {
         var receivedData =  req.body;
         var unhashedAdmins = [];
 
@@ -881,35 +881,40 @@ module.exports = function(app, passport, manager, hashids) {
 
     app.post('/group/accept', manager.ensureLoggedIn('/users/login'), function (req, res) {
         var commid = hashids.decodeHex(req.body.commid);
-        var memid = "";
-        
-        // Checks whether this is coming from the automatic local storage enroll or if someone is accepting someone into their community
-        if (req.body.memberid) {
-            // Admin accepting someone
-            memid = req.body.memberid;
-            var userId = hashids.decodeHex(memid);
-        } else {
-            // localstorage speical access
-            var userId = req.session.userid;
-        }
 
-        GroupModel.update(
-            {_id: commid, members: {$ne: userId}},
-            { $push: { members: userId }, $pull: { requests: memid } },
-            function (err, k) {
-                if (err) {
-                    res.json({status: 0})
-                } else {
-                    EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
-                        if (err) {
-                            res.json({ status: 0 });
-                        } else {
-                            res.json({ status: 1 });
-                        }
-                    });
-                }
+        GroupModel.findById(commid, function (err, group) {
+            var memid = "";
+            var userId;
+
+            if (err || !group) {
+                res.json({status: 0});
+                return;
+            } else if (req.body.memberid) {
+                // Admin accepting someone
+                memid = req.body.memberid;
+                userId = hashids.decodeHex(memid);
+            } else if (commfunctions.getGroupShareToken(group) != req.body.shareToken) {
+                res.json({status: 0});
+                return;
+            } else {
+                // Adding yourself via the share token
+                userId = req.session.userid;
             }
-        );
+
+            GroupModel.update(
+                {_id: commid, members: {$ne: userId}},
+                { $push: { members: userId }, $pull: { requests: memid } },
+                function (err, k) {
+                    if (err) {
+                        res.json({status: 0});
+                    } else {
+                        res.json({ status: 1, category: group.category });
+                        EventModel.remove({ data: commid, fromuser: userId }, function (err, k) {
+                        });
+                    }
+                }
+            );
+        });
     });
 
     app.post('/group/reject', manager.ensureLoggedIn('/users/login'), function (req, res) {

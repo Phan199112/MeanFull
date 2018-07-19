@@ -12,8 +12,8 @@ exports.getGroupCategories = function () {
             shouldBePublic: false,
             groups: [], // this is just put here so calling code can add groups to it
         },
-        'studentOrg': {
-            category: 'studentOrg',
+        'studentorg': {
+            category: 'studentorg',
             displayName: 'Student Organization',
             displayNameShort: 'Student Org',
             displayNamePlural: 'Student Organizations',
