@@ -60,8 +60,6 @@ export class FeedListComponent implements OnInit, OnChanges {
         const loadMorePosts = this.loadMorePosts.bind(this);
 
         window.setTimeout(loadMorePosts, 3000);
-        
-        this.refreshFeed(); //take out after we have official posts
     }
 
     ngOnChanges() {
@@ -115,7 +113,6 @@ export class FeedListComponent implements OnInit, OnChanges {
         var route;
         var requestBody;
 
-        
         if (totalRefresh) {
             this.formids = [];
             this.feedlist = [];
@@ -150,7 +147,7 @@ export class FeedListComponent implements OnInit, OnChanges {
             };
 
         }
-        
+
         this.http
             .post(route, requestBody)
             .toPromise()
@@ -160,8 +157,8 @@ export class FeedListComponent implements OnInit, OnChanges {
                     // add to list
                     this.data = res.json().data;
 
-                    for (let obj of this.data) {                        
-                        
+                    for (let obj of this.data) {
+
                         if (this.formids.indexOf(obj.id) === -1) {
                             // Push forms into feedlist if not there already
                             // console.log('PREBODY: ', obj);
