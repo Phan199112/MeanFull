@@ -13,6 +13,7 @@ export class NewSidebarComponent implements OnInit {
     public static categories: Array<any> = [];
     public static orgName = '';
     public static createGroupCategory: any;
+    open: boolean = false;
 
     public classReference = NewSidebarComponent;
 
