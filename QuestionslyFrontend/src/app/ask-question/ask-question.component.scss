@@ -1,6 +1,11 @@
 .fullwidth {
     width: 100%;
 }
+
+.askbox {
+    position: relative;
+}
+
 .ask-textarea {
     width: 100%;
     outline: none;
@@ -17,7 +22,15 @@
     &::placeholder {
         color: #AAAAAA;
         font-size: 1rem;
+
+        @media (max-width: 768px) {
+            font-size: .8rem;
+        }
     }
+
+        @media (max-width: 768px) {
+            font-size: .8rem;
+        }
 }
 
 
@@ -31,10 +44,18 @@
     border-top: none;
     padding: 8px 16px;
     margin-bottom: 24px;
+    justify-content: space-between;
 
     &.active {
         border-bottom-color: #f4f4f4;
         margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+    }
+
+    &.mobileGroup {
+        padding: 8px 0 0 0;
     }
 
 }
@@ -49,6 +70,7 @@
     color: #28ab64 !important;
     cursor: pointer;
     border-radius: 16px;
+    text-align: center;
 
     &.submit {
         background: #28ab64;
@@ -89,6 +111,13 @@
             color: #28ab64 !important;            
         }
     }
+
+    @media (max-width: 768px) {
+        font-size: .65rem;
+        padding: 4px 12px;
+        margin: 0 8px;
+        border-radius: 8px;
+    }
 }
 
 
@@ -116,6 +145,13 @@
     border-top: none;
     padding: 16px;
 
+}
+
+.selection-menu {
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 .dim-overlay {
@@ -404,4 +440,16 @@
 
 .hidden {
     display: none;
+}
+
+#deleteCross {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    // background: black;
+    z-index: 11;
+    cursor: pointer;
+
 }

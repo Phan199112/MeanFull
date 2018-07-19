@@ -9,6 +9,8 @@ export class MemberListComponent implements OnInit {
 
   constructor() { }
 
+  member: string = '';
+
   ngOnInit() {
   }
 

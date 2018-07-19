@@ -5,6 +5,11 @@ h1 {
     color: #152c48;
     margin-bottom: 26px;
     line-height: 1;
+
+    @media (max-width: 768px) {
+        font-size: 40px;
+        margin-bottom: 12px;
+    }
 }
 
 nav {
@@ -21,6 +26,11 @@ nav {
         font-size: 1rem;
         cursor: pointer;
     }
+
+    @media (max-width: 768px) {
+        height: 40px;
+        margin-top: 8px;
+    }
 }
 
 h4 {
@@ -31,6 +41,12 @@ h4 {
     font-weight: 600;
     color: #7d8f9d;
     line-height: 32px;
+    
+    @media (max-width: 768px) {
+        font-size: 16px;
+        margin-bottom: 12px;
+        line-height: 20px;
+    }
 }
 
 h2 {
@@ -65,15 +81,44 @@ img {
     max-width: 1200px;
     display: flex;
     justify-content: center;
+    flex-wrap: nowrap;
+
+   @media (max-width: 768px) {
+       flex-wrap: wrap;
+
+        &.content {
+            margin-top: 48px;
+        }
+
+    }
+
 }
 
 .col-50 {
     width: 50%;
     display: flex;
     flex-direction: column;
-    // align-items: center;
     justify-content: center;
     padding: 100px 0;
+    
+    @media (max-width: 768px) {
+        width: 100%;
+        padding: 16px 0;
+        
+        &.mobileFirst {
+            align-items: center;
+            order: -1;
+        }
+
+    }
+}
+
+.hero-img {
+    width: 100%;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
 }
 
 .logo-text {
@@ -87,7 +132,7 @@ img {
 
 .email-input {
     width: 100%;
-    font-size: 1rem;
+    font-size: .9rem;
     color: #333333;
     outline: none;
     padding: .8rem 0;
@@ -108,6 +153,11 @@ img {
 
     &:blur {
         border-color: #dfe5e9;
+    }
+
+    @media (max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 12px;
     }
 }
 
@@ -138,10 +188,20 @@ img {
     color: #8a98a4;
     opacity: 1;
     font-size: 14px;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 }
 
 .flex {
     display: flex;
-    margin-top: 16px;
+    margin-top: .9rem;
     width: 100%;
+
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        justify-content: center;
+    }
 }

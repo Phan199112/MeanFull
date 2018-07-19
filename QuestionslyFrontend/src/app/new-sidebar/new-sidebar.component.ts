@@ -16,6 +16,7 @@ export class NewSidebarComponent implements OnInit {
     public categories: Array<any> = [];
     public orgName = '';
     public createGroupCategory: any;
+    open: boolean = false;
 
     constructor(
         private http: Http,
@@ -33,14 +34,17 @@ export class NewSidebarComponent implements OnInit {
 
                 for (const category of Object.keys(responseJson.categories)) {
                     this.categories.push(responseJson.categories[category]);
+                    // console.log('Category:', responseJson.categories[category]);
+                    
                 }
             });
-        this.http.get('/organizations/mine')
+            this.http.get('/organizations/mine')
             .toPromise()
             .then(response => {
                 const responseJson = response.json();
-
+                
                 this.orgName = responseJson.organization.name;
+                console.log('Category:', this.orgName);
             });
     }
 
@@ -53,6 +57,11 @@ export class NewSidebarComponent implements OnInit {
             .subscribe((event: NavigationStart) => {
                 ref.close();
             });
+    }
+
+
+    toggleSidebar(val: boolean) {
+        this.open = !this.open;
     }
 
 }
