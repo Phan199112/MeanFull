@@ -148,7 +148,7 @@ export class SignInComponent implements OnInit {
                 .post('/users/signup', signupData).toPromise()
                 .then(response => {
                     const responseJson = response.json();
-
+                    console.log(responseJson, response);
                     if (responseJson.status === 1) {
                         this.http.post('/users/login/local', {email: signupData.email, password: signupData.password})
                             .map((res: any) => res.json())
