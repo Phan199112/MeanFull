@@ -31,6 +31,7 @@ export class AskQuestionComponent implements OnInit {
   addTitle: boolean = false;
   group: FormControl = new FormControl();
   isMobile: boolean = true;
+  showDeleteBox: boolean = false;
   kindsWithOptions: string[] = ["Multiple Choice", "Checkboxes", "Drop-down", "Rank"];
   alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
   groups: string[] = ['Class 1', 'Class 2', 'Class 3'];
@@ -77,6 +78,7 @@ export class AskQuestionComponent implements OnInit {
     //handle dimmer toggling
     const activateDimmer = this.activateDimmer.bind(this);
     const deactivateDimmer = this.deactivateDimmer.bind(this);
+    const hideDeleteBox = () => {this.showDeleteBox = false};
     $(window.document).on('click', function(event) {
       if ($(event.target).parents('.askbox').length) {
         activateDimmer();
@@ -85,6 +87,7 @@ export class AskQuestionComponent implements OnInit {
         event.stopPropagation();
 
         deactivateDimmer();
+        hideDeleteBox();
       }
     });
 
@@ -282,4 +285,18 @@ export class AskQuestionComponent implements OnInit {
     window.setTimeout(toggle, 1500);
   }
 
+  toggleDeleteBox() {
+    this.showDeleteBox = !this.showDeleteBox;
+  }
+
+  resetSurvey() {
+    this.question = '';
+    this.questionsContainer = [];
+    this.questionType = 'shortanswer';
+    this.selection = '';
+    this.pic = '';
+    this.title = '';
+    this.toggleDeleteBox();
+
+  }
 }

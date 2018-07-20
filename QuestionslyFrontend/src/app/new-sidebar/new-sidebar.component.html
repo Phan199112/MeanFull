@@ -13,7 +13,7 @@
         <h4 class="section-title">{{category.displayNamePlural}}</h4>
 
             <a *ngFor="let group of category.groups" class="section-entry"
-                [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]">
+                [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
                 {{group.title}}
             </a>
 

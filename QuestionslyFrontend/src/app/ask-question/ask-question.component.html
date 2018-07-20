@@ -1,7 +1,14 @@
 <div *ngIf="activeDimmer" class="dim-overlay"></div>
 
 <div *ngIf="!preview" class="fullwidth askbox">
-    <img id="deleteCross" src="/assets/images/delete-button.svg" />
+    <img id="deleteCross" src="/assets/images/delete-button.svg" (click)="toggleDeleteBox()"/>
+    <div class="deletionBox" *ngIf="showDeleteBox">
+        <p class="deleteText">Delete all survey progress?</p>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <a class="delete-btns" (click)="toggleDeleteBox()">Cancel</a>
+            <a class="delete-btns" (click)="resetSurvey()">Delete</a>
+        </div>
+    </div>
     <div class="summary-container" *ngIf="questionsContainer.length > 0">
         <div class="prev-item"></div>
         <p class="question-count prev-item">Added {{questionsContainer.length}} {{questionsContainer.length === 1 ? 'Question' : 'Questions'}}</p>

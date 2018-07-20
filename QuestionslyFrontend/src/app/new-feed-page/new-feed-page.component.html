@@ -1,9 +1,9 @@
-<app-new-sidebar #sb [activeGroup]="viewGroupId"></app-new-sidebar>
+<app-new-sidebar #sb [activeGroup]="viewGroupId" (selectedGroup)="nb.setTitle($event)"></app-new-sidebar>
 <div class="flex">
     <div id="sidebarPlaceholder"></div>
     <div class="flex">
         <div></div>
-        <app-new-navbar (toggle)="sb.toggleSidebar($event)"></app-new-navbar>
+        <app-new-navbar #nb (toggle)="sb.toggleSidebar($event)"></app-new-navbar>
         <div id="main-container" class="flex flex-jcse">
             <div class="feed-column">
                 <app-ask-question (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
