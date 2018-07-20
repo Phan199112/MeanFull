@@ -24,6 +24,15 @@ export class MygroupsService {
         return _categories;
     }
 
+    public getGroupIdByName(name: string) {
+        for (let i in _groups) {
+            if (_groups[i].title === name) {
+                return _groups[i].id;
+            }
+        }
+        return null;
+    }
+
     // Subscribe to changes
     public onChange(callback: any) {
         if (_groups.length > 0) {

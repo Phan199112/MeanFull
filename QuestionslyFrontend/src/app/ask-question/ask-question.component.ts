@@ -189,23 +189,26 @@ export class AskQuestionComponent implements OnInit {
   }
 
 
-  submitForm() {
-    const formData = this.questionnaireData();
-    this.http.post('/forms/create', formData).toPromise()
-      .then(response => {
-        // formData.id = response.json().id;
-        // this.shareLink = `https://www.questionsly.com/feed;survey=${formData.id}`;
-        // this.formService.setData(formData);
-        this.questionsContainer = [];
-        this.questionType = 'shortanswer';
-        this.preview = false;
-        this.deactivateDimmer();
-        this.refreshFeed.emit(true);
-        // const refresh = () => {this.refreshFeed.emit(true);};
-        // window.setTimeout(refresh, 1000);
-      })
-      .catch(error => this.router.navigate(['/users/login']));
-  }
+    submitForm() {
+        const formData = {
+            questions: this.questionnaireData(),
+            groupId: this.myGroupsService.getGroupIdByName(this.group.value),
+        };
+        this.http.post('/forms/create', formData).toPromise()
+        .then(response => {
+            // formData.id = response.json().id;
+            // this.shareLink = `https://www.questionsly.com/feed;survey=${formData.id}`;
+            // this.formService.setData(formData);
+            this.questionsContainer = [];
+            this.questionType = 'shortanswer';
+            this.preview = false;
+            this.deactivateDimmer();
+            this.refreshFeed.emit(true);
+            // const refresh = () => {this.refreshFeed.emit(true);};
+            // window.setTimeout(refresh, 1000);
+        })
+        .catch(error => this.router.navigate(['/users/login']));
+    }
 
   questionnaireData() {
 

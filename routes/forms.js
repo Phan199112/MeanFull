@@ -295,7 +295,7 @@ module.exports = function(app, passport, manager, hashids) {
         var receivedData = req.body;        
 
         var promisesToUploadMedia = [];
-        receivedData.forEach(function (question) {
+        receivedData.questions.forEach(function (question) {
             if (question.pic) {
                 if (question.pic.indexOf("questionsly") == -1) { // URL not already in our s3 bucket
                     promisesToUploadMedia.push(
@@ -322,7 +322,7 @@ module.exports = function(app, passport, manager, hashids) {
             FormModel.create(
                 {
                     userid: req.session.userid,
-                    questions: receivedData,
+                    questions: receivedData.questions,
                     anonymous: false,
                     hashtags: receivedData.hashtags,
                     categories: receivedData.categories,
@@ -332,7 +332,8 @@ module.exports = function(app, passport, manager, hashids) {
                     expired: false,
                     activityEmailSent: false,
                     typeevent: receivedData.typeevent,
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    sharedWithCommunities: receivedData.groupId ? [hashids.decodeHex(receivedData.groupId)] : [],
                 }, function(err, k) {
                     if (err) {
                         // Error in writing new form
