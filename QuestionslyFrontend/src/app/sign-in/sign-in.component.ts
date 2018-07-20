@@ -148,26 +148,24 @@ export class SignInComponent implements OnInit {
                 .post('/users/signup', signupData).toPromise()
                 .then(response => {
                     const responseJson = response.json();
-                    console.log(responseJson, response, responseJson.status === 1, responseJson.status == 1);
+
                     if (responseJson.status === 1) {
-                        this.http.post('/users/login/local', {email: signupData.email, password: signupData.password})
-                            .map((res: any) => res.json())
-                            .subscribe(
-                                (data) => {
-                                    if (data.status === 1) {
-                                        this.userService.acknowledgeLogin(data);
-                                        this.myGroupsService.acknowledgeUserOrGroupChange();
-                                        this.router.navigate(['/']).then(function () { /* location.reload(true); shouldn't be needed */ });
-                                    } else {
-                                        alert('Error, please try again');
-                                    }
+                        this.http
+                            .post('/users/login/local', {email: signupData.email, password: signupData.password}).toPromise()
+                            .then(response2 => {
+                                const responseJson2 = response2.json();
+                                if (responseJson2.status === 1) {
+                                    this.userService.acknowledgeLogin(responseJson2);
+                                    this.myGroupsService.acknowledgeUserOrGroupChange();
+                                    this.router.navigate(['/']);
                                 }
-                            );
+                            })
+                            .catch (error => console.log('Error, please try again (1)', error));
                     } else {
                         alert('Error, please try again');
                     }
                 })
-                .catch (error => alert('Error, please try again'));
+                .catch (error => console.log('Error, please try again (3)', error));
         }
     }
 
