@@ -78,7 +78,6 @@ export class NewSidebarComponent implements OnInit {
         NewSidebarComponent.createGroupCategory = category;
         const ref = this.modalService.open(this.createGroupModal);
         this.router.events
-            .filter(event => event instanceof NavigationStart)
             .subscribe((event: NavigationStart) => {
                 ref.close();
             });
