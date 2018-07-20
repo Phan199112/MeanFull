@@ -10,8 +10,12 @@ export class UserService {
 
     constructor(private http: Http) {}
 
-    getUser() {
+    public getUser() {
         return window['USER_LOGIN_STATE'];
+    }
+
+    public getRole() {
+        return this.getUser().role;
     }
 
     // Deprecated - no async stuff needed now
@@ -22,14 +26,20 @@ export class UserService {
     }
 
     // We just made a successful AJAX request to login; we should notify any subscribers who are waiting to be logged in
-    acknowledgeLogin(userData) {
+    public acknowledgeLogin(userData) {
         window['USER_LOGIN_STATE'] = userData;
         callbacksForLogin.forEach(function (callback) {
-            callback();
-        });
+            callback(this.getUser());
+        }.bind(this));
     }
 
-    listenForLogin(callback) {
+    // Deprecated - use onChange instead
+    public listenForLogin(callback) {
         callbacksForLogin.push(callback);
+    }
+
+    public onChange(callback) {
+        callbacksForLogin.push(callback);
+        callback(this.getUser());
     }
 }

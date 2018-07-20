@@ -136,7 +136,7 @@ module.exports = function(app, passport, manager, hashids) {
                     temp.fb = false;
                     temp.fbid = null;
                 }
-                temp.role = role;
+                temp.role = user.role;
             }
 
             cb(err, temp);

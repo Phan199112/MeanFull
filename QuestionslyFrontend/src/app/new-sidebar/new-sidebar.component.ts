@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, NavigationStart } from '@angular/router';
 import { MygroupsService } from '../mygroups.service';
+import { UserService } from '../user.service';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -17,6 +18,7 @@ export class NewSidebarComponent implements OnInit {
     open: boolean = false;
 
     public classReference = NewSidebarComponent;
+    public canCreateClasses = false;
 
     @Input() activeGroup: string;
     @ViewChild('createGroupModal') createGroupModal;
@@ -26,11 +28,16 @@ export class NewSidebarComponent implements OnInit {
         private modalService: NgbModal,
         private router: Router,
         private myGroupsService: MygroupsService,
+        private userService: UserService,
     ) {
 
     }
 
     ngOnInit() {
+        this.userService.onChange(user => {
+            this.canCreateClasses = user.role !== 'student';
+        });
+
         this.myGroupsService.onChange(data => {
             NewSidebarComponent.categories = [];
             for (const category of Object.keys(data.c)) {

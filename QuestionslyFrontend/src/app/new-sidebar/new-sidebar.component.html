@@ -17,7 +17,7 @@
                 {{group.title}}
             </a>
 
-            <a class="section-entry dim" (click)="openCreateGroupModal(category)">
+            <a class="section-entry dim" (click)="openCreateGroupModal(category)" *ngIf="category.category != 'class' || canCreateClasses">
                 + Add {{category.displayNameShort}}
             </a>
     </div>
