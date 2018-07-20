@@ -29,6 +29,7 @@ var UserSchema = new Schema({
     nocreated: Number,
     nodiscussion: Number,
     organization: String,
+    role: String,
 });
 
 UserSchema.methods.generateHash = function(password) {

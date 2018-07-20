@@ -7,6 +7,7 @@ var GroupModel = require('../db.models/group.model');
 var OrganizationModel = require('../db.models/organization.model');
 
 var log = require("../functions/logs");
+var accountprefill = require("../functions/accountprefill");
 var randommod = require("../functions/random");
 var usersfunctions = require('../functions/users');
 var emailfunctions 	= require("../functions/email");
@@ -383,6 +384,7 @@ module.exports = function(app, passport, manager, hashids) {
                         public: true,
                         timestamp: Date.now(),
                         organization: existingOrg._id,
+                        role: accountprefill.getInitialAccountRole(data.email),
                     }, function (err, k) {
                         if (err) {
                             // failed
@@ -419,6 +421,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // return
                             log.writeLog(k._id, 'manual signup - new user', req.ip);
+                            accountprefill.doGroupsPrefill(k);
                             res.json({
                                 status: 1,
                             });
