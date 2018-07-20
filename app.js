@@ -97,7 +97,7 @@ app.use('/tos', function(req, res, next) {
     res.render("tos");
 });
 
-// catch 404 and forward to error handler
+// Index and all 404's
 app.use(function(req, res, next) {
     var userLoginState = '0';
     // Check req.user.name in case we are authenticated as a deleted user
@@ -110,7 +110,8 @@ app.use(function(req, res, next) {
             picdata: req.user.pic,
             gender: req.user.gender,
             fbid:req.user.fbid,
-            fb: req.user.fb
+            fb: req.user.fb,
+            role: req.user.role,
         });
     }
     

@@ -136,6 +136,7 @@ module.exports = function(app, passport, manager, hashids) {
                     temp.fb = false;
                     temp.fbid = null;
                 }
+                temp.role = role;
             }
 
             cb(err, temp);
@@ -197,6 +198,7 @@ module.exports = function(app, passport, manager, hashids) {
                 gender: req.user.gender,
                 fbid:req.user.fbid,
                 fb: req.user.fb,
+                role: req.user.role,
             });
         });
 
