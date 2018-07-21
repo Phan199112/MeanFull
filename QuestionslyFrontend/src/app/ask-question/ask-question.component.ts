@@ -19,6 +19,7 @@ import { MygroupsService } from '../mygroups.service';
 export class AskQuestionComponent implements OnInit {
 
   activeDimmer: boolean = false;
+  action: string = 'post';
   selection: string = '';
   questionType: string = 'shortanswer';
   question: string = '';
@@ -78,16 +79,16 @@ export class AskQuestionComponent implements OnInit {
     //handle dimmer toggling
     const activateDimmer = this.activateDimmer.bind(this);
     const deactivateDimmer = this.deactivateDimmer.bind(this);
-    const hideDeleteBox = () => {this.showDeleteBox = false};
     $(window.document).on('click', function(event) {
-      if ($(event.target).parents('.askbox').length) {
+      if ($(event.target).parents('.askbox').length) {        
         activateDimmer();
         event.stopPropagation();
-      } else {
-        event.stopPropagation();
 
-        deactivateDimmer();
-        hideDeleteBox();
+      } else {        
+        event.stopPropagation();
+        if (!$(event.target).parents('.deletionBox').length) {
+          deactivateDimmer();
+        }
       }
     });
 
@@ -102,8 +103,13 @@ export class AskQuestionComponent implements OnInit {
 
 
   deactivateDimmer() {
-    if (this.question) {
-      return;
+      // this.activeDimmer = false;
+      // $('.fBody, .cBody').css({ 'z-index': 2 });
+      // $('.cBody, nav').css({ 'z-index': 1 });
+   console.log('Calllasdf asdf as dfsadffed');
+   
+    if (this.question || this.questionsContainer.length > 0) {
+      this.showDeleteBox = true;
     } else {
       this.activeDimmer = false;
       $('.fBody, .cBody').css({ 'z-index': 2 });
@@ -151,7 +157,6 @@ export class AskQuestionComponent implements OnInit {
     this.questionsContainer.push(data);
     this.questionType = 'shortanswer';
     this.pic = '';
-    console.log(data);
   }
 
 
@@ -288,7 +293,7 @@ export class AskQuestionComponent implements OnInit {
     window.setTimeout(toggle, 1500);
   }
 
-  toggleDeleteBox() {
+  toggleDeleteBox() {    
     this.showDeleteBox = !this.showDeleteBox;
   }
 
@@ -300,6 +305,13 @@ export class AskQuestionComponent implements OnInit {
     this.pic = '';
     this.title = '';
     this.toggleDeleteBox();
+    this.deactivateDimmer();
 
+  }
+
+  actionSelect(action: string) {
+    if (this.action !== action) {
+      this.action = action;
+    }
   }
 }

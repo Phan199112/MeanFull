@@ -31,6 +31,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     somethingChanged = false;
     prevTag: string;
     prevComm: string;
+    prevUser: string;
     showLoadingBoxes = true;
 
     constructor(private http: Http,
@@ -70,10 +71,18 @@ export class FeedListComponent implements OnInit, OnChanges {
             this.somethingChanged = true;
             this.prevTag = this.tag;
         }
+
         if (this.prevComm !== this.comm) {
             this.somethingChanged = true;
             this.prevComm = this.comm;
         }
+
+        if (this.prevUser !== this.user) {
+            this.somethingChanged = true;
+            this.prevUser = this.user;
+        }
+
+
 
         this.refreshFeed();
     }

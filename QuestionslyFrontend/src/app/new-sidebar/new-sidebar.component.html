@@ -12,10 +12,21 @@
     <div *ngFor="let category of classReference.categories" class="group-section">
         <h4 class="section-title">{{category.displayNamePlural}}</h4>
 
-            <a *ngFor="let group of category.groups" class="section-entry"
-                [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
-                {{group.title}}
-            </a>
+        <div *ngFor='let group of category.groups' class="block" [ngClass]='{active: group.id == activeGroup}'>
+                <a  class="section-entry"
+                    [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
+                    {{group.title}}
+                </a>
+                <a *ngIf="group.id == activeGroup" class="section-entry sub"
+                    [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
+                    Documents
+                </a>
+                <a *ngIf="group.id == activeGroup" class="section-entry sub"
+                    [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
+                    Videos
+                </a>
+            </div>
+
 
             <a class="section-entry dim" (click)="openCreateGroupModal(category)" *ngIf="category.category != 'class' || canCreateClasses">
                 + Add {{category.displayNameShort}}

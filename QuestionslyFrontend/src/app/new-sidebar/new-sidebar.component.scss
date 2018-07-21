@@ -76,7 +76,8 @@ a {
 
     &.active {
         font-weight: 700;
-        background: rgba(255,255,255,.1);
+        // background: rgba(255,255,255,.1);
+        margin-bottom: 16px;
     }
 
     &.dim {
@@ -87,4 +88,16 @@ a {
         color: #FFFFFF !important;
         background: rgba(255,255,255,.1);
     }
+
+    &.sub {
+        padding-left: 32px;
+        
+    }
+}
+
+.block {
+    &.active {
+        background: #249658;
+    }
+    padding: 4px 0;
 }

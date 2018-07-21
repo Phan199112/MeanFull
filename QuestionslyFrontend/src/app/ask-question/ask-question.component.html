@@ -1,7 +1,7 @@
 <div *ngIf="activeDimmer" class="dim-overlay"></div>
 
 <div *ngIf="!preview" class="fullwidth askbox">
-    <img id="deleteCross" src="/assets/images/delete-button.svg" (click)="toggleDeleteBox()"/>
+    <img *ngIf="questionsContainer.length >= 1 || question" id="deleteCross" src="/assets/images/delete-button.svg" (click)="toggleDeleteBox()"/>
     <div class="deletionBox" *ngIf="showDeleteBox">
         <p class="deleteText">Delete all survey progress?</p>
         <div style="display: flex; justify-content: center; align-items: center;">
@@ -9,23 +9,40 @@
             <a class="delete-btns" (click)="resetSurvey()">Delete</a>
         </div>
     </div>
-    <div class="summary-container" *ngIf="questionsContainer.length > 0">
+
+
+    <div id="action-bar" class="toolbar active">
+        <a class="tb-option" [ngClass]='{active: action == "post" }' (click)="actionSelect('post')">Write&nbsp;Post</a>
+        <a class="tb-option" [ngClass]='{active: action == "survey" }' (click)="actionSelect('survey')">Create&nbsp;Survey</a>
+        <a class="tb-option" [ngClass]='{active: action == "doc" }' (click)="actionSelect('doc')">Upload&nbsp;Document</a>
+        <a class="tb-option" [ngClass]='{active: action == "video"}' (click)="actionSelect('video')">Upload&nbsp;Video</a>
+    </div>
+
+
+
+
+
+    <div class="summary-container" *ngIf="questionsContainer.length > 0 && action == 'survey'">
         <div class="prev-item"></div>
         <p class="question-count prev-item">Added {{questionsContainer.length}} {{questionsContainer.length === 1 ? 'Question' : 'Questions'}}</p>
         <div class="prev-item">
             <a class="preview-btn" (click)=togglePreview()>Preview Survey</a>
         </div>
     </div>
-    <textarea id="user-question-text" rows="2" class="ask-textarea" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Start typing your question here.."></textarea>
-    <div class="question-form-container">
+    <textarea id="user-question-text" rows="2" class="ask-textarea" [ngClass]="{alone: !question && !questionsContainer.length}" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" placeholder="{{action == 'survey' ? 'Start typing your question here...' : 'What would you like to say...'}}"></textarea>
+    
+    <div *ngIf="action == 'survey' && questionType != 'shortanswer'" class="question-form-container">
         <app-mc-question-form #mc *ngIf="questionType == 'multiplechoice'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-mc-question-form>
         <app-rating-question-form #rc *ngIf="questionType == 'rating'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-rating-question-form>
         <app-number-question-form #nc *ngIf="questionType == 'number'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-number-question-form>
     </div>
-    <div class="toolbar" [ngClass]='{active: selection}'>
-        <a class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question Type</a>
-        <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add Picture</a>
-        <a class="tb-option"  [ngClass]='{active: selection == "groups" && isMobile }' (click)="toolbarSelect('groups')">Share with&nbsp;Groups</a>
+    
+    <div *ngIf="question || questionsContainer.length" class="toolbar" [ngClass]='{active: selection}'>
+        <div class="type-container">
+            <a *ngIf="action === 'survey' " class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question Type</a>
+            <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add Picture</a>
+            <a class="tb-option"  [ngClass]='{active: selection == "groups" && isMobile }' (click)="toolbarSelect('groups')">Share with&nbsp;Groups</a>
+        </div>
 
         <mat-form-field class="groups-input" *ngIf="!isMobile">
             <input type="text" placeholder="Share with a group" aria-label="Number" matInput [formControl]="group" [matAutocomplete]="auto">
@@ -35,12 +52,7 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-
-
-
-        <!-- <input type="text" class="groups-input" (focus)="activateDimmer()" (blur)="deactivateDimmer()" placeholder="Share with a group" /> -->
-        <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="getData('multiplechoice')">Add&nbsp;Question</a>
-
+        <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="getData('multiplechoice')">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
     </div>
 
 

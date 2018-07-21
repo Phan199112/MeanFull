@@ -45,3 +45,36 @@
         order: -1;
     }
 }
+
+#settings-title {
+    font: {
+        size: 2rem;
+        family: "Fira Sans";
+        weight: 600;
+    }
+    color: #484848;
+    margin-left: 0px;
+    margin-bottom: 4px;
+}
+
+#settings-subtitle {
+    font: {
+        size: 1rem;
+        family: "Fira Sans";
+        weight: 400;
+    }
+    color: #999999;
+    margin-left: 0px;
+    margin-bottom: 24px;
+}
+
+#share-link {
+    font: {
+        size: 1.2rem;
+        family: "Fira Sans";
+        weight: 400;
+    }
+    color: #28ab64;
+    margin-left: 0px;
+    margin-bottom: 3px;
+}

@@ -87,6 +87,10 @@ nav {
         color: #67A85E;
         border-bottom: 3px solid #67A85E;
     }
+    
+    &.active {
+        pointer-events: none;
+    }
 
     @media (max-width: 768px) {
         font-size: .8rem;

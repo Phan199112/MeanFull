@@ -16,7 +16,8 @@ export class NewSidebarComponent implements OnInit {
     public static categories: Array<any> = [];
     public static orgName = '';
     public static createGroupCategory: any;
-    open: boolean = false;
+    public open: boolean = false;
+    public groupId: string = '';
 
     public classReference = NewSidebarComponent;
     public canCreateClasses = false;
@@ -49,7 +50,12 @@ export class NewSidebarComponent implements OnInit {
                     this.updateNavbar(this.classReference.orgName);
                 }
             } else {
-                this.updateNavbar();
+
+                this.groupId = params.groupid;
+                const updateNavbar = this.updateNavbar.bind(this);
+                updateNavbar();
+                window.setTimeout(updateNavbar, 1200);
+
             }
         });
 
@@ -58,6 +64,8 @@ export class NewSidebarComponent implements OnInit {
         });
 
         this.myGroupsService.onChange(data => {
+            console.log('Data: ', data);
+            
             NewSidebarComponent.categories = [];
             for (const category of Object.keys(data.c)) {
                 NewSidebarComponent.categories.push(data.c[category]);

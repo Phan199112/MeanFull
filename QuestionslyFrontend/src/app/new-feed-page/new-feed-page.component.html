@@ -6,8 +6,13 @@
         <app-new-navbar #nb (toggle)="sb.toggleSidebar($event)"></app-new-navbar>
         <div id="main-container" class="flex flex-jcse">
             <div class="feed-column">
-                <app-ask-question (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
-                <app-feed-list [comm]="viewGroupId" #feedList></app-feed-list>
+                <app-ask-question *ngIf="!nb.showSettings" (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
+                <app-feed-list *ngIf="!nb.showSettings" [comm]="viewGroupId" [user]="nb.user || null" #feedList></app-feed-list>
+                <div *ngIf="nb.showSettings" class="settings-container">
+                    <h1 id="settings-title">Shareable Link</h1>
+                    <h3 id="settings-subtitle">You can share this link with your students to have them automatically enroll in this group.</h3>
+                    <p id="share-link">https://questionsly.herokuapp.com/class/{{sb.groupId}}</p>
+                </div>
             </div>
             <app-member-list [activeGroup]="viewGroupId" style="z-index: -2;" class="fullMobile"></app-member-list>
         </div>
