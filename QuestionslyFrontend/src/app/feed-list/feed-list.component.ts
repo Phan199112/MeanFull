@@ -52,11 +52,9 @@ export class FeedListComponent implements OnInit, OnChanges {
             }
         });
 
-        this.userService.afterLoginCheck().then(userData => {
-            if (userData != 0) {
-                this.me = userData.dbid;
-            }
-        });
+        if (this.userService.getUser() != 0) {
+            this.me = this.userService.getUser().dbid;
+        }
 
         const loadMorePosts = this.loadMorePosts.bind(this);
 

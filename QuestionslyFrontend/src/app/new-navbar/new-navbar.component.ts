@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { UserService } from '../user.service';
-
+import { MygroupsService } from '../mygroups.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-navbar',
@@ -10,50 +11,46 @@ import { UserService } from '../user.service';
 })
 export class NewNavbarComponent implements OnInit {
 
-  @Output() toggle: EventEmitter<boolean> = new EventEmitter<boolean>();
-  title: string = '';
-  currentTab: string = 'all';
-  showSettings: boolean = false;
-  user: string = '';
-  isGroupAdmin: boolean = false;
+    @Input() activeGroupId: string;
+    @Input() activeSubsection: string;
 
-  constructor(private userService: UserService) { }
+    @Output() toggle: EventEmitter<boolean> = new EventEmitter<boolean>();
+    title: string = '';
+    isGroupAdmin: boolean = false;
 
-  selectedClass: string = '';
+    constructor(
+        private userService: UserService,
+        private router: Router,
+        public myGroupService: MygroupsService,
+    ) { }
 
-  ngOnInit() {
-    if (this.userService.getRole() === 'admin' || this.userService.getRole() === 'professor') {
-      this.isGroupAdmin = true;
-    }
-  }
+    selectedClass: string = '';
 
-  toggleSidebar() {
-    this.toggle.emit(true);
-  }
-
-  setTitle(title: string) {
-    this.title = title;
-  }
-
-  toggleTab(tab: string) {    
-    if (this.currentTab !== tab) {
-      this.currentTab = tab;
-
-      if (tab === 'settings') {
-        this.showSettings = true;
-      } else {
-        this.showSettings = false;
-      }
-
-      if (tab === 'myposts') {
-        this.user = this.userService.getUser().dbid;
-      } else {
-        this.user = '';
-      }
+    ngOnInit() {
+        if (this.userService.getRole() === 'admin' || this.userService.getRole() === 'professor') {
+            this.isGroupAdmin = true;
+        }
     }
 
+    toggleSidebar() {
+        this.toggle.emit(true);
+    }
 
-  }
+    setTitle(title: string) {
+        this.title = title;
+    }
 
+    navigateTo(subsection: any) {
+        if (!this.activeGroupId && subsection) {
+            this.router.navigate(['/', 'org', subsection]);
+            return;
+        }
+        if (!this.activeGroupId) {
+            this.router.navigate(['/']);
+            return;
+        }
 
+        const group = this.myGroupService.getGroupById(this.activeGroupId);
+        this.router.navigate(['/', group.category, this.activeGroupId, subsection]);
+    }
 }

@@ -65,7 +65,7 @@ export class NewSidebarComponent implements OnInit {
 
         this.myGroupsService.onChange(data => {
             console.log('Data: ', data);
-            
+
             NewSidebarComponent.categories = [];
             for (const category of Object.keys(data.c)) {
                 NewSidebarComponent.categories.push(data.c[category]);

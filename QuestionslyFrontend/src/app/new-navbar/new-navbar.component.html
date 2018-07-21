@@ -8,10 +8,12 @@
             </div>
         </div>
         <div class="tabs">
-            <span class="tab" [ngClass]="{active: currentTab == 'all'}" (click)="toggleTab('all')">All</span>
-            <span class="tab" [ngClass]="{active: currentTab == 'myposts'}" (click)="toggleTab('myposts')">My Posts</span>
-            <!-- <span class="tab" [ngClass]="{active: currentTab == 'answered'}" (click)="toggleTab('answered')">Answered</span> -->
-            <span *ngIf="isGroupAdmin" class="tab" [ngClass]="{active: currentTab == 'settings'}" (click)="toggleTab('settings')">Settings</span>
+            <span class="tab" [ngClass]="{active: !activeSubsection}"
+                (click)="navigateTo('')">All</span>
+            <span class="tab" [ngClass]="{active: activeSubsection == 'myposts'}"
+                (click)="navigateTo('myposts')">My Posts</span>
+            <span *ngIf="isGroupAdmin" class="tab" [ngClass]="{active: activeSubsection == 'settings'}"
+                (click)="navigateTo('settings')">Settings</span>
         </div>
     <!-- </div> -->
     <div class="right-block">

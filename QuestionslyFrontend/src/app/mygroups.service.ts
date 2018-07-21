@@ -24,6 +24,15 @@ export class MygroupsService {
         return _categories;
     }
 
+    public getGroupById(groupId: any) {
+        for (let i in _groups) {
+            if (_groups[i].id === groupId) {
+                return _groups[i];
+            }
+        }
+        return null;
+    }
+
     public getGroupIdByName(name: string) {
         for (let i in _groups) {
             if (_groups[i].title === name) {
