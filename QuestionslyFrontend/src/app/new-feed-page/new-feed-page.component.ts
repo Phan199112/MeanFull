@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { UserService } from '../user.service';
 import { MygroupsService } from '../mygroups.service';
+import { FeedListComponent } from '../feed-list/feed-list.component';
 
 @Component({
   selector: 'app-new-feed-page',
@@ -11,6 +12,8 @@ export class NewFeedPageComponent implements OnInit, OnChanges {
 
     @Input() activeGroupId: string;
     @Input() activeSubsection: string;
+
+    @ViewChild('feedList') feedList: FeedListComponent;
 
     public shareLink = '';
 
