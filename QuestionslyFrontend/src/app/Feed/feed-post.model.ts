@@ -1,4 +1,4 @@
-export class FeedFormModel {
+export class FeedPostModel {
     title: string;
     author: string;
     authorlink: string;

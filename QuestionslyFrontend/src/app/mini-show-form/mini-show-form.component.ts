@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators, FormArray} from '@angular/forms';
 import { Http } from '@angular/http';
-import { FeedFormModel } from '../Feed/feed-form.model';
+import { FeedPostModel } from '../Feed/feed-post.model';
 
 import * as $ from 'jquery';
 
@@ -19,7 +19,7 @@ export class MiniShowFormComponent implements OnInit, OnChanges {
     lastMcQuestionIndex = null;
     topTags: any;
 
-    @Input() data: FeedFormModel;
+    @Input() data: FeedPostModel;
     @Input() shortAnswers2: any;
 
     @Input() count: number;

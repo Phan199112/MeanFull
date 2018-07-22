@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output } from '@angular/core';
 import { Http } from '@angular/http';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import { FeedFormModel } from '../Feed/feed-form.model';
+import { FeedPostModel } from '../Feed/feed-post.model';
 
 import * as $ from 'jquery';
 
@@ -13,7 +13,7 @@ import * as $ from 'jquery';
 
 export class TakeFormComponent implements OnInit, OnDestroy {
     formdata: any;
-    form: FeedFormModel;
+    form: FeedPostModel;
     authordata: any;
     id: string;
     submitted: boolean = false;
@@ -102,7 +102,7 @@ export class TakeFormComponent implements OnInit, OnDestroy {
                     // this.formdata.object = {author: this.authordata};
                     this.formdata.id = this.id;
 
-                    this.form =  new FeedFormModel({formdata: this.formdata, author: this.authordata, id: this.id, found: true});
+                    this.form =  new FeedPostModel({formdata: this.formdata, author: this.authordata, id: this.id, found: true});
                     // window.console.log("Response; ", this.formdata);
 
                     // this.formdata.location = this.authordata.location;

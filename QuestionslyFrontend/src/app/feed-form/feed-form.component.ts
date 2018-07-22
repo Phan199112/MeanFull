@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
-import { FeedFormModel } from '../Feed/feed-form.model';
+import { FeedPostModel } from '../Feed/feed-post.model';
 import { FormArray, FormControl, FormGroup, FormBuilder, NgModel } from '@angular/forms';
 import { PopupService } from '../popup.service';
 import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
@@ -19,7 +19,7 @@ import * as $ from 'jquery';
     }
 })
 export class FeedFormComponent implements OnInit {
-    @Input() form: FeedFormModel;
+    @Input() form: FeedPostModel;
     @Input() pic: string;
     @Input() pictype: string;
     @Input() inComm: string;

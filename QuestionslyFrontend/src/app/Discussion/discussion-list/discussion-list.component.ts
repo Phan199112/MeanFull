@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DiscussionModel } from '../discussion.model';
 import { Http } from '@angular/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { FeedFormModel } from '../../Feed/feed-form.model';
+import { FeedPostModel } from '../../Feed/feed-post.model';
 
 @Component({
     selector: 'app-discussion-list',
@@ -20,7 +20,7 @@ export class DiscussionListComponent implements OnInit {
 
     previousCommenters: any[] = [];
 
-    @Input() form: FeedFormModel;
+    @Input() form: FeedPostModel;
     @Input() id: string;
     @Input() pic: string;
     @Input() pictype: string;

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { FeedFormModel } from '../Feed/feed-form.model';
+import { FeedPostModel } from '../Feed/feed-post.model';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../user.service';
@@ -13,7 +13,7 @@ import * as $ from 'jquery';
     providers: [UserService]
 })
 export class FeedListComponent implements OnInit, OnChanges {
-    feedlist: FeedFormModel[] = [];
+    feedlist: FeedPostModel[] = [];
     data: any[];
     formids: string[] = [];
 
@@ -170,7 +170,7 @@ export class FeedListComponent implements OnInit, OnChanges {
                             // Push forms into feedlist if not there already
                             // console.log('PREBODY: ', obj);
 
-                            this.feedlist.push(new FeedFormModel(obj));
+                            this.feedlist.push(new FeedPostModel(obj));
 
                             // Populate array full of id's of questions currently shown on feed
                             // Sending this to the backend so it can skip over these when fetching for more questions
@@ -212,7 +212,7 @@ export class FeedListComponent implements OnInit, OnChanges {
                     }
 
                     // Add new top survey
-                    this.feedlist.unshift(new FeedFormModel(res.json().formdata))
+                    this.feedlist.unshift(new FeedPostModel(res.json().formdata))
                     this.formids.push(this.formselected);
                     console.log(this.formids.length);
 
