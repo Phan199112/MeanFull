@@ -870,6 +870,8 @@ module.exports = function(app, passport, manager, hashids) {
         if (selectedtags != null && selecteduser == null) {
             // Feed for home page with selected tags
             queryobj = { public: true, shared: true, hashtags: selectedtags};
+        } else if (selectedcomm != null && req.session.userid == selecteduser) {
+            queryobj = {shared: true, sharedWithCommunities: selectedcomm, userid: selecteduser};
         } else if (selectedtags == null && selecteduser != null) {
             // Feed for User Profile
             if (req.session.userid == selecteduser) {
@@ -943,7 +945,7 @@ module.exports = function(app, passport, manager, hashids) {
                         reject();
                     });
 
-            } else if (selecteduser === null && selectedcomm !== null) {
+            } else if (selectedcomm !== null) {
                 // check whether it is public
                 commfunctions.groupPublic(selectedcomm).then(function(result) {
                     if (result === true) {
