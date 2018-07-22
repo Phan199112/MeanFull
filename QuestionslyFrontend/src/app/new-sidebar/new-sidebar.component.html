@@ -14,15 +14,15 @@
 
         <div *ngFor='let group of category.groups' class="block" [ngClass]='{active: group.id == activeGroup}'>
                 <a  class="section-entry"
-                    [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
+                    [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]">
                     {{group.title}}
                 </a>
                 <a *ngIf="group.id == activeGroup" class="section-entry sub"
-                    [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
+                    [routerLink]="['/', category.category, group.id]">
                     Documents
                 </a>
                 <a *ngIf="group.id == activeGroup" class="section-entry sub"
-                    [routerLink]="['/', category.category, group.id]" (click)="updateNavbar()">
+                    [routerLink]="['/', category.category, group.id]">
                     Videos
                 </a>
             </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 import { MygroupsService } from '../mygroups.service';
@@ -23,42 +23,18 @@ export class NewSidebarComponent implements OnInit {
     public canCreateClasses = false;
 
     @Input() activeGroup: string;
-    @Output() selectedGroup: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild('createGroupModal') createGroupModal;
 
     constructor(
         private modalService: NgbModal,
         private router: Router,
-        private route: ActivatedRoute,
         private myGroupsService: MygroupsService,
         private userService: UserService,
         private organizationService: OrganizationService,
     ) {
-
     }
 
     ngOnInit() {
-
-        this.route.params.subscribe(params => {
-            // if (params.edit) this.edit = true;
-            // this.createForm();
-            if (!params.groupid) {
-                if (!this.classReference.orgName) {
-                    const initialTitle = () => {this.updateNavbar(this.classReference.orgName)};
-                    window.setTimeout(initialTitle, 1000);
-                } else {
-                    this.updateNavbar(this.classReference.orgName);
-                }
-            } else {
-
-                this.groupId = params.groupid;
-                const updateNavbar = this.updateNavbar.bind(this);
-                updateNavbar();
-                window.setTimeout(updateNavbar, 1200);
-
-            }
-        });
-
         this.userService.onChange(user => {
             this.canCreateClasses = user.role !== 'student';
         });
@@ -87,23 +63,7 @@ export class NewSidebarComponent implements OnInit {
             });
     }
 
-
     toggleSidebar(val: boolean) {
         this.open = !this.open;
     }
-
-    updateNavbar(val: string = '') {
-        if (val) {
-            this.selectedGroup.emit(val);
-        } else {
-            this.classReference.categories.forEach((cat, i) => {
-                cat.groups.forEach((group, j) => {
-                    if (group.id === this.activeGroup) {
-                        this.selectedGroup.emit(group.title);
-                    }
-                });
-            });
-        }
-    }
-
 }
