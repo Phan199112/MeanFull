@@ -1,5 +1,5 @@
 var UserModel = require('../db.models/user.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var AnswersModel = require('../db.models/answers.model');
 
 exports.ensureAuthenticatedUserInSession = function (req, res, next) {
@@ -107,7 +107,7 @@ exports.updateUserTags  = function updateUserTags(userid) {
         // surveys created by the user
         var tempfunctionCreatedByUser = function() {
             var promise = new Promise(function(resolve, reject){
-                FormModel.find({userid: userid}).cursor()
+                PostModel.find({userid: userid}).cursor()
                     .on('data', function(form){
                         if (form.public == true) {
                             tagsmaster.push(form.hashtags);
@@ -141,7 +141,7 @@ exports.updateUserTags  = function updateUserTags(userid) {
                 // get information of the associated form.
                 var tempfunction = function(x) {
                     return new Promise(function(resolve, reject){
-                        FormModel.findById(x, function (err, form) {
+                        PostModel.findById(x, function (err, form) {
                             if (err) {
                                 reject(err);
                             } else {

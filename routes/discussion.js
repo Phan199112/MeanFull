@@ -1,5 +1,5 @@
 var DiscussionModel = require('../db.models/discussion.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var UserModel = require('../db.models/user.model');
 var log = require("../functions/logs");
 var emailfunctions 	= require("../functions/email");
@@ -31,17 +31,17 @@ module.exports = function(app, passport, manager, hashids) {
                 var authorid = null;
                 var formid = hashids.decodeHex(receivedData.formid);
                 var questionLink = `https://www.questionsly.com/feed;survey=${receivedData.formid}`;
-                var loadedFormModel;
+                var loadedPostModel;
 
                 return new Promise(function(resolve, reject) {
-                    FormModel.findById(formid, function (err, form) {
+                    PostModel.findById(formid, function (err, form) {
                         if (err) {
                             reject(err);
                         } else {
                             if (form) {
                                 // look up the author of the form
                                 authorid = form.userid;
-                                loadedFormModel = form;
+                                loadedPostModel = form;
                             }
                             resolve();
                         }
@@ -63,7 +63,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 messageid: hashids.encodeHex(k._id)
                             });
 
-                            emailstoresfunctions.recordNewComment(req.session.userid, loadedFormModel, hashids);
+                            emailstoresfunctions.recordNewComment(req.session.userid, loadedPostModel, hashids);
                         }
 
                         res.json({status: 1});

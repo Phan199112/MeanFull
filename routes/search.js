@@ -1,7 +1,7 @@
 var TagsModel = require('../db.models/tags.model');
 var UserModel = require('../db.models/user.model');
 var GroupModel = require('../db.models/group.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var autocomplete = require('../modules/mongoose-in-memory-autocomplete-multiple/main');
 var cron = require('node-cron');
 
@@ -261,7 +261,7 @@ module.exports = function(app, passport, manager, hashids) {
 
             return new Promise(function (resolve, reject) {
                 //
-                FormModel.find({'public': true, 'shared': true, 'title': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
+                PostModel.find({'public': true, 'shared': true, 'title': {'$regex' : keyword, '$options' : 'ig'}}, function (err, words) {
                     if (err) {
                         reject();
 
@@ -286,7 +286,7 @@ module.exports = function(app, passport, manager, hashids) {
                     // query username and link of the person's network
                     var tempfunctionform = function (x) {
                         return new Promise(function (resolve, reject) {
-                            FormModel.findById(x, function (err, form) {
+                            PostModel.findById(x, function (err, form) {
                                 if (err) {
                                     reject(err);
                                 } else {

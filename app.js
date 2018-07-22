@@ -124,7 +124,7 @@ app.use(function(req, res, next) {
 var cron = require('node-cron');
 var TagsModel = require('./db.models/tags.model');
 var UserModel = require('./db.models/user.model');
-var FormModel = require('./db.models/form.model');
+var PostModel = require('./db.models/post.model');
 var GroupModel = require('./db.models/group.model');
 var EmailStoreModel = require('./db.models/emailStore.model');
 var NetworkEdgesModel = require('./db.models/networkedges.model');
@@ -144,7 +144,7 @@ function getSearchAndTags() {
     new Promise(function (resolve, reject) {
         var tempfunctionTagsForms = function () {
             return new Promise(function (resolve, reject) {
-                FormModel.find({ public: true, shared: true }).cursor()
+                PostModel.find({ public: true, shared: true }).cursor()
                     .on('data', function (form) {
                         // form is one entry of many
                         // there may be multi hashtags

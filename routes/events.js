@@ -1,7 +1,7 @@
 var EventModel = require('../db.models/event.model');
 var UserModel = require('../db.models/user.model');
 var GroupModel = require('../db.models/group.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var emailfunctions = require("../functions/email");
 
 
@@ -64,7 +64,7 @@ module.exports = function (app, passport, manager, hashids) {
                                     name: "Anonymous",
                                 };
 
-                                FormModel.findById(decryptedId, function (err, formInfo) {
+                                PostModel.findById(decryptedId, function (err, formInfo) {
                                     //console.log(formInfo);
                                     if (err) {
                                         reject(err)
@@ -115,7 +115,7 @@ module.exports = function (app, passport, manager, hashids) {
                                         if (event.type === "form" || event.type === "form-answer" || event.type === "form-discussion") {
 
                                             if (event.type === "form-discussion" || (event.type === "form" && event.data.comm) ) decryptedId = hashids.decodeHex(event.data.formid);
-                                            FormModel.findById(decryptedId, function (err, formInfo) {
+                                            PostModel.findById(decryptedId, function (err, formInfo) {
                                                 if (err) {
                                                     reject();
                                                 } else if (formInfo) {
@@ -146,7 +146,7 @@ module.exports = function (app, passport, manager, hashids) {
                                             // **Delete this once database is wiped **
                                             if (typeof event.data == "string") {
                                                 let decryptedForm = hashids.decodeHex(event.data);
-                                                FormModel.findById(decryptedForm, function (err, formInfo) {
+                                                PostModel.findById(decryptedForm, function (err, formInfo) {
                                                     if (err) {
                                                         reject(err);
                                                     } else if (formInfo) {
@@ -164,7 +164,7 @@ module.exports = function (app, passport, manager, hashids) {
                                                 let decryptedCom = hashids.decodeHex(event.data.commid)
                                                 let decryptedForm = hashids.decodeHex(event.data.formid);
 
-                                                FormModel.findById(decryptedForm, function (err, formInfo) {
+                                                PostModel.findById(decryptedForm, function (err, formInfo) {
                                                     //console.log(formInfo);
                                                     if (err) {
 

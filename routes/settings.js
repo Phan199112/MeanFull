@@ -1,5 +1,5 @@
 var UserModel = require('../db.models/user.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var GroupModel = require('../db.models/group.model');
 var EventModel = require('../db.models/event.model');
 var NetworkEdgesModel = require('../db.models/networkedges.model');
@@ -371,7 +371,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         }
                                     });
                                 } else if (x.type === "form" || x.type === "form-answer") {
-                                    FormModel.findById(hashids.decodeHex(x.data), function (err, form) {
+                                    PostModel.findById(hashids.decodeHex(x.data), function (err, form) {
                                         if (err) {
                                             reject(err);
                                         } else {
@@ -387,7 +387,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     });
 
                                 } else if (x.type === "form-discussion") {
-                                    FormModel.findById(hashids.decodeHex(x.data.formid), function (err, form) {
+                                    PostModel.findById(hashids.decodeHex(x.data.formid), function (err, form) {
                                         if (err) {
                                             reject(err);
                                         } else {

@@ -1,6 +1,6 @@
 var GroupModel = require('../db.models/group.model');
 var UserModel = require('../db.models/user.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var EventModel = require('../db.models/event.model');
 var EmailStoreModel = require('../db.models/emailStore.model');
 var math = require("../functions/math");
@@ -1086,7 +1086,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         var sharetocomm = function() {
             return new Promise(function (resolve, reject) {
-                FormModel.findByIdAndUpdate({_id: formid}, {$push: {sharedWithCommunities: commid}}, function(err, k) {
+                PostModel.findByIdAndUpdate({_id: formid}, {$push: {sharedWithCommunities: commid}}, function(err, k) {
                     if (err) {
                         reject(err);
 

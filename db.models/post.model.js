@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var FormSchema = new Schema({
+var PostSchema = new Schema({
     userid: String,
     title: String,
     questions: Object,
@@ -25,5 +25,5 @@ var FormSchema = new Schema({
 });
 
 // Compile model from schema
-module.exports = mongoose.model('FormModel', FormSchema );
+module.exports = mongoose.model('PostModel', PostSchema );
 

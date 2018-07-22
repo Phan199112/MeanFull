@@ -1,9 +1,9 @@
 var mathfunctions = require('../functions/math');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 
 exports.formPublic  = function formPublic(x) {
     return new Promise(function(resolve, reject){
-        FormModel.findById(x, function (err, forminfo) {
+        PostModel.findById(x, function (err, forminfo) {
             if (err) {
                 reject(err);
             } else {
@@ -19,7 +19,7 @@ exports.formPublic  = function formPublic(x) {
 
 exports.formEvent  = function formEvent(x) {
     return new Promise(function(resolve, reject){
-        FormModel.findById(x, function (err, forminfo) {
+        PostModel.findById(x, function (err, forminfo) {
             if (err) {
                 reject(err);
             } else {
@@ -36,7 +36,7 @@ exports.formEvent  = function formEvent(x) {
 // this function will test whether a user is a member or admin
 exports.formAdmin = function formAdmin(x,y) {
     return new Promise(function(resolve, reject){
-        FormModel.findById(x, function (err, forminfo) {
+        PostModel.findById(x, function (err, forminfo) {
             if (err) {
                 reject(err);
             } else {

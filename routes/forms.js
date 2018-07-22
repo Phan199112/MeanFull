@@ -1,4 +1,4 @@
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var AnswersModel = require('../db.models/answers.model');
 var GroupModel = require('../db.models/group.model');
 var ReactionsModel = require('../db.models/reactions.model');
@@ -87,7 +87,7 @@ module.exports = function(app, passport, manager, hashids) {
         var saveSurvey = function() {
             return new Promise(function (resolve, reject) {
                 // Note: receivedData contains questions, but it's outdated (has non-S3 URLs) & has no new information
-                FormModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
+                PostModel.findOneAndUpdate({_id: hashids.decodeHex(req.params.id), userid: req.session.userid},
                     {$set: { title: receivedData.title, categories: categories,
                             description: receivedData.description, anonymous: receivedData.anonymous,
                             hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
@@ -244,7 +244,7 @@ module.exports = function(app, passport, manager, hashids) {
         var yourformdata = [];
 
         new Promise(function (resolve, reject) {
-            FormModel.find({userid: req.session.userid}).limit(20).cursor()
+            PostModel.find({userid: req.session.userid}).limit(20).cursor()
                 .on('data', function (form) {
                     var title;
                     var elipsis = form.questions[0].body.length > 20 ? "..." : "";
@@ -273,7 +273,7 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/shared', manager.ensureLoggedIn('/users/login'), function(req, res) {
         var formid = hashids.decodeHex(req.body.formid);
 
-        FormModel.findOneAndUpdate({_id: formid, userid: req.session.userid}, {$set:{shared: true}}, {new: true}, function(err, k){
+        PostModel.findOneAndUpdate({_id: formid, userid: req.session.userid}, {$set:{shared: true}}, {new: true}, function(err, k){
             if(err){
                 console.log("Error in updating form"+err);
                 res.json({status: 0});
@@ -319,7 +319,7 @@ module.exports = function(app, passport, manager, hashids) {
         Promise.all(promisesToUploadMedia)
         .then(function () {
             // mongodb create
-            FormModel.create(
+            PostModel.create(
                 {
                     userid: req.session.userid,
                     questions: receivedData.questions,
@@ -405,7 +405,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         var fcheckexpired = function () {
             return new Promise(function (resolve, reject) {
-                FormModel.findById(answerformid, function (err, form) {
+                PostModel.findById(answerformid, function (err, form) {
                     if (err) {
                         reject();
                     } else {
@@ -423,7 +423,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         var fcheckloginRequired = function () {
             return new Promise(function (resolve, reject) {
-                FormModel.findById(answerformid, function (err, form) {
+                PostModel.findById(answerformid, function (err, form) {
                     if (err) {
                         reject();
                     } else {
@@ -454,15 +454,15 @@ module.exports = function(app, passport, manager, hashids) {
             });
         };
 
-        var loadedFormModel;
+        var loadedPostModel;
         var formauthorfunction = function (x) {
             return new Promise(function (resolve, reject) {
-                FormModel.findById(x, function (err, form) {
+                PostModel.findById(x, function (err, form) {
                     if (err) {
                         reject();
                     } else {
                         if (form) {
-                            loadedFormModel = form;
+                            loadedPostModel = form;
                             // look up the author of the form
                             formauthorid = form.userid;
                             activityEmailSent = form.activityEmailSent;
@@ -524,7 +524,7 @@ module.exports = function(app, passport, manager, hashids) {
 
                             // email notification
                             // check the notification settings of this user
-                            publishEvent.surveyCommentAdded(areAllAnswersAnonymous ? null : req.session.userid, loadedFormModel, hashids);
+                            publishEvent.surveyCommentAdded(areAllAnswersAnonymous ? null : req.session.userid, loadedPostModel, hashids);
                             res.json({status: 1});
                         })
                             .catch(function () {
@@ -588,7 +588,7 @@ module.exports = function(app, passport, manager, hashids) {
                             // email notification
                             // check the notification settings of this user
 
-                            publishEvent.surveyAnswered(null, loadedFormModel, hashids);
+                            publishEvent.surveyAnswered(null, loadedPostModel, hashids);
                             res.json({status: 1});
                         })
                             .catch(function (err) {
@@ -612,7 +612,7 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/expire', manager.ensureLoggedIn('/users/login'), function(req,res) {
         var formid = hashids.decodeHex(req.body.id);
         //
-        FormModel.findOneAndUpdate({_id: formid, userid: req.session.userid}, {$set: {expired: true}}, function(err, k) {
+        PostModel.findOneAndUpdate({_id: formid, userid: req.session.userid}, {$set: {expired: true}}, function(err, k) {
             if (err) {
                 console.log("Error in expiring form"+err);
                 res.json({status: 0});
@@ -627,7 +627,7 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/delete', manager.ensureLoggedIn('/users/login'), function(req,res) {
         var formid = hashids.decodeHex(req.body.id);
         //
-        FormModel.remove({_id: formid, userid: req.session.userid}, function(err) {
+        PostModel.remove({_id: formid, userid: req.session.userid}, function(err) {
             if (!err) {
                 console.log("Deleted form");
                 // log
@@ -711,7 +711,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // ***** For each answer, load the survey, and add it to the result set `surveysToReturn` *****
                 var getFormInfo = function(formId, answerTimestamp) {
                     return new Promise(function(resolve, reject){
-                        FormModel.findById(formId, function (err, form) {
+                        PostModel.findById(formId, function (err, form) {
                             if (err) {
                                 reject(err);
                             } else {
@@ -972,7 +972,7 @@ module.exports = function(app, passport, manager, hashids) {
                 // retrieve forms by DB id
                 var tempfunctionByID = function() {
                     return new Promise(function(resolve, reject) {
-                        FormModel.findById(topsurvey, function (err, form) {
+                        PostModel.findById(topsurvey, function (err, form) {
                             if (err) {
                                 reject(err);
                             } else {
@@ -1019,7 +1019,7 @@ module.exports = function(app, passport, manager, hashids) {
                 var tempfunctionByQuery = function() {
                     return new Promise(function(resolve, reject){
 
-                        FormModel.find(queryobj).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
+                        PostModel.find(queryobj).sort({'timestamp': 'desc'}).limit(postlimit).cursor()
                             .on('data', function(form){
 
                                 formid = hashids.encodeHex(form._id);
@@ -1157,7 +1157,7 @@ module.exports = function(app, passport, manager, hashids) {
         var loggedin = req.isAuthenticated();
         var formData, authorProfile, finalOutput;
 
-        FormModel.findById(topsurvey, function (err, form) {
+        PostModel.findById(topsurvey, function (err, form) {
             if (err) {
                 res.json({ status: 0 });
             } else {
@@ -1217,7 +1217,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         var targetformid = hashids.decodeHex(req.body.targetid);
         //
-        FormModel.findByIdAndUpdate(targetformid, {$set: {report: {set: true, by: req.session.userid, timestamp: Date.now()}}}, function(err, k) {
+        PostModel.findByIdAndUpdate(targetformid, {$set: {report: {set: true, by: req.session.userid, timestamp: Date.now()}}}, function(err, k) {
             if (err) {
                 console.log("Error in reporting form"+err);
                 res.json({status: 0});
@@ -1492,7 +1492,7 @@ module.exports = function(app, passport, manager, hashids) {
             // handle the multiple async steps with a promise
             new Promise(function(resolve, reject) {
                 // first confirm that the results are public and what the question types are
-                FormModel.findById(formid, function (err, form) {
+                PostModel.findById(formid, function (err, form) {
                     if (err) {
                         reject();
                     } else {
@@ -1642,7 +1642,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         new Promise(function(resolve, reject) {
             // first confirm that the results are public and what the question types are
-            FormModel.findById(formid, function (err, form) {
+            PostModel.findById(formid, function (err, form) {
                 if (err) {
                     reject(err);
 
@@ -1793,7 +1793,7 @@ module.exports = function(app, passport, manager, hashids) {
 
         new Promise(function (resolve, reject) {
             //get data from mongoDB findByID
-            FormModel.findById(hashids.decodeHex(req.params.id), function (err, form) {
+            PostModel.findById(hashids.decodeHex(req.params.id), function (err, form) {
                 if (err) {
                     reject();
                 } else {
@@ -1918,7 +1918,7 @@ module.exports = function(app, passport, manager, hashids) {
                     .then(function() {
                         var tempqtypes = function(x) {
                             return new Promise(function(resolve, reject) {
-                                FormModel.findById(x, function (err, form) {
+                                PostModel.findById(x, function (err, form) {
                                     if (err) {
                                         reject(err);
                                     } else {

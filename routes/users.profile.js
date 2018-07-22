@@ -1,5 +1,5 @@
 var UserModel = require('../db.models/user.model');
-var FormModel = require('../db.models/form.model');
+var PostModel = require('../db.models/post.model');
 var AnswersModel = require('../db.models/answers.model');
 var NetworkEdgesModel = require('../db.models/networkedges.model');
 var GroupModel = require('../db.models/group.model');
