@@ -1,22 +1,22 @@
-<app-new-sidebar #sb [activeGroup]="viewGroupId"></app-new-sidebar>
+<app-new-sidebar #sb [activeGroup]="activeGroupId"></app-new-sidebar>
 <div class="flex">
     <div id="sidebarPlaceholder"></div>
     <div class="flex">
         <div></div>
-        <app-new-navbar #nb (toggle)="sb.toggleSidebar($event)" [activeGroupId]="viewGroupId" [activeSubsection]="viewFilter"></app-new-navbar>
+        <app-new-navbar #nb (toggle)="sb.toggleSidebar($event)" [activeGroupId]="activeGroupId" [activeSubsection]="activeSubsection"></app-new-navbar>
         <div id="main-container" class="flex flex-jcse">
             <div class="feed-column">
-                <app-ask-question *ngIf="viewFilter != 'settings'" (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
-                <app-feed-list *ngIf="viewFilter != 'settings'" [comm]="viewGroupId"
-                    [user]="viewFilter == 'myposts' ? userService.getUser().dbid : null" #feedList></app-feed-list>
+                <app-ask-question *ngIf="activeSubsection != 'settings'" (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
+                <app-feed-list *ngIf="activeSubsection != 'settings'" [comm]="activeGroupId"
+                    [user]="activeSubsection == 'myposts' ? userService.getUser().dbid : null" #feedList></app-feed-list>
 
-                <div *ngIf="viewFilter == 'settings'" class="settings-container">
+                <div *ngIf="activeSubsection == 'settings'" class="settings-container">
                     <h1 id="settings-title">Shareable Link</h1>
                     <h3 id="settings-subtitle">You can share this link with your students to have them automatically enroll in this group.</h3>
                     <p id="share-link">https://questionsly.herokuapp.com{{shareLink}}</p>
                 </div>
             </div>
-            <app-member-list [activeGroup]="viewGroupId" style="z-index: -2;" class="fullMobile"></app-member-list>
+            <app-member-list [activeGroup]="activeGroupId" style="z-index: -2;" class="fullMobile"></app-member-list>
         </div>
     </div>
 </div>

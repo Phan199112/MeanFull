@@ -9,8 +9,8 @@ import { MygroupsService } from '../mygroups.service';
 })
 export class NewFeedPageComponent implements OnInit, OnChanges {
 
-    @Input() viewGroupId: string;
-    @Input() viewFilter: string;
+    @Input() activeGroupId: string;
+    @Input() activeSubsection: string;
 
     public shareLink = '';
 
@@ -25,8 +25,8 @@ export class NewFeedPageComponent implements OnInit, OnChanges {
     ngOnChanges() {
         this.shareLink = '';
         this.myGroupsService.onReady(function () {
-            if (this.viewGroupId) {
-                const group = this.myGroupsService.getGroupById(this.viewGroupId);
+            if (this.activeGroupId) {
+                const group = this.myGroupsService.getGroupById(this.activeGroupId);
                 this.shareLink = '/' + group.category + '/' + group.id + '?t=' + group.shareToken;
             }
         }.bind(this));

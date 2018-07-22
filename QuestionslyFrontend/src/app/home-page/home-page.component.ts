@@ -12,8 +12,8 @@ export class HomePageComponent implements OnInit {
     static shareTokenInfo: any = null;
 
     public isLoggedIn: boolean;
-    public viewGroupId = '';
-    public viewFilter = '';
+    public activeGroupId = '';
+    public activeSubsection = '';
 
     constructor(
         private userService: UserService,
@@ -31,8 +31,8 @@ export class HomePageComponent implements OnInit {
         }
 
         this.route.params.subscribe(params => {
-            this.viewGroupId = params.groupid;
-            this.viewFilter = params.subsection;
+            this.activeGroupId = params.groupid;
+            this.activeSubsection = params.subsection;
         });
         this.route.queryParams.subscribe(params => {
             this.consumeGroupShareTokens([this.route.snapshot.params.groupid, this.route.snapshot.queryParams.t]);
