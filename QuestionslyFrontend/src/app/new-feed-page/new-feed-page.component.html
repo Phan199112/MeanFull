@@ -13,7 +13,7 @@
                 <div *ngIf="viewFilter == 'settings'" class="settings-container">
                     <h1 id="settings-title">Shareable Link</h1>
                     <h3 id="settings-subtitle">You can share this link with your students to have them automatically enroll in this group.</h3>
-                    <p id="share-link">https://questionsly.herokuapp.com/class/{{sb.groupId}}</p>
+                    <p id="share-link">https://questionsly.herokuapp.com{{shareLink}}</p>
                 </div>
             </div>
             <app-member-list [activeGroup]="viewGroupId" style="z-index: -2;" class="fullMobile"></app-member-list>

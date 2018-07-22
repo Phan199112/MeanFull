@@ -559,12 +559,14 @@ module.exports = function(app, passport, manager, hashids) {
                     {'members': req.session.userid}
                 ).limit(1000).cursor()
                     .on('data', function (group) {
+                        var isAdmin = group.adminuserid.indexOf(req.session.userid) !== -1;
                         var renderedGroup = {
                             title: group.title,
                             pic: group.pic,
                             id: hashids.encodeHex(group._id),
                             category: group.category,
-                            isAdmin: group.adminuserid.indexOf(req.session.userid) !== -1,
+                            isAdmin: isAdmin,
+                            shareToken: isAdmin ? commfunctions.getGroupShareToken(group) : null,
                         };
                         categories[group.category].groups.push(renderedGroup);
                         groupData.push(renderedGroup);
