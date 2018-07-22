@@ -18,11 +18,11 @@
                     {{group.title}}
                 </a>
                 <a *ngIf="group.id == activeGroup" class="section-entry sub"
-                    [routerLink]="['/', category.category, group.id]">
+                    [routerLink]="['/', category.category, group.id, 'docs']">
                     Documents
                 </a>
                 <a *ngIf="group.id == activeGroup" class="section-entry sub"
-                    [routerLink]="['/', category.category, group.id]">
+                    [routerLink]="['/', category.category, group.id, 'videos']">
                     Videos
                 </a>
             </div>
