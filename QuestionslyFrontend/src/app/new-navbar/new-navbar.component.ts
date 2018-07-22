@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { UserService } from '../user.service';
 import { MygroupsService } from '../mygroups.service';
 import { Router } from '@angular/router';
+import { OrganizationService } from '../organization.service';
 
 @Component({
   selector: 'app-new-navbar',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./new-navbar.component.scss'],
   providers: [UserService]
 })
-export class NewNavbarComponent implements OnInit {
+export class NewNavbarComponent implements OnInit, OnChanges {
 
     @Input() activeGroupId: string;
     @Input() activeSubsection: string;
@@ -22,6 +23,7 @@ export class NewNavbarComponent implements OnInit {
         private userService: UserService,
         private router: Router,
         public myGroupService: MygroupsService,
+        private organizationService: OrganizationService,
     ) { }
 
     selectedClass: string = '';
@@ -29,6 +31,20 @@ export class NewNavbarComponent implements OnInit {
     ngOnInit() {
         if (this.userService.getRole() === 'admin' || this.userService.getRole() === 'professor') {
             this.isGroupAdmin = true;
+        }
+    }
+
+    ngOnChanges() {
+        if (this.activeGroupId) {
+            this.myGroupService.onReady(function () {
+                if (this.activeGroupId) {
+                    this.title = this.myGroupService.getGroupById(this.activeGroupId).title;
+                }
+            }.bind(this));
+        } else {
+            this.organizationService.onReady(function () {
+                this.title = this.organizationService.getOrgName();
+            }.bind(this));
         }
     }
 

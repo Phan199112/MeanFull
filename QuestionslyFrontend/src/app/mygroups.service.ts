@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 let _groups = [];
 let _categories: any = null;
 let _callbacks = [];
+let _oneTimeCallbacks = [];
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,15 @@ export class MygroupsService {
         return null;
     }
 
+    // Get callback once when ready
+    public onReady(callback: any) {
+        if (_groups.length > 0) {
+            callback({g: _groups, c: _categories});
+        } else {
+            _oneTimeCallbacks.push(callback);
+        }
+    }
+
     // Subscribe to changes
     public onChange(callback: any) {
         if (_groups.length > 0) {
@@ -66,6 +76,10 @@ export class MygroupsService {
             _callbacks.forEach(function (callback) {
                 callback({g: _groups, c: _categories});
             });
+            _oneTimeCallbacks.forEach(function (callback) {
+                callback({g: _groups, c: _categories});
+            });
+            _oneTimeCallbacks = [];
         });
     }
 }
