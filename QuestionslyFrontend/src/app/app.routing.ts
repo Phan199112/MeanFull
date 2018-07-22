@@ -21,7 +21,6 @@ const APP_ROUTES: Routes = [
     {path: 'createForm', component: CreateFormComponent},
     {path: 'shareForm', component: ShareFormComponent},
     {path: 'takeForm/:id', component: TakeFormComponent},
-    {path: 'users/login', component: LoginComponent},
     {path: 'sign-in', component: SignInComponent},
     {path: 'settings', component: SettingsComponent},
     {path: 'createGroup', component: CreateGroupComponent},
