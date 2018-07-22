@@ -19,6 +19,7 @@ export class NewNavbarComponent implements OnInit, OnChanges {
 
     title = '';
     isGroupAdmin = false;
+    profilePic = '';
 
     constructor(
         private userService: UserService,
@@ -30,6 +31,7 @@ export class NewNavbarComponent implements OnInit, OnChanges {
     selectedClass = '';
 
     ngOnInit() {
+        this.profilePic = this.userService.getUser().picdata;
     }
 
     ngOnChanges() {
