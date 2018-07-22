@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
-import { Http } from '@angular/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 import { MygroupsService } from '../mygroups.service';
 import { UserService } from '../user.service';
 import { group } from '../../../node_modules/@angular/animations';
+import { OrganizationService } from '../organization.service';
 
 @Component({
     selector: 'app-new-sidebar',
@@ -27,12 +27,12 @@ export class NewSidebarComponent implements OnInit {
     @ViewChild('createGroupModal') createGroupModal;
 
     constructor(
-        private http: Http,
         private modalService: NgbModal,
         private router: Router,
         private route: ActivatedRoute,
         private myGroupsService: MygroupsService,
         private userService: UserService,
+        private organizationService: OrganizationService,
     ) {
 
     }
@@ -72,13 +72,9 @@ export class NewSidebarComponent implements OnInit {
             }
         });
 
-        this.http.get('/organizations/mine')
-            .toPromise()
-            .then(response => {
-                const responseJson = response.json();
-
-                NewSidebarComponent.orgName = responseJson.organization.name;
-            });
+        this.organizationService.onReady(function (org) {
+            this.classReference.orgName = org.name;
+        }.bind(this));
     }
 
     // category is an object from the backend
