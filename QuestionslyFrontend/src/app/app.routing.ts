@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {CreateFormComponent} from './create-form/createForm.component';
 import {ShareFormComponent} from './share-form/share-form.component';
 import {TakeFormComponent} from './take-form/take-form.component';
-import {LoginComponent} from './login/login.component';
 import {SignInComponent} from './sign-in/sign-in.component';
 import {SettingsComponent} from './settings/settings.component';
 import {CreateGroupComponent} from './create-group/create-group.component';

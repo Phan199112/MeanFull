@@ -46,7 +46,6 @@ import { ShortAnswersComponent } from './short-answers/short-answers.component';
 import { StarArrayComponent } from './star-array/star-array.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ImageEditorComponent } from './image-editor/image-editor.component';
-import { LoginComponent } from './login/login.component';
 import { LoginPopupComponent } from './login-popup/login-popup.component';
 import { NetworkItemComponent } from './Network/network-item/network-item.component';
 import { NetworkListComponent } from './Network/network-list/network-list.component';
@@ -95,7 +94,6 @@ import { HomePageComponent } from './home-page/home-page.component';
     StarArrayComponent,
     FeedbackComponent,
     ImageEditorComponent,
-    LoginComponent,
     LoginPopupComponent,
     NetworkItemComponent,
     NetworkListComponent,
