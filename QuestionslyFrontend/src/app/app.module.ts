@@ -50,7 +50,6 @@ import { LoginComponent } from './login/login.component';
 import { LoginPopupComponent } from './login-popup/login-popup.component';
 import { NetworkItemComponent } from './Network/network-item/network-item.component';
 import { NetworkListComponent } from './Network/network-list/network-list.component';
-import { ProfileComponent } from './profile/profile.component';
 import { ResourceListComponent } from './resource-list/resource-list.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { QuestionComponent } from './question/question.component';
@@ -101,7 +100,6 @@ import { HomePageComponent } from './home-page/home-page.component';
     LoginPopupComponent,
     NetworkItemComponent,
     NetworkListComponent,
-    ProfileComponent,
     ResourceListComponent,
     SearchPageComponent,
     QuestionComponent,
