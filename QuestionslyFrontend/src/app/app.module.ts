@@ -57,7 +57,6 @@ import { SettingsComponent } from './settings/settings.component';
 import { ShareFormComponent } from './share-form/share-form.component';
 import { CommunityImageComponent } from './Sidebar/community-image/community-image.component';
 import { RightPanelComponent } from './Sidebar/right-panel/right-panel.component';
-import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
 import { UserImageComponent } from './Sidebar/user-image/user-image.component';
 import { TakeFormComponent } from './take-form/take-form.component';
 import { ViewCommunityComponent } from './view-community/view-community.component';
@@ -107,7 +106,6 @@ import { HomePageComponent } from './home-page/home-page.component';
     ShareFormComponent,
     CommunityImageComponent,
     RightPanelComponent,
-    SidebarComponent,
     UserImageComponent,
     TakeFormComponent,
     ViewCommunityComponent,
