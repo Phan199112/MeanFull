@@ -555,15 +555,16 @@ module.exports = function(app, passport, manager, hashids) {
         var categories = commfunctions.getGroupCategories();
 
         return new Promise(function (resolve, reject) {
-                GroupModel.find({
-                    $or: [{'adminuserid': req.session.userid}, {'members': req.session.userid}]
-                }).limit(1000).cursor()
+                GroupModel.find(
+                    {'members': req.session.userid}
+                ).limit(1000).cursor()
                     .on('data', function (group) {
                         var renderedGroup = {
                             title: group.title,
                             pic: group.pic,
                             id: hashids.encodeHex(group._id),
                             category: group.category,
+                            isAdmin: group.adminuserid.indexOf(req.session.userid) !== -1,
                         };
                         categories[group.category].groups.push(renderedGroup);
                         groupData.push(renderedGroup);

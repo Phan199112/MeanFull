@@ -16,8 +16,9 @@ export class NewNavbarComponent implements OnInit, OnChanges {
     @Input() activeSubsection: string;
 
     @Output() toggle: EventEmitter<boolean> = new EventEmitter<boolean>();
-    title: string = '';
-    isGroupAdmin: boolean = false;
+
+    title = '';
+    isGroupAdmin = false;
 
     constructor(
         private userService: UserService,
@@ -26,34 +27,31 @@ export class NewNavbarComponent implements OnInit, OnChanges {
         private organizationService: OrganizationService,
     ) { }
 
-    selectedClass: string = '';
+    selectedClass = '';
 
     ngOnInit() {
-        if (this.userService.getRole() === 'admin' || this.userService.getRole() === 'professor') {
-            this.isGroupAdmin = true;
-        }
     }
 
     ngOnChanges() {
         if (this.activeGroupId) {
             this.myGroupService.onReady(function () {
                 if (this.activeGroupId) {
-                    this.title = this.myGroupService.getGroupById(this.activeGroupId).title;
+                    const group = this.myGroupService.getGroupById(this.activeGroupId);
+                    this.title = group.title;
+                    // An org admin is an admin of all groups in the org; and there are also admins of specific groups
+                    this.isGroupAdmin = group.isGroupAdmin || this.userService.getRole() === 'admin';
                 }
             }.bind(this));
         } else {
             this.organizationService.onReady(function () {
                 this.title = this.organizationService.getOrgName();
+                this.isGroupAdmin = false;
             }.bind(this));
         }
     }
 
     toggleSidebar() {
         this.toggle.emit(true);
-    }
-
-    setTitle(title: string) {
-        this.title = title;
     }
 
     navigateTo(subsection: any) {
