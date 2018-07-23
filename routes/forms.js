@@ -321,7 +321,9 @@ module.exports = function(app, passport, manager, hashids) {
             // mongodb create
             PostModel.create(
                 {
+                    type: receivedData.questions ? 'survey' : 'standard',
                     userid: req.session.userid,
+                    attachments: [],
                     questions: receivedData.questions,
                     anonymous: false,
                     hashtags: receivedData.hashtags,
