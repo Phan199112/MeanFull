@@ -40,13 +40,13 @@
                     </a>
                     <div ngbDropdownMenu aria-labelledby="form-menu">
                         <a class="dropdown-item" (click)="shareForm()" *ngIf="form.admin || form.public">Share Link</a>
-                        <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared">Release</a>
-                        <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired">Expire </a>
-                        <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent">Download data</a>
+                        <a class="dropdown-item" (click)="releaseForm()" *ngIf="form.admin && !form.shared && form.type === 'survey'">Release</a>
+                        <a class="dropdown-item" (click)="expireForm()" *ngIf="form.admin && !form.expired && form.type === 'survey'">Expire </a>
+                        <a class="dropdown-item" target="_self" href="{{form.download}}" *ngIf="form.admin && form.typeevent && form.type === 'survey'">Download data</a>
                         <a class="dropdown-item" (click)="deleteForm()" *ngIf="form.admin">Delete</a>
                         <a class="dropdown-item" (click)="reportForm()" *ngIf="!form.admin">Report abuse</a>
-                        <a class="dropdown-item" (click)="beginPDF()" *ngIf="form.admin || form.answered">Export as PDF</a>
-                        <a class="dropdown-item" (click)="toggleShareEmails()" *ngIf="form.admin || form.answered">Email PDF Report</a>
+                        <a class="dropdown-item" (click)="beginPDF()" *ngIf="(form.admin || form.answered) && form.type === 'survey'">Export as PDF</a>
+                        <a class="dropdown-item" (click)="toggleShareEmails()" *ngIf="(form.admin || form.answered) && form.type === 'survey'">Email PDF Report</a>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,11 @@
                 [submissionfailed]="submissionfailed"
                 (submitForm)="postForm($event)"
                 (toggleFilters)="toggleFilters($event)"
-                *ngIf="form.questions != null"></app-mini-show-form>
+                *ngIf="form.questions != null && form.type === 'survey'"></app-mini-show-form>
+                <div *ngIf="form.type !== 'survey'">
+                    <p class="lead qslyBlack">{{form.description}}</p>
+                    <img *ngIf="form.pic" src="{{form.qPic}}" class="response-image" />
+                </div>
         </div>
 
 

@@ -10,7 +10,9 @@ export class FeedPostModel {
     questions: any;
     answered: boolean;
     plotdata: any;
+    attachments: any;
     pic: string;
+    qPic: string;
     pictype: string;
     contracted = true;
     viewGraphsbool = false;
@@ -22,6 +24,7 @@ export class FeedPostModel {
     admin: boolean;
     shared: boolean;
     typeevent: boolean;
+    type: string;
     public: boolean;
     answerCount: Number;
     download: string;
@@ -47,8 +50,11 @@ export class FeedPostModel {
             this.admin = object.formdata.admin;
             this.expired = object.formdata.expired;
             this.shared = object.formdata.shared;
+            this.qPic = object.formdata.pic;
+            this.attachments = object.formdata.attachments;
             this.public = object.formdata.public;
             this.typeevent = object.formdata.typeevent;
+            this.type = object.formdata.type;
             this.loginRequired = object.formdata.loginRequired;
             this.categories = object.formdata.categories;
             this.answered = false;

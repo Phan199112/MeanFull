@@ -91,7 +91,7 @@ module.exports = function(app, passport, manager, hashids) {
                     {$set: { title: receivedData.title, categories: categories,
                             description: receivedData.description, anonymous: receivedData.anonymous,
                             hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
-                            public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers,
+                        public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers, pic: form.pic, attachments: form.attachments,
                             sharedWithCommunities: unhashedCommunities}}, function(err, k) {
                         if (err) {
                             console.log(err);
@@ -321,10 +321,12 @@ module.exports = function(app, passport, manager, hashids) {
             // mongodb create
             PostModel.create(
                 {
-                    type: receivedData.questions ? 'survey' : 'standard',
+                    type: receivedData.type,
+                    description: receivedData.description,
                     userid: req.session.userid,
-                    attachments: [],
+                    attachments: receivedData.attachments | [],
                     questions: receivedData.questions,
+                    pic: receivedData.attachments.pic,
                     anonymous: false,
                     hashtags: receivedData.hashtags,
                     categories: receivedData.categories,
@@ -724,9 +726,9 @@ module.exports = function(app, passport, manager, hashids) {
                                         var adminrights = (selecteduser === req.session.userid);
                                         // prepare the data
                                         var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
-                                            shared: form.shared, loginRequired: form.loginRequired,
-                                            timestamp: form.timestamp, description: form.description,
-                                            title: form.title, admin: adminrights, public: form.public,
+                                            shared: form.shared, loginRequired: form.loginRequired, type: form.type,
+                                            timestamp: form.timestamp, description: form.description, pic: form.pic,
+                                            title: form.title, admin: adminrights, public: form.public, attachments: form.attachments,
                                             typeevent: form.typeevent, categories: form.categories};
                                         surveysToReturn.push({formdata: formdata, id: hashids.encodeHex(form._id), answerTimestamp: answerTimestamp});
                                         authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
@@ -992,9 +994,9 @@ module.exports = function(app, passport, manager, hashids) {
                                         }
                                         // prepare the data
                                         var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
-                                            shared: form.shared, loginRequired: form.loginRequired,
-                                            timestamp: form.timestamp, description: form.description,
-                                            title: form.title, admin: adminrights, public: form.public,
+                                            shared: form.shared, loginRequired: form.loginRequired, type: form.type,
+                                            timestamp: form.timestamp, description: form.description, pic: form.pic,
+                                            title: form.title, admin: adminrights, public: form.public, attachments: form.attachments,
                                             typeevent: form.typeevent, categories: form.categories};
                                         // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                         formdata.reactions = form.reactions;
@@ -1041,9 +1043,9 @@ module.exports = function(app, passport, manager, hashids) {
                                 }
                                 // prepare the data
                                 var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
-                                    shared: form.shared, loginRequired: form.loginRequired,
-                                    timestamp: form.timestamp, description: form.description,
-                                    title: form.title, admin: adminrights, public: form.public,
+                                    shared: form.shared, loginRequired: form.loginRequired, type: form.type,
+                                    timestamp: form.timestamp, description: form.description, pic: form.pic,
+                                    title: form.title, admin: adminrights, public: form.public, attachments: form.attachments,
                                     typeevent: form.typeevent, categories: form.categories};
                                 // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                 formdata.reactions = form.reactions;
@@ -1174,9 +1176,9 @@ module.exports = function(app, passport, manager, hashids) {
                     // prepare the data
                     formData = {
                         hashtags: form.hashtags, questions: form.questions, expired: form.expired,
-                        shared: form.shared, loginRequired: form.loginRequired,
-                        timestamp: form.timestamp, description: form.description,
-                        title: form.title, admin: adminrights, public: form.public,
+                        shared: form.shared, loginRequired: form.loginRequired, type: form.type,
+                        timestamp: form.timestamp, description: form.description, pic: form.pic,
+                        title: form.title, admin: adminrights, public: form.public, attachments: form.attachments,
                         typeevent: form.typeevent, categories: form.categories
                     };
 
@@ -1815,8 +1817,8 @@ module.exports = function(app, passport, manager, hashids) {
                             formdata = {
                                 hashtags: form.hashtags, questions: form.questions, expired: form.expired,
                                 shared: form.shared, loginRequired: form.loginRequired,
-                                timestamp: form.timestamp, description: form.description,
-                                title: form.title, public: form.public,
+                                timestamp: form.timestamp, description: form.description, attachments: form.attachments,
+                                title: form.title, public: form.public, type: form.type, pic: form.pic,
                                 typeevent: form.typeevent, categories: form.categories, anonymous: form.anonymous
                             };
                             formdata.reactions = form.reactions | [];

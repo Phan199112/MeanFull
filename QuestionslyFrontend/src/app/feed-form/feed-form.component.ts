@@ -120,6 +120,7 @@ export class FeedFormComponent implements OnInit {
         if (this.me && this.form && this.me == this.form.authorlink) {
             this.isMyPost = true;
         }
+        
         // update reactions
         // this.intReactionData = this.form.reactions;
         // this.reactionData = this.reactionssummary(this.intReactionData);

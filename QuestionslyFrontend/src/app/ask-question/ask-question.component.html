@@ -29,8 +29,35 @@
             <a class="preview-btn" (click)=togglePreview()>Preview Survey</a>
         </div>
     </div>
-    <textarea id="user-question-text" rows="2" class="ask-textarea" [ngClass]="{alone: !question && !questionsContainer.length}" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" placeholder="{{action == 'survey' ? 'Start typing your question here...' : 'What would you like to say...'}}"></textarea>
+    <textarea id="user-question-text" rows="2" class="ask-textarea" [ngClass]="{alone: !question && !questionsContainer.length && action !== 'doc' && action !== 'video'}" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" placeholder="{{action == 'survey' ? 'Start typing your question here...' : 'What would you like to say...'}}"></textarea>
     
+    <!-- Document Toolbar -->
+    <div *ngIf="action == 'doc'" class="doc-menu" [ngClass]="{mb: !question}" >
+        <div class="imgContainer">
+            <div class="inner">
+                <div id="uploadBtn">
+                    <label for="picFile" class="submitButton not">Upload Document</label>
+                    <input #docInput id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event, 'doc')" />
+                </div>
+                <label id="docFileName">{{docInput?.files[0]?.name || ''}}</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Toolbar -->
+    <div *ngIf="action == 'video'" class="doc-menu" [ngClass]="{mb: !question}" >
+        <div class="imgContainer">
+            <div class="inner">
+                <div id="uploadBtn">
+                    <label for="picFile" class="submitButton not">Upload Video</label>
+                    <input #vidInput id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event, 'vid')" />
+                </div>
+                <label id="docFileName">{{vidInput?.files[0]?.name || ''}}</label>
+            </div>
+        </div>
+    </div>
+
+
     <div *ngIf="action == 'survey' && questionType != 'shortanswer'" class="question-form-container">
         <app-mc-question-form #mc *ngIf="questionType == 'multiplechoice'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-mc-question-form>
         <app-rating-question-form #rc *ngIf="questionType == 'rating'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-rating-question-form>
@@ -52,7 +79,7 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-        <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="getData('multiplechoice')">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
+        <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="checkSubmit()">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
     </div>
 
 
@@ -74,7 +101,7 @@
         
                             <div id="uploadBtn">
                                 <label for="picFile" class="submitButton not">Upload</label>
-                                <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event)" />
+                                <input id="picFile" title="Hello" style="display:none;" type="file" (change)="onPicChange($event, 'pic')" />
                             </div>
         
                             <div><p id="orText" class="qslyGray">or</p></div>
@@ -97,6 +124,7 @@
                     </div>
         <!-- IMAGE END -->
     </div>
+
 
     <div class="toolbar mobileGroup" *ngIf="isMobile && selection == 'groups'">
         <mat-form-field class="groups-input">

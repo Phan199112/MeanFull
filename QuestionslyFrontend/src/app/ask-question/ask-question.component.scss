@@ -181,7 +181,7 @@
     }
 }
 
-.selection-menu, .photo-menu {
+.selection-menu, .photo-menu, .doc-menu {
     display: flex;
     align-items: center;
     width: 100%;
@@ -192,8 +192,16 @@
     padding: 16px;
 }
 
-.photo-menu {
+.photo-menu, .doc-menu {
     padding: 8px;
+}
+
+.doc-menu {
+    margin-bottom:  0;
+    
+    &.mb {
+        margin-bottom: 24px;
+    }
 }
 
 .selection-menu {
@@ -555,4 +563,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#docFileName {
+    font: {
+        size: .8rem;
+        family: "Fira Sans";
+        weight: 400;
+    }
+    color: #999999;
+    margin-bottom: 0;
 }

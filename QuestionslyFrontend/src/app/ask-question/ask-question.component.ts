@@ -24,6 +24,8 @@ export class AskQuestionComponent implements OnInit {
   questionType: string = 'shortanswer';
   question: string = '';
   pic: string = '';
+  doc: string = '';
+  vid: string = '';
   tempQuestion: string = '';
   getQuestionData: boolean = false;
   questionsContainer: any = [];
@@ -37,7 +39,7 @@ export class AskQuestionComponent implements OnInit {
   alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
   groups: string[] = ['Class 1', 'Class 2', 'Class 3'];
   filteredGroups: Observable<string[]>;
-
+  docName: string = '';
 
   @Output() refreshFeed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -102,13 +104,12 @@ export class AskQuestionComponent implements OnInit {
   }
 
 
-  deactivateDimmer() {
+  deactivateDimmer(bypass: boolean = false) {
       // this.activeDimmer = false;
       // $('.fBody, .cBody').css({ 'z-index': 2 });
       // $('.cBody, nav').css({ 'z-index': 1 });
-   console.log('Calllasdf asdf as dfsadffed');
    
-    if (this.question || this.questionsContainer.length > 0) {
+    if (!bypass && (this.question || this.questionsContainer.length > 0)) {
       this.showDeleteBox = true;
     } else {
       this.activeDimmer = false;
@@ -160,7 +161,9 @@ export class AskQuestionComponent implements OnInit {
   }
 
 
-  getData(type: string) {
+  getData() {
+
+
     this.tempQuestion = this.question;
     this.question = '';
 
@@ -181,6 +184,15 @@ export class AskQuestionComponent implements OnInit {
 
   }
 
+  checkSubmit() {
+    if (this.action === 'survey') {
+      this.getData();
+      return;
+    } else {
+      this.submitForm();
+    }
+  }
+
 
   togglePreview() {
     if (this.preview === false) {
@@ -195,10 +207,19 @@ export class AskQuestionComponent implements OnInit {
 
 
     submitForm() {
+
+
         const formData = {
             questions: this.questionnaireData(),
             groupId: this.myGroupsService.getGroupIdByName(this.group.value),
+            description: this.question,
+            type: this.action,
+            attachments: {doc: this.doc, pic: this.pic, vid: this.vid}
         };
+
+        console.log('description:', formData.description);
+                
+
         this.http.post('/forms/create', formData).toPromise()
         .then(response => {
             // formData.id = response.json().id;
@@ -206,8 +227,10 @@ export class AskQuestionComponent implements OnInit {
             // this.formService.setData(formData);
             this.questionsContainer = [];
             this.questionType = 'shortanswer';
+            this.question = '';
+            this.action = 'post';
             this.preview = false;
-            this.deactivateDimmer();
+            this.deactivateDimmer(true);
             this.refreshFeed.emit(true);
             // const refresh = () => {this.refreshFeed.emit(true);};
             // window.setTimeout(refresh, 1000);
@@ -243,13 +266,23 @@ export class AskQuestionComponent implements OnInit {
     /*
   Function to carry out the actual PUT request to S3 using the signed request from the app.
   */
-  uploadFile(file, signedRequest, url) {
+  uploadFile(file, signedRequest, url, filetype) {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', signedRequest);
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          this.pic = url;
+
+          if (filetype === 'pic') {
+            this.pic = url;
+          } else if (filetype === 'doc') {
+            this.doc = url;
+          } else if (filetype === 'vid') {
+            this.vid = url;
+          }
+
+
+
         } else {
           alert('Could not upload file.');
         }
@@ -262,14 +295,14 @@ export class AskQuestionComponent implements OnInit {
     If request successful, continue to upload the file using this signed
     request.
   */
-  getSignedRequest(file) {
+  getSignedRequest(file, filetype) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
-          this.uploadFile(file, response.signedRequest, response.url);
+          this.uploadFile(file, response.signedRequest, response.url, filetype);
         } else {
           alert('Could not get signed URL.');
         }
@@ -279,12 +312,12 @@ export class AskQuestionComponent implements OnInit {
   }
 
 
-  onPicChange($event) {
-    const file = $event.target.files[0];
+  onPicChange($event, filetype: string) {
+    const file = $event.target.files[0];    
     if (file == null) {
       return alert('No file selected.');
     }
-    this.getSignedRequest(file);
+    this.getSignedRequest(file, filetype);
   }
 
   setPicUrl(url) {
