@@ -327,7 +327,7 @@ module.exports = function(app, passport, manager, hashids) {
                     questions: receivedData.questions,
                     pic: receivedData.attachments.pic,
                     doc: receivedData.attachments.doc,
-                    docname: receivedData.attachments.doc,
+                    docname: receivedData.attachments.docname,
                     vid: receivedData.attachments.vid,
                     anonymous: false,
                     hashtags: receivedData.hashtags,
