@@ -6,8 +6,9 @@ var PostSchema = new Schema({
     title: String,
     type: String, // ["survey", "pic", "doc", "vid", "post"]
     questions: Object,
-    attachments: Object,
     pic: String,
+    doc: String,
+    vid: String,
     reactions: Object,
     hashtags: [{type: String}],
     categories: [{type: String}],

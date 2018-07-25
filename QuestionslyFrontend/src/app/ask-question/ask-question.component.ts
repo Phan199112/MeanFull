@@ -215,7 +215,9 @@ export class AskQuestionComponent implements OnInit {
             groupId: this.myGroupsService.getGroupIdByName(this.group.value),
             description: this.question,
             type: this.action,
-            attachments: {doc: this.doc, pic: this.pic, vid: this.vid}
+            doc: this.doc,
+            pic: this.pic,
+            vid: this.vid
         };
 
         console.log('description:', formData.description);
