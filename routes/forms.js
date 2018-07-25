@@ -91,7 +91,7 @@ module.exports = function(app, passport, manager, hashids) {
                     {$set: { title: receivedData.title, categories: categories,
                             description: receivedData.description, anonymous: receivedData.anonymous,
                             hashtags: receivedData.hashtags, loginRequired: receivedData.loginRequired,
-                        public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers, pic: form.pic, doc: form.doc, vid: form.vid,
+                        public: receivedData.public, shared: true, sharedWithUsers: unhashedUsers, pic: form.pic, doc: form.doc, docname: form.docname, vid: form.vid,
                             sharedWithCommunities: unhashedCommunities}}, function(err, k) {
                         if (err) {
                             console.log(err);
@@ -327,6 +327,7 @@ module.exports = function(app, passport, manager, hashids) {
                     questions: receivedData.questions,
                     pic: receivedData.attachments.pic,
                     doc: receivedData.attachments.doc,
+                    docname: receivedData.attachments.doc,
                     vid: receivedData.attachments.vid,
                     anonymous: false,
                     hashtags: receivedData.hashtags,
@@ -729,7 +730,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
                                             shared: form.shared, loginRequired: form.loginRequired, type: form.type,
                                             timestamp: form.timestamp, description: form.description, pic: form.pic,
-                                            title: form.title, admin: adminrights, public: form.public, doc: form.doc, vid: form.vid,
+                                            title: form.title, admin: adminrights, public: form.public, doc: form.doc, docname: form.docname, vid: form.vid,
                                             typeevent: form.typeevent, categories: form.categories};
                                         surveysToReturn.push({formdata: formdata, id: hashids.encodeHex(form._id), answerTimestamp: answerTimestamp});
                                         authors.push({userid: form.userid, anonymous: form.anonymous, formid: form._id});
@@ -997,7 +998,7 @@ module.exports = function(app, passport, manager, hashids) {
                                         var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
                                             shared: form.shared, loginRequired: form.loginRequired, type: form.type,
                                             timestamp: form.timestamp, description: form.description, pic: form.pic,
-                                            title: form.title, admin: adminrights, public: form.public, doc: form.doc, vid: form.vid,
+                                            title: form.title, admin: adminrights, public: form.public, doc: form.doc, docname: form.docname, vid: form.vid,
                                             typeevent: form.typeevent, categories: form.categories};
                                         // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                         formdata.reactions = form.reactions;
@@ -1046,7 +1047,7 @@ module.exports = function(app, passport, manager, hashids) {
                                 var formdata = {hashtags: form.hashtags, questions: form.questions, expired: form.expired,
                                     shared: form.shared, loginRequired: form.loginRequired, type: form.type,
                                     timestamp: form.timestamp, description: form.description, pic: form.pic,
-                                    title: form.title, admin: adminrights, public: form.public, doc: form.doc, vid: form.vid,
+                                    title: form.title, admin: adminrights, public: form.public, doc: form.doc, docname: form.docname, vid: form.vid,
                                     typeevent: form.typeevent, categories: form.categories};
                                 // formdata.reactions = formfunctions.reactionssummary(form.reactions);
                                 formdata.reactions = form.reactions;
@@ -1179,7 +1180,7 @@ module.exports = function(app, passport, manager, hashids) {
                         hashtags: form.hashtags, questions: form.questions, expired: form.expired,
                         shared: form.shared, loginRequired: form.loginRequired, type: form.type,
                         timestamp: form.timestamp, description: form.description, pic: form.pic,
-                        title: form.title, admin: adminrights, public: form.public, doc: form.doc, vid: form.vid,
+                        title: form.title, admin: adminrights, public: form.public, doc: form.doc, docname: form.docname, vid: form.vid,
                         typeevent: form.typeevent, categories: form.categories
                     };
 
@@ -1818,7 +1819,7 @@ module.exports = function(app, passport, manager, hashids) {
                             formdata = {
                                 hashtags: form.hashtags, questions: form.questions, expired: form.expired,
                                 shared: form.shared, loginRequired: form.loginRequired,
-                                timestamp: form.timestamp, description: form.description, doc: form.doc, vid: form.vid,
+                                timestamp: form.timestamp, description: form.description, doc: form.doc, docname: form.docname, vid: form.vid,
                                 title: form.title, public: form.public, type: form.type, pic: form.pic,
                                 typeevent: form.typeevent, categories: form.categories, anonymous: form.anonymous
                             };

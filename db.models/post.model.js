@@ -8,6 +8,7 @@ var PostSchema = new Schema({
     questions: Object,
     pic: String,
     doc: String,
+    docname: String,
     vid: String,
     reactions: Object,
     hashtags: [{type: String}],

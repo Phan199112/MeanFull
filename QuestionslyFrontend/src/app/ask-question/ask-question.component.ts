@@ -25,6 +25,7 @@ export class AskQuestionComponent implements OnInit {
   question: string = '';
   pic: string = '';
   doc: string = '';
+  docname: string = '';
   vid: string = '';
   tempQuestion: string = '';
   getQuestionData: boolean = false;
@@ -215,7 +216,7 @@ export class AskQuestionComponent implements OnInit {
             groupId: this.myGroupsService.getGroupIdByName(this.group.value),
             description: this.question,
             type: this.action,
-            attachments: {doc: this.doc, pic: this.pic, vid: this.vid}
+            attachments: {doc: this.doc, docname: this.docname, pic: this.pic, vid: this.vid}
         };
 
         console.log('description:', formData.description);
@@ -298,6 +299,7 @@ export class AskQuestionComponent implements OnInit {
           if (filetype === 'pic') {
             this.pic = response.url;
           } else if (filetype === 'doc') {
+            this.docname = file.name;
             this.doc = response.url;
           } else if (filetype === 'vid') {
             this.vid = response.url;
@@ -313,7 +315,7 @@ export class AskQuestionComponent implements OnInit {
 
 
   onPicChange($event, filetype: string) {
-    const file = $event.target.files[0];    
+    const file = $event.target.files[0];
     if (file == null) {
       return alert('No file selected.');
     }
