@@ -11,7 +11,7 @@ function getPrefillClassesFall2018 () {
     return [
         {
             "admins": ["kristopherwindsor+qeieub7@gmail.com"],
-            "members": ["kristopherwindsor+qeieub7@gmail.com"],
+            "members": ["kristopherwindsor+zxzx@gmail.com"],
             "classdata": {
                 "Course": "414A",
                 "Sec": "01",
@@ -893,13 +893,7 @@ function getPrefillClassesFall2018 () {
     ];
 }
 
-exports.getInitialAccountRole = function (email) {
-    var data = getPrefillRoles()[email];
-
-    return data ? data : 'student';
-};
-
-exports.doGroupsPrefill = function (user) {
+function doClassesFall2018Prefill (user) {
     var data = getPrefillClassesFall2018();
 
     data.forEach(function (prefill) {
@@ -938,6 +932,7 @@ exports.doGroupsPrefill = function (user) {
         var findOne = function (callback) {
             GroupModel.findOne(
                 {
+                    "organization": user.organization,
                     "classdata.Course": prefill.classdata.Course,
                     "classdata.Sec": prefill.classdata.Sec,
                     "classdata.CourseTitle": prefill.classdata.CourseTitle,
@@ -958,4 +953,78 @@ exports.doGroupsPrefill = function (user) {
             }
         );
     });
+}
+
+function getPrefillStudentOrgs () {
+    // Every new user is added to all of these student orgs
+    return [
+        "student org A",
+        "student org B",
+    ];
+}
+
+function doStudentOrgsPrefill (user) {
+    // Adds the new user to all of the student orgs
+    // If the student org does not already exist (based on title), it is created as public with no admins
+
+    var data = getPrefillStudentOrgs();
+
+    data.forEach(function (studentOrgName) {
+        var doUpdate = function (group) {
+            group.members.push(user._id);
+            group.save(function (xx) {});
+        };
+
+        var doCreate = function (callback) {
+            GroupModel.create(
+                {
+                    adminuserid: [],
+                    members: [],
+                    title: studentOrgName,
+                    category: "studentorg",
+                    organization: user.organization,
+                    hashtags: [],
+                    public: true,
+                    pic: '',
+                    description: '',
+                    timestamp: Date.now(),
+                },
+                callback
+            );
+        };
+
+        var findOne = function (callback) {
+            GroupModel.findOne(
+                {
+                    organization: user.organization,
+                    category: "studentorg",
+                    title: studentOrgName,
+                },
+                callback
+            );
+        };
+
+        findOne(
+            function (err, group) {
+                if (group) {
+                    doUpdate(group);
+                } else {
+                    doCreate(function (err, group) {
+                        doUpdate(group);
+                    });
+                }
+            }
+        );
+    });
+}
+
+exports.getInitialAccountRole = function (email) {
+    var data = getPrefillRoles()[email];
+
+    return data ? data : 'student';
+};
+
+exports.doGroupsPrefill = function (user) {
+    doClassesFall2018Prefill(user);
+    doStudentOrgsPrefill(user);
 }
