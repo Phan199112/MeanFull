@@ -79,7 +79,7 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-        <a class="tb-option submit" [ngClass]="{enabled: question}" (click)="checkSubmit()">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
+        <a *ngIf="(action == 'survey') || (action == 'video' && vid) || (action == 'doc' && doc)" class="tb-option submit" [ngClass]="{enabled: question}" (click)="checkSubmit()">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
     </div>
 
 

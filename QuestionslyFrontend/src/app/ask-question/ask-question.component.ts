@@ -189,7 +189,9 @@ export class AskQuestionComponent implements OnInit {
       this.getData();
       return;
     } else {
-      this.submitForm();
+      console.log({ doc: this.doc, pic: this.pic, vid: this.vid });
+      
+      // this.submitForm();
     }
   }
 
@@ -296,6 +298,8 @@ export class AskQuestionComponent implements OnInit {
     request.
   */
   getSignedRequest(file, filetype) {
+    console.log('Made it here: %s and %s', file, filetype);
+    
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
     xhr.onreadystatechange = () => {
