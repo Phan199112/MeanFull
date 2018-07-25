@@ -96,7 +96,12 @@
                 *ngIf="form.questions != null && form.type === 'survey'"></app-mini-show-form>
                 <div *ngIf="form.type !== 'survey'">
                     <p class="lead qslyBlack">{{form.description}}</p>
+                    <a class="sublead" href="{{form.doc}}" *ngIf="form.type == 'doc'">{{form.docname}}</a>
                     <img *ngIf="form.pic" src="{{form.qPic}}" class="response-image" />
+                    <video width="480" height="400" controls *ngIf="form.type == 'video'">
+                        <source src="{{form.vid}}" type="video/mp4">
+                            No luck
+                    </video>
                 </div>
         </div>
 

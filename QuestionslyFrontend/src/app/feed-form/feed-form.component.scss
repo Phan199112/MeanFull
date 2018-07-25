@@ -597,9 +597,18 @@ hr {
 .lead {
   font-weight: 700;
   font-family: "Fira Sans";
+  margin-bottom: 8px;
   @media (max-width: 767px) {
     font-size: .95rem;
   }
+}
+
+.sublead {
+  font-weight: 700;
+  color: #28ab64;
+  display: block;
+  font-size: .8rem;
+  font-family: "Fira Sans";
 }
 
 .response-image {

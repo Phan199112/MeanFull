@@ -12,6 +12,9 @@ export class FeedPostModel {
     plotdata: any;
     attachments: any;
     pic: string;
+    vid: string;
+    doc: string;
+    docname: string;
     qPic: string;
     pictype: string;
     contracted = true;
@@ -51,6 +54,9 @@ export class FeedPostModel {
             this.expired = object.formdata.expired;
             this.shared = object.formdata.shared;
             this.qPic = object.formdata.pic;
+            this.vid = object.formdata.vid;
+            this.doc = object.formdata.doc;
+            this.docname = object.formdata.docname;
             this.attachments = object.formdata.attachments;
             this.public = object.formdata.public;
             this.typeevent = object.formdata.typeevent;

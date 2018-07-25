@@ -1,0 +1,70 @@
+
+
+<div class="notification-icon" [ngStyle]="{'padding-bottom': unreadNotifications > 0 ? '5px' : '0px'}">
+        <div class="position-relative">
+            <div (click)="toggleNotifications()" class="toggleNot">
+                <i class="fa fa-bell qslyGray" [ngClass]="{iconActive: showNotifications}" aria-hidden="true"></i>
+                <div *ngIf="unreadNotifications > 0" class="notification-bubble">{{unreadNotifications}}</div>
+            </div>
+
+            <div class="notificationDropdown" *ngIf="showNotifications">
+
+
+
+                <div *ngIf="communityNotifications.length > 0">
+                    <div class="notifTextCont" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': networkNotifications.length == 0}">
+                        <p class="notifLabel">Group Requests</p>
+                        <p class="notifLabel markAll" [ngClass]="{'notVisible': networkNotifications.length != 0}" (click)="markAllRead()">Mark all as read</p>
+                    </div>
+
+                    <!-- <p class="notifLabel" [ngClass]="{'noTopBorder': networkNotifications.length == 0}">Community Requests</p> -->
+                    <div *ngFor="let notification of communityNotifications; let i = index">
+                        <div [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)" (click)="setAsSeen(notification)">
+                            <div class="flex" style="align-items: center">
+                                <img src="{{notificationPic(notification)}}" class="notifImage" />
+                                <div class="flex fCol" style="max-width: 300px; ">
+                                    <p style="color: #333; margin: 0; font-size: .8rem">
+                                        <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).name}}</span> {{notificationMessage(notification).message}}
+                                        <span style="font-weight: 700; font-size: .8rem">{{notificationMessage(notification).community}}</span>
+                                    </p>
+                                    <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mm a"}}</p>
+                                </div>
+                                <div class="flex">
+                                    <a *ngIf="notification.type === 'comm-admin' " class="acceptButton" (click)="acceptCommunityRequest(notification.id, true)">Accept</a>
+                                    <a *ngIf="notification.type === 'comm' " class="acceptButton" (click)="acceptCommunityRequest(notification.id)">Accept</a>
+                                    <a *ngIf="notification.type === 'comm-request' " class="acceptButton" (click)="acceptNewgroupMemberRequest(notification.id, notification.data, notification.fromUserId)">Accept</a>
+                                    <a *ngIf="notification.type === 'comm-admin' || notification.type === 'comm'" class="denyButton" (click)="deleteCommunityRequest(notification.id)">Deny</a>
+                                    <a *ngIf="notification.type === 'comm-request'" class="denyButton" (click)="rejectNewgroupMemberRequest(notification.id, notification.data, notification.fromUserId)">Deny</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="notifTextCont" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">
+                    <p class="notifLabel">Activity</p>
+                    <p class="notifLabel markAll" [ngClass]="{'notVisible': communityNotifications.length != 0 || networkNotifications.length != 0}" (click)="markAllRead()">Mark all as read</p>
+                </div>
+                <!-- <p class="notifLabel" *ngIf='notifications.length > 0' [ngClass]="{'noTopBorder': communityNotifications.length == 0 && networkNotifications.length == 0}">Activity</p> -->
+                <p class="noNotifications" *ngIf='communityNotifications.length == 0 && networkNotifications.length == 0 && notifications.length === 0'>No Notifications</p>
+                <div *ngFor="let notification of notifications; let i = index">
+                    <div *ngIf="i<notifShowCount" [ngClass]="{'notification': true, 'new': !notification.seen}" class="dropdownItem" [routerLink]="notificationLink(notification)" (click)="setAsSeen(notification)">
+                        <div class="flex" style="align-items: center">
+                            <img src="{{notificationPic(notification)}}" class="notifImage" />
+                            <div class="flex fCol" style="max-width: 300px; ">
+                                <p style="color: #555; margin: 0; font-size: .8rem; line-height: 1.25">
+                                    <span style="font-weight: 700; font-size: .8rem; color: #333">{{notificationMessage(notification).name}}</span> 
+                                    {{notificationMessage(notification).action}}
+                                    <span style="font-weight: 700; font-size: .75rem; color: #333">{{notificationMessage(notification).message}}</span>
+                                    {{notificationMessage(notification)?.action2}}
+                                    <span style="font-weight: 700; font-size: .8rem; color: #333">{{notificationMessage(notification)?.community}}</span>
+                                </p>
+                                <p style="margin: 0; color: #AAA; font-size: .7rem">{{notification.timestamp | date:"EEE MMM d 'at' h:mma"}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p *ngIf="notifications.length > notifShowCount" class="notifLabel showMoreLabel" (click)="showMoreNotifications()">Show More</p>
+            </div>         
+        </div>                    
+</div>

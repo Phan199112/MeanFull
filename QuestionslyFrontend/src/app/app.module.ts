@@ -41,6 +41,7 @@ import { DiscussionItemComponent } from './Discussion/discussion-item/discussion
 import { DiscussionListComponent } from './Discussion/discussion-list/discussion-list.component';
 import { FeedFormComponent } from './feed-form/feed-form.component';
 import { FeedListComponent } from './feed-list/feed-list.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 import { MiniShowFormComponent } from './mini-show-form/mini-show-form.component';
 import { ShortAnswersComponent } from './short-answers/short-answers.component';
 import { StarArrayComponent } from './star-array/star-array.component';
@@ -116,7 +117,8 @@ import { HomePageComponent } from './home-page/home-page.component';
     MemberListComponent,
     SignInComponent,
     AskQuestionComponent,
-    HomePageComponent
+    HomePageComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
