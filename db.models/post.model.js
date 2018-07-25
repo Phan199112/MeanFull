@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var PostSchema = new Schema({
     userid: String,
     title: String,
-    type: String, // "survey" or "standard"
+    type: String, // ["survey", "pic", "doc", "vid", "post"]
     questions: Object,
     attachments: Object,
     pic: String,
