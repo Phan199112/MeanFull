@@ -189,7 +189,7 @@ export class AskQuestionComponent implements OnInit {
       this.getData();
       return;
     } else {
-      console.log({ doc: this.doc, pic: this.pic, vid: this.vid }); 
+      console.log({ doc: this.doc, pic: this.pic, vid: this.vid });
       this.submitForm();
     }
   }
@@ -215,9 +215,7 @@ export class AskQuestionComponent implements OnInit {
             groupId: this.myGroupsService.getGroupIdByName(this.group.value),
             description: this.question,
             type: this.action,
-            doc: this.doc,
-            pic: this.pic,
-            vid: this.vid
+            attachments: {doc: this.doc, pic: this.pic, vid: this.vid}
         };
 
         console.log('description:', formData.description);
