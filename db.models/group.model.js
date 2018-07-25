@@ -16,7 +16,8 @@ var GroupSchema = new Schema({
     requests: [{type: String}],
     organization: String,
     session: String,
-});
+    classdata: Object,
+}, {usePushEach: true});
 
 GroupSchema.plugin(random, { path: 'r' });
 
