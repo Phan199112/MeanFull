@@ -189,9 +189,8 @@ export class AskQuestionComponent implements OnInit {
       this.getData();
       return;
     } else {
-      console.log({ doc: this.doc, pic: this.pic, vid: this.vid });
-      
-      // this.submitForm();
+      console.log({ doc: this.doc, pic: this.pic, vid: this.vid }); 
+      this.submitForm();
     }
   }
 
@@ -274,17 +273,7 @@ export class AskQuestionComponent implements OnInit {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-
-          if (filetype === 'pic') {
-            this.pic = url;
-          } else if (filetype === 'doc') {
-            this.doc = url;
-          } else if (filetype === 'vid') {
-            this.vid = url;
-          }
-
-
-
+          console.log('Finished Upload.');
         } else {
           alert('Could not upload file.');
         }
@@ -298,7 +287,6 @@ export class AskQuestionComponent implements OnInit {
     request.
   */
   getSignedRequest(file, filetype) {
-    console.log('Made it here: %s and %s', file, filetype);
     
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
@@ -306,6 +294,14 @@ export class AskQuestionComponent implements OnInit {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
+          console.log('Received signed request.');
+          if (filetype === 'pic') {
+            this.pic = response.url;
+          } else if (filetype === 'doc') {
+            this.doc = response.url;
+          } else if (filetype === 'vid') {
+            this.vid = response.url;
+          }
           this.uploadFile(file, response.signedRequest, response.url, filetype);
         } else {
           alert('Could not get signed URL.');
