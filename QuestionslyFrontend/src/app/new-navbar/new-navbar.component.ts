@@ -39,7 +39,15 @@ export class NewNavbarComponent implements OnInit, OnChanges {
             this.myGroupService.onReady(function () {
                 if (this.activeGroupId) {
                     const group = this.myGroupService.getGroupById(this.activeGroupId);
-                    this.title = group.title;
+
+                    // Classes with classdata have extra info shown
+                    if (group.classdata) {
+                        this.title = group.title + ' ' + group.classdata.Course + ' ' + group.classdata.Sec +
+                            ' by ' + group.classdata.Faculty;
+                    } else {
+                        this.title = group.title;
+                    }
+
                     // An org admin is an admin of all groups in the org; and there are also admins of specific groups
                     this.isGroupAdmin = group.isGroupAdmin || this.userService.getRole() === 'admin';
                 }

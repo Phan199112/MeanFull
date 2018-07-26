@@ -560,6 +560,7 @@ module.exports = function(app, passport, manager, hashids) {
                 ).limit(1000).cursor()
                     .on('data', function (group) {
                         var isAdmin = group.adminuserid.indexOf(req.session.userid) !== -1;
+                        // "rendered group" = what data do we want the frontend to operate with?
                         var renderedGroup = {
                             title: group.title,
                             pic: group.pic,
@@ -567,6 +568,7 @@ module.exports = function(app, passport, manager, hashids) {
                             category: group.category,
                             isAdmin: isAdmin,
                             shareToken: isAdmin ? commfunctions.getGroupShareToken(group) : null,
+                            classdata: group.classdata ? group.classdata : null,
                         };
                         categories[group.category].groups.push(renderedGroup);
                         groupData.push(renderedGroup);
