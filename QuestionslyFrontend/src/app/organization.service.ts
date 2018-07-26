@@ -20,6 +20,10 @@ export class OrganizationService {
         return _org ? _org.name : '';
     }
 
+    public getOrgId() {
+        return _org ? _org.id : '';
+    }
+
     public onReady(callback: any) {
         if (_org) {
             callback(_org);

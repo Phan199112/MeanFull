@@ -2,7 +2,13 @@
   <h4 class="title">Members</h4>
 
   <div class="member-row" *ngFor="let member of members">
-    <img src="{{member.pic}}" class="member-icon">
-    <p class="member-name">{{member.name}}</p>
+    <div class="member-props">
+      <img src="{{member.pic}}" class="member-icon">
+      <p class="member-name">{{member.name}}</p>
+    </div>
+    <div class="action-icons">
+      <img class="action-icon" src="/assets/images/phone.svg" />
+      <img class="action-icon" src="/assets/images/videocamera.svg" />
+    </div>
   </div>
 </div>

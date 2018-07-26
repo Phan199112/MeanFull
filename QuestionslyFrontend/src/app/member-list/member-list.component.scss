@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    width: 240px;
+    width: auto;
     background: white;
     border: 1px solid #EFEFEF;
     border-radius: 4px;
@@ -29,6 +29,7 @@
     width: 100%;
     padding: 4px 8px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     cursor: pointer;
 }
@@ -49,4 +50,20 @@
     }
     margin: 0;
     padding: 0;
+}
+
+.member-props {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.action-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+
+    &:last-of-type {
+        margin-right: 0;
+    }
 }

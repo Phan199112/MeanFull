@@ -6,7 +6,7 @@
         <app-new-navbar #nb (toggle)="sb.toggleSidebar($event)" [activeGroupId]="activeGroupId" [activeSubsection]="activeSubsection"></app-new-navbar>
         <div id="main-container" class="flex flex-jcse">
             <div class="feed-column">
-                <app-ask-question *ngIf="activeSubsection != 'settings'" (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
+                <app-ask-question *ngIf="activeSubsection != 'settings'" [currentGroup]="activeGroupId" (refreshFeed)="feedList.refreshFeed($event)"></app-ask-question>
                 <app-feed-list *ngIf="activeSubsection != 'settings'" [comm]="activeGroupId"
                     [user]="activeSubsection == 'myposts' ? userService.getUser().dbid : null" #feedList></app-feed-list>
 

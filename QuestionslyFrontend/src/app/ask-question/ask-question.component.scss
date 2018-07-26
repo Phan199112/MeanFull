@@ -89,6 +89,12 @@
         padding: 8px 0 0 0;
     }
 
+    &.groups {
+        width: 100%;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
 }
 
 .tb-option {
@@ -573,4 +579,27 @@
     }
     color: #999999;
     margin-bottom: 0;
+}
+
+.groups-row {
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    padding:  8px 16px;
+}
+
+.group-item {
+    padding: 4px 8px;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    color: #999999;
+    margin-right: 8px;
+    margin-bottom: 4px;
+}
+
+#itemCross {
+    width: 16px;
+    height: 16px;
+    z-index: 11;
+    cursor: pointer;
 }

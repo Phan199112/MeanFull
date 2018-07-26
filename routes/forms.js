@@ -293,6 +293,11 @@ module.exports = function(app, passport, manager, hashids) {
     app.post('/forms/create', manager.ensureLoggedIn('/users/login'), function (req, res) {
         // input
         var receivedData = req.body;        
+        if (receivedData.shareWithGroups) {
+            receivedData.shareWithGroups = receivedData.shareWithGroups.map(x => hashids.decodeHex(x.id));
+        } else {
+            receivedData.shareWithGroups = []
+        }
 
         var promisesToUploadMedia = [];
         receivedData.questions.forEach(function (question) {
@@ -339,7 +344,7 @@ module.exports = function(app, passport, manager, hashids) {
                     activityEmailSent: false,
                     typeevent: receivedData.typeevent,
                     timestamp: Date.now(),
-                    sharedWithCommunities: receivedData.groupId ? [hashids.decodeHex(receivedData.groupId)] : [],
+                    sharedWithCommunities: receivedData.shareWithGroups
                 }, function(err, k) {
                     if (err) {
                         // Error in writing new form

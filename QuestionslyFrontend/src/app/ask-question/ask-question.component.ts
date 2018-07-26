@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http } from '@angular/http';
 import { FormControl } from "@angular/forms";
@@ -9,6 +9,7 @@ import * as $ from 'jquery';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MygroupsService } from '../mygroups.service';
+import { OrganizationService } from '../organization.service';
 
 @Component({
   selector: 'app-ask-question',
@@ -16,7 +17,7 @@ import { MygroupsService } from '../mygroups.service';
   styleUrls: ['./ask-question.component.scss'],
 
 })
-export class AskQuestionComponent implements OnInit {
+export class AskQuestionComponent implements OnInit, OnChanges {
 
   activeDimmer: boolean = false;
   action: string = 'post';
@@ -41,7 +42,10 @@ export class AskQuestionComponent implements OnInit {
   groups: string[] = ['Class 1', 'Class 2', 'Class 3'];
   filteredGroups: Observable<string[]>;
   docName: string = '';
+  shareWithGroups = [];
+  selected: string = '';
 
+  @Input() currentGroup: string;
   @Output() refreshFeed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -55,10 +59,13 @@ export class AskQuestionComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private myGroupsService: MygroupsService,
+        private organizationService: OrganizationService,
     ) {
         this.myGroupsService.onChange(data => {
             this.groups = [];
             data.g.forEach(function (group) {
+              console.log('Group: ', group);
+              
                 this.groups.push(group.title);
             }.bind(this));
 
@@ -83,6 +90,7 @@ export class AskQuestionComponent implements OnInit {
     const activateDimmer = this.activateDimmer.bind(this);
     const deactivateDimmer = this.deactivateDimmer.bind(this);
     $(window.document).on('click', function(event) {
+
       if ($(event.target).parents('.askbox').length) {        
         activateDimmer();
         event.stopPropagation();
@@ -95,6 +103,18 @@ export class AskQuestionComponent implements OnInit {
       }
     });
 
+  }
+
+  ngOnChanges() {
+    if (this.currentGroup) {
+      const group = this.myGroupsService.getGroupById(this.currentGroup);
+      this.shareWithGroups.push({ title: group.title, id: group.id });
+    } else {
+      const orgId = this.organizationService.getOrgId();
+      const orgName = this.organizationService.getOrgName();
+      this.shareWithGroups.push({ title: orgName, id: orgId });
+
+    }
   }
 
 
@@ -216,7 +236,8 @@ export class AskQuestionComponent implements OnInit {
             groupId: this.myGroupsService.getGroupIdByName(this.group.value),
             description: this.question,
             type: this.action,
-            attachments: {doc: this.doc, docname: this.docname, pic: this.pic, vid: this.vid}
+            attachments: {doc: this.doc, docname: this.docname, pic: this.pic, vid: this.vid},
+            shareWithGroups: this.shareWithGroups
         };
 
         console.log('description:', formData.description);
@@ -349,4 +370,21 @@ export class AskQuestionComponent implements OnInit {
       this.action = action;
     }
   }
+  
+  
+  addItem(event: any) {
+    const title = event.source.value;
+
+    if (!this.shareWithGroups.some(g => g.title === title)) {
+      this.shareWithGroups.push({ title: title, id: this.myGroupsService.getGroupIdByName(title)}); 
+    }
+
+  }
+
+  removeItem(index: number) {
+    this.shareWithGroups.splice(index, 1);
+  }
+
+
 }
+
