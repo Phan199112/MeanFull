@@ -146,7 +146,8 @@ export class FeedListComponent implements OnInit, OnChanges {
                 tag: this.tag,
                 user: this.user,
                 topsurvey: this.formselected,
-                comm: this.comm,
+                // If we're at the home page, show content from user's groups only
+                comm: this.comm ? this.comm : 'mine',
                 pref: this.pref,
                 anonymous: true,
                 // Just a flag to not show anonymous
