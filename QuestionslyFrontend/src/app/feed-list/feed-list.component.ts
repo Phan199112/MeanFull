@@ -24,6 +24,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     @Input() pictype: string;
     @Input() tag: string;
     @Input() pref: string;
+    @Input() subsection: string;
     @Input() showAnsweredQuestions: boolean; // when true, `user` must be given, and `comm` / `tag` do not apply
 
     me: string;
@@ -32,6 +33,7 @@ export class FeedListComponent implements OnInit, OnChanges {
     prevTag: string;
     prevComm: string;
     prevUser: string;
+    prevSubsection: string;
     showLoadingBoxes = true;
 
     constructor(private http: Http,
@@ -79,6 +81,13 @@ export class FeedListComponent implements OnInit, OnChanges {
             this.somethingChanged = true;
             this.prevUser = this.user;
         }
+
+        if (this.prevSubsection !== this.subsection) {
+            this.somethingChanged = true;
+            this.prevSubsection = this.subsection;
+        }
+
+
 
 
 
@@ -150,9 +159,11 @@ export class FeedListComponent implements OnInit, OnChanges {
                 comm: this.comm ? this.comm : 'mine',
                 pref: this.pref,
                 anonymous: true,
+                subsection: this.subsection,
                 // Just a flag to not show anonymous
                 currentPosts: this.formids
             };
+            
 
         }
 

@@ -849,6 +849,7 @@ module.exports = function(app, passport, manager, hashids) {
         var selectedcomm;
         var anonymous;
 
+
         if (req.body.topsurvey == null) {
             topsurvey = null;
         } else {
@@ -908,6 +909,19 @@ module.exports = function(app, passport, manager, hashids) {
                     selectedtags,
                     req.session.userid
                 );
+
+                const subsection = req.body.subsection;
+                if (subsection) {
+                    if (subsection == 'docs') {
+                        queryobj.type = 'doc';
+                    } else if (subsection == 'videos') {
+                        queryobj.type = 'vid'
+                    }
+                } 
+
+                console.log('\n\n', queryobj);
+                
+
 
                 // retrieve forms by DB id
                 var tempfunctionByID = function() {

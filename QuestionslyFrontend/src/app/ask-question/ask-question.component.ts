@@ -63,9 +63,7 @@ export class AskQuestionComponent implements OnInit, OnChanges {
     ) {
         this.myGroupsService.onChange(data => {
             this.groups = [];
-            data.g.forEach(function (group) {
-              console.log('Group: ', group);
-              
+            data.g.forEach(function (group) {              
                 this.groups.push(group.title);
             }.bind(this));
 
@@ -106,8 +104,8 @@ export class AskQuestionComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.currentGroup) {
-      const group = this.myGroupsService.getGroupById(this.currentGroup);
+    const group = this.myGroupsService.getGroupById(this.currentGroup);
+    if (this.currentGroup && group) {
       this.shareWithGroups.push({ title: group.title, id: group.id });
     } else {
       const orgId = this.organizationService.getOrgId();

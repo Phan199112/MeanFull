@@ -18,10 +18,12 @@
                     {{group.title}}
                 </a>
                 <a *ngIf="group.id == activeGroup" class="section-entry sub"
+                    [ngClass]="{subactive: activeSubsection == 'docs'}"
                     [routerLink]="['/', category.category, group.id, 'docs']">
                     Documents
                 </a>
                 <a *ngIf="group.id == activeGroup" class="section-entry sub"
+                    [ngClass]="{subactive: activeSubsection == 'videos'}"
                     [routerLink]="['/', category.category, group.id, 'videos']">
                     Videos
                 </a>

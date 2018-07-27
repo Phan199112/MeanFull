@@ -23,6 +23,7 @@ export class NewSidebarComponent implements OnInit {
     public canCreateClasses = false;
 
     @Input() activeGroup: string;
+    @Input() activeSubsection: string;
     @ViewChild('createGroupModal') createGroupModal;
 
     constructor(
