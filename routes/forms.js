@@ -11,6 +11,7 @@ var networkfunctions = require('../functions/network');
 var usersfunctions = require('../functions/users');
 var commfunctions = require('../functions/groups');
 var formfunctions = require('../functions/forms');
+var postfunctions = require('../functions/posts');
 var exportfunctions = require('../functions/export');
 var emailfunctions  = require("../functions/email");
 var uploadfunctions  = require("../functions/upload");
@@ -290,7 +291,7 @@ module.exports = function(app, passport, manager, hashids) {
 
 
     // save new form
-    app.post('/forms/create', manager.ensureLoggedIn('/users/login'), function (req, res) {
+    app.post('/forms/create', manager.ensureLoggedIn('/users/login'), usersfunctions.ensureAuthenticatedUserInSession, function (req, res) {
         // input
         var receivedData = req.body;        
         if (receivedData.shareWithGroups) {
@@ -344,7 +345,8 @@ module.exports = function(app, passport, manager, hashids) {
                     activityEmailSent: false,
                     typeevent: receivedData.typeevent,
                     timestamp: Date.now(),
-                    sharedWithCommunities: receivedData.shareWithGroups
+                    sharedWithCommunities: receivedData.shareWithGroups,
+                    organization: req.session.user.organization,
                 }, function(err, k) {
                     if (err) {
                         // Error in writing new form
@@ -818,7 +820,7 @@ module.exports = function(app, passport, manager, hashids) {
     });
 
 
-    app.post('/forms/feed',function (req, res, next) {
+    app.post('/forms/feed', manager.ensureLoggedIn('/users/login'), usersfunctions.ensureAuthenticatedUserInSession, function (req, res, next) {
         // this function retrieved the feed
         // limits to x posts
         // only public posts
@@ -875,40 +877,13 @@ module.exports = function(app, passport, manager, hashids) {
 
 
         
-
-        // console.log("query tags: "+selectedtags+", query user: "+selecteduser+", topsurvey: "+topsurvey+", comm: "+selectedcomm);
-
-        if (selectedtags != null && selecteduser == null) {
-            // Feed for home page with selected tags
-            queryobj = { public: true, shared: true, hashtags: selectedtags};
-        } else if (selectedcomm != null && req.session.userid == selecteduser) {
-            queryobj = {shared: true, sharedWithCommunities: selectedcomm, userid: selecteduser};
-        } else if (selectedtags == null && selecteduser != null) {
-            // Feed for User Profile
-            if (req.session.userid == selecteduser) {
-                // View own profile
-                queryobj = { userid: selecteduser};
-            } else {
-                // Viewing someone else's profile
-                queryobj = {public: true, shared: true, userid: selecteduser};
-            }
-        } else if (selectedtags == null && selectedcomm != null) {
-            // Feed for Community
-            queryobj = {shared: true, sharedWithCommunities: selectedcomm};
-        }
-        else if (selectedtags == null && selecteduser == null && selectedcomm == null) {
-            // Feed for home page
-            queryobj = { public: true, shared: true };
-        }
-        else {
-            // fall back solution
-            queryobj = {public: true, shared: true}
-        }
-
-        if (req.body.anonymous) {
-            queryobj['anonymous'] = false;
-        }
-
+        queryobj = postfunctions.getPostFilterFor(
+            req.session.user.organization,
+            selecteduser,
+            selectedcomm,
+            selectedtags,
+            req.session.userid
+        );
 
 
 
