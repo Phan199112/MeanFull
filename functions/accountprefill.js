@@ -4,13 +4,14 @@ var GroupModel = require('../db.models/group.model');
 function getPrefillRoles () {
     return {
         "kristopherwindsor+test3@gmail.com": "professor",
+        "fernandofunes94+2@gmail.com": "professor",
     };
 }
 
 function getPrefillClassesFall2018 () {
     return [
         {
-            "admins": ["kristopherwindsor+qeieub7@gmail.com"],
+            "admins": ["kristopherwindsor+qeieub7@gmail.com", "margaret.shih@anderson.ucla.edu", "fernandofunes94+2@gmail.com"],
             "members": ["kristopherwindsor+zxzx@gmail.com"],
             "classdata": {
                 "Course": "414A",
@@ -26,7 +27,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": ["kristopherwindsor+qeieub7@gmail.com"],
+            "admins": ["kristopherwindsor+qeieub7@gmail.com", "jennifer.whitson@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "414A",
@@ -42,7 +43,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["hengchen.dai@anderson.ucla.edu"],
             "members": ["kristopherwindsor+qeieub7@gmail.com"],
             "classdata": {
                 "Course": "414A",
@@ -58,7 +59,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["corinne.bendersky@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "414A",
@@ -74,7 +75,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["craig.fox@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "414A",
@@ -90,7 +91,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["velibor.misic@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 402,
@@ -106,7 +107,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["sbikhcha@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 402,
@@ -122,7 +123,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["rakesh.sarin@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 402,
@@ -138,7 +139,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["velibor.misic@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 402,
@@ -154,7 +155,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["john.mamer@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 402,
@@ -170,7 +171,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["eugene.caruso@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 409,
@@ -186,7 +187,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["eugene.caruso@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 409,
@@ -202,7 +203,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["corinne.bendersky@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 409,
@@ -218,7 +219,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["corinne.bendersky@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 409,
@@ -234,7 +235,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["margaret.shih@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 409,
@@ -250,7 +251,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["kumar.rajaram@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 410,
@@ -266,7 +267,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["joseph.hall@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 410,
@@ -282,7 +283,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["kumar.rajaram@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 410,
@@ -298,7 +299,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["joseph.hall@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 410,
@@ -330,7 +331,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["uday.karmarkar@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 410,
@@ -410,7 +411,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["matthew.schmitt@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 420,
@@ -426,7 +427,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["matthew.schmitt@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 420,
@@ -442,7 +443,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["fernandofunes94+2@gmail.com"],
             "members": [],
             "classdata": {
                 "Course": 427,
@@ -474,7 +475,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": [],
+            "admins": ["esussman@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 220,
@@ -490,7 +491,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["judson.caskey@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 228,
@@ -506,7 +507,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["bill.cockrum@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "231E",
@@ -522,7 +523,7 @@ function getPrefillClassesFall2018 () {
                 "Type": ""
             }
         }, {
-            "admins": [],
+            "admins": ["felipe.caro@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "240F",
@@ -538,7 +539,7 @@ function getPrefillClassesFall2018 () {
                 "Type": ""
             }
         }, {
-            "admins": [],
+            "admins": ["iris.firstenberg@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "250D",
@@ -554,7 +555,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["andres.terech@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "266A",
@@ -570,7 +571,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["michael.montgomery@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 275,
@@ -586,7 +587,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["stuart.gabriel@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "279C",
@@ -602,7 +603,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["john.ullmen@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "285B",
@@ -618,7 +619,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["jeff.scheinrock@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "295A",
@@ -650,7 +651,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["brian.farrell@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "298D",
@@ -666,7 +667,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["bill.sanders@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "298D",
@@ -682,7 +683,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["lori.santikian@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "298D",
@@ -698,7 +699,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["brian.frons@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "298D",
@@ -714,7 +715,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "Joint MBA\/FEMBA"
             }
         }, {
-            "admins": [],
+            "admins": ["robert.mccann@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": 425,

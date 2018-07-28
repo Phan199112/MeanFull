@@ -33,8 +33,6 @@ export class HomePageComponent implements OnInit {
         this.route.params.subscribe(params => {
             this.activeGroupId = params.groupid;
             this.activeSubsection = params.subsection;
-            console.log('Subsection: ', params.subsection);
-            
         });
         this.route.queryParams.subscribe(params => {
             this.consumeGroupShareTokens([this.route.snapshot.params.groupid, this.route.snapshot.queryParams.t]);
