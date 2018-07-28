@@ -11,8 +11,8 @@ function getPrefillRoles () {
 function getPrefillClassesFall2018 () {
     return [
         {
-            "admins": ["kristopherwindsor+qeieub7@gmail.com", "margaret.shih@anderson.ucla.edu", "fernandofunes94+2@gmail.com"],
-            "members": ["kristopherwindsor+zxzx@gmail.com"],
+            "admins": ["margaret.shih@anderson.ucla.edu"],
+            "members": [],
             "classdata": {
                 "Course": "414A",
                 "Sec": "01",
@@ -27,7 +27,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": ["kristopherwindsor+qeieub7@gmail.com", "jennifer.whitson@anderson.ucla.edu"],
+            "admins": ["jennifer.whitson@anderson.ucla.edu"],
             "members": [],
             "classdata": {
                 "Course": "414A",
@@ -44,7 +44,7 @@ function getPrefillClassesFall2018 () {
             }
         }, {
             "admins": ["hengchen.dai@anderson.ucla.edu"],
-            "members": ["kristopherwindsor+qeieub7@gmail.com"],
+            "members": [],
             "classdata": {
                 "Course": "414A",
                 "Sec": "03",
@@ -443,7 +443,7 @@ function getPrefillClassesFall2018 () {
                 "Type": "CORE"
             }
         }, {
-            "admins": ["fernandofunes94+2@gmail.com"],
+            "admins": [],
             "members": [],
             "classdata": {
                 "Course": 427,
