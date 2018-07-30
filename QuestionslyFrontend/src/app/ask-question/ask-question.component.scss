@@ -27,6 +27,12 @@
             background: none;
             color: #4b4f56 !important;
         }
+
+        @media (max-width: 540px) {
+            padding: 4px 8px;
+            margin: 0;
+            font-size: .65rem;
+        }  
     }
 }
 
@@ -169,7 +175,7 @@
         padding: 4px 12px;
         margin: 0 8px;
         // border-radius: 8px;
-    }
+    } 
 }
 
 
@@ -602,4 +608,10 @@
     height: 16px;
     z-index: 11;
     cursor: pointer;
+}
+
+.quiz {
+    @media (max-width: 767px) {
+        display: none;
+    }   
 }

@@ -933,7 +933,7 @@ module.exports = function(app, passport, manager, hashids) {
                     if (subsection == 'docs') {
                         queryobj.type = 'doc';
                     } else if (subsection == 'videos') {
-                        queryobj.type = 'vid'
+                        queryobj.type = 'video'
                     }
                 } 
 

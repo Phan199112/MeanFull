@@ -35,7 +35,7 @@ export class AskQuestionComponent implements OnInit, OnChanges {
   title: string = '';
   addTitle: boolean = false;
   group: FormControl = new FormControl();
-  isMobile: boolean = true;
+  isMobile: boolean = false;
   showDeleteBox: boolean = false;
   kindsWithOptions: string[] = ["Multiple Choice", "Checkboxes", "Drop-down", "Rank"];
   alphabeth: string = "abcdefghijklmnopqrstuvwxyz";
@@ -87,6 +87,11 @@ export class AskQuestionComponent implements OnInit, OnChanges {
     //handle dimmer toggling
     const activateDimmer = this.activateDimmer.bind(this);
     const deactivateDimmer = this.deactivateDimmer.bind(this);
+
+    if ($(window).width() <= 768) {
+       this.isMobile = true;
+      }
+
     $(window.document).on('click', function(event) {
 
       if ($(event.target).parents('.askbox').length) {        
@@ -254,6 +259,7 @@ export class AskQuestionComponent implements OnInit, OnChanges {
             this.questionsContainer = [];
             this.questionType = 'shortanswer';
             this.question = '';
+            this.selection = '';
             this.action = 'post';
             this.preview = false;
             this.deactivateDimmer(true);

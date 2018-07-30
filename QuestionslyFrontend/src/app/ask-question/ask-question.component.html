@@ -16,7 +16,7 @@
         <a class="tb-option" [ngClass]='{active: action == "survey" }' (click)="actionSelect('survey')">Create&nbsp;Survey</a>
         <a class="tb-option" [ngClass]='{active: action == "doc" }' (click)="actionSelect('doc')">Upload&nbsp;Document</a>
         <a class="tb-option" [ngClass]='{active: action == "video"}' (click)="actionSelect('video')">Upload&nbsp;Video</a>
-        <a class="tb-option" [ngClass]='{active: action == "quiz"}' (click)="actionSelect('quiz')">Create Quiz</a>
+        <a class="tb-option" *ngIf="!isMobile" [ngClass]='{active: action == "quiz"}' (click)="actionSelect('quiz')">Create Quiz</a>
     </div>
 
 
