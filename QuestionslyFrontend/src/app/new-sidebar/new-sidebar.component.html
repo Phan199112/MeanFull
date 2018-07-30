@@ -1,39 +1,44 @@
 <div class="sb-container" [ngClass]="{open: this.open}">
-    <div class="header">
-        <span class="brand-text">Questionsly</span>
+    <div>
+        <div class="header">
+            <span class="brand-text">Questionsly</span>
+        </div>
+    
+        <div class="group-section">
+                <a class="section-entry" [ngClass]="{active: !activeGroup}" [routerLink]="['/']">
+                    {{classReference.orgName}}
+                </a>
+        </div>
+    
+        <div *ngFor="let category of classReference.categories" class="group-section">
+            <h4 class="section-title">{{category.displayNamePlural}}</h4>
+    
+            <div *ngFor='let group of category.groups' class="block" [ngClass]='{active: group.id == activeGroup}'>
+                    <a  class="section-entry"
+                        [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]">
+                        {{group.title}}
+                    </a>
+                    <a *ngIf="group.id == activeGroup" class="section-entry sub"
+                        [ngClass]="{subactive: activeSubsection == 'docs'}"
+                        [routerLink]="['/', category.category, group.id, 'docs']">
+                        Documents
+                    </a>
+                    <a *ngIf="group.id == activeGroup" class="section-entry sub"
+                        [ngClass]="{subactive: activeSubsection == 'videos'}"
+                        [routerLink]="['/', category.category, group.id, 'videos']">
+                        Videos
+                    </a>
+                </div>
+    
+    
+                <a class="section-entry dim" (click)="openCreateGroupModal(category)" *ngIf="category.category != 'class' || canCreateClasses">
+                    + Add {{category.displayNameShort}}
+                </a>
+        </div>
     </div>
 
-    <div class="group-section">
-            <a class="section-entry" [ngClass]="{active: !activeGroup}" [routerLink]="['/']">
-                {{classReference.orgName}}
-            </a>
-    </div>
+    <a class="section-entry logout" href="/users/logout">Sign Out</a>
 
-    <div *ngFor="let category of classReference.categories" class="group-section">
-        <h4 class="section-title">{{category.displayNamePlural}}</h4>
-
-        <div *ngFor='let group of category.groups' class="block" [ngClass]='{active: group.id == activeGroup}'>
-                <a  class="section-entry"
-                    [ngClass]="{active: group.id == activeGroup}" [routerLink]="['/', category.category, group.id]">
-                    {{group.title}}
-                </a>
-                <a *ngIf="group.id == activeGroup" class="section-entry sub"
-                    [ngClass]="{subactive: activeSubsection == 'docs'}"
-                    [routerLink]="['/', category.category, group.id, 'docs']">
-                    Documents
-                </a>
-                <a *ngIf="group.id == activeGroup" class="section-entry sub"
-                    [ngClass]="{subactive: activeSubsection == 'videos'}"
-                    [routerLink]="['/', category.category, group.id, 'videos']">
-                    Videos
-                </a>
-            </div>
-
-
-            <a class="section-entry dim" (click)="openCreateGroupModal(category)" *ngIf="category.category != 'class' || canCreateClasses">
-                + Add {{category.displayNameShort}}
-            </a>
-    </div>
 </div>
 
 <ng-template #createGroupModal let-c="close" let-d="dismiss">

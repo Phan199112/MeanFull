@@ -119,7 +119,11 @@ module.exports = function (app, passport, manager, hashids) {
                                                 if (err) {
                                                     reject();
                                                 } else if (formInfo) {
-                                                    eventdata.qTitle = formInfo.questions[0].body;
+                                                    if (formInfo.type === 'survey') {
+                                                        eventdata.qTitle = formInfo.questions[0].body;
+                                                    } else {
+                                                        eventdata.qTitle = formInfo.description;
+                                                    }
                                                     eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                                     outputevents.push(eventdata);
                                                     resolve();
@@ -150,8 +154,12 @@ module.exports = function (app, passport, manager, hashids) {
                                                     if (err) {
                                                         reject(err);
                                                     } else if (formInfo) {
+                                                        if (formInfo.type === 'survey') {
+                                                            eventdata.qTitle = formInfo.questions[0].body;
+                                                        } else {
+                                                            eventdata.qTitle = formInfo.description;
+                                                        }
                                                         eventdata.commTitle = "Legacy Notification";
-                                                        eventdata.qTitle = formInfo.questions[0].body;
                                                         eventdata.fromUserId = hashids.encodeHex(event.fromuser);
                                                         outputevents.push(eventdata);
                                                         resolve();

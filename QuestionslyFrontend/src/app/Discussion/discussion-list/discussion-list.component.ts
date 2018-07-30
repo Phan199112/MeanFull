@@ -87,7 +87,7 @@ export class DiscussionListComponent implements OnInit {
             formid: this.id,
             message: this.newmessage.value.message,
             previousCommenters: this.previousCommenters,
-            firstquestion: this.form.questions[0].body
+            // firstquestion: this.form.questions[0].body
         };
         this.http.post('/discussions/new', senddata).toPromise()
             .then(response => {

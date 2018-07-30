@@ -13,6 +13,9 @@ a {
     bottom: 0px;
     z-index: 1;
     transform: translateX(0);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     transition: all 300ms ease-in-out;
 
@@ -99,9 +102,18 @@ a {
     }
 }
 
+.logout {
+    margin-bottom: 10%;
+    background: #249658;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-weight: 400;
+}
+
 .block {
     &.active {
         background: #249658;
+        margin-bottom: 8px;
     }
     padding: 4px 0;
 }
