@@ -352,6 +352,24 @@ module.exports = function(app, passport, manager, hashids) {
                         // Error in writing new form
                         res.json({status: 0});
                     } else {
+                        receivedData.shareWithGroups.forEach(function(group) {
+                            console.log('\n\n', group, '\n\n');
+                            GroupModel.findById(group, function(err,g) {
+                                if (err || !g) {
+                                    console.log('Error handling new post notifications in post creation');                        
+                                } else {
+
+                                    console.log('\n\n', g.members, '\n\n');
+                                    
+                                    g.members.forEach(function(member) {
+                                        if (req.session.userid !== member) {
+                                            notifications.createNotification(member, req.session.userid, "form", "New Post", hashids.encodeHex(k.id));
+                                        }
+                                    })
+                                }
+                            });
+                        });
+
                         // log
                         log.writeLog(req.session.userid, 'create form', req.ip);
                         // update user stats

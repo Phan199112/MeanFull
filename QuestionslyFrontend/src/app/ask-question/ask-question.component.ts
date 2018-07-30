@@ -101,17 +101,22 @@ export class AskQuestionComponent implements OnInit, OnChanges {
       }
     });
 
+    setTimeout(() => { this.getCurrentGroup(); }, 3000);
   }
 
   ngOnChanges() {
+    this.getCurrentGroup();
+  }
+
+  getCurrentGroup() {
     const group = this.myGroupsService.getGroupById(this.currentGroup);
+    this.shareWithGroups = [];
     if (this.currentGroup && group) {
       this.shareWithGroups.push({ title: group.title, id: group.id });
     } else {
       const orgId = this.organizationService.getOrgId();
       const orgName = this.organizationService.getOrgName();
       this.shareWithGroups.push({ title: orgName, id: orgId });
-
     }
   }
 
@@ -238,7 +243,7 @@ export class AskQuestionComponent implements OnInit, OnChanges {
             shareWithGroups: this.shareWithGroups
         };
 
-        console.log('description:', formData.description);
+        console.log('groups:', formData.shareWithGroups);
                 
 
         this.http.post('/forms/create', formData).toPromise()
