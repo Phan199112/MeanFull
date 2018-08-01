@@ -20,6 +20,7 @@ export class NewNavbarComponent implements OnInit, OnChanges {
     title = '';
     isGroupAdmin = false;
     profilePic = '';
+    showSignout = false;
 
     constructor(
         private userService: UserService,
@@ -76,5 +77,9 @@ export class NewNavbarComponent implements OnInit, OnChanges {
 
         const group = this.myGroupService.getGroupById(this.activeGroupId);
         this.router.navigate(['/', group.category, this.activeGroupId, subsection]);
+    }
+
+    toggleSignout() {
+        this.showSignout = !this.showSignout;
     }
 }

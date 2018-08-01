@@ -118,7 +118,7 @@
     </div>
 
 
-    <div class="toolbar mobileGroup groups" *ngIf="isMobile && selection == 'groups'">
+    <div class="toolbar mobileGroup groups" *ngIf="selection == 'groups'">
         <div class="groups-row">
             <div *ngFor="let group of shareWithGroups; let i = index" class="group-item">{{group.title}} <img id="itemCross" src="/assets/images/delete-button.svg" (click)="removeItem(i)" />
 </div>

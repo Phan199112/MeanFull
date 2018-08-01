@@ -295,7 +295,7 @@ module.exports = function(app, passport, manager, hashids) {
         // input
         var receivedData = req.body;        
         if (receivedData.shareWithGroups) {
-            receivedData.shareWithGroups = receivedData.shareWithGroups.map(x => hashids.decodeHex(x.id));
+            receivedData.shareWithGroups = receivedData.shareWithGroups.map(x => x.id == 'org' ? 'org' : hashids.decodeHex(x.id));
         } else {
             receivedData.shareWithGroups = []
         }
@@ -915,6 +915,8 @@ module.exports = function(app, passport, manager, hashids) {
                     .on('data', function(post){ groupsForAuthenticatedUser.push(post._id); })
                     .on('error', function(){ reject(); })
                     .on('end', function(){ resolve(); });
+
+                groupsForAuthenticatedUser.push('org');
             } else {
                 resolve();
             }

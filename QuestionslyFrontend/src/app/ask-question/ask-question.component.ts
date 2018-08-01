@@ -119,9 +119,8 @@ export class AskQuestionComponent implements OnInit, OnChanges {
     if (this.currentGroup && group) {
       this.shareWithGroups.push({ title: group.title, id: group.id });
     } else {
-      const orgId = this.organizationService.getOrgId();
       const orgName = this.organizationService.getOrgName();
-      this.shareWithGroups.push({ title: orgName, id: orgId });
+      this.shareWithGroups.push({ title: orgName, id: 'org' });
     }
   }
 
@@ -236,8 +235,7 @@ export class AskQuestionComponent implements OnInit, OnChanges {
   }
 
 
-    submitForm() {
-
+    submitForm() {      
 
         const formData = {
             questions: this.questionnaireData(),

@@ -21,6 +21,12 @@
 
 
         <input class="searchbar" placeholder="Search here" type="text" />
-        <img src="{{profilePic}}" class="user-icon">
+        <div class="avatar-container">
+            <img src="{{profilePic}}" class="user-icon" (click)="toggleSignout()" />
+            <div class="settings-box" *ngIf="showSignout">
+                <a class="settings-text" href="#">Settings</a>
+                <a class="settings-text" href="/users/logout">Sign Out</a>
+            </div>
+        </div>
     </div>
 </nav>
