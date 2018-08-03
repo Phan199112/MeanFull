@@ -363,7 +363,7 @@ module.exports = function(app, passport, manager, hashids) {
                                     
                                     g.members.forEach(function(member) {
                                         if (req.session.userid !== member) {
-                                            notifications.createNotification(member, req.session.userid, "form", "New Post", hashids.encodeHex(k.id));
+                                            notifications.createNotification(member, req.session.userid, "form", "New Post", { formid: hashids.encodeHex(k.id), groupid: receivedData.shareWithGroups[0] == 'org' ? null : hashids.encodeHex(receivedData.shareWithGroups[0]) } );
                                         }
                                     })
                                 }

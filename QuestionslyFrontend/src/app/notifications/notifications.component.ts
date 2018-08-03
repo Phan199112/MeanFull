@@ -196,6 +196,8 @@ export class NotificationsComponent implements OnInit {
                 this.clearNotifications();
                 for (let e of this.events) {
                     // window.console.log(e);
+                    console.log(e);
+                    
                     this.addNotification(e);
                 }
 
@@ -215,6 +217,8 @@ export class NotificationsComponent implements OnInit {
         //     window.setTimeout(()=>{this.toggleNotifications();},10);
         //     return;
         // }
+        $('body').css('overflow', 'visible');
+
         this.http.post('/events/seen', { id: notification.id }).toPromise()
             .then(eventsdata => {
                 // this.toggleNotifications();
@@ -227,10 +231,10 @@ export class NotificationsComponent implements OnInit {
 
         switch (notification.type) {
             case "form":
-                if (notification.data.comm) {
-                    return ['/group', notification.data.comm.value, { 'survey': notification.data.formid }];
+                if (notification.data.groupid) {
+                    return ['/class', notification.data.groupid, { 'survey': notification.data.formid }];
                 } else {
-                    return ['/feed', { 'survey': notification.data.formid }];
+                    return ['/', { 'survey': notification.data.formid }];
                 }
             case "form-answer":
                 return ['/feed', { 'survey': notification.data }];
@@ -239,7 +243,6 @@ export class NotificationsComponent implements OnInit {
                 // return ['/group', notification.data.commid, { 'survey': notification.data.formid } ]
             case "form-discussion":
                 return ['/feed', { 'survey': notification.data.formid, 'message': notification.data.messageid }];
-            case "network":
             case "comm-request":
                 return ['/profile', notification.fromUserId]
             case "comm":
