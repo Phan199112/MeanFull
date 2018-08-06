@@ -321,7 +321,6 @@ export class AskQuestionComponent implements OnInit, OnChanges {
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) {
         this.uploadProgress = e.loaded * 100 / e.total;
-        console.log(this.uploadProgress);
       }
     };
 
