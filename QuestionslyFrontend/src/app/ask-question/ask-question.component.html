@@ -30,7 +30,7 @@
             <a class="preview-btn" (click)=togglePreview()>Preview Survey</a>
         </div>
     </div>
-    <textarea id="user-question-text" rows="2" class="ask-textarea" [ngClass]="{alone: !question && !questionsContainer.length && action !== 'doc' && action !== 'video'}" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" placeholder="{{action == 'survey' ? 'Start typing your question here...' : 'What would you like to say...'}}"></textarea>
+    <textarea id="user-question-text" rows="2" class="ask-textarea" [ngClass]="{alone: !question && !questionsContainer.length && action !== 'doc' && action !== 'video'}" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" placeholder="{{action == 'survey' ? 'Start typing your question here...' : action == 'doc' ? 'Upload PDFs, Word Docs, Excel, etc' : 'What would you like to say...'}}"></textarea>
     
     <!-- Document Toolbar -->
     <div *ngIf="action == 'doc'" class="doc-menu" >
