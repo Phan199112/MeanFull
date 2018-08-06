@@ -44,6 +44,7 @@ export class AskQuestionComponent implements OnInit, OnChanges {
   docName: string = '';
   shareWithGroups = [];
   selected: string = '';
+  uploadProgress: Number = 0;
 
   @Input() currentGroup: string;
   @Output() refreshFeed: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -297,10 +298,13 @@ export class AskQuestionComponent implements OnInit, OnChanges {
   Function to carry out the actual PUT request to S3 using the signed request from the app.
   */
   uploadFile(file, signedRequest, url, filetype) {
+    this.uploadProgress = 0;
+
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', signedRequest);
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
+        this.uploadProgress = 0;
         if (xhr.status === 200) {
           console.log('Finished Upload.');
         } else {
@@ -308,6 +312,14 @@ export class AskQuestionComponent implements OnInit, OnChanges {
         }
       }
     };
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        this.uploadProgress = e.loaded * 100 / e.total;
+        console.log(this.uploadProgress);
+      }
+    };
+
     xhr.send(file);
   }
   /*

@@ -7,7 +7,10 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material';
+import { 
+  MatInputModule,
+  MatProgressBarModule
+} from '@angular/material';
 
 
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -129,6 +132,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressBarModule,
     routing,
     NgbModule,
     NgbModule.forRoot(),
