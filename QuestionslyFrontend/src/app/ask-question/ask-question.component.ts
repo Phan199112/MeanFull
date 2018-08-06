@@ -258,10 +258,12 @@ export class AskQuestionComponent implements OnInit, OnChanges {
             this.questionType = 'shortanswer';
             this.question = '';
             this.selection = '';
-            this.action = 'post';
             this.preview = false;
-            this.deactivateDimmer(true);
-            this.refreshFeed.emit(true);
+            if (this.action != 'video') {
+              this.refreshFeed.emit(true);
+              this.deactivateDimmer(true);
+            }
+            this.action = 'post';
             // const refresh = () => {this.refreshFeed.emit(true);};
             // window.setTimeout(refresh, 1000);
         })
@@ -303,9 +305,12 @@ export class AskQuestionComponent implements OnInit, OnChanges {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           console.log('Finished Upload.');
+
         } else {
           alert('Could not upload file.');
         }
+        this.deactivateDimmer(true);
+        this.refreshFeed.emit(true);
       }
     };
     xhr.send(file);

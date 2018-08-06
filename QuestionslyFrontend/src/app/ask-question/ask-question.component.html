@@ -33,7 +33,7 @@
     <textarea id="user-question-text" rows="2" class="ask-textarea" [ngClass]="{alone: !question && !questionsContainer.length && action !== 'doc' && action !== 'video'}" [(ngModel)]="question" (ngModelChange)="isQuestionEmpty($event)" (focus)="activateDimmer()" placeholder="{{action == 'survey' ? 'Start typing your question here...' : 'What would you like to say...'}}"></textarea>
     
     <!-- Document Toolbar -->
-    <div *ngIf="action == 'doc'" class="doc-menu" [ngClass]="{mb: !question}" >
+    <div *ngIf="action == 'doc'" class="doc-menu" >
         <div class="imgContainer">
             <div class="inner">
                 <div id="uploadBtn">
@@ -46,7 +46,7 @@
     </div>
 
     <!-- Video Toolbar -->
-    <div *ngIf="action == 'video'" class="doc-menu" [ngClass]="{mb: !question}" >
+    <div *ngIf="action == 'video'" class="doc-menu" >
         <div class="imgContainer">
             <div class="inner">
                 <div id="uploadBtn">
@@ -65,13 +65,13 @@
         <app-number-question-form #nc *ngIf="questionType == 'number'" (questionData)="pushQuestionToList($event)" [getData]="getQuestionData"></app-number-question-form>
     </div>
     
-    <div *ngIf="question || questionsContainer.length" class="toolbar" [ngClass]='{active: selection}'>
+    <div *ngIf="question || questionsContainer.length || (action == 'video' && vid) || (action == 'doc' && doc)" class="toolbar" [ngClass]='{active: selection}'>
         <div class="type-container">
             <a *ngIf="action === 'survey' " class="tb-option" [ngClass]='{active: selection == "question" }' (click)="toolbarSelect('question')">Question Type</a>
             <a class="tb-option"  [ngClass]='{active: selection == "photo" }' (click)="toolbarSelect('photo')">Add Picture</a>
             <a class="tb-option"  [ngClass]='{active: selection == "groups" && isMobile }' (click)="toolbarSelect('groups')">Share with&nbsp;Groups</a>
         </div>
-        <a *ngIf="(action == 'survey') || (action == 'quiz') || (action == 'post') || (action == 'video' && vid) || (action == 'doc' && doc)" class="tb-option submit" [ngClass]="{enabled: question}" (click)="checkSubmit()">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
+        <a *ngIf="(action == 'survey') || (action == 'quiz') || (action == 'post') || (action == 'video' && vid) || (action == 'doc' && doc)" class="tb-option submit" [ngClass]="{enabled: question || (action == 'video' && vid) || (action == 'doc' && doc)}" (click)="checkSubmit()">{{action === 'survey' ? 'Add&nbsp;Question' : 'Post'}}</a>
     </div>
 
 
